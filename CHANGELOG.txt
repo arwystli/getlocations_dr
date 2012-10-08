@@ -1,9 +1,18 @@
-commit 6b0640a
+commit f6eb69a
+Author: hutch <hutch@midwales.net>
+Date:   Mon Oct 8 09:24:36 2012 +0100
+
+    changed path in files
+
+getlocations.module
+
+commit 4a98f0b
 Author: hutch <hutch@midwales.net>
 Date:   Thu Sep 27 21:20:47 2012 +0100
 
     updated $mapid
 
+CHANGELOG.txt
 getlocations.module
 
 commit ae2903c
