@@ -936,7 +936,7 @@ function getlocations_get_markerfile($dir=FALSE, $check=TRUE) {
     }
   }
   else {
-    $markerpath = file_create_path('js');
+    $markerpath = file_create_path('getlocations');
     $markerfile = '';
     if ($markerpath) {
       $markerfile = $markerpath . '/getlocations_markers.js';
