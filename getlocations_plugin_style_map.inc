@@ -60,6 +60,7 @@ class getlocations_plugin_style_map extends views_plugin_style {
     $options['weather_use']           = array('default' => $getlocations_defaults['weather_use']);
     $options['weather_show']          = array('default' => $getlocations_defaults['weather_show']);
     $options['weather_state']         = array('default' => $getlocations_defaults['weather_state']);
+    $options['map_backgroundcolor']   = array('default' => $getlocations_defaults['map_backgroundcolor']);
     if (! $getlocations_defaults['markermanagertype']) {
       $options['usemarkermanager'] = 0;
       $options['useclustermanager'] = 0;

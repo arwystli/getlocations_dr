@@ -78,6 +78,7 @@ var getlocations_settings = {};
         var pansetting = settings.pansetting;
         var draggable = settings.draggable;
         var map_styles = settings.styles;
+        var map_backgroundcolor = settings.map_backgroundcolor;
 
         getlocations_markers[key] = {};
         getlocations_markers[key].coords = {};
@@ -228,6 +229,9 @@ var getlocations_settings = {};
           scaleControl: (scale ? true : false),
           scaleControlOptions: {style: google.maps.ScaleControlStyle.DEFAULT}
         };
+        if (map_backgroundcolor) {
+          mapOpts.backgroundColor = map_backgroundcolor;
+        }
 
         getlocations_map[key] = new google.maps.Map(document.getElementById("getlocations_map_canvas_" + key), mapOpts);
 

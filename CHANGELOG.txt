@@ -1,9 +1,20 @@
-commit f6eb69a
+commit 9e84700
+Author: hutch <hutch@midwales.net>
+Date:   Thu Oct 11 13:18:41 2012 +0100
+
+    added new feature map background color
+
+getlocations.module
+getlocations_plugin_style_map.inc
+js/getlocations.js
+
+commit 6a68871
 Author: hutch <hutch@midwales.net>
 Date:   Mon Oct 8 09:24:36 2012 +0100
 
     changed path in files
 
+CHANGELOG.txt
 getlocations.module
 
 commit 4a98f0b
