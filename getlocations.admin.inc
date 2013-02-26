@@ -80,58 +80,28 @@ function getlocations_settings_form() {
   // default node marker
   $markers = getlocations_get_marker_titles();
   $desc = '';
-  if (getlocations_check_entity_type('node')) {
-    $desc = t('In use');
-  }
-  $form['getlocations_default']['node_map_marker'] = getlocations_element_map_marker(
+  $form['getlocations_default']['map_marker'] = getlocations_element_map_marker(
     t('Default Content Map marker'),
     $markers,
-    $getlocations_defaults['node_map_marker'],
+    $getlocations_defaults['map_marker'],
     $desc
   );
 
-  // default user marker
-  $desc = '';
-  if (getlocations_check_entity_type('user') || getlocations_check_entity_type('profile2')) {
-    $desc = t('In use');
-  }
-  $form['getlocations_default']['user_map_marker'] = getlocations_element_map_marker(
-    t('Default User Map marker'),
-    $markers,
-    $getlocations_defaults['user_map_marker'],
-    $desc
-  );
-  if (module_exists('taxonomy')) {
-    // default vocabulary marker
+  $fieldables = getlocations_get_fieldable_entity_types();
+  foreach ($fieldables AS $entity_type) {
+    $entity_get_info = entity_get_info($entity_type);
+    $label = $entity_get_info['label'];
     $desc = '';
-    if (getlocations_get_vocabularies()) {
+    if (getlocations_check_entity_type($entity_type)) {
       $desc = t('In use');
     }
-    $form['getlocations_default']['vocabulary_map_marker'] = getlocations_element_map_marker(
-      t('Default Vocabulary Map marker'),
+    $form['getlocations_default'][$entity_type . '_map_marker'] = getlocations_element_map_marker(
+      t('Default !label Map marker', array('!label' => $label)),
       $markers,
-      $getlocations_defaults['vocabulary_map_marker'],
+      $getlocations_defaults[$entity_type . '_map_marker'],
       $desc
     );
-    $form['getlocations_default']['term_map_marker'] = getlocations_element_map_marker(
-      t('Default Term Map marker'),
-      $markers,
-      $getlocations_defaults['term_map_marker'],
-      ''
-    );
-  }
-  if (module_exists('comment')) {
-    // default comment marker
-    $desc = '';
-    if (getlocations_check_entity_type('comment')) {
-      $desc = t('In use');
-    }
-    $form['getlocations_default']['comment_map_marker'] = getlocations_element_map_marker(
-      t('Default Comment Map marker'),
-      $markers,
-      $getlocations_defaults['comment_map_marker'],
-      $desc
-    );
+
   }
 
   if (module_exists('getlocations_fields')) {
@@ -207,58 +177,19 @@ function getlocations_settings_form() {
 
   $form['getlocations_default']['pansetting'] = getlocations_element_map_pansetting($getlocations_defaults['pansetting']);
 
-  $form['getlocations_default']['returnlink_page_enable'] = getlocations_element_map_checkbox(
-    t('Show link back to page'),
-    $getlocations_defaults['returnlink_page_enable']
-  );
-  $form['getlocations_default']['returnlink_page_link'] = getlocations_element_map_tf(
-    t('Text of page return link'),
-    $getlocations_defaults['returnlink_page_link'],
-    t('Use %t to insert the page title'),
-    30,
-    64
-  );
-
-  if (module_exists('getlocations_fields')) {
-    if (getlocations_check_entity_type('user') || getlocations_check_entity_type('profile2')) {
-      $form['getlocations_default']['returnlink_user_enable'] = getlocations_element_map_checkbox(
-         t('Show link back to user'),
-         $getlocations_defaults['returnlink_user_enable']
+  // return links
+  foreach ($fieldables AS $entity_type) {
+    $entity_get_info = entity_get_info($entity_type);
+    $label = $entity_get_info['label'];
+    if (getlocations_check_entity_type($entity_type)) {
+      $form['getlocations_default']['returnlink_' . $entity_type . '_enable'] = getlocations_element_map_checkbox(
+        t('Show link back to !label', array('!label' => $label)),
+        $getlocations_defaults['returnlink_' . $entity_type . '_enable']
       );
-      $form['getlocations_default']['returnlink_user_link'] = getlocations_element_map_tf(
-        t('Text of user return link'),
-        $getlocations_defaults['returnlink_user_link'],
-        t('Use %n to insert the user name'),
-        30,
-        64
-      );
-    }
-
-    if (module_exists('taxonomy')) {
-      if (getlocations_get_vocabularies()) {
-        $form['getlocations_default']['returnlink_term_enable'] = getlocations_element_map_checkbox(
-          t('Show link back to term'),
-          $getlocations_defaults['returnlink_term_enable']
-        );
-      }
-      $form['getlocations_default']['returnlink_term_link'] = getlocations_element_map_tf(
-        t('Text of term return link'),
-        $getlocations_defaults['returnlink_term_link'],
-        t('Use %n to insert the term name'),
-        30,
-        64
-      );
-    }
-
-    if (getlocations_check_entity_type('comment')) {
-      $form['getlocations_default']['returnlink_comment_enable'] = getlocations_element_map_checkbox(
-        t('Show link back to comment'),
-        $getlocations_defaults['returnlink_comment_enable']
-      );
-      $form['getlocations_default']['returnlink_comment_link'] = getlocations_element_map_tf(
-        t('Text of comment return link'),
-        $getlocations_defaults['returnlink_comment_link'],
-        t('Use %n to insert the comment subject'),
+      $form['getlocations_default']['returnlink_' . $entity_type . '_link'] = getlocations_element_map_tf(
+        t('Text of !label return link', array('!label' => $label)),
+        $getlocations_defaults['returnlink_' . $entity_type . '_link'],
+        t('Use %t to insert the !label title', array('!label' => $label)),
         30,
         64
       );
@@ -274,124 +205,32 @@ function getlocations_settings_form() {
     TRUE
   );
 
-  // node type markers
-  if ($types = getlocations_get_types()) {
-    $form['getlocations_node_marker'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Content type markers'),
-      // This will store all the defaults in one variable.
-      '#tree' => TRUE,
+  $getlocations_markers = variable_get('getlocations_markers', array());
+  $form['getlocations_markers'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Entity Type markers'),
+    // This will store all the defaults in one variable.
+    '#tree' => TRUE,
+  );
+  $type_markers = getlocations_get_type_markers();
+  foreach ($type_markers AS $entity_type => $bundles) {
+    // enable $entity_markers
+    $entity_get_info = entity_get_info($entity_type);
+    $entity_type_label = $entity_get_info['label'];
+    $form['getlocations_markers'][$entity_type]['enable'] = getlocations_element_map_checkbox(
+      t('Enable Markers for !t types', array('!t' => $entity_type_label)),
+      (isset($getlocations_markers[$entity_type]['enable']) ? $getlocations_markers[$entity_type]['enable'] : 0)
     );
-    $getlocations_node_marker = variable_get('getlocations_node_marker', array('enable' => 0));
-    $form['getlocations_node_marker']['enable'] = getlocations_element_map_checkbox(
-      t('Enable Markers for Content types'),
-      $getlocations_node_marker['enable']
-    );
-    $typect = 0;
-    foreach ($types AS $type => $name) {
-      $field_names = getlocations_get_fieldname2($type, 'node');
-      foreach ($field_names AS $field_name) {
-        $form['getlocations_node_marker']['content_type'][$type]['field_name'][$field_name]['map_marker'] = getlocations_element_map_marker(
-          t('%name Map marker, field %field', array('%name' => $name, '%field' => $field_name)),
+    foreach ($bundles AS $bundle => $field_names) {
+      foreach ($field_names AS $field_name => $marker_data) {
+        $bundle_label = $marker_data['bundle_label'];
+        $form['getlocations_markers'][$entity_type][$bundle][$field_name]['marker'] = getlocations_element_map_marker(
+          t('Type %etl, Bundle %name, Field %field Map marker', array('%etl' => $entity_type_label,'%name' => $bundle_label, '%field' => $field_name)),
           $markers,
-          (isset($getlocations_node_marker['content_type'][$type]['field_name'][$field_name]['map_marker']) ? $getlocations_node_marker['content_type'][$type]['field_name'][$field_name]['map_marker'] : $getlocations_defaults['node_map_marker'])
+          (isset($getlocations_markers[$entity_type][$bundle][$field_name]['marker'] ) ? $getlocations_markers[$entity_type][$bundle][$field_name]['marker'] : (isset($getlocations_defaults[$entity_type . '_map_marker']) ? $getlocations_defaults[$entity_type . '_map_marker'] : $getlocations_defaults['map_marker']))
         );
-        // for jquery
-        if (! $typect) {
-          $form['getlocations_node_marker']['content_type'][$type]['field_name'][$field_name]['map_marker']['#prefix'] = '<div id="wrap-getlocations-node-markers">';
-        }
-        $typect++;
       }
     }
-    $form['getlocations_node_marker']['content_type'][$type]['field_name'][$field_name]['map_marker']['#suffix'] = '</div>';
-  }
-
-  if (module_exists('taxonomy')) {
-    // vocabulary markers
-    if ($types = getlocations_get_vocabularies()) {
-      $module = getlocations_get_current_supported_module();
-      $form['getlocations_vocabulary_marker'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Taxonomy Vocabulary markers'),
-        // This will store all the defaults in one variable.
-        '#tree' => TRUE,
-        '#description' => t('Vocabularies with a %module field.', array('%module' => $module)),
-      );
-      $getlocations_vocabulary_marker = variable_get('getlocations_vocabulary_marker', array('enable' => 0));
-      $form['getlocations_vocabulary_marker']['enable'] = getlocations_element_map_checkbox(
-        t('Enable Markers for Vocabularies'),
-        $getlocations_vocabulary_marker['enable']
-      );
-      $typect = 0;
-      foreach ($types AS $type => $name) {
-        $form['getlocations_vocabulary_marker']['vocabulary'][$type]['map_marker'] = getlocations_element_map_marker(
-          t('%name Map marker', array('%name' => $name)),
-          $markers,
-          (isset($getlocations_vocabulary_marker['vocabulary'][$type]['map_marker']) ? $getlocations_vocabulary_marker['vocabulary'][$type]['map_marker'] : $getlocations_defaults['vocabulary_map_marker'])
-        );
-        // for jquery
-        if (! $typect) {
-          $form['getlocations_vocabulary_marker']['vocabulary'][$type]['map_marker']['#prefix'] = '<div id="wrap-getlocations-vocabulary-markers">';
-        }
-        $typect++;
-      }
-      $form['getlocations_vocabulary_marker']['vocabulary'][$type]['map_marker']['#suffix'] = '</div>';
-    }
-
-    // term markers
-    $form['getlocations_term_marker'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Term markers'),
-      // This will store all the defaults in one variable.
-      '#tree' => TRUE,
-    );
-    $getlocations_term_marker = variable_get('getlocations_term_marker', array('enable' => 0, 'vids' => 0, 'max_depth' => ''));
-    $form['getlocations_term_marker']['enable'] = getlocations_element_map_checkbox(
-      t('Enable Markers for Terms'),
-      $getlocations_term_marker['enable'],
-      t('Select Vocabularies enabled in a %termref field', array('%termref' => 'Term reference'))
-    );
-    $options = array(0 => '- Select -');
-    foreach (taxonomy_vocabulary_get_names() as $vocab) {
-      $options[$vocab->vid] = $vocab->name;
-    }
-    $vids = array();
-    if (is_array($getlocations_term_marker['vids'])) {
-      $vids = array_keys($getlocations_term_marker['vids']);
-    }
-
-    $form['getlocations_term_marker']['vids'] = getlocations_element_dd(
-      t('Vocabulary to specify markers for'),
-      $vids,
-      $options,
-      t('Select one or more vocabularies, then Save Configuration to set up the markers.'),
-      TRUE
-    );
-    $form['getlocations_term_marker']['vids']['#prefix'] = '<div id="wrap-getlocations-term-markers">';
-
-    if ($getlocations_term_marker['enable'] && $getlocations_term_marker['vids']) {
-      $depth = is_numeric($getlocations_term_marker['max_depth']) && $getlocations_term_marker['max_depth'] > 0 ? $getlocations_term_marker['max_depth'] : NULL;
-      $vids = $getlocations_term_marker['vids'];
-      foreach ($vids AS $vid) {
-        $terms = taxonomy_get_tree($vid, 0, $depth);
-        foreach ($terms AS $term) {
-          $tid = $term->tid;
-          $name = $term->name;
-          $form['getlocations_term_marker']['vid'][$vid]['term'][$tid]['map_marker'] = getlocations_element_map_marker(
-            t('%name Map marker', array('%name' => $name)),
-            $markers,
-            (isset($getlocations_term_marker['vid'][$vid]['term'][$tid]['map_marker']) ? $getlocations_term_marker['vid'][$vid]['term'][$tid]['map_marker'] : $getlocations_defaults['term_map_marker'])
-          );
-        }
-      }
-    }
-    $form['getlocations_term_marker']['max_depth'] = getlocations_element_map_tf(
-      t('Maximum depth'),
-      $getlocations_term_marker['max_depth'],
-      t('The maximum depth for hierarchical vocabulary to specify markers for. Leave blank for all levels.'),
-      5
-    );
-    $form['getlocations_term_marker']['max_depth']['#suffix'] = '</div>';
   }
 
   // colorbox
@@ -616,20 +455,14 @@ function getlocations_settings_validate($form, &$form_state) {
   }
 
   // markers
-  if (isset($form_state['values']['getlocations_node_marker']) && ! $form_state['values']['getlocations_node_marker']['enable']) {
-    unset($form_state['values']['getlocations_node_marker']);
-    $form_state['values']['getlocations_node_marker']['enable'] = 0;
+  $type_markers = getlocations_get_type_markers();
+  foreach ($type_markers AS $entity_type => $bundles) {
+     if (isset($form_state['values']['getlocations_' . $entity_type . '_marker']) && ! $form_state['values']['getlocations_' . $entity_type . '_marker']['enable']) {
+      unset($form_state['values']['getlocations_' . $entity_type . '_marker']);
+      $form_state['values']['getlocations_' . $entity_type . '_marker']['enable'] = 0;
+     }
   }
-  if (isset($form_state['values']['getlocations_vocabulary_marker']) && ! $form_state['values']['getlocations_vocabulary_marker']['enable']) {
-    unset($form_state['values']['getlocations_vocabulary_marker']);
-    $form_state['values']['getlocations_vocabulary_marker']['enable'] = 0;
-  }
-  if (isset($form_state['values']['getlocations_term_marker']) && ! $form_state['values']['getlocations_term_marker']['enable']) {
-    unset($form_state['values']['getlocations_term_marker']);
-    $form_state['values']['getlocations_term_marker']['enable'] = 0;
-    $form_state['values']['getlocations_term_marker']['vids'] = 0;
-    $form_state['values']['getlocations_term_marker']['max_depth'] = '';
-  }
+
 }
 
 /**

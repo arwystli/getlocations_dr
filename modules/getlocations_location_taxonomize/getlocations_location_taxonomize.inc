@@ -37,29 +37,8 @@ function _getlocations_location_taxonomize_variables() {
  * @param $labels - whether to return the labels of fields as array values
  */
 function getlocations_location_taxonomize_get_fields($assoc = TRUE, $labels = FALSE) {
-  // get fields from getlocations_fields table
-  $defaults = array(
-    'columns' => array(
-      'glid'        => t('Glid'),
-      'name'        => t('Name'),
-      'street'      => t('Street'),
-      'additional'  => t('Additional'),
-      'city'        => t('City'),
-      'province'    => t('Province'),
-      'postal_code' => t('Post code'),
-      'country'     => t('Country'),
-      'latitude'    => t('Latitude'),
-      'longitude'   => t('Longitude'),
-    ),
-  );
-  $getlocations_fields_defaults = variable_get('getlocations_fields_defaults', $defaults);
-  if (function_exists('getlocations_fields_defaults')) {
-    $getlocations_fields_defaults = getlocations_fields_defaults();
-  }
+  $getlocations_fields_defaults = getlocations_fields_defaults();
   $fields = $getlocations_fields_defaults['columns'];
-  foreach ($fields as $key => $value) {
-    $fields[$key] = $value;
-  }
   // define the fields we support and their order
   $supported = array(
     'name',

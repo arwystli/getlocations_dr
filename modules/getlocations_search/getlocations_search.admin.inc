@@ -147,15 +147,24 @@ function _getlocations_search_settings_form($defaults, $which = 'admin') {
     $form[$varname]['search_limits'] = getlocations_element_map_limits(
       $defaults['search_limits']
     );
-
-    $opts = array('all' => t('Show All'), 'node' => t('Nodes'));
-    $opts['user'] = t('Users');
-    if (module_exists('taxonomy')) {
-      $opts['term'] = t('Terms');
+//////////////
+    // use entity_get_info to find all the fieldable types available
+    $entity_allinfo = entity_get_info();
+    $opts = array('all' => t('Show All'));
+    foreach ($entity_allinfo AS $entity_type => $entity_info) {
+      if ($entity_info['fieldable']) {
+        $opts[$entity_type] = $entity_info['label'];
+      }
     }
-    if (module_exists('comment')) {
-      $opts['comment'] = t('Comments');
-    }
+//////////////
+#    $opts = array('all' => t('Show All'));
+#    $opts['user'] = t('Users');
+#    if (module_exists('taxonomy')) {
+#      $opts['term'] = t('Terms');
+#    }
+#    if (module_exists('comment')) {
+#      $opts['comment'] = t('Comments');
+#    }
     $form[$varname]['search_type'] = getlocations_element_dd(
       t('Restrict the search'),
       $defaults['search_type'],

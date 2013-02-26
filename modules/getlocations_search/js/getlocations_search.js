@@ -190,22 +190,8 @@
           for (var i = 0; i < locations.length; i++) {
             lidkey = 'nid';
             lid = 0;
-            if (locations[i].nid > 0) {
-              lidkey = 'nid';
-              lid = locations[i].nid;
-            }
-            else if (locations[i].uid > 0) {
-              lidkey = 'uid';
-              lid = locations[i].uid;
-            }
-            else if (locations[i].tid > 0) {
-              lidkey = 'tid';
-              lid = locations[i].tid;
-            }
-            else if (locations[i].cid > 0) {
-              lidkey = 'cid';
-              lid = locations[i].cid;
-            }
+            lidkey = locations[i].entity_key;
+            lid = locations[i].entity_id;
             if (locations[i].glid > 0) {
               lid = locations[i].glid;
             }

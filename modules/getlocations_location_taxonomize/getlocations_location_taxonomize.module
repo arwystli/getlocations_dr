@@ -111,7 +111,7 @@ function getlocations_location_taxonomize_process_address($element, &$form_state
  * A submit handler for forms that contain an getlocations_fields widget
  */
 function getlocations_location_taxonomize_element_submitted($form, &$form_state) {
-
+  // TODO check the $lang, can it be pulled from $form_state?
   $lang = 'und';
   // Act on values
   $fields = $form_state['temporary']['getlocations_fields'];

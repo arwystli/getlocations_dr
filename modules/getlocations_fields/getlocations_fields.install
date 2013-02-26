@@ -98,9 +98,17 @@ function getlocations_fields_schema() {
         'default' => '',
         'not null' => TRUE,
       ),
+      'field_name' => array(
+        'description' => 'Field name.',
+        'type' => 'varchar',
+        'length' => 255,
+        'default' => '',
+        'not null' => TRUE,
+      ),
     ),
     'primary key' => array('glid'),
   );
+/*
   $schema['getlocations_fields_entities'] = array(
     'description' => 'N:M join table to join getlocations_fields entries to entities, eg node, user, comments, taxonomy.',
     'fields' => array(
@@ -164,6 +172,7 @@ function getlocations_fields_schema() {
       'glid' => array('glid'),
     ),
   );
+*/
 
   return $schema;
 }
@@ -227,3 +236,30 @@ function getlocations_fields_update_7100() {
   );
   db_add_field('getlocations_fields', 'marker', $spec);
 }
+
+function getlocations_fields_update_7101() {
+  $spec = array(
+    'description' => 'Field name.',
+    'type' => 'varchar',
+    'length' => 255,
+    'default' => '',
+    'not null' => TRUE,
+  );
+  db_add_field('getlocations_fields', 'field_name', $spec);
+
+  // need to collect all field names from getlocations_fields_entities and transfer them to getlocations_fields on glid
+  if (db_table_exists('getlocations_fields_entities')) {
+    $query = db_select('getlocations_fields_entities', 'e');
+    $query->fields('e', array('glid', 'field_name'));
+    $query->condition('e.glid', 0, '>');
+    $rows = $query->execute();
+    foreach ($rows AS $row) {
+      db_update('getlocations_fields')
+        ->fields(array('field_name' => $row->field_name))
+        ->condition('glid', $row->glid)
+        ->execute();
+    }
+    db_drop_table('getlocations_fields_entities');
+  }
+}
+

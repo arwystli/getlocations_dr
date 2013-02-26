@@ -541,7 +541,7 @@ var getlocations_settings = {};
     }); // end each setting loop
     $("body").addClass("getlocations-maps-processed");
 
-    function doAllMarkers(map, gs, mkey) {
+    function doAllMarkers (map, gs, mkey) {
 
       var arr = gs.latlons;
       for (var i = 0; i < arr.length; i++) {
@@ -627,7 +627,7 @@ var getlocations_settings = {};
       }
       else {
         // fetch link and relocate
-        var path = Drupal.settings.basePath + "getlocations/lidinfo";
+        var path = Drupal.settings.basePath + "getlocations_cb/lidinfo";
         $.get(path, {'lid': lid, 'key': lidkey}, function(data) {
           if (data.content) {
             window.location = data.content;
@@ -653,7 +653,6 @@ var getlocations_settings = {};
       google.maps.event.addListener(m, gs.markeractiontype, function() {
         mouseoverTimeoutId = setTimeout(function() {
           if (gs.useLink) {
-            // relocate
             get_winlocation(gs, lid, lidkey);
           }
           else {
@@ -674,7 +673,7 @@ var getlocations_settings = {};
                 }
               }
               else {
-                var path = Drupal.settings.basePath + "getlocations/info";
+                var path = Drupal.settings.basePath + "getlocations_cb/info";
                 var qs = {'lid': lid, 'key': lidkey};
                 if (gs.show_distance) {
                   if ($("#getlocations_search_slat_" + mkey).is('div')) {

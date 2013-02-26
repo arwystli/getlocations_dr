@@ -1,9 +1,39 @@
-commit 2be88f8
+commit 8d03a5b
+Author: hutch <hutch@midwales.net>
+Date:   Tue Feb 26 10:44:28 2013 +0000
+
+    added files from test version
+
+getlocations.admin.inc
+getlocations.module
+images/info.png
+js/getlocations.js
+modules/getlocations_blocks/getlocations_blocks.module
+modules/getlocations_fields/getlocations_fields.install
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_fields/views/getlocations_fields.views_default.inc
+modules/getlocations_fields_entity/getlocations_fields_entity.module
+modules/getlocations_location_taxonomize/getlocations_location_taxonomize.inc
+modules/getlocations_location_taxonomize/getlocations_location_taxonomize.module
+modules/getlocations_search/getlocations_search.admin.inc
+modules/getlocations_search/getlocations_search.module
+modules/getlocations_search/js/getlocations_search.js
+
+commit ccedfa0
+Author: hutch <hutch@midwales.net>
+Date:   Tue Feb 26 10:24:05 2013 +0000
+
+    start new branch 7.x-2.x
+
+README.txt
+
+commit 5228d56
 Author: hutch <hutch@midwales.net>
 Date:   Fri Feb 22 22:07:44 2013 +0000
 
     more fixes get_vocabularies
 
+CHANGELOG.txt
 getlocations.module
 
 commit d406ee4

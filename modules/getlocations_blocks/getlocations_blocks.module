@@ -432,12 +432,12 @@ function getlocations_blocks_city_get() {
   $query->fields('f', array('city'));
 
   if ($settings['city_filter'] && $settings['city_filter'] == 'field_name' && $settings['city_filter_fieldname']) {
-    $query->join('getlocations_fields_entities', 'e', 'f.glid=e.glid');
-    $query->condition('e.field_name', $settings['city_filter_fieldname']);
+#    $query->join('getlocations_fields_entities', 'e', 'f.glid=e.glid');
+    $query->condition('f.field_name', $settings['city_filter_fieldname']);
   }
   elseif ($settings['city_filter'] && $settings['city_filter'] == 'bundle' && $settings['city_filter_bundle']) {
-    $query->join('getlocations_fields_entities', 'e', 'f.glid=e.glid');
-    $query->join('field_config_instance', 'i', 'e.field_name=i.field_name');
+#    $query->join('getlocations_fields_entities', 'e', 'f.glid=e.glid');
+    $query->join('field_config_instance', 'i', 'f.field_name=i.field_name');
     $query->condition('i.bundle', $settings['city_filter_bundle']);
   }
 
@@ -462,12 +462,12 @@ function getlocations_blocks_province_get() {
   $query->fields('f', array('province'));
 
   if ($settings['province_filter'] && $settings['province_filter'] == 'field_name' && $settings['province_filter_fieldname']) {
-    $query->join('getlocations_fields_entities', 'e', 'f.glid=e.glid');
-    $query->condition('e.field_name', $settings['province_filter_fieldname']);
+#    $query->join('getlocations_fields_entities', 'e', 'f.glid=e.glid');
+    $query->condition('f.field_name', $settings['province_filter_fieldname']);
   }
   elseif ($settings['province_filter'] && $settings['province_filter'] == 'bundle' && $settings['province_filter_bundle']) {
-    $query->join('getlocations_fields_entities', 'e', 'f.glid=e.glid');
-    $query->join('field_config_instance', 'i', 'e.field_name=i.field_name');
+#    $query->join('getlocations_fields_entities', 'e', 'f.glid=e.glid');
+    $query->join('field_config_instance', 'i', 'f.field_name=i.field_name');
     $query->condition('i.bundle', $settings['province_filter_bundle']);
   }
 
@@ -492,12 +492,12 @@ function getlocations_blocks_postalcode_get() {
   $query->fields('f', array('postal_code'));
 
   if ($settings['postalcode_filter'] && $settings['postalcode_filter'] == 'field_name' && $settings['postalcode_filter_fieldname']) {
-    $query->join('getlocations_fields_entities', 'e', 'f.glid=e.glid');
-    $query->condition('e.field_name', $settings['postalcode_filter_fieldname']);
+#    $query->join('getlocations_fields_entities', 'e', 'f.glid=e.glid');
+    $query->condition('f.field_name', $settings['postalcode_filter_fieldname']);
   }
   elseif ($settings['postalcode_filter'] && $settings['postalcode_filter'] == 'bundle' && $settings['postalcode_filter_bundle']) {
-    $query->join('getlocations_fields_entities', 'e', 'f.glid=e.glid');
-    $query->join('field_config_instance', 'i', 'e.field_name=i.field_name');
+#    $query->join('getlocations_fields_entities', 'e', 'f.glid=e.glid');
+    $query->join('field_config_instance', 'i', 'f.field_name=i.field_name');
     $query->condition('i.bundle', $settings['postalcode_filter_bundle']);
   }
 
@@ -526,12 +526,12 @@ function getlocations_blocks_country_get() {
     $query->fields('f', array('country'));
 
     if ($settings['country_filter'] && $settings['country_filter'] == 'field_name' && $settings['country_filter_fieldname']) {
-      $query->join('getlocations_fields_entities', 'e', 'f.glid=e.glid');
-      $query->condition('e.field_name', $settings['country_filter_fieldname']);
+#      $query->join('getlocations_fields_entities', 'e', 'f.glid=e.glid');
+      $query->condition('f.field_name', $settings['country_filter_fieldname']);
     }
     elseif ($settings['country_filter'] && $settings['country_filter'] == 'bundle' && $settings['country_filter_bundle']) {
-      $query->join('getlocations_fields_entities', 'e', 'f.glid=e.glid');
-      $query->join('field_config_instance', 'i', 'e.field_name=i.field_name');
+#      $query->join('getlocations_fields_entities', 'e', 'f.glid=e.glid');
+      $query->join('field_config_instance', 'i', 'f.field_name=i.field_name');
       $query->condition('i.bundle', $settings['country_filter_bundle']);
     }
 
@@ -703,13 +703,13 @@ function getlocations_blocks_city_autocomplete($string = '') {
     $query = db_select('getlocations_fields', 'f');
     $query->fields('f', array('city'));
     if ($settings['city_filter'] && $settings['city_filter'] == 'field_name' && $settings['city_filter_fieldname']) {
-      $query->join('getlocations_fields_entities', 'e', 'f.glid=e.glid');
+#      $query->join('getlocations_fields_entities', 'e', 'f.glid=e.glid');
       $query->where("LOWER(f.city) LIKE LOWER(:st)", array(':st' => $string . '%'));
-      $query->condition('e.field_name', $settings['city_filter_fieldname']);
+      $query->condition('f.field_name', $settings['city_filter_fieldname']);
     }
     elseif ($settings['city_filter'] && $settings['city_filter'] == 'bundle' && $settings['city_filter_bundle']) {
-      $query->join('getlocations_fields_entities', 'e', 'f.glid=e.glid');
-      $query->join('field_config_instance', 'i', 'e.field_name=i.field_name');
+#      $query->join('getlocations_fields_entities', 'e', 'f.glid=e.glid');
+      $query->join('field_config_instance', 'i', 'f.field_name=i.field_name');
       $query->where("LOWER(f.city) LIKE LOWER(:st)", array(':st' => $string . '%'));
       $query->condition('i.bundle', $settings['city_filter_bundle']);
     }
@@ -740,13 +740,13 @@ function getlocations_blocks_province_autocomplete($string = '') {
     $query = db_select('getlocations_fields', 'f');
     $query->fields('f', array('province'));
     if ($settings['province_filter'] && $settings['province_filter'] == 'field_name' && $settings['province_filter_fieldname']) {
-      $query->join('getlocations_fields_entities', 'e', 'f.glid=e.glid');
+#      $query->join('getlocations_fields_entities', 'e', 'f.glid=e.glid');
       $query->where("LOWER(f.province) LIKE LOWER(:st)", array(':st' => $string . '%'));
-      $query->condition('e.field_name', $settings['province_filter_fieldname']);
+      $query->condition('f.field_name', $settings['province_filter_fieldname']);
     }
     elseif ($settings['province_filter'] && $settings['province_filter'] == 'bundle' && $settings['province_filter_bundle']) {
-      $query->join('getlocations_fields_entities', 'e', 'f.glid=e.glid');
-      $query->join('field_config_instance', 'i', 'e.field_name=i.field_name');
+#      $query->join('getlocations_fields_entities', 'e', 'f.glid=e.glid');
+      $query->join('field_config_instance', 'i', 'f.field_name=i.field_name');
       $query->where("LOWER(f.province) LIKE LOWER(:st)", array(':st' => $string . '%'));
       $query->condition('i.bundle', $settings['province_filter_bundle']);
     }
@@ -777,13 +777,13 @@ function getlocations_blocks_postalcode_autocomplete($string = '') {
     $query = db_select('getlocations_fields', 'f');
     $query->fields('f', array('postal_code'));
     if ($settings['postalcode_filter'] && $settings['postalcode_filter'] == 'field_name' && $settings['postalcode_filter_fieldname']) {
-      $query->join('getlocations_fields_entities', 'e', 'f.glid=e.glid');
+#      $query->join('getlocations_fields_entities', 'e', 'f.glid=e.glid');
       $query->where("LOWER(f.postal_code) LIKE LOWER(:st)", array(':st' => $string . '%'));
-      $query->condition('e.field_name', $settings['postalcode_filter_fieldname']);
+      $query->condition('f.field_name', $settings['postalcode_filter_fieldname']);
     }
     elseif ($settings['postalcode_filter'] && $settings['postalcode_filter'] == 'bundle' && $settings['postalcode_filter_bundle']) {
-      $query->join('getlocations_fields_entities', 'e', 'f.glid=e.glid');
-      $query->join('field_config_instance', 'i', 'e.field_name=i.field_name');
+#      $query->join('getlocations_fields_entities', 'e', 'f.glid=e.glid');
+      $query->join('field_config_instance', 'i', 'f.field_name=i.field_name');
       $query->where("LOWER(f.postal_code) LIKE LOWER(:st)", array(':st' => $string . '%'));
       $query->condition('i.bundle', $settings['postalcode_filter_bundle']);
     }
@@ -828,12 +828,12 @@ function getlocations_blocks_country_autocomplete($string = '') {
       $query = db_select('getlocations_fields', 'f');
       $query->fields('f', array('country'));
       if ($settings['country_filter'] && $settings['country_filter'] == 'field_name' && $settings['country_filter_fieldname']) {
-        $query->join('getlocations_fields_entities', 'e', 'f.glid=e.glid');
-        $query->condition('e.field_name', $settings['country_filter_fieldname']);
+#        $query->join('getlocations_fields_entities', 'e', 'f.glid=e.glid');
+        $query->condition('f.field_name', $settings['country_filter_fieldname']);
       }
       elseif ($settings['country_filter'] && $settings['country_filter'] == 'bundle' && $settings['country_filter_bundle']) {
-        $query->join('getlocations_fields_entities', 'e', 'f.glid=e.glid');
-        $query->join('field_config_instance', 'i', 'e.field_name=i.field_name');
+#        $query->join('getlocations_fields_entities', 'e', 'f.glid=e.glid');
+        $query->join('field_config_instance', 'i', 'f.field_name=i.field_name');
         $query->condition('i.bundle', $settings['country_filter_bundle']);
       }
       $result = $query->execute();

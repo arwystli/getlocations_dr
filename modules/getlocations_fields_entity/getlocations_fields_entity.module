@@ -105,5 +105,10 @@ function getlocations_fields_entity_key_map() {
       'label' => t('Marker'),
       'description' => t('Getlocations Fields marker field')
     ),
+    'field_name' => array(
+      'type' => 'text',
+      'label' => t('Field name'),
+      'description' => t('Getlocations Fields Field name field')
+    ),
   );
 }
