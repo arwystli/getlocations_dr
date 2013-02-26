@@ -1,4 +1,7 @@
 for Drupal 7
+
+Getlocations 2.x
+
 Getlocations will provide a Google maps API version 3 enabled map on which to
 display markers of locations found in location-enabled content-types.
 
