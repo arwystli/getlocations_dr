@@ -111,7 +111,66 @@
         });
       }
 
+      if ($("#edit-fields-field-location-settings-edit-form-settings-polygons-enable, #edit-style-options-polygons-enable").attr('checked')) {
+        $("#wrap-getlocations-polygons").show();
+      }
+      else {
+        $("#wrap-getlocations-polygons").hide();
+      }
+      $("#edit-fields-field-location-settings-edit-form-settings-polygons-enable, #edit-style-options-polygons-enable").change(function() {
+        if ($(this).attr('checked')) {
+          $("#wrap-getlocations-polygons").show();
+        }
+        else {
+          $("#wrap-getlocations-polygons").hide();
+        }
+      });
+
+      if ($("#edit-fields-field-location-settings-edit-form-settings-rectangles-enable, #edit-style-options-rectangles-enable").attr('checked')) {
+        $("#wrap-getlocations-rectangles").show();
+      }
+      else {
+        $("#wrap-getlocations-rectangles").hide();
+      }
+      $("#edit-fields-field-location-settings-edit-form-settings-rectangles-enable, #edit-style-options-rectangles-enable").change(function() {
+        if ($(this).attr('checked')) {
+          $("#wrap-getlocations-rectangles").show();
+        }
+        else {
+          $("#wrap-getlocations-rectangles").hide();
+        }
+      });
+
+      if ($("#edit-fields-field-location-settings-edit-form-settings-circles-enable, #edit-style-options-circles-enable").attr('checked')) {
+        $("#wrap-getlocations-circles").show();
+      }
+      else {
+        $("#wrap-getlocations-circles").hide();
+      }
+      $("#edit-fields-field-location-settings-edit-form-settings-circles-enable, #edit-style-options-circles-enable").change(function() {
+        if ($(this).attr('checked')) {
+          $("#wrap-getlocations-circles").show();
+        }
+        else {
+          $("#wrap-getlocations-circles").hide();
+        }
+      });
+
+      if ($("#edit-fields-field-location-settings-edit-form-settings-polylines-enable, #edit-style-options-polylines-enable").attr('checked')) {
+        $("#wrap-getlocations-polylines").show();
+      }
+      else {
+        $("#wrap-getlocations-polylines").hide();
+      }
+      $("#edit-fields-field-location-settings-edit-form-settings-polylines-enable, #edit-style-options-polylines-enable").change(function() {
+        if ($(this).attr('checked')) {
+          $("#wrap-getlocations-polylines").show();
+        }
+        else {
+          $("#wrap-getlocations-polylines").hide();
+        }
+      });
+
     }
   };
 })(jQuery);
-

@@ -665,6 +665,45 @@ function getlocations_setup_js($defaults, $googleonly = FALSE) {
     drupal_add_js($getlocations_paths['getlocations_path'], $js_opts);
     $js_weight++;
   }
+
+  if ($defaults['polygons_enable']) {
+    if (!stristr($current_js, $getlocations_paths['getlocations_polygons_path'])) {
+      $js_opts = array();
+      $js_opts['weight'] = $js_weight;
+      $js_opts['type'] = 'file';
+      drupal_add_js($getlocations_paths['getlocations_polygons_path'], $js_opts);
+      $js_weight++;
+    }
+  }
+  if ($defaults['rectangles_enable']) {
+    if (!stristr($current_js, $getlocations_paths['getlocations_rectangles_path'])) {
+      $js_opts = array();
+      $js_opts['weight'] = $js_weight;
+      $js_opts['type'] = 'file';
+      drupal_add_js($getlocations_paths['getlocations_rectangles_path'], $js_opts);
+      $js_weight++;
+    }
+  }
+  if ($defaults['circles_enable']) {
+    if (!stristr($current_js, $getlocations_paths['getlocations_circles_path'])) {
+      $js_opts = array();
+      $js_opts['weight'] = $js_weight;
+      $js_opts['type'] = 'file';
+      drupal_add_js($getlocations_paths['getlocations_circles_path'], $js_opts);
+      $js_weight++;
+    }
+  }
+  if ($defaults['polylines_enable']) {
+    if (!stristr($current_js, $getlocations_paths['getlocations_polylines_path'])) {
+      $js_opts = array();
+      $js_opts['weight'] = $js_weight;
+      $js_opts['type'] = 'file';
+      drupal_add_js($getlocations_paths['getlocations_polylines_path'], $js_opts);
+      $js_weight++;
+    }
+  }
+
+
 }
 
 /**
@@ -748,6 +787,41 @@ function getlocations_defaults() {
     'map_backgroundcolor'       => '',
     'show_maplinks'             => 0,
     'fullscreen'                => 0,
+    'polygons_enable'           => 0,
+    'polygons_strokecolor'      => "#FF0000",
+    'polygons_strokeopacity'    => "0.8",
+    'polygons_strokeweight'     => "3",
+    'polygons_fillcolor'        => "#FF0000",
+    'polygons_fillopacity'      => "0.35",
+    'polygons_coords'           => "",
+    'polygons_clickable'        => 0,
+    'polygons_message'          => "",
+    'rectangles_enable'         => 0,
+    'rectangles_strokecolor'    => "#FF0000",
+    'rectangles_strokeopacity'  => "0.8",
+    'rectangles_strokeweight'   => "3",
+    'rectangles_fillcolor'      => "#FF0000",
+    'rectangles_fillopacity'    => "0.35",
+    'rectangles_coords'         => "",
+    'rectangles_clickable'      => 0,
+    'rectangles_message'        => "",
+    'circles_enable'           => 0,
+    'circles_strokecolor'      => "#FF0000",
+    'circles_strokeopacity'    => "0.8",
+    'circles_strokeweight'     => "3",
+    'circles_fillcolor'        => "#FF0000",
+    'circles_fillopacity'      => "0.35",
+    'circles_coords'           => "",
+    'circles_clickable'        => 0,
+    'circles_message'          => "",
+    'circles_radius'           => 0,
+    'polylines_enable'           => 0,
+    'polylines_strokecolor'      => "#FF0000",
+    'polylines_strokeopacity'    => "0.8",
+    'polylines_strokeweight'     => "3",
+    'polylines_coords'           => "",
+    'polylines_clickable'        => 0,
+    'polylines_message'          => "",
   );
 
   $fieldables = getlocations_get_fieldable_entity_types();
@@ -1720,6 +1794,47 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
     drupal_add_js(array('getlocations_info' => $info_settings), 'setting');
   }
 
+  // polygons
+  if ($defaults['polygons_enable'] && ! empty($defaults['polygons_coords'])) {
+    $polygons = getlocations_get_polygon_settings($defaults);
+    if ($polygons) {
+      $polygon_settings = array(
+        $mapid => $polygons,
+      );
+      drupal_add_js(array('getlocations_polygons' => $polygon_settings), 'setting');
+    }
+  }
+  // rectangles
+  if ($defaults['rectangles_enable'] && ! empty($defaults['rectangles_coords'])) {
+    $rectangles = getlocations_get_rectangle_settings($defaults);
+    if ($rectangles) {
+      $rectangle_settings = array(
+        $mapid => $rectangles,
+      );
+      drupal_add_js(array('getlocations_rectangles' => $rectangle_settings), 'setting');
+    }
+  }
+  // circles
+  if ($defaults['circles_enable'] && ! empty($defaults['circles_coords']) && $defaults['circles_radius'] > 0) {
+    $circles = getlocations_get_circle_settings($defaults);
+    if ($circles) {
+      $circle_settings = array(
+        $mapid => $circles,
+      );
+      drupal_add_js(array('getlocations_circles' => $circle_settings), 'setting');
+    }
+  }
+  // polylines
+  if ($defaults['polylines_enable'] && ! empty($defaults['polylines_coords'])) {
+    $polylines = getlocations_get_polyline_settings($defaults);
+    if ($polylines) {
+      $polyline_settings = array(
+        $mapid => $polylines,
+      );
+      drupal_add_js(array('getlocations_polylines' => $polyline_settings), 'setting');
+    }
+  }
+
 }
 
 function getlocations_load_locations($entity_id, $entity_type) {
@@ -2521,6 +2636,229 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
       $defaults['transit_show'],
       t('Show Google transit points icons.')
     );
+
+    $form['polygons_enable'] = getlocations_element_map_checkbox(
+      t('Enable polygons'),
+      $defaults['polygons_enable'],
+      t('Show polygons if defined.')
+    );
+    $form['polygons_enable']['#suffix'] = '<div id="wrap-getlocations-polygons">';
+
+    $form['polygons_strokecolor'] = getlocations_element_map_tf(
+      t('Polygon line color'),
+      $defaults['polygons_strokecolor'],
+      t('Any CSS3 color such as HTML hex, eg #FF0000.'),
+      10
+    );
+    $form['polygons_strokeopacity'] = getlocations_element_map_tf(
+      t('Polygon line opacity'),
+      $defaults['polygons_strokeopacity'],
+      t('Must be between 0 and 1.'),
+      10
+    );
+    $form['polygons_strokeweight'] = getlocations_element_map_tf(
+      t('Polygon line thickness'),
+      $defaults['polygons_strokeweight'],
+      t('Must be an integer.'),
+      10
+    );
+    $form['polygons_fillcolor'] = getlocations_element_map_tf(
+      t('Polygon fill color'),
+      $defaults['polygons_fillcolor'],
+      t('Any CSS3 color such as HTML hex, eg #FF0000.'),
+      10
+    );
+    $form['polygons_fillopacity'] = getlocations_element_map_tf(
+      t('Polygon fill opacity'),
+      $defaults['polygons_fillopacity'],
+      t('Must be between 0 and 1.'),
+      10
+    );
+    $form['polygons_clickable'] = getlocations_element_map_checkbox(
+      t('Clickable'),
+      $defaults['polygons_clickable'],
+      t('Show Popup on clicking on the polygon.')
+    );
+    $form['polygons_message'] = array(
+      '#type' => 'textarea',
+      '#title' => t('Popup message'),
+      '#default_value' => $defaults['polygons_message'],
+      '#description' => t('The content of the popup.'),
+    );
+
+    $form['polygons_coords'] = array(
+      '#type' => 'textarea',
+      '#title' => t('Polygon Coordinates'),
+      '#default_value' => $defaults['polygons_coords'],
+      '#description' => t('A pipe delimited list of latitude,longitude pairs, one polygon per line. You must have at least 3 pairs for each polygon.'),
+    );
+    $form['polygons_coords']['#suffix'] = '</div>';
+
+    $form['rectangles_enable'] = getlocations_element_map_checkbox(
+      t('Enable rectangles'),
+      $defaults['rectangles_enable'],
+      t('Show rectangles if defined.')
+    );
+    $form['rectangles_enable']['#suffix'] = '<div id="wrap-getlocations-rectangles">';
+
+    $form['rectangles_strokecolor'] = getlocations_element_map_tf(
+      t('Rectangle line color'),
+      $defaults['rectangles_strokecolor'],
+      t('Any CSS3 color such as HTML hex, eg #FF0000.'),
+      10
+    );
+    $form['rectangles_strokeopacity'] = getlocations_element_map_tf(
+      t('Rectangle line opacity'),
+      $defaults['rectangles_strokeopacity'],
+      t('Must be between 0 and 1.'),
+      10
+    );
+    $form['rectangles_strokeweight'] = getlocations_element_map_tf(
+      t('Rectangle line thickness'),
+      $defaults['rectangles_strokeweight'],
+      t('Must be an integer.'),
+      10
+    );
+    $form['rectangles_fillcolor'] = getlocations_element_map_tf(
+      t('Rectangle fill color'),
+      $defaults['rectangles_fillcolor'],
+      t('Any CSS3 color such as HTML hex, eg #FF0000.'),
+      10
+    );
+    $form['rectangles_fillopacity'] = getlocations_element_map_tf(
+      t('Rectangle fill opacity'),
+      $defaults['rectangles_fillopacity'],
+      t('Must be between 0 and 1.'),
+      10
+    );
+    $form['rectangles_clickable'] = getlocations_element_map_checkbox(
+      t('Clickable'),
+      $defaults['rectangles_clickable'],
+      t('Show Popup on clicking on the rectangle.')
+    );
+    $form['rectangles_message'] = array(
+      '#type' => 'textarea',
+      '#title' => t('Popup message'),
+      '#default_value' => $defaults['rectangles_message'],
+      '#description' => t('The content of the popup.'),
+    );
+
+    $form['rectangles_coords'] = array(
+      '#type' => 'textarea',
+      '#title' => t('Rectangle Coordinates'),
+      '#default_value' => $defaults['rectangles_coords'],
+      '#description' => t('A pipe delimited list of latitude,longitude pairs, one rectangle per line. You must have exactly 2 pairs for each rectangle, south-west and north-east corners.'),
+    );
+    $form['rectangles_coords']['#suffix'] = '</div>';
+
+    $form['circles_enable'] = getlocations_element_map_checkbox(
+      t('Enable circles'),
+      $defaults['circles_enable'],
+      t('Show circles if defined.')
+    );
+    $form['circles_enable']['#suffix'] = '<div id="wrap-getlocations-circles">';
+
+    $form['circles_strokecolor'] = getlocations_element_map_tf(
+      t('Circle line color'),
+      $defaults['circles_strokecolor'],
+      t('Any CSS3 color such as HTML hex, eg #FF0000.'),
+      10
+    );
+    $form['circles_strokeopacity'] = getlocations_element_map_tf(
+      t('Circle line opacity'),
+      $defaults['circles_strokeopacity'],
+      t('Must be between 0 and 1.'),
+      10
+    );
+    $form['circles_strokeweight'] = getlocations_element_map_tf(
+      t('Circle line thickness'),
+      $defaults['circles_strokeweight'],
+      t('Must be an integer.'),
+      10
+    );
+    $form['circles_fillcolor'] = getlocations_element_map_tf(
+      t('Circle fill color'),
+      $defaults['circles_fillcolor'],
+      t('Any CSS3 color such as HTML hex, eg #FF0000.'),
+      10
+    );
+    $form['circles_fillopacity'] = getlocations_element_map_tf(
+      t('Circle fill opacity'),
+      $defaults['circles_fillopacity'],
+      t('Must be between 0 and 1.'),
+      10
+    );
+    $form['circles_radius'] = getlocations_element_map_tf(
+      t('Circle radius'),
+      $defaults['circles_radius'],
+      t("The radius in meters on the Earth's surface."),
+      10
+    );
+    $form['circles_clickable'] = getlocations_element_map_checkbox(
+      t('Clickable'),
+      $defaults['circles_clickable'],
+      t('Show Popup on clicking on the circle.')
+    );
+    $form['circles_message'] = array(
+      '#type' => 'textarea',
+      '#title' => t('Popup message'),
+      '#default_value' => $defaults['circles_message'],
+      '#description' => t('The content of the popup.'),
+    );
+
+    $form['circles_coords'] = array(
+      '#type' => 'textarea',
+      '#title' => t('Circle Center'),
+      '#default_value' => $defaults['circles_coords'],
+      '#description' => t('A latitude,longitude pair, one circle per line.'),
+    );
+    $form['circles_coords']['#suffix'] = '</div>';
+
+    $form['polylines_enable'] = getlocations_element_map_checkbox(
+      t('Enable polylines'),
+      $defaults['polylines_enable'],
+      t('Show polylines if defined.')
+    );
+    $form['polylines_enable']['#suffix'] = '<div id="wrap-getlocations-polylines">';
+
+    $form['polylines_strokecolor'] = getlocations_element_map_tf(
+      t('Polyline line color'),
+      $defaults['polylines_strokecolor'],
+      t('Any CSS3 color such as HTML hex, eg #FF0000.'),
+      10
+    );
+    $form['polylines_strokeopacity'] = getlocations_element_map_tf(
+      t('Polyline line opacity'),
+      $defaults['polylines_strokeopacity'],
+      t('Must be between 0 and 1.'),
+      10
+    );
+    $form['polylines_strokeweight'] = getlocations_element_map_tf(
+      t('Polyline line thickness'),
+      $defaults['polylines_strokeweight'],
+      t('Must be an integer.'),
+      10
+    );
+    $form['polylines_clickable'] = getlocations_element_map_checkbox(
+      t('Clickable'),
+      $defaults['polylines_clickable'],
+      t('Show Popup on clicking on the polyline.')
+    );
+    $form['polylines_message'] = array(
+      '#type' => 'textarea',
+      '#title' => t('Popup message'),
+      '#default_value' => $defaults['polylines_message'],
+      '#description' => t('The content of the popup.'),
+    );
+
+    $form['polylines_coords'] = array(
+      '#type' => 'textarea',
+      '#title' => t('Polyline Coordinates'),
+      '#default_value' => $defaults['polylines_coords'],
+      '#description' => t('A pipe delimited list of latitude,longitude pairs, one set of polylines per line. You must have at least 2 pairs for each set.'),
+    );
+    $form['polylines_coords']['#suffix'] = '</div>';
+
   }
 
   return $form;
@@ -2536,6 +2874,10 @@ function getlocations_paths_get() {
     'markerclusterer_path' => GETLOCATIONS_PATH . '/js/markerclusterer.js',
     'infowindow_options_path' => GETLOCATIONS_PATH . '/js/infowindow_options.js',
     'getlocations_path' => GETLOCATIONS_PATH . '/js/getlocations.js',
+    'getlocations_polygons_path' => GETLOCATIONS_PATH . '/js/getlocations_polygons.js',
+    'getlocations_rectangles_path' => GETLOCATIONS_PATH . '/js/getlocations_rectangles.js',
+    'getlocations_circles_path' => GETLOCATIONS_PATH . '/js/getlocations_circles.js',
+    'getlocations_polylines_path' => GETLOCATIONS_PATH . '/js/getlocations_polylines.js',
   );
   $settings = variable_get('getlocations_paths', $defaults);
   $getlocations_paths = getlocations_adjust_vars($defaults, $settings);
@@ -2577,6 +2919,257 @@ function getlocations_colorbox_settings() {
   $colorbox_settings =  variable_get('getlocations_colorbox', $colorbox_defaults);
   $getlocations_colorbox = getlocations_adjust_vars($colorbox_defaults, $colorbox_settings);
   return $getlocations_colorbox;
+}
+
+function getlocations_get_polygon_settings($defaults) {
+  $coords = preg_replace("/\r/", '', $defaults['polygons_coords']);
+  $coords_arr = preg_split("/\n/", $coords);
+  $regex = "/[-+]{0,1}[0-9]{1,}\.{1}[0-9]{1,}\,[-+]{0,1}[0-9]{1,}\.{1}[0-9]{1,}/";
+  $lla = array();
+  $polygons = array();
+  $ct = 0;
+
+  foreach ($coords_arr AS $line) {
+    $lla = array();
+    // set defaults
+    $polygons['polygons'][$ct]['strokeColor']   = $defaults['polygons_strokecolor'];
+    $polygons['polygons'][$ct]['strokeOpacity'] = $defaults['polygons_strokeopacity'];
+    $polygons['polygons'][$ct]['strokeWeight']  = $defaults['polygons_strokeweight'];
+    $polygons['polygons'][$ct]['fillColor']     = $defaults['polygons_fillcolor'];
+    $polygons['polygons'][$ct]['fillOpacity']   = $defaults['polygons_fillopacity'];
+    $polygons['polygons'][$ct]['clickable']     = $defaults['polygons_clickable'];
+    $polygons['polygons'][$ct]['message']       = $defaults['polygons_message'];
+
+    $linebits = explode("|", $line);
+    foreach ($linebits AS $linebit) {
+      if (preg_match($regex, $linebit)) {
+        $lla[] = $linebit;
+      }
+      else {
+        // not a latlon so could be a setting
+        if (preg_match("/strokeColor:(.*)/", $linebit, $match)) {
+          $m = $match[1];
+          $polygons['polygons'][$ct]['strokeColor'] = trim($m);
+        }
+        elseif (preg_match("/strokeOpacity:(.*)/", $linebit, $match)) {
+          $m = $match[1];
+          $polygons['polygons'][$ct]['strokeOpacity'] = trim($m);
+        }
+        elseif (preg_match("/strokeWeight:(.*)/", $linebit, $match)) {
+          $m = $match[1];
+          $polygons['polygons'][$ct]['strokeWeight'] = trim($m);
+        }
+        elseif (preg_match("/fillColor:(.*)/", $linebit, $match)) {
+          $m = $match[1];
+          $polygons['polygons'][$ct]['fillColor'] = trim($m);
+        }
+        elseif (preg_match("/fillOpacity:(.*)/", $linebit, $match)) {
+          $m = $match[1];
+          $polygons['polygons'][$ct]['fillOpacity'] = trim($m);
+        }
+        elseif (preg_match("/clickable:(.*)/", $linebit, $match)) {
+          $m = $match[1];
+          $polygons['polygons'][$ct]['clickable'] = trim($m);
+        }
+        elseif (preg_match("/message:(.*)/", $linebit, $match)) {
+          $m = $match[1];
+          $polygons['polygons'][$ct]['message'] = trim($m);
+        }
+      }
+    }
+    if (count($lla) > 2) {
+      $polygons['polygons'][$ct]['coords'] = implode("|", $lla);
+    }
+    $ct++;
+  }
+  return $polygons;
+}
+
+function getlocations_get_rectangle_settings($defaults) {
+  $coords = preg_replace("/\r/", '', $defaults['rectangles_coords']);
+  $coords_arr = preg_split("/\n/", $coords);
+  $regex = "/[-+]{0,1}[0-9]{1,}\.{1}[0-9]{1,}\,[-+]{0,1}[0-9]{1,}\.{1}[0-9]{1,}/";
+  $lla = array();
+  $rectangles = array();
+  $ct = 0;
+
+  foreach ($coords_arr AS $line) {
+    $lla = array();
+    // set defaults
+    $rectangles['rectangles'][$ct]['strokeColor']   = $defaults['rectangles_strokecolor'];
+    $rectangles['rectangles'][$ct]['strokeOpacity'] = $defaults['rectangles_strokeopacity'];
+    $rectangles['rectangles'][$ct]['strokeWeight']  = $defaults['rectangles_strokeweight'];
+    $rectangles['rectangles'][$ct]['fillColor']     = $defaults['rectangles_fillcolor'];
+    $rectangles['rectangles'][$ct]['fillOpacity']   = $defaults['rectangles_fillopacity'];
+    $rectangles['rectangles'][$ct]['clickable']     = $defaults['rectangles_clickable'];
+    $rectangles['rectangles'][$ct]['message']       = $defaults['rectangles_message'];
+
+    $linebits = explode("|", $line);
+    foreach ($linebits AS $linebit) {
+      if (preg_match($regex, $linebit)) {
+        $lla[] = $linebit;
+      }
+      else {
+        // not a latlon so could be a setting
+        if (preg_match("/strokeColor:(.*)/", $linebit, $match)) {
+          $m = $match[1];
+          $rectangles['rectangles'][$ct]['strokeColor'] = trim($m);
+        }
+        elseif (preg_match("/strokeOpacity:(.*)/", $linebit, $match)) {
+          $m = $match[1];
+          $rectangles['rectangles'][$ct]['strokeOpacity'] = trim($m);
+        }
+        elseif (preg_match("/strokeWeight:(.*)/", $linebit, $match)) {
+          $m = $match[1];
+          $rectangles['rectangles'][$ct]['strokeWeight'] = trim($m);
+        }
+        elseif (preg_match("/fillColor:(.*)/", $linebit, $match)) {
+          $m = $match[1];
+          $rectangles['rectangles'][$ct]['fillColor'] = trim($m);
+        }
+        elseif (preg_match("/fillOpacity:(.*)/", $linebit, $match)) {
+          $m = $match[1];
+          $rectangles['rectangles'][$ct]['fillOpacity'] = trim($m);
+        }
+        elseif (preg_match("/clickable:(.*)/", $linebit, $match)) {
+          $m = $match[1];
+          $rectangles['rectangles'][$ct]['clickable'] = trim($m);
+        }
+        elseif (preg_match("/message:(.*)/", $linebit, $match)) {
+          $m = $match[1];
+          $rectangles['rectangles'][$ct]['message'] = trim($m);
+        }
+      }
+    }
+    if (count($lla) == 2) {
+      $rectangles['rectangles'][$ct]['coords'] = implode("|", $lla);
+    }
+    $ct++;
+  }
+  return $rectangles;
+}
+
+function getlocations_get_circle_settings($defaults) {
+  $coords = preg_replace("/\r/", '', $defaults['circles_coords']);
+  $coords_arr = preg_split("/\n/", $coords);
+  $regex = "/[-+]{0,1}[0-9]{1,}\.{1}[0-9]{1,}\,[-+]{0,1}[0-9]{1,}\.{1}[0-9]{1,}/";
+  $lla = array();
+  $circles = array();
+  $ct = 0;
+
+  foreach ($coords_arr AS $line) {
+    $lla = array();
+    // set defaults
+    $circles['circles'][$ct]['strokeColor']   = $defaults['circles_strokecolor'];
+    $circles['circles'][$ct]['strokeOpacity'] = $defaults['circles_strokeopacity'];
+    $circles['circles'][$ct]['strokeWeight']  = $defaults['circles_strokeweight'];
+    $circles['circles'][$ct]['fillColor']     = $defaults['circles_fillcolor'];
+    $circles['circles'][$ct]['fillOpacity']   = $defaults['circles_fillopacity'];
+    $circles['circles'][$ct]['clickable']     = $defaults['circles_clickable'];
+    $circles['circles'][$ct]['message']       = $defaults['circles_message'];
+    $circles['circles'][$ct]['radius']        = $defaults['circles_radius'];
+
+    $linebits = explode("|", $line);
+    foreach ($linebits AS $linebit) {
+      if (preg_match($regex, $linebit)) {
+        $lla[] = $linebit;
+      }
+      else {
+        // not a latlon so could be a setting
+        if (preg_match("/strokeColor:(.*)/", $linebit, $match)) {
+          $m = $match[1];
+          $circles['circles'][$ct]['strokeColor'] = trim($m);
+        }
+        elseif (preg_match("/strokeOpacity:(.*)/", $linebit, $match)) {
+          $m = $match[1];
+          $circles['circles'][$ct]['strokeOpacity'] = trim($m);
+        }
+        elseif (preg_match("/strokeWeight:(.*)/", $linebit, $match)) {
+          $m = $match[1];
+          $circles['circles'][$ct]['strokeWeight'] = trim($m);
+        }
+        elseif (preg_match("/fillColor:(.*)/", $linebit, $match)) {
+          $m = $match[1];
+          $circles['circles'][$ct]['fillColor'] = trim($m);
+        }
+        elseif (preg_match("/fillOpacity:(.*)/", $linebit, $match)) {
+          $m = $match[1];
+          $circles['circles'][$ct]['fillOpacity'] = trim($m);
+        }
+        elseif (preg_match("/clickable:(.*)/", $linebit, $match)) {
+          $m = $match[1];
+          $circles['circles'][$ct]['clickable'] = trim($m);
+        }
+        elseif (preg_match("/message:(.*)/", $linebit, $match)) {
+          $m = $match[1];
+          $circles['circles'][$ct]['message'] = trim($m);
+        }
+        elseif (preg_match("/radius:(.*)/", $linebit, $match)) {
+          $m = $match[1];
+          $circles['circles'][$ct]['radius'] = trim($m);
+        }
+      }
+    }
+    if (count($lla) == 1) {
+      $circles['circles'][$ct]['coords'] = $lla;
+    }
+    $ct++;
+  }
+  return $circles;
+}
+
+function getlocations_get_polyline_settings($defaults) {
+  $coords = preg_replace("/\r/", '', $defaults['polylines_coords']);
+  $coords_arr = preg_split("/\n/", $coords);
+  $regex = "/[-+]{0,1}[0-9]{1,}\.{1}[0-9]{1,}\,[-+]{0,1}[0-9]{1,}\.{1}[0-9]{1,}/";
+  $lla = array();
+  $polylines = array();
+  $ct = 0;
+
+  foreach ($coords_arr AS $line) {
+    $lla = array();
+    // set defaults
+    $polylines['polylines'][$ct]['strokeColor']   = $defaults['polylines_strokecolor'];
+    $polylines['polylines'][$ct]['strokeOpacity'] = $defaults['polylines_strokeopacity'];
+    $polylines['polylines'][$ct]['strokeWeight']  = $defaults['polylines_strokeweight'];
+    $polylines['polylines'][$ct]['clickable']     = $defaults['polylines_clickable'];
+    $polylines['polylines'][$ct]['message']       = $defaults['polylines_message'];
+
+    $linebits = explode("|", $line);
+    foreach ($linebits AS $linebit) {
+      if (preg_match($regex, $linebit)) {
+        $lla[] = $linebit;
+      }
+      else {
+        // not a latlon so could be a setting
+        if (preg_match("/strokeColor:(.*)/", $linebit, $match)) {
+          $m = $match[1];
+          $polylines['polylines'][$ct]['strokeColor'] = trim($m);
+        }
+        elseif (preg_match("/strokeOpacity:(.*)/", $linebit, $match)) {
+          $m = $match[1];
+          $polylines['polylines'][$ct]['strokeOpacity'] = trim($m);
+        }
+        elseif (preg_match("/strokeWeight:(.*)/", $linebit, $match)) {
+          $m = $match[1];
+          $polylines['polylines'][$ct]['strokeWeight'] = trim($m);
+        }
+        elseif (preg_match("/clickable:(.*)/", $linebit, $match)) {
+          $m = $match[1];
+          $polylines['polylines'][$ct]['clickable'] = trim($m);
+        }
+        elseif (preg_match("/message:(.*)/", $linebit, $match)) {
+          $m = $match[1];
+          $polylines['polylines'][$ct]['message'] = trim($m);
+        }
+      }
+    }
+    if (count($lla) > 1) {
+      $polylines['polylines'][$ct]['coords'] = implode("|", $lla);
+    }
+    $ct++;
+  }
+  return $polylines;
 }
 
 // run string through check_plain but then restore apostrophes

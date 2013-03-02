@@ -1,9 +1,32 @@
-commit 8d03a5b
+commit a5b4ad9
+Author: hutch <hutch@midwales.net>
+Date:   Sat Mar 2 12:25:34 2013 +0000
+
+    added polygons,rectangles,circles and polylines features
+
+README.txt
+getlocations.admin.inc
+getlocations.module
+js/getlocations_admin.js
+js/getlocations_circles.js
+js/getlocations_polygons.js
+js/getlocations_polylines.js
+js/getlocations_rectangles.js
+js/getlocations_views.js
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_fields/js/getlocations_fields_formatter.js
+modules/getlocations_search/getlocations_search.module
+modules/getlocations_search/js/getlocations_search_admin.js
+views/getlocations.views.inc
+views/getlocations_plugin_style_map.inc
+
+commit 0901941
 Author: hutch <hutch@midwales.net>
 Date:   Tue Feb 26 10:44:28 2013 +0000
 
     added files from test version
 
+CHANGELOG.txt
 getlocations.admin.inc
 getlocations.module
 images/info.png

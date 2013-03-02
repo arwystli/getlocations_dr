@@ -18,10 +18,11 @@ function getlocations_views_plugins() {
     'style' => array(
       'getlocations' => array(
         'title' => t('GetLocations'),
-        'help' => t('Displays rows as a map.'),
+        'help' => t('Displays locations on a map.'),
         'handler' => 'getlocations_plugin_style_map',
         'theme' => 'getlocations_view_map',
         'theme path' => GETLOCATIONS_PATH . '/views',
+        'uses fields' => TRUE,
         'uses row plugin' => TRUE,
         'uses grouping' => FALSE,
         'uses options' => TRUE,
@@ -37,22 +38,16 @@ function getlocations_views_plugins() {
 function template_preprocess_getlocations_view_map(&$variables) {
   global $language;
 
+  // TODO revisit this, see if entity_type can be pulled using entity_get_info
   $locations = $variables['view']->style_plugin->rendered_fields;
   $options = $variables['view']->style_plugin->options;
   $base_field = $variables['view']->style_plugin->view->base_field;
-
-  $latlons = array();
-  $minmaxes = array('minlat' => 0, 'minlon' => 0, 'maxlat' => 0, 'maxlon' => 0);
-  $ct = 0;
-  $entity_type = 'node';
-  if ($base_field == 'uid') {
-    $entity_type = 'user';
-  }
-  elseif ($base_field == 'tid') {
-    $entity_type = 'taxonomy_term';
-  }
-  elseif ($base_field == 'cid') {
-    $entity_type = 'comment';
+  $entity_get_info = entity_get_info();
+  $entity_type = FALSE;
+  foreach ($entity_get_info AS $et => $entity_info) {
+    if ($base_field == $entity_info['entity keys']['id']) {
+      $entity_type = $et;
+    }
   }
 
   if ($options['custom_content_enable'] and !empty($options['custom_content_source'])) {
@@ -61,10 +56,14 @@ function template_preprocess_getlocations_view_map(&$variables) {
   else {
     $custom_content_source = NULL;
   }
+
+  $latlons = array();
+  $minmaxes = array('minlat' => 0, 'minlon' => 0, 'maxlat' => 0, 'maxlon' => 0);
+  $ct = 0;
+
   if (count($locations)) {
     // we should loop over them and dump bummers with no lat/lon
     foreach ($locations AS $key => $location) {
-
       if (! isset($location['type']) && isset($location['machine_name'])) {
         $location['type'] = $location['machine_name'];
       }
@@ -73,70 +72,104 @@ function template_preprocess_getlocations_view_map(&$variables) {
       $lid = 0;
       if (module_exists('getlocations_fields') && isset($location['glid']) && $location['glid'] > 0) {
         $lid = $location['glid'];
+        if (! $entity_type) {
+          if (isset($location['field_name'])) {
+            $table = 'field_data_' . $location['field_name'];
+            $col = $location['field_name'] . '_glid';
+            $query = db_select($table, 't');
+            $query->fields('t', array('entity_type', 'bundle', 'entity_id'));
+            $query->condition('t.' . $col, $location['glid']);
+            $row = $query->execute()->fetchObject();
+            $location['entity_type'] = $row->entity_type;
+            $entity_type_found = $row->entity_type;
+            $location['bundle'] = $row->bundle;
+            $location['entity_id'] = $row->entity_id;
+          }
+        }
+        else {
+          $entity_type_found = $entity_type;
+        }
       }
       elseif (module_exists('location') && isset($location['lid']) && $location['lid'] > 0) {
         $lid = $location['lid'];
-        if (isset($location['type'])) {
-          $location['field_name'] = getlocations_get_fieldname($location['type'], $entity_type);
+        ### if we have lid we can get field_name from location_instance.genid, then we can get the rest from the field_data
+        $query = db_select('location_instance', 'i')
+          ->fields('i', array('nid', 'uid', 'genid'))
+          ->condition('i.lid', $lid);
+        $row = $query->execute()->fetchAssoc();
+        $genid = $row['genid'];
+        $arr = explode(":", $genid);
+        $location['field_name'] = $arr[1];
+        # probably don't need this
+        if ($row['nid']) {
+          $location['entity_key'] = 'nid';
         }
+        elseif ($row['uid']) {
+          $location['entity_key'] = 'uid';
+        }
+        $table = 'field_data_' . $location['field_name'];
+        $col = $location['field_name'] . '_lid';
+        $query = db_select($table, 't');
+        $query->fields('t', array('entity_type', 'bundle', 'entity_id'));
+        $query->condition('t.' . $col, $location['lid']);
+        $row2 = $query->execute()->fetchObject();
+        $location['entity_type'] = $row2->entity_type;
+        $location['bundle'] = $row2->bundle;
+        $location['entity_id'] = $row2->entity_id;
+
+        #if (isset($location['type'])) {
+        #// ??? fix field name
+        #  $location['field_name'] = getlocations_get_fieldname($location['type'], $entity_type);
+        #}
       }
       elseif (module_exists('geofield') && isset($location[$base_field]) && $location[$base_field] > 0 ) {
         $lid = $location[$base_field];
+
+        // ??? fix field name
         $location['field_name'] = getlocations_get_fieldname($location['type'], $entity_type);
         $location['latitude'] = $location[$location['field_name']];
         $location['longitude'] = $location[$location['field_name'] . '_1'];
       }
       elseif (module_exists('geolocation') && isset($location[$base_field]) && $location[$base_field] > 0 ) {
         $lid = $location[$base_field];
+        // ??? fix field name
         $location['field_name'] = getlocations_get_fieldname($location['type'], $entity_type);
         $location['latitude'] = $location[$location['field_name']];
         $location['longitude'] = $location[$location['field_name'] . '_1'];
       }
       if ($lid > 0) {
-        if ($entity_type == 'node') {
-          $marker = $options['node_map_marker'];
-          if (isset($location['type']) && isset($location['field_name']) ) {
-            if (isset($options['node_marker__' . $location['type'] . '__' . $location['field_name']])) {
-              $marker = $options['node_marker__' . $location['type'] . '__' . $location['field_name']];
-            }
-          }
-          // term marker
-          $getlocations_term_marker = variable_get('getlocations_term_marker', array('enable' => 0, 'vids' => 0, 'max_depth' => ''));
-          if ($getlocations_term_marker['enable'] && $getlocations_term_marker['vids']) {
-            $vids = $getlocations_term_marker['vids'];
-            foreach ($vids AS $vid) {
-              if ($nid = getlocations_get_nid_from_lid($lid)) {
-                $query = db_select('taxonomy_index', 't');
-                $query->fields('t', array('tid'));
-                $query->join('taxonomy_term_data', 'd', 't.tid=d.tid');
-                $query->condition('t.nid', $nid);
-                $query->condition('d.vid', $vid);
-                $result = $query->execute()->fetchObject();
-                if (isset($result->tid) && $result->tid > 0 && isset($options['term_marker_' . $result->tid])) {
-                  $marker = $options['term_marker_' . $result->tid];
+
+        // default
+        $marker = $options['map_marker'];
+        if ($entity_type_found && $options[$entity_type_found . '_map_marker']) {
+          $marker = $options[$entity_type_found . '_map_marker'];
+        }
+        // getlocations_markers
+        $getlocations_markers = variable_get('getlocations_markers', array());
+        if ($entity_type_found && isset($getlocations_markers[$entity_type_found]['enable']) && $getlocations_markers[$entity_type_found]['enable']) {
+          $type_markers = getlocations_get_type_markers();
+          foreach ($type_markers AS $et => $bundles) {
+            if ($et == $entity_type_found) {
+              foreach ($bundles AS $bundle => $field_names) {
+                foreach ($field_names AS $field_name => $marker_data) {
+                  if ($field_name == $location['field_name']) {
+                    $mkey = 'marker__' . $entity_type_found . '__' . $bundle . '__' . $field_name;
+                    if (isset($options[$mkey]) && $options[$mkey]) {
+                      $marker = $options[$mkey];
+                    }
+
+                  }
                 }
               }
             }
           }
         }
-        elseif ($entity_type == 'taxonomy_term') {
-          $marker = $options['vocabulary_map_marker'];
-          if (isset($location['field_name'])) {
-            if (isset($options['vocabulary_marker_' . $location['field_name']])) {
-              $marker = $options['vocabulary_marker_' . $location['field_name']];
-            }
-          }
-        }
-        elseif ($entity_type == 'user') {
-          $marker = $options['user_map_marker'];
-        }
-        elseif ($entity_type == 'comment') {
-          $marker = $options['comment_map_marker'];
-        }
+
         // per item marker
         if (isset($location['marker']) && ! empty($location['marker'])) {
           $marker = $location['marker'];
         }
+
         if (getlocations_latlon_check($location['latitude'] . ',' . $location['longitude']) ) {
           $minmaxes = getlocations_do_minmaxes($ct, $location, $minmaxes);
           $ct++;
@@ -165,7 +198,6 @@ function template_preprocess_getlocations_view_map(&$variables) {
 
   $mapid = getlocations_setup_map($newdefaults);
   getlocations_js_settings_do($newdefaults, $latlons, $minmaxes, $mapid);
-
-  $variables['map']  = theme('getlocations_show', array('width' => $newdefaults['width'], 'height' => $newdefaults['height'], 'defaults' => $newdefaults, 'mapid' => $mapid, 'type' => '', 'node' => ''));
+  $variables['map']  = theme('getlocations_show', array('width' => $newdefaults['width'], 'height' => $newdefaults['height'], 'defaults' => $newdefaults, 'mapid' => $mapid, 'entity_info' => '', 'object' => ''));
 
 }

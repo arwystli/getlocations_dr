@@ -361,6 +361,36 @@ function getlocations_settings_form() {
     128,
     t('Where the markerclusterer javascript file is located.')
   );
+
+  $form['getlocations_paths']['getlocations_polygons_path'] = getlocations_element_path(
+    t('Path to getlocations Polygons javascript file'),
+    $getlocations_paths['getlocations_polygons_path'],
+    60,
+    128,
+    t('Where the getlocations polygons javascript file is located.')
+  );
+  $form['getlocations_paths']['getlocations_rectangles_path'] = getlocations_element_path(
+    t('Path to getlocations Rectangles javascript file'),
+    $getlocations_paths['getlocations_rectangles_path'],
+    60,
+    128,
+    t('Where the getlocations rectangles javascript file is located.')
+  );
+  $form['getlocations_paths']['getlocations_circles_path'] = getlocations_element_path(
+    t('Path to getlocations Circles javascript file'),
+    $getlocations_paths['getlocations_circles_path'],
+    60,
+    128,
+    t('Where the getlocations circles javascript file is located.')
+  );
+  $form['getlocations_paths']['getlocations_polylines_path'] = getlocations_element_path(
+    t('Path to getlocations Polylines javascript file'),
+    $getlocations_paths['getlocations_polylines_path'],
+    60,
+    128,
+    t('Where the getlocations polylines javascript file is located.')
+  );
+
   $form['getlocations_paths']['getlocations_path'] = getlocations_element_path(
     t('Path to getlocations javascript file'),
     $getlocations_paths['getlocations_path'],

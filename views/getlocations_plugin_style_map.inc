@@ -30,11 +30,8 @@ class getlocations_plugin_style_map extends views_plugin_style {
 
     $options['width']                 = array('default' => $getlocations_defaults['width']);
     $options['height']                = array('default' => $getlocations_defaults['height']);
-    $options['node_map_marker']       = array('default' => $getlocations_defaults['node_map_marker']);
-    $options['user_map_marker']       = array('default' => $getlocations_defaults['user_map_marker']);
+    $options['map_marker']            = array('default' => $getlocations_defaults['map_marker']);
     $options['vocabulary_map_marker'] = array('default' => $getlocations_defaults['vocabulary_map_marker']);
-    $options['term_map_marker']       = array('default' => $getlocations_defaults['term_map_marker']);
-    $options['comment_map_marker']    = array('default' => $getlocations_defaults['comment_map_marker']);
     $options['latlong']               = array('default' => $getlocations_defaults['latlong']);
     $options['zoom']                  = array('default' => $getlocations_defaults['zoom']);
     $options['minzoom_map']           = array('default' => $getlocations_defaults['minzoom_map']);
@@ -44,7 +41,11 @@ class getlocations_plugin_style_map extends views_plugin_style {
     $options['mtc']                   = array('default' => $getlocations_defaults['mtc']);
     $options['maptype']               = array('default' => $getlocations_defaults['maptype']);
     $options['baselayers']            = array('default' => $getlocations_defaults['baselayers']);
-    $options['behavior']              = array('default' => $getlocations_defaults['behavior']);
+    $options['scale']                 = array('default' => $getlocations_defaults['scale']) ;
+    $options['overview']              = array('default' => $getlocations_defaults['overview']);
+    $options['overview_opened']       = array('default' => $getlocations_defaults['overview_opened']);
+    $options['scrollwheel']           = array('default' => $getlocations_defaults['scrollwheel']);
+    $options['show_maplinks']         = array('default' => $getlocations_defaults['show_maplinks']);
     $options['streetview_show']       = array('default' => $getlocations_defaults['streetview_show']);
     $options['fullscreen']            = array('default' => $getlocations_defaults['fullscreen']);
     $options['trafficinfo']           = array('default' => $getlocations_defaults['trafficinfo']);
@@ -86,51 +87,47 @@ class getlocations_plugin_style_map extends views_plugin_style {
     $options['styles']                = array('default' => $getlocations_defaults['styles']);
     $options['custom_content_enable'] = array('default' => $getlocations_defaults['custom_content_enable']);
     $options['custom_content_source'] = array('default' => $getlocations_defaults['custom_content_source']);
+    $options['polygons_enable']          = array('default' => $getlocations_defaults['polygons_enable']);
+    $options['polygons_strokecolor']     = array('default' => $getlocations_defaults['polygons_strokecolor']);
+    $options['polygons_strokeopacity']   = array('default' => $getlocations_defaults['polygons_strokeopacity']);
+    $options['polygons_strokeweight']    = array('default' => $getlocations_defaults['polygons_strokeweight']);
+    $options['polygons_fillcolor']       = array('default' => $getlocations_defaults['polygons_fillcolor']);
+    $options['polygons_fillopacity']     = array('default' => $getlocations_defaults['polygons_fillopacity']);
+    $options['polygons_coords']          = array('default' => $getlocations_defaults['polygons_coords']);
+    $options['polygons_clickable']       = array('default' => $getlocations_defaults['polygons_clickable']);
+    $options['polygons_message']         = array('default' => $getlocations_defaults['polygons_message']);
+    $options['rectangles_enable']        = array('default' => $getlocations_defaults['rectangles_enable']);
+    $options['rectangles_strokecolor']   = array('default' => $getlocations_defaults['rectangles_strokecolor']);
+    $options['rectangles_strokeopacity'] = array('default' => $getlocations_defaults['rectangles_strokeopacity']);
+    $options['rectangles_strokeweight']  = array('default' => $getlocations_defaults['rectangles_strokeweight']);
+    $options['rectangles_fillcolor']     = array('default' => $getlocations_defaults['rectangles_fillcolor']);
+    $options['rectangles_fillopacity']   = array('default' => $getlocations_defaults['rectangles_fillopacity']);
+    $options['rectangles_coords']        = array('default' => $getlocations_defaults['rectangles_coords']);
+    $options['rectangles_clickable']     = array('default' => $getlocations_defaults['rectangles_clickable']);
+    $options['rectangles_message']       = array('default' => $getlocations_defaults['rectangles_message']);
+    $options['circles_enable']           = array('default' => $getlocations_defaults['circles_enable']);
+    $options['circles_strokecolor']      = array('default' => $getlocations_defaults['circles_strokecolor']);
+    $options['circles_strokeopacity']    = array('default' => $getlocations_defaults['circles_strokeopacity']);
+    $options['circles_strokeweight']     = array('default' => $getlocations_defaults['circles_strokeweight']);
+    $options['circles_fillcolor']        = array('default' => $getlocations_defaults['circles_fillcolor']);
+    $options['circles_fillopacity']      = array('default' => $getlocations_defaults['circles_fillopacity']);
+    $options['circles_coords']           = array('default' => $getlocations_defaults['circles_coords']);
+    $options['circles_clickable']        = array('default' => $getlocations_defaults['circles_clickable']);
+    $options['circles_message']          = array('default' => $getlocations_defaults['circles_message']);
+    $options['circles_radius']           = array('default' => $getlocations_defaults['circles_radius']);
+    $options['polylines_enable']         = array('default' => $getlocations_defaults['polylines_enable']);
+    $options['polylines_strokecolor']    = array('default' => $getlocations_defaults['polylines_strokecolor']);
+    $options['polylines_strokeopacity']  = array('default' => $getlocations_defaults['polylines_strokeopacity']);
+    $options['polylines_strokeweight']   = array('default' => $getlocations_defaults['polylines_strokeweight']);
+    $options['polylines_coords']         = array('default' => $getlocations_defaults['polylines_coords']);
+    $options['polylines_clickable']      = array('default' => $getlocations_defaults['polylines_clickable']);
+    $options['polylines_message']        = array('default' => $getlocations_defaults['polylines_message']);
 
-    // node markers
-    $getlocations_node_marker = variable_get('getlocations_node_marker', array('enable' => 0));
-    if ($getlocations_node_marker['enable']) {
-      if ($types = getlocations_get_types()) {
-        foreach ($types AS $type => $name) {
-          $field_names = getlocations_get_fieldname2($type, 'node');
-          foreach ($field_names AS $field_name) {
-            $mkey = 'node_marker__' . $type . '__' . $field_name;
-            $mmarker = (isset($getlocations_node_marker['content_type'][$type]['field_name'][$field_name]['map_marker']) ? $getlocations_node_marker['content_type'][$type]['field_name'][$field_name]['map_marker'] : $getlocations_defaults['node_map_marker']);
-            $options[$mkey] = array('default' => $mmarker);
-          }
-        }
-      }
+    $fieldables = getlocations_get_fieldable_entity_types();
+    foreach ($fieldables AS $entity_type) {
+      $options[$entity_type . '_map_marker'] = array('default' => $getlocations_defaults[$entity_type . '_map_marker']);
     }
-    if (module_exists('taxonomy')) {
-      // vocabulary markers
-      if ($types = getlocations_get_vocabularies()) {
-        $getlocations_vocabulary_marker = variable_get('getlocations_vocabulary_marker', array('enable' => 0));
-        if ($getlocations_vocabulary_marker['enable']) {
-          foreach ($types AS $type => $name) {
-            $field_name = getlocations_get_fieldname($type, 'taxonomy_term');
-            $mkey = 'vocabulary_marker_' . $field_name;
-            $mmarker = (isset($getlocations_vocabulary_marker['vocabulary'][$type]['map_marker']) ? $getlocations_vocabulary_marker['vocabulary'][$type]['map_marker'] : $getlocations_defaults['vocabulary_map_marker']);
-            $options[$mkey] = array('default' => $mmarker);
-          }
-        }
-      }
 
-      // term markers
-      $getlocations_term_marker = variable_get('getlocations_term_marker', array('enable' => 0, 'vids' => 0, 'max_depth' => ''));
-      if ($getlocations_term_marker['enable'] && $getlocations_term_marker['vids']) {
-        $depth = is_numeric($getlocations_term_marker['max_depth']) && $getlocations_term_marker['max_depth'] > 0 ? $getlocations_term_marker['max_depth'] : NULL;
-        $vids = $getlocations_term_marker['vids'];
-        foreach ($vids AS $vid) {
-          $terms = taxonomy_get_tree($vid, 0, $depth);
-          foreach ($terms AS $term) {
-            $tid = $term->tid;
-            $mkey = 'term_marker_' . $tid;
-            $mmarker = (isset($getlocations_term_marker['vid'][$vid]['term'][$tid]['map_marker']) ? $getlocations_term_marker['vid'][$vid]['term'][$tid]['map_marker'] : $getlocations_defaults['term_map_marker']);
-            $options[$mkey] = array('default' => $mmarker);
-          }
-        }
-      }
-    }
     return $options;
 
   } // end option_definition
@@ -161,107 +158,46 @@ class getlocations_plugin_style_map extends views_plugin_style {
 
     // markers
     $markers = getlocations_get_marker_titles();
-    // node markers
-    $getlocations_node_marker = variable_get('getlocations_node_marker', array('enable' => 0));
-    if ($getlocations_node_marker['enable']) {
-      if ($types = getlocations_get_types()) {
-        foreach ($types AS $type => $name) {
-          $field_names = getlocations_get_fieldname2($type, 'node');
-          foreach ($field_names AS $field_name) {
-            if (isset($getlocations_node_marker['content_type'][$type]['field_name'][$field_name]['map_marker']) ) {
-              $mkey = 'node_marker__' . $type . '__' . $field_name;
-              $form[$mkey] = getlocations_element_map_marker(
-                t('%name Content Map Marker, field %field', array('%name' => $name, '%field' => $field_name)),
-                $markers,
-                (isset($this->options[$mkey]) ? $this->options[$mkey] : $getlocations_node_marker['content_type'][$type]['field_name'][$field_name]['map_marker'])
-              );
-            }
-          }
-        }
-      }
-    }
-    else {
-      $form['node_map_marker'] = getlocations_element_map_marker(
-        t('Content Map marker'),
-        $markers,
-        $this->options['node_map_marker']
-      );
-    }
-    // user markers
-    if (getlocations_check_entity_type('user') || getlocations_check_entity_type('profile2')) {
-      $form['user_map_marker'] = getlocations_element_map_marker(
-        t('User Map Marker'),
-        $markers,
-        $this->options['user_map_marker']
-      );
-    }
-    // vocabulary markers
-    if (module_exists('taxonomy')) {
-      if ($types = getlocations_get_machine_vocabularies()) {
-        $types2 = getlocations_get_vocabularies();
-        $getlocations_vocabulary_marker = variable_get('getlocations_vocabulary_marker', array('enable' => 0));
-        if ($getlocations_vocabulary_marker['enable']) {
-          foreach ($types AS $type => $name) {
-            $field_name = getlocations_get_fieldname($name, 'taxonomy_term');
-            $mkey = 'vocabulary_marker_' . $field_name;
-            $form[$mkey] = getlocations_element_map_marker(
-              t('%name Vocabulary Marker', array('%name' => $types2[$type])),
-              $markers,
-              (isset($this->options[$mkey]) ? $this->options[$mkey] : $getlocations_vocabulary_marker['vocabulary'][$type]['map_marker'])
-            );
-          }
-        }
-        else {
-          $form['vocabulary_map_marker'] = getlocations_element_map_marker(
-            t('Vocabulary Map Marker'),
-            $markers,
-            $this->options['vocabulary_map_marker']
-          );
-        }
-      }
 
-      // term markers
-      $getlocations_term_marker = variable_get('getlocations_term_marker', array('enable' => 0, 'vids' => 0, 'max_depth' => ''));
-      if ($getlocations_term_marker['enable'] && $getlocations_term_marker['vids']) {
-        $depth = is_numeric($getlocations_term_marker['max_depth']) && $getlocations_term_marker['max_depth'] > 0 ? $getlocations_term_marker['max_depth'] : NULL;
-        $vids = $getlocations_term_marker['vids'];
-        foreach ($vids AS $vid) {
-          $terms = taxonomy_get_tree($vid, 0, $depth);
-          $tct = 0;
-          foreach ($terms AS $term) {
-            $name = $term->name;
-            $tid = $term->tid;
-            $mkey = 'term_marker_' . $tid;
-            $form[$mkey] = getlocations_element_map_marker(
-              t('%name Map Marker', array('%name' => $name)),
-              $markers,
-              $this->options[$mkey]
-            );
-            if (! $tct) {
-              $v = taxonomy_vocabulary_load($vid);
-              $vocab_name = $v->name;
-              $form[$mkey]['#prefix'] = t('Terms for %name', array('%name' => $vocab_name));
-            }
-            $tct++;
-          }
-        }
-      }
-      else {
-        $form['term_map_marker'] = getlocations_element_map_marker(
-          t('Term Map marker'),
+    $fieldables = getlocations_get_fieldable_entity_types();
+    foreach ($fieldables AS $entity_type) {
+      $entity_get_info = entity_get_info($entity_type);
+      $label = $entity_get_info['label'];
+      $desc = '';
+      if (getlocations_check_entity_type($entity_type)) {
+        #$desc = t('In use');
+        $form[$entity_type . '_map_marker'] = getlocations_element_map_marker(
+          t('Default !label Map marker', array('!label' => $label)),
           $markers,
-          $this->options['term_map_marker']
+          $this->options[$entity_type . '_map_marker'],
+          $desc
         );
       }
     }
-    // comments
-    if (getlocations_check_entity_type('comment')) {
-      // default comment marker
-      $form['comment_map_marker'] = getlocations_element_map_marker(
-        t('Comment Map marker'),
-        $markers,
-        $this->options['comment_map_marker']
-      );
+
+    $getlocations_markers = variable_get('getlocations_markers', array());
+    $type_markers = getlocations_get_type_markers();
+    foreach ($type_markers AS $entity_type => $bundles) {
+      if (isset($getlocations_markers[$entity_type]['enable']) && $getlocations_markers[$entity_type]['enable']) {
+
+        $entity_get_info = entity_get_info($entity_type);
+        $entity_type_label = $entity_get_info['label'];
+
+        foreach ($bundles AS $bundle => $field_names) {
+          foreach ($field_names AS $field_name => $marker_data) {
+            $bundle_label = $marker_data['bundle_label'];
+            $mkey = 'marker__' . $entity_type . '__' . $bundle . '__' . $field_name;
+            if (! isset($this->options[$mkey])) {
+              $this->options[$mkey] = (isset($getlocations_markers[$entity_type][$bundle][$field_name]['marker'] ) ? $getlocations_markers[$entity_type][$bundle][$field_name]['marker'] : (isset($getlocations_defaults[$entity_type . '_map_marker']) ? $this->options[$entity_type . '_map_marker'] : $this->options['map_marker']));
+            }
+            $form[$mkey] = getlocations_element_map_marker(
+              t('Type %etl, Bundle %name, Field %field Map marker', array('%etl' => $entity_type_label,'%name' => $bundle_label, '%field' => $field_name)),
+              $markers,
+              $this->options[$mkey]
+            );
+          }
+        }
+      }
     }
 
     $form['markeractiontype'] = getlocations_element_map_markeractiontype(

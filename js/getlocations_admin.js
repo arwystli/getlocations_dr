@@ -319,8 +319,64 @@
 
       }
 
+      if ($("#edit-getlocations-default-polygons-enable").attr('checked')) {
+        $("#wrap-getlocations-polygons").show();
+      }
+      else {
+        $("#wrap-getlocations-polygons").hide();
+      }
+      $("#edit-getlocations-default-polygons-enable").change(function() {
+        if ($(this).attr('checked')) {
+          $("#wrap-getlocations-polygons").show();
+        }
+        else {
+          $("#wrap-getlocations-polygons").hide();
+        }
+      });
+      if ($("#edit-getlocations-default-rectangles-enable").attr('checked')) {
+        $("#wrap-getlocations-rectangles").show();
+      }
+      else {
+        $("#wrap-getlocations-rectangles").hide();
+      }
+      $("#edit-getlocations-default-rectangles-enable").change(function() {
+        if ($(this).attr('checked')) {
+          $("#wrap-getlocations-rectangles").show();
+        }
+        else {
+          $("#wrap-getlocations-rectangles").hide();
+        }
+      });
 
+      if ($("#edit-getlocations-default-circles-enable").attr('checked')) {
+        $("#wrap-getlocations-circles").show();
+      }
+      else {
+        $("#wrap-getlocations-circles").hide();
+      }
+      $("#edit-getlocations-default-circles-enable").change(function() {
+        if ($(this).attr('checked')) {
+          $("#wrap-getlocations-circles").show();
+        }
+        else {
+          $("#wrap-getlocations-circles").hide();
+        }
+      });
 
+      if ($("#edit-getlocations-default-polylines-enable").attr('checked')) {
+        $("#wrap-getlocations-polylines").show();
+      }
+      else {
+        $("#wrap-getlocations-polylines").hide();
+      }
+      $("#edit-getlocations-default-polylines-enable").change(function() {
+        if ($(this).attr('checked')) {
+          $("#wrap-getlocations-polylines").show();
+        }
+        else {
+          $("#wrap-getlocations-polylines").hide();
+        }
+      });
 
 
     }

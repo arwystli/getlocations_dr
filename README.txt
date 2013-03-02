@@ -238,3 +238,29 @@ getlocations_marker_box.tpl.php respectively.
 
 More information on theming can be found on http://drupal.org/documentation/theme
 
+Polygons
+To use polygons on your map you will need to enable the feature either globally
+under admin/config/getlocations or per content type under Manage Display or
+per map in a View under Format: Getlocations | Settings.
+You will need to supply coordinates as a pipe (|) delimited list of lat,lon pairs
+minimum 3 pairs.
+eg
+51.501579,-0.193544|51.498373,-0.144449|51.479882,-0.148054|51.484585,-0.184446
+
+You can also have per polygon settings, here is a list of available options:
+strokeColor       eg #0000FF
+strokeOpacity     between 0 and 1
+strokeWeight      eg 3
+fillColor         eg #0000FF
+fillOpacity       between 0 and 1
+clickable         1 or 0
+message           any text
+
+These should be in the form of key:value
+eg
+strokeColor:#0000FF
+
+You should add these to the pipe delimited list, eg
+
+strokeColor:#0000FF|strokeOpacity:0.8|51.501579,-0.193544|51.498373,-0.144449|51.479882,-0.148054|51.484585,-0.184446
+
