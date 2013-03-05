@@ -1575,6 +1575,32 @@ function getlocations_fields_save_locations($locations, $criteria, $mode) {
         continue;
       }
 
+      // dealing with imports
+      if (! isset($locations[$key]['name'])) {
+        $locations[$key]['name'] = '';
+      }
+      if (! isset($locations[$key]['street'])) {
+        $locations[$key]['street'] = '';
+      }
+      if (! isset($locations[$key]['additional'])) {
+        $locations[$key]['additional'] = '';
+      }
+      if (! isset($locations[$key]['city'])) {
+        $locations[$key]['city'] = '';
+      }
+      if (! isset($locations[$key]['province'])) {
+        $locations[$key]['province'] = '';
+      }
+      if (! isset($locations[$key]['postal_code'])) {
+        $locations[$key]['postal_code'] = '';
+      }
+      if (! isset($locations[$key]['country'])) {
+        $locations[$key]['country'] = '';
+      }
+      if (! isset($locations[$key]['marker'])) {
+        $locations[$key]['marker'] = '';
+      }
+
       if ($mode == 'insert') {
         if ( $locations[$key]['latitude'] && $locations[$key]['longitude']) {
           $result = getlocations_fields_insert_record($locations[$key], $criteria);
