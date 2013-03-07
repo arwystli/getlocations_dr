@@ -95,6 +95,7 @@ var getlocations_settings = {};
         getlocations_markers[key].coords = {};
         getlocations_markers[key].lids = {};
 
+        global_settings.locale_prefix = settings.locale_prefix ? settings.locale_prefix + "/" : "";
         global_settings.minzoom = parseInt(settings.minzoom);
         global_settings.maxzoom = parseInt(settings.maxzoom);
         global_settings.nodezoom = parseInt(settings.nodezoom);
@@ -673,7 +674,7 @@ var getlocations_settings = {};
                 }
               }
               else {
-                var path = Drupal.settings.basePath + "getlocations_cb/info";
+                var path = Drupal.settings.basePath + gs.locale_prefix + "getlocations_cb/info";
                 var qs = {'lid': lid, 'key': lidkey};
                 if (gs.show_distance) {
                   if ($("#getlocations_search_slat_" + mkey).is('div')) {

@@ -1696,7 +1696,7 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
     $mapid => array(
       'lat'                     => trim($lat),
       'lng'                     => trim($lng),
-      'mylocale'                => $language->language,
+      'locale_prefix'           => $language->prefix,
       'zoom'                    => $defaults['zoom'],
       'minzoom_map'             => $defaults['minzoom_map'],
       'maxzoom_map'             => $defaults['maxzoom_map'],
