@@ -3511,17 +3511,27 @@ function getlocations_earth_distance($longitude1, $latitude1, $longitude2, $lati
  *   parameter combinations. This means this function doesn't work properly
  *   for high distance values. This function needs to be re-written to work properly for
  *   larger distance values. See http://drupal.org/node/821628
+ *
+ * http://drupal.org/node/471040 provides a fix, this has been applied here.
+ *
  */
 function getlocations_earth_longitude_range($latitude, $longitude, $distance) {
   // Estimate the min and max longitudes within $distance of a given location.
+  if (! $distance > 0) {
+    $distance = 1;
+  }
   $long = deg2rad($longitude);
   $lat = deg2rad($latitude);
-  $radius = getlocations_earth_radius($latitude);
+  $radius = getlocations_earth_radius($latitude) * cos($lat);
 
-  $angle = $distance / $radius;
-  $diff = getlocations_earth_asin_safe(sin($angle)/cos($lat));
-  $minlong = $long - $diff;
-  $maxlong = $long + $diff;
+  if($radius > 0) {
+    $angle = abs($distance / $radius );
+    $angle = min($angle, pi());
+  } else {
+    $angle = pi();
+  }
+  $minlong = $long - $angle;
+  $maxlong = $long + $angle;
   if ($minlong < -pi()) {
     $minlong = $minlong + pi()*2;
   }
@@ -3571,9 +3581,9 @@ function getlocations_earth_latitude_range($latitude, $longitude, $distance) {
  * will not be accurate.  The alternative though is getting NAN, which is an error
  * and won't give accurate results anyway.
  */
-function getlocations_earth_asin_safe($x) {
-  return asin(max(-1, min($x, 1)));
-}
+#function getlocations_earth_asin_safe($x) {
+#  return asin(max(-1, min($x, 1)));
+#}
 
 function getlocations_get_search_distance_sql($latitude, $longitude, $searchdistance, $tbl_alias = '') {
   $radius = getlocations_earth_radius($latitude);

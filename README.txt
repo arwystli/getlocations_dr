@@ -164,7 +164,7 @@ Content: Title
 Content: Nid (make sure this has 'Rewrite the output of this field' and 'Output this field as a link' switched off)
 latitude
 longitude
-Content: Type
+Content: Type (set to Output machine name)
 
 They should be in that order.
 exclude all from display except Content: Nid
