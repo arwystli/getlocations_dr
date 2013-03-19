@@ -767,6 +767,9 @@ function getlocations_fields_field_formatter_settings_summary($field, $instance,
     if ($settings['fullscreen']) {
       $summary[] = t('Show Fullscreen button: Yes');
     }
+    if ($settings['show_bubble_on_one_marker']) {
+      $summary[] = t('Show bubble on one marker: Yes');
+    }
 
     $info_display = array();
     if ($settings['trafficinfo']) {
@@ -1395,6 +1398,10 @@ function getlocations_fields_getmap($settings, $active) {
   $getlocations_defaults['minzoom_map']     = -1;
   $getlocations_defaults['maxzoom_map']     = -1;
   $getlocations_defaults['fullscreen']      = 0;
+  $getlocations_defaults['polygons_enable']   = 0;
+  $getlocations_defaults['rectangles_enable'] = 0;
+  $getlocations_defaults['circles_enable']    = 0;
+  $getlocations_defaults['show_bubble_on_one_marker'] = 0;
 
   if ($active) {
     $getlocations_defaults['places'] = 1;
@@ -1492,6 +1499,7 @@ function getlocations_fields_getmap_show($settings, $lls = '', $minmaxes = '') {
   $getlocations_defaults['minzoom_map']           = $settings['minzoom_map'];
   $getlocations_defaults['maxzoom_map']           = $settings['maxzoom_map'];
   $getlocations_defaults['fullscreen']            = $settings['fullscreen'];
+  $getlocations_defaults['show_bubble_on_one_marker'] = $settings['show_bubble_on_one_marker'];
   $getlocations_defaults['polygons_enable']          = $settings['polygons_enable'];
   $getlocations_defaults['polygons_strokecolor']     = $settings['polygons_strokecolor'];
   $getlocations_defaults['polygons_strokeopacity']   = $settings['polygons_strokeopacity'];
@@ -1965,6 +1973,7 @@ function getlocations_fields_defaults() {
     'map_backgroundcolor'             => $getlocations_defaults['map_backgroundcolor'],
     'show_maplinks'                   => $getlocations_defaults['show_maplinks'],
     'fullscreen'                      => $getlocations_defaults['fullscreen'],
+    'show_bubble_on_one_marker'       => $getlocations_defaults['show_bubble_on_one_marker'],
     'display_showmap'                 => 1,
     'display_maplink'                 => 1,
     'display_latlong'                 => 1,
@@ -2159,6 +2168,7 @@ function getlocations_fields_field_info_defaults() {
         'map_backgroundcolor'             => $getlocations_fields_defaults['map_backgroundcolor'],
         'use_smart_ip_latlon'             => $getlocations_fields_defaults['use_smart_ip_latlon'],
         'fullscreen'                      => $getlocations_defaults['fullscreen'],
+        'show_bubble_on_one_marker'       => $getlocations_defaults['show_bubble_on_one_marker'],
         'polygons_enable'       => $getlocations_fields_defaults['polygons_enable'],
         'polygons_strokecolor'  => $getlocations_fields_defaults['polygons_strokecolor'],
         'polygons_strokeopacity' => $getlocations_fields_defaults['polygons_strokeopacity'],
@@ -2268,6 +2278,7 @@ function getlocations_fields_field_formatter_info_defaults() {
     'minzoom_map'           => $getlocations_defaults['minzoom_map'],
     'maxzoom_map'           => $getlocations_defaults['maxzoom_map'],
     'fullscreen'            => $getlocations_defaults['fullscreen'],
+    'show_bubble_on_one_marker' => $getlocations_defaults['show_bubble_on_one_marker'],
     'polygons_enable'       => $getlocations_defaults['polygons_enable'],
     'polygons_strokecolor'  => $getlocations_defaults['polygons_strokecolor'],
     'polygons_strokeopacity' => $getlocations_defaults['polygons_strokeopacity'],

@@ -47,6 +47,7 @@ var getlocations_settings = {};
           markeraction: 0,
           markeractiontype: 1,
           show_maplinks: false,
+          show_bubble_on_one_marker: false,
           infoBubbles: [],
           datanum: 0,
           trafficInfo: {},
@@ -96,6 +97,7 @@ var getlocations_settings = {};
         getlocations_markers[key].lids = {};
 
         global_settings.locale_prefix = settings.locale_prefix ? settings.locale_prefix + "/" : "";
+        global_settings.show_bubble_on_one_marker = (settings.show_bubble_on_one_marker ? true : false);
         global_settings.minzoom = parseInt(settings.minzoom);
         global_settings.maxzoom = parseInt(settings.maxzoom);
         global_settings.nodezoom = parseInt(settings.nodezoom);
@@ -707,6 +709,10 @@ var getlocations_settings = {};
     if (gs.datanum == 1) {
       map.setCenter(p);
       map.setZoom(gs.nodezoom);
+      // show_bubble_on_one_marker
+      if (gs.show_bubble_on_one_marker && (gs.useInfoWindow || gs.useInfoBubble)) {
+        google.maps.event.trigger(m, 'click');
+      }
     }
 
     // show_maplinks

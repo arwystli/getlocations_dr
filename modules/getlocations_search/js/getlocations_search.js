@@ -256,6 +256,10 @@
           }
           if (locationct == 1) {
             map.setZoom(gs.nodezoom);
+            // show_bubble_on_one_marker
+            if (gs.show_bubble_on_one_marker && (gs.useInfoWindow || gs.useInfoBubble)) {
+              google.maps.event.trigger(marker, 'click');
+            }
           }
         });
       }
