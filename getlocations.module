@@ -1922,13 +1922,17 @@ function getlocations_other_load_locations($entity_id, $entity_type, $module = '
         if ($lang == $language->language || (isset($obj->language) && $lang == $obj->language) || $lang == 'und') {
           $ct = 0;
           foreach ($geo[$lang] AS $g) {
-            $locations[$ct]['latitude']  = $g['lat'];
-            $locations[$ct]['longitude'] = $g['lon'];
-            $locations[$ct]['entity_key'] = $entity_key;
-            $locations[$ct]['entity_id'] = $entity_id;
-            $locations[$ct]['entity_type'] = $entity_type;
-            $locations[$ct]['name'] = $location_name;
-            $ct++;
+            if (isset($g['lat']) && isset($g['lon'])) {
+              if (getlocations_latlon_check($g['lat'] . ',' . $g['lon'])) {
+                $locations[$ct]['latitude']  = $g['lat'];
+                $locations[$ct]['longitude'] = $g['lon'];
+                $locations[$ct]['entity_key'] = $entity_key;
+                $locations[$ct]['entity_id'] = $entity_id;
+                $locations[$ct]['entity_type'] = $entity_type;
+                $locations[$ct]['name'] = $location_name;
+                $ct++;
+              }
+            }
           }
         }
       }
@@ -1955,13 +1959,17 @@ function getlocations_other_load_locations($entity_id, $entity_type, $module = '
         if ($lang == $language->language || (isset($obj->language) && $lang == $obj->language) || $lang == 'und') {
           $ct = 0;
           foreach ($geo[$lang] AS $g) {
-            $locations[$ct]['latitude']  = $g['lat'];
-            $locations[$ct]['longitude'] = $g['lng'];
-            $locations[$ct]['entity_key'] = $entity_key;
-            $locations[$ct]['entity_id'] = $entity_id;
-            $locations[$ct]['entity_type'] = $entity_type;
-            $locations[$ct]['name'] = $location_name;
-            $ct++;
+            if (isset($g['lat']) && isset($g['lng'])) {
+              if (getlocations_latlon_check($g['lat'] . ',' . $g['lng'])) {
+                $locations[$ct]['latitude']  = $g['lat'];
+                $locations[$ct]['longitude'] = $g['lng'];
+                $locations[$ct]['entity_key'] = $entity_key;
+                $locations[$ct]['entity_id'] = $entity_id;
+                $locations[$ct]['entity_type'] = $entity_type;
+                $locations[$ct]['name'] = $location_name;
+                $ct++;
+              }
+            }
           }
         }
       }

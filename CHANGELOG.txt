@@ -1,9 +1,57 @@
-commit a5b4ad9
+commit eac2ddf
+Author: hutch <hutch@midwales.net>
+Date:   Tue Mar 19 13:31:46 2013 +0000
+
+    better checking for geofields and geolocation
+
+getlocations.module
+
+commit 2089b41
+Author: hutch <hutch@midwales.net>
+Date:   Tue Mar 19 12:24:25 2013 +0000
+
+    added show_bubble_on_one_marker feature
+
+getlocations.module
+js/getlocations.js
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_search/getlocations_search.module
+modules/getlocations_search/js/getlocations_search.js
+views/getlocations_plugin_style_map.inc
+
+commit 75082bd
+Author: hutch <hutch@midwales.net>
+Date:   Tue Mar 19 11:49:14 2013 +0000
+
+    better maths in getlocations_earth_longitude_range
+
+README.txt
+getlocations.module
+
+commit fddce2a
+Author: hutch <hutch@midwales.net>
+Date:   Thu Mar 7 11:47:14 2013 +0000
+
+    added fix locale_prefix
+
+getlocations.module
+js/getlocations.js
+
+commit dfaf7f3
+Author: hutch <hutch@midwales.net>
+Date:   Tue Mar 5 15:41:52 2013 +0000
+
+    added isset checks
+
+modules/getlocations_fields/getlocations_fields.module
+
+commit 4e29d87
 Author: hutch <hutch@midwales.net>
 Date:   Sat Mar 2 12:25:34 2013 +0000
 
     added polygons,rectangles,circles and polylines features
 
+CHANGELOG.txt
 README.txt
 getlocations.admin.inc
 getlocations.module
