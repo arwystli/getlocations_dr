@@ -310,6 +310,7 @@ function getlocations_search_js_settings_do($defaults, $mapid) {
       'show_distance' => $defaults['show_distance'],
       'search_marker' => $defaults['search_marker'],
       'do_search_marker' => $defaults['do_search_marker'],
+      'search_info_path' => url("getlocations_search/info"),
     ),
   );
 

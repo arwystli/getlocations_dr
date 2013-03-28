@@ -25,6 +25,7 @@
         gset.show_distance = searchsettings.show_distance;
         gset.do_search_marker = searchsettings.do_search_marker;
         gset.search_marker = searchsettings.search_marker;
+        gset.search_info_path = searchsettings.search_info_path;
         var autocomplete_bias = searchsettings.autocomplete_bias;
         var restrict_by_country = searchsettings.restrict_by_country;
         var country = searchsettings.country;
@@ -156,7 +157,7 @@
         var slat = results[0].geometry.location.lat();
         var slon = results[0].geometry.location.lng();
         // go get the data
-        $.get(Drupal.settings.basePath + "getlocations_search/info", {
+        $.get(gs.search_info_path, {
           'lat':slat,
           'lon':slon,
           'distance':distance,

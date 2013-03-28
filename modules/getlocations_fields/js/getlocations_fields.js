@@ -42,8 +42,9 @@
         var autocomplete_bias = settings.autocomplete_bias;
         var restrict_by_country = settings.restrict_by_country;
         var search_country = settings.search_country;
+        var smart_ip_path = settings.smart_ip_path;
 
-      // we need to see if this is an update
+        // we need to see if this is an update
         lat = $("#" + latfield + key).val();
         lng = $("#" + lonfield + key).val();
         if (lat && lng) {
@@ -99,7 +100,7 @@
         }
 
         $("#" + 'getlocations_smart_ip_button_' + key).click( function () {
-          manageSmartIpbutton(key);
+          manageSmartIpbutton(key, smart_ip_path);
           return false;
         });
 
@@ -363,9 +364,9 @@
       makeMoveMarker(umap, pt, ukey);
     }
 
-    function manageSmartIpbutton(k) {
+    function manageSmartIpbutton(k, p) {
       var kk = k;
-      $.get(Drupal.settings.basePath + "getlocations_fields/smart_ip", {}, function (loc) {
+      $.get(p, {}, function (loc) {
         if (loc) {
           lat = loc.latitude;
           lng = loc.longitude;

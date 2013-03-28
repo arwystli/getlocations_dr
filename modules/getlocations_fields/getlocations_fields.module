@@ -1950,6 +1950,7 @@ function getlocations_fields_js_settings_do($defaults, $mapid) {
       'autocomplete_bias' => $defaults['autocomplete_bias'],
       'restrict_by_country' => $defaults['restrict_by_country'],
       'search_country' => $defaults['search_country'],
+      'smart_ip_path' => url("getlocations_fields/smart_ip"),
     ),
   );
 

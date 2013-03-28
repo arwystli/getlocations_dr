@@ -1784,6 +1784,7 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
       'map_backgroundcolor'     => $defaults['map_backgroundcolor'],
       'show_maplinks'           => $defaults['show_maplinks'],
       'js_path'                 => base_path() . GETLOCATIONS_PATH . '/js/',
+      'info_path'               => url("getlocations_cb/info"),
       'fullscreen'              => $defaults['fullscreen'],
       'show_bubble_on_one_marker' => $defaults['show_bubble_on_one_marker'],
     ),
