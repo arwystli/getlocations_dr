@@ -753,7 +753,17 @@ function getlocations_fields_views_proximity_get_location_field_options() {
  * Views integration for getlocations_fields.
  *
  */
-#function getlocations_fields_field_views_data($field) {
-#  $data = field_views_field_default_views_data($field);
-#  return $data;
-#}
+function getlocations_fields_field_views_data($field) {
+  $data = field_views_field_default_views_data($field);
+  foreach ($data as $table_name => $table_data) {
+    // Add the relationship only on the glid field.
+    $data[$table_name][$field['field_name'] . '_glid']['relationship'] = array(
+      'handler' => 'views_handler_relationship',
+      'base' => 'getlocations_fields',
+      'base field' => 'glid',
+      'label' => t('location from !field_name', array('!field_name' => $field['field_name'])),
+    );
+  }
+  return $data;
+}
+

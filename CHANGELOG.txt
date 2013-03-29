@@ -1,9 +1,40 @@
-commit eac2ddf
+commit 90d80c5
+Author: hutch <hutch@midwales.net>
+Date:   Fri Mar 29 11:52:16 2013 +0000
+
+    added hook_field_views_data
+
+modules/getlocations_fields/views/getlocations_fields.views.inc
+
+commit 7e627de
+Author: hutch <hutch@midwales.net>
+Date:   Thu Mar 28 11:42:41 2013 +0000
+
+    better pathing for ajax calls
+
+getlocations.module
+js/getlocations.js
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_fields/js/getlocations_fields.js
+modules/getlocations_search/getlocations_search.module
+modules/getlocations_search/js/getlocations_search.js
+
+commit e01b30c
+Author: hutch <hutch@midwales.net>
+Date:   Tue Mar 26 20:22:21 2013 +0000
+
+    moved and removed some js functions, added categories feature
+
+getlocations.module
+js/getlocations.js
+
+commit 52a9d87
 Author: hutch <hutch@midwales.net>
 Date:   Tue Mar 19 13:31:46 2013 +0000
 
     better checking for geofields and geolocation
 
+CHANGELOG.txt
 getlocations.module
 
 commit 2089b41
