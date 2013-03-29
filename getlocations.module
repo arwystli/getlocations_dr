@@ -568,7 +568,8 @@ function getlocations_setup_js($defaults, $googleonly = FALSE) {
     $query['libraries'] = implode(',', $libraries);
   }
 
-  $scheme = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https' : 'http');
+  global $is_https;
+  $scheme = ($is_https ? 'https' : 'http');
 
   $gmapdomain = "maps.google.com/maps/api/js";
   if (! empty($key)) {
