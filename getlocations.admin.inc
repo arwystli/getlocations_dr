@@ -391,6 +391,15 @@ function getlocations_settings_form() {
     t('Where the getlocations polylines javascript file is located.')
   );
 
+  // categories
+  $form['getlocations_paths']['getlocations_categories_path'] = getlocations_element_path(
+    t('Path to getlocations Categories javascript file'),
+    $getlocations_paths['getlocations_categories_path'],
+    60,
+    128,
+    t('Where the getlocations categories javascript file is located.')
+  );
+
   $form['getlocations_paths']['getlocations_path'] = getlocations_element_path(
     t('Path to getlocations javascript file'),
     $getlocations_paths['getlocations_path'],

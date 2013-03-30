@@ -29,40 +29,6 @@ function getlocations_fields_views_data() {
     'weight' => -10,
   );
 
-  $data['getlocations_fields']['table']['join'] = array(
-    // getlocations_fields links to node through getlocations_fields_entities via glid.
-    'node' => array(
-      'left_table' => 'getlocations_fields_entities',
-      'left_field' => 'glid',
-      'field' => 'glid',
-    ),
-    // getlocations_fields links to node_revision through getlocations_fields_entities via glid.
-    'node_revision' => array(
-      'left_table' => 'getlocations_fields_entities',
-      'left_field' => 'glid',
-      'field' => 'glid',
-    ),
-    // getlocations_fields links to users through getlocations_fields_entities via glid.
-    'users' => array(
-      'left_table' => 'getlocations_fields_entities',
-      'left_field' => 'glid',
-      'field' => 'glid',
-    ),
-    // getlocations_fields links to taxonomy terms through getlocations_fields_entities via glid.
-    'taxonomy_term_data' => array(
-      'left_table' => 'getlocations_fields_entities',
-      'left_field' => 'glid',
-      'field' => 'glid',
-    ),
-    // getlocations_fields links to comment through getlocations_fields_entities via glid.
-    'comment' => array(
-      'left_table' => 'getlocations_fields_entities',
-      'left_field' => 'glid',
-      'field' => 'glid',
-    ),
-
-  );
-
   // ----------------------------------------------------------------
   // getlocations_fields table -- fields
 
@@ -251,6 +217,41 @@ function getlocations_fields_views_data() {
       'handler' => 'views_handler_sort',
     ),
   );
+
+  // marker
+  $data['getlocations_fields']['marker'] = array(
+    'title' => t('Marker'),
+    'help' => t('The marker of the selected location.'),
+    'field' => array(
+      'handler' => 'views_handler_field',
+      'click sortable' => TRUE,
+    ),
+    'filter' => array(
+      'handler' => 'views_handler_filter_string',
+    ),
+    'sort' => array(
+      'handler' => 'views_handler_sort',
+    ),
+  );
+
+  // field_name
+  $data['getlocations_fields']['field_name'] = array(
+    'title' => t('Field name'),
+    'help' => t('The Field name of the selected location.'),
+    'field' => array(
+      'handler' => 'views_handler_field',
+      'click sortable' => TRUE,
+    ),
+    'filter' => array(
+      'handler' => 'views_handler_filter_string',
+    ),
+    'sort' => array(
+      'handler' => 'views_handler_sort',
+    ),
+  );
+
+
+
   // coordinates
   $data['getlocations_fields']['coordinates'] = array(
     'title' => t('Coordinates'),
@@ -282,21 +283,6 @@ function getlocations_fields_views_data() {
 //    ),
   );
 
-  // marker
-  $data['getlocations_fields']['marker'] = array(
-    'title' => t('Marker'),
-    'help' => t('The marker of the selected location.'),
-    'field' => array(
-      'handler' => 'views_handler_field',
-      'click sortable' => TRUE,
-    ),
-    'filter' => array(
-      'handler' => 'views_handler_filter_string',
-    ),
-    'sort' => array(
-      'handler' => 'views_handler_sort',
-    ),
-  );
 
 /*
   // address
@@ -312,166 +298,6 @@ function getlocations_fields_views_data() {
  */
   // ----------------------------------------------------------------
   // END getlocations_fields table -- fields
-
-
-  // getlocations_fields_entities table links node, users, taxonomy_term_data and comment to location data in getlocations_fields
-  $data['getlocations_fields_entities']['table']['group']  = t('Getlocations Fields');
-
-  $data['getlocations_fields_entities']['table']['join'] = array(
-    'getlocations_fields' => array(
-      'left_field' => 'glid',
-      'field' => 'glid',
-    ),
-    'users' => array(
-      'left_field' => 'uid',
-      'field' => 'uid',
-    ),
-    'node' => array(
-      'left_field' => 'nid',
-      'field' => 'nid',
-    ),
-    'node_revision' => array(
-      'left_field' => 'vid',
-      'field' => 'vid',
-    ),
-    'taxonomy_term_data' => array(
-      'left_field' => 'tid',
-      'field' => 'tid',
-    ),
-    'comment' => array(
-      'left_field' => 'cid',
-      'field' => 'cid',
-    ),
-  );
-  // entity field name
-  $data['getlocations_fields_entities']['field_name'] = array(
-    'title' => t('Field name'),
-    'help' => t('The field name used in the Content type definition.'),
-    'field' => array(
-      'handler' => 'views_handler_field',
-      'click sortable' => TRUE,
-    ),
-    'filter' => array(
-      'handler' => 'views_handler_filter_string',
-    ),
-    'sort' => array(
-      'handler' => 'views_handler_sort',
-    ),
-  );
-  // node id
-  $data['getlocations_fields_entities']['nid'] = array(
-    'title' => t('Node ID'),
-    'help' => t('The Node Identifier.'),
-    'field' => array(
-      'handler' => 'views_handler_field',
-      'click sortable' => TRUE,
-    ),
-    'argument' => array(
-      'handler' => 'views_handler_argument_numeric'
-    ),
-    'filter' => array(
-      'handler' => 'views_handler_filter_numeric',
-    ),
-    'sort' => array(
-      'handler' => 'views_handler_sort',
-    ),
-    'relationship' => array(
-      'base' => 'node',
-      'field' => 'nid',
-      'label' => 'content',
-      'help' => t('Bring in the node data.'),
-    ),
-  );
-  // user id
-  $data['getlocations_fields_entities']['uid'] = array(
-    'title' => t('User ID'),
-    'help' => t('The User Identifier.'),
-    'field' => array(
-      'handler' => 'views_handler_field',
-      'click sortable' => TRUE,
-    ),
-    'filter' => array(
-      'handler' => 'views_handler_filter_numeric',
-    ),
-    'sort' => array(
-      'handler' => 'views_handler_sort',
-    ),
-    'relationship' => array(
-      'base' => 'users',
-      'field' => 'uid',
-      'label' => 'user',
-      'help' => t('Bring in the user data.'),
-    ),
-  );
-  // term id
-  $data['getlocations_fields_entities']['tid'] = array(
-    'title' => t('Taxonomy Term ID'),
-    'help' => t('The Taxonomy Term Identifier.'),
-    'field' => array(
-      'handler' => 'views_handler_field',
-      'click sortable' => TRUE,
-    ),
-    'filter' => array(
-      'handler' => 'views_handler_filter_numeric',
-    ),
-    'sort' => array(
-      'handler' => 'views_handler_sort',
-    ),
-    'relationship' => array(
-      'base' => 'taxonomy_index',
-      'field' => 'tid',
-      'label' => 'term',
-      'help' => t('Bring in the taxonomy data.'),
-    ),
-  );
-  // comment id
-  $data['getlocations_fields_entities']['cid'] = array(
-    'title' => t('Comment ID'),
-    'help' => t('The Comment Identifier.'),
-    'field' => array(
-      'handler' => 'views_handler_field',
-      'click sortable' => TRUE,
-    ),
-    'filter' => array(
-      'handler' => 'views_handler_filter_numeric',
-    ),
-    'sort' => array(
-      'handler' => 'views_handler_sort',
-    ),
-    'relationship' => array(
-      'base' => 'comment',
-      'field' => 'cid',
-      'label' => 'comment',
-      'help' => t('Bring in the comment data.'),
-    ),
-  );
-
-  // Tell the base tables about us.
-  $data['node']['table']['join']['getlocations_fields'] = array(
-    'left_table' => 'getlocations_fields_entities',
-    'left_field' => 'nid',
-    'field' => 'nid',
-  );
-  $data['node_revision']['table']['join']['getlocations_fields'] = array(
-    'left_table' => 'getlocations_fields_entities',
-    'left_field' => 'vid',
-    'field' => 'vid',
-  );
-  $data['users']['table']['join']['getlocations_fields'] = array(
-    'left_table' => 'getlocations_fields_entities',
-    'left_field' => 'uid',
-    'field' => 'uid',
-  );
-  $data['taxonomy_term_data']['table']['join']['getlocations_fields'] = array(
-    'left_table' => 'getlocations_fields_entities',
-    'left_field' => 'tid',
-    'field' => 'tid',
-  );
-  $data['comment']['table']['join']['getlocations_fields'] = array(
-    'left_table' => 'getlocations_fields_entities',
-    'left_field' => 'cid',
-    'field' => 'cid',
-  );
 
   return $data;
 

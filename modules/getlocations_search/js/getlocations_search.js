@@ -205,7 +205,7 @@
             }
             title = (locations[i].title ? locations[i].title : (locations[i].name ? locations[i].name : ''));
             // make a marker
-            marker = Drupal.getlocations.makeMarker(map, gs, locations[i].latitude, locations[i].longitude, lid, title, lidkey, '', mkey);
+            marker = Drupal.getlocations.makeMarker(map, gs, locations[i].latitude, locations[i].longitude, lid, title, lidkey, '', '', mkey);
             search_markersArray.push(marker);
             locationct++;
           }

@@ -64,9 +64,6 @@ function template_preprocess_getlocations_view_map(&$variables) {
   if (count($locations)) {
     // we should loop over them and dump bummers with no lat/lon
     foreach ($locations AS $key => $location) {
-      if (! isset($location['type']) && isset($location['machine_name'])) {
-        $location['type'] = $location['machine_name'];
-      }
 
       $custom_content = $custom_content_source ? $location[$custom_content_source] : '';
       $lid = 0;
@@ -174,7 +171,41 @@ function template_preprocess_getlocations_view_map(&$variables) {
           $minmaxes = getlocations_do_minmaxes($ct, $location, $minmaxes);
           $ct++;
           $name = htmlspecialchars_decode(isset($location['name']) && $location['name'] ? strip_tags($location['name']) : (isset($location['title']) && $location['title'] ? strip_tags($location['title']) : ''), ENT_QUOTES);
-          $latlons[] = array($location['latitude'], $location['longitude'], $lid, $name, $marker, $base_field, $custom_content);
+
+          // categories
+          $cat = '';
+          if ($options['category_method']) {
+            if ($options['category_method'] == 1) {
+              // content type
+              if (! isset($location['type']) && isset($location['machine_name'])) {
+                $location['type'] = $location['machine_name'];
+              }
+              if (isset($location['type'])) {
+                $cat = $location['type'];
+                // lookup label
+                $query = db_select('node_type', 't');
+                $query->fields('t', array('name'));
+                $query->condition('t.type', $cat);
+                $label = $query->execute()->fetchField();
+                $cats[$cat] = $label;
+              }
+            }
+            elseif ($options['category_method'] == 2) {
+              // term_reference_field
+              if (isset($location[$options['category_term_reference_field']])) {
+                $label = $location[$options['category_term_reference_field']];
+                $cat = preg_replace("/\s+/", "_", $label);
+                $cat = preg_replace("/'/", "", $cat);
+                $cat = drupal_strtolower($cat);
+                $cats[$cat] = $label;
+              }
+            }
+            if ($cat) {
+              $options['categories'] = $cats;
+            }
+          }
+
+          $latlons[] = array($location['latitude'], $location['longitude'], $lid, $name, $marker, $base_field, $custom_content, $cat);
         }
       }
     }

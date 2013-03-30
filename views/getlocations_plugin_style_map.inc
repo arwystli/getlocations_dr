@@ -124,6 +124,11 @@ class getlocations_plugin_style_map extends views_plugin_style {
     $options['polylines_clickable']      = array('default' => $getlocations_defaults['polylines_clickable']);
     $options['polylines_message']        = array('default' => $getlocations_defaults['polylines_message']);
 
+    // categories
+    $options['category_method']               = array('default' => $getlocations_defaults['category_method']);
+    $options['category_term_reference_field'] = array('default' => $getlocations_defaults['category_term_reference_field']);
+    $options['category_showhide_buttons']     = array('default' => $getlocations_defaults['category_showhide_buttons']);
+
     $fieldables = getlocations_get_fieldable_entity_types();
     foreach ($fieldables AS $entity_type) {
       $options[$entity_type . '_map_marker'] = array('default' => $getlocations_defaults[$entity_type . '_map_marker']);
@@ -208,24 +213,51 @@ class getlocations_plugin_style_map extends views_plugin_style {
       $this->options['markeraction']
     );
 
-    $form['custom_content_enable'] = array(
-      '#type' => 'checkbox',
-      '#title' => t('Replace default content'),
-      '#default_value' =>  $this->options['custom_content_enable'],
-      '#return_value' => 1,
-      '#prefix' => '<div id="wrap-custom-content-enable">',
-      '#suffix' => '</div>',
+    // categories
+    $term_reference_fields = getlocations_get_term_reference_fields();
+    $opts = array(0 => t('None'), 1 => t('Content Type'));
+    if ($term_reference_fields) {
+      $opts += array(2 => t('Term reference'));
+    }
+    $form['category_method'] = getlocations_element_dd(
+      t('Category method'),
+      $this->options['category_method'],
+      $opts,
+      t('To ensure that this works you will need to add either a Content type or a Term reference field to the Field list in your View.')
     );
+    $form['category_method']['#suffix'] = '<div id="wrap-category1">';
+    if ($term_reference_fields) {
+      $form['category_term_reference_field'] = getlocations_element_dd(
+        t('Term reference field name'),
+        $this->options['category_term_reference_field'],
+        $term_reference_fields,
+        t('Select the field on which you are categorising.')
+      );
+      $form['category_term_reference_field']['#prefix'] = '<div id="wrap-category2">';
+      $form['category_term_reference_field']['#suffix'] = '</div>';
+    }
+    $form['category_showhide_buttons'] = getlocations_element_map_checkbox(
+      t('Enable category show/hide buttons'),
+      $this->options['category_showhide_buttons'],
+      t('This option will place toggle buttons on the map.')
+    );
+    $form['category_showhide_buttons']['#suffix'] = '</div>';
 
-    $form['custom_content_source'] = array(
-      '#type' => 'select',
-      '#title' => t('Popup Data'),
-      '#options' => $source_options,
-      '#default_value' => $this->options['custom_content_source'],
-      '#description' => t('The field to use as a data source for the marker popup.'),
-      '#prefix' => '<div id="wrap-custom-content-source">',
-      '#suffix' => '</div>',
+    // custom content
+    $form['custom_content_enable'] = getlocations_element_map_checkbox(
+      t('Replace default content'),
+      $this->options['custom_content_enable']
     );
+    $form['custom_content_enable']['#prefix'] = '<div id="wrap-custom-content-enable">';
+    $form['custom_content_enable'][ '#suffix'] = '</div>';
+    $form['custom_content_source'] = getlocations_element_dd(
+      t('Popup Data'),
+      $this->options['custom_content_source'],
+      $source_options,
+      t('The field to use as a data source for the marker popup.')
+    );
+    $form['custom_content_source']['#prefix'] = '<div id="wrap-custom-content-source">';
+    $form['custom_content_source']['#suffix'] = '</div>';
 
     // markermanager option
     if ($this->options['markermanagertype'] == 1) {
