@@ -215,6 +215,34 @@
         }
       });
 
+      // categories
+      if ($("#edit-style-options-category-method").val() > 0) {
+        $("#wrap-category1").show();
+        if ($("#edit-style-options-category-method").val() == 2) {
+          $("#wrap-category2").show();
+        }
+        else {
+          $("#wrap-category2").hide();
+        }
+      }
+      else {
+        $("#wrap-category1").hide();
+      }
+      $("#edit-style-options-category-method").change(function() {
+        if ($("#edit-style-options-category-method").val() > 0) {
+          $("#wrap-category1").show();
+          if ($("#edit-style-options-category-method").val() == 2) {
+            $("#wrap-category2").show();
+          }
+          else {
+            $("#wrap-category2").hide();
+          }
+        }
+        else {
+          $("#wrap-category1").hide();
+        }
+      });
+
 
     }
   };
