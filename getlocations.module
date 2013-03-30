@@ -532,9 +532,10 @@ function getlocations_setup_js($defaults, $googleonly = FALSE) {
   $current_js = drupal_get_js();
   $current_css = drupal_get_css();
 
-  $js_weight = 1;
+  static $getlocations_js_weight = 0;
+  $getlocations_js_weight++;
   if (is_numeric($defaults['getlocations_js_weight']) && $defaults['getlocations_js_weight'] != 0) {
-    $js_weight = $defaults['getlocations_js_weight'];
+    $getlocations_js_weight += $defaults['getlocations_js_weight'];
   }
 
   $key = variable_get('getlocations_api3_key', '');
@@ -578,19 +579,19 @@ function getlocations_setup_js($defaults, $googleonly = FALSE) {
   $gmaplink = url($scheme . '://' . $gmapdomain, array('query' => $query));
   if (!stristr($current_js, $scheme . '://' . $gmapdomain)) {
     $js_opts = array();
-    $js_opts['weight'] = $js_weight;
+    $js_opts['weight'] = $getlocations_js_weight;
     $js_opts['type'] = 'external';
     drupal_add_js($gmaplink, $js_opts);
-    $js_weight++;
+    $getlocations_js_weight++;
   }
   if ($defaults['use_jsapi']) {
     $jsapilink =  url($scheme . '://' . 'www.google.com/jsapi');
     if (!stristr($current_js, $jsapilink)) {
        $js_opts = array();
-       $js_opts['weight'] = $js_weight;
+       $js_opts['weight'] = $getlocations_js_weight;
        $js_opts['type'] = 'external';
       drupal_add_js($jsapilink, $js_opts);
-      $js_weight++;
+      $getlocations_js_weight++;
     }
   }
 
@@ -604,103 +605,103 @@ function getlocations_setup_js($defaults, $googleonly = FALSE) {
 
   if (!stristr($current_js, GETLOCATIONS_PATH . '/js/icons.js')) {
     $js_opts = array();
-    $js_opts['weight'] = $js_weight;
+    $js_opts['weight'] = $getlocations_js_weight;
     $js_opts['type'] = 'file';
     drupal_add_js(GETLOCATIONS_PATH . '/js/icons.js', $js_opts);
-    $js_weight++;
+    $getlocations_js_weight++;
   }
 
   $markerfile = getlocations_get_markerfile();
   if ($markerfile && !stristr($current_js, $markerfile)) {
     $js_opts = array();
-    $js_opts['weight'] = $js_weight;
+    $js_opts['weight'] = $getlocations_js_weight;
     $js_opts['type'] = 'file';
     drupal_add_js($markerfile, $js_opts);
-    $js_weight++;
+    $getlocations_js_weight++;
   }
 
   $getlocations_paths = getlocations_paths_get();
 
   if ($defaults['markermanagertype'] == 1 && !stristr($current_js, $getlocations_paths['markermanager_path'])) {
     $js_opts = array();
-    $js_opts['weight'] = $js_weight;
+    $js_opts['weight'] = $getlocations_js_weight;
     $js_opts['type'] = 'file';
     drupal_add_js($getlocations_paths['markermanager_path'], $js_opts);
-    $js_weight++;
+    $getlocations_js_weight++;
   }
   elseif ($defaults['markermanagertype'] == 2 && !stristr($current_js, $getlocations_paths['markerclusterer_path'])) {
     $js_opts = array();
-    $js_opts['weight'] = $js_weight;
+    $js_opts['weight'] = $getlocations_js_weight;
     $js_opts['type'] = 'file';
     drupal_add_js($getlocations_paths['markerclusterer_path'], $js_opts);
-    $js_weight++;
+    $getlocations_js_weight++;
   }
 
   if ($defaults['markeraction'] == 2 && !stristr($current_js, $getlocations_paths['infobubble_path'])) {
     $js_opts = array();
-    $js_opts['weight'] = $js_weight;
+    $js_opts['weight'] = $getlocations_js_weight;
     $js_opts['type'] = 'file';
 
     drupal_add_js($getlocations_paths['infobubble_path'], $js_opts);
-    $js_weight++;
+    $getlocations_js_weight++;
     if (file_exists($getlocations_paths['infobubble_options_path'])) {
       $js_opts = array();
-      $js_opts['weight'] = $js_weight;
+      $js_opts['weight'] = $getlocations_js_weight;
       $js_opts['type'] = 'file';
       drupal_add_js($getlocations_paths['infobubble_options_path'], $js_opts);
-      $js_weight++;
+      $getlocations_js_weight++;
     }
   }
   elseif ($defaults['markeraction'] == 1 && file_exists($getlocations_paths['infowindow_options_path']) && !stristr($current_js, $getlocations_paths['infowindow_options_path'])) {
     $js_opts = array();
-    $js_opts['weight'] = $js_weight;
+    $js_opts['weight'] = $getlocations_js_weight;
     $js_opts['type'] = 'file';
     drupal_add_js($getlocations_paths['infowindow_options_path'], $js_opts);
-    $js_weight++;
+    $getlocations_js_weight++;
   }
 
   if (!stristr($current_js, $getlocations_paths['getlocations_path'])) {
     $js_opts = array();
-    $js_opts['weight'] = $js_weight;
+    $js_opts['weight'] = $getlocations_js_weight;
     $js_opts['type'] = 'file';
     drupal_add_js($getlocations_paths['getlocations_path'], $js_opts);
-    $js_weight++;
+    $getlocations_js_weight++;
   }
 
   if ($defaults['polygons_enable']) {
     if (!stristr($current_js, $getlocations_paths['getlocations_polygons_path'])) {
       $js_opts = array();
-      $js_opts['weight'] = $js_weight;
+      $js_opts['weight'] = $getlocations_js_weight;
       $js_opts['type'] = 'file';
       drupal_add_js($getlocations_paths['getlocations_polygons_path'], $js_opts);
-      $js_weight++;
+      $getlocations_js_weight++;
     }
   }
   if ($defaults['rectangles_enable']) {
     if (!stristr($current_js, $getlocations_paths['getlocations_rectangles_path'])) {
       $js_opts = array();
-      $js_opts['weight'] = $js_weight;
+      $js_opts['weight'] = $getlocations_js_weight;
       $js_opts['type'] = 'file';
       drupal_add_js($getlocations_paths['getlocations_rectangles_path'], $js_opts);
-      $js_weight++;
+      $getlocations_js_weight++;
     }
   }
   if ($defaults['circles_enable']) {
     if (!stristr($current_js, $getlocations_paths['getlocations_circles_path'])) {
       $js_opts = array();
-      $js_opts['weight'] = $js_weight;
+      $js_opts['weight'] = $getlocations_js_weight;
       $js_opts['type'] = 'file';
       drupal_add_js($getlocations_paths['getlocations_circles_path'], $js_opts);
-      $js_weight++;
+      $getlocations_js_weight++;
     }
   }
   if ($defaults['polylines_enable']) {
     if (!stristr($current_js, $getlocations_paths['getlocations_polylines_path'])) {
       $js_opts = array();
-      $js_opts['weight'] = $js_weight;
+      $js_opts['weight'] = $getlocations_js_weight;
       $js_opts['type'] = 'file';
       drupal_add_js($getlocations_paths['getlocations_polylines_path'], $js_opts);
-      $js_weight++;
+      $getlocations_js_weight++;
     }
   }
 
@@ -708,13 +709,12 @@ function getlocations_setup_js($defaults, $googleonly = FALSE) {
   if ($defaults['category_method'] && $defaults['category_showhide_buttons']) {
     if (!stristr($current_js, $getlocations_paths['getlocations_categories_path'])) {
       $js_opts = array();
-      $js_opts['weight'] = $js_weight;
+      $js_opts['weight'] = $getlocations_js_weight;
       $js_opts['type'] = 'file';
       drupal_add_js($getlocations_paths['getlocations_categories_path'], $js_opts);
-      $js_weight++;
+      $getlocations_js_weight++;
     }
   }
-
 
 }
 
