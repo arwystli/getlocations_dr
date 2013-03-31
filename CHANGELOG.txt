@@ -1,9 +1,64 @@
-commit 90d80c5
+commit 1babfe2
+Author: hutch <hutch@midwales.net>
+Date:   Sun Mar 31 09:54:04 2013 +0100
+
+    fixed layers bug
+
+js/getlocations.js
+
+commit b281f00
+Author: hutch <hutch@midwales.net>
+Date:   Sat Mar 30 19:10:08 2013 +0000
+
+    added categories
+
+js/getlocations_views.js
+
+commit c7a72c5
+Author: hutch <hutch@midwales.net>
+Date:   Sat Mar 30 16:17:14 2013 +0000
+
+    better admin for entity type markers
+
+getlocations.admin.inc
+
+commit 67c636f
+Author: hutch <hutch@midwales.net>
+Date:   Sat Mar 30 10:23:56 2013 +0000
+
+    added categories
+
+getlocations.admin.inc
+js/getlocations.js
+js/getlocations_categories.js
+modules/getlocations_fields/views/getlocations_fields.views.inc
+modules/getlocations_search/js/getlocations_search.js
+views/getlocations.views.inc
+views/getlocations_plugin_style_map.inc
+
+commit 1b05f2b
+Author: hutch <hutch@midwales.net>
+Date:   Sat Mar 30 10:21:24 2013 +0000
+
+    better js_weight
+
+getlocations.module
+
+commit b7010e5
+Author: hutch <hutch@midwales.net>
+Date:   Fri Mar 29 20:19:40 2013 +0000
+
+    deployed $is_https global variable
+
+getlocations.module
+
+commit ac4fa5d
 Author: hutch <hutch@midwales.net>
 Date:   Fri Mar 29 11:52:16 2013 +0000
 
     added hook_field_views_data
 
+CHANGELOG.txt
 modules/getlocations_fields/views/getlocations_fields.views.inc
 
 commit 7e627de

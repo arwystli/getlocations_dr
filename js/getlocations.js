@@ -102,6 +102,7 @@ var getlocations_settings = {};
         }
       }
 
+
       // end functions
 
       // is there really a map?
@@ -132,18 +133,6 @@ var getlocations_settings = {};
           show_bubble_on_one_marker: false,
           infoBubbles: [],
           datanum: 0,
-          trafficInfo: {},
-          bicycleInfo: {},
-          transitInfo: {},
-          traffictoggleState: [],
-          bicycletoggleState: [],
-          transittoggleState: [],
-          panoramioLayer: {},
-          panoramiotoggleState: [],
-          weatherLayer: {},
-          weathertoggleState: [],
-          cloudLayer: {},
-          cloudtoggleState: [],
           batchr: []
         };
 
@@ -379,107 +368,117 @@ var getlocations_settings = {};
         }
 
         if (settings.trafficinfo) {
-          global_settings.trafficInfo[key] = new google.maps.TrafficLayer();
+          var trafficInfo = {};
+          var traffictoggleState = [];
+          trafficInfo[key] = new google.maps.TrafficLayer();
           if (settings.trafficinfo_state > 0) {
-            global_settings.trafficInfo[key].setMap(getlocations_map[key]);
-            global_settings.traffictoggleState[key] = 1;
+            trafficInfo[key].setMap(getlocations_map[key]);
+            traffictoggleState[key] = true;
           }
           else {
-            global_settings.trafficInfo[key].setMap(null);
-            global_settings.traffictoggleState[key] = 0;
+            trafficInfo[key].setMap(null);
+            traffictoggleState[key] = false;
           }
           $("#getlocations_toggleTraffic_" + key).click( function() {
-            if ( global_settings.traffictoggleState[key] == 1) {
-              global_settings.trafficInfo[key].setMap(null);
-              global_settings.traffictoggleState[key] = 0;
+            if (traffictoggleState[key]) {
+              trafficInfo[key].setMap(null);
+              traffictoggleState[key] = false;
               label = Drupal.t('Traffic Info On');
             }
             else {
-              global_settings.trafficInfo[key].setMap(getlocations_map[key]);
-              global_settings.traffictoggleState[key] = 1;
+              trafficInfo[key].setMap(getlocations_map[key]);
+              traffictoggleState[key] = true;
               label = Drupal.t('Traffic Info Off');
             }
-            $("#getlocations_toggleTraffic_" + key).val(label);
+            $(this).val(label);
           });
         }
 
         if (settings.bicycleinfo) {
-          global_settings.bicycleInfo[key] = new google.maps.BicyclingLayer();
+          var bicycleInfo = {};
+          var bicycletoggleState =  [];
+          bicycleInfo[key] = new google.maps.BicyclingLayer();
           if (settings.bicycleinfo_state > 0) {
-            global_settings.bicycleInfo[key].setMap(getlocations_map[key]);
-            global_settings.bicycletoggleState[key] = 1;
+            bicycleInfo[key].setMap(getlocations_map[key]);
+            bicycletoggleState[key] = true;
           }
           else {
-            global_settings.bicycleInfo[key].setMap(null);
-            global_settings.bicycletoggleState[key] = 0;
+            bicycleInfo[key].setMap(null);
+            bicycletoggleState[key] = false;
           }
           $("#getlocations_toggleBicycle_" + key).click( function() {
-            if ( global_settings.bicycletoggleState[key] == 1) {
-              global_settings.bicycleInfo[key].setMap(null);
-              global_settings.bicycletoggleState[key] = 0;
+            if (bicycletoggleState[key]) {
+              bicycleInfo[key].setMap(null);
+              bicycletoggleState[key] = false;
               label = Drupal.t('Bicycle Info On');
             }
             else {
-              global_settings.bicycleInfo[key].setMap(getlocations_map[key]);
-              global_settings.bicycletoggleState[key] = 1;
+              bicycleInfo[key].setMap(getlocations_map[key]);
+              bicycletoggleState[key] = true;
               label = Drupal.t('Bicycle Info Off');
             }
-            $("#getlocations_toggleBicycle_" + key).val(label);
+            $(this).val(label);
           });
         }
 
         if (settings.transitinfo) {
-          global_settings.transitInfo[key] = new google.maps.TransitLayer();
+          var transitInfo = {};
+          var transittoggleState = [];
+          transitInfo[key] = new google.maps.TransitLayer();
           if (settings.transitinfo_state > 0) {
-            global_settings.transitInfo[key].setMap(getlocations_map[key]);
-            global_settings.transittoggleState[key] = 1;
+            transitInfo[key].setMap(getlocations_map[key]);
+            transittoggleState[key] = true;
           }
           else {
-            global_settings.transitInfo[key].setMap(null);
-            global_settings.transittoggleState[key] = 0;
+            transitInfo[key].setMap(null);
+            transittoggleState[key] = false;
           }
           $("#getlocations_toggleTransit_" + key).click( function() {
-            if ( global_settings.transittoggleState[key] == 1) {
-              global_settings.transitInfo[key].setMap(null);
-              global_settings.transittoggleState[key] = 0;
+            if (transittoggleState[key]) {
+              transitInfo[key].setMap(null);
+              transittoggleState[key] = false;
               label = Drupal.t('Transit Info On');
             }
             else {
-              global_settings.transitInfo[key].setMap(getlocations_map[key]);
-              global_settings.transittoggleState[key] = 1;
+              transitInfo[key].setMap(getlocations_map[key]);
+              transittoggleState[key] = true;
               label = Drupal.t('Transit Info Off');
             }
-            $("#getlocations_toggleTransit_" + key).val(label);
+            $(this).val(label);
           });
         }
 
         if (settings.panoramio_use && settings.panoramio_show) {
-          global_settings.panoramioLayer[key] = new google.maps.panoramio.PanoramioLayer();
+          var panoramioLayer = {};
+          var panoramiotoggleState = [];
+          panoramioLayer[key] = new google.maps.panoramio.PanoramioLayer();
           if (settings.panoramio_state > 0) {
-            global_settings.panoramioLayer[key].setMap(getlocations_map[key]);
-            global_settings.panoramiotoggleState[key] = 1;
+            panoramioLayer[key].setMap(getlocations_map[key]);
+            panoramiotoggleState[key] = true;
           }
           else {
-            global_settings.panoramioLayer[key].setMap(null);
-            global_settings.panoramiotoggleState[key] = 0;
+            panoramioLayer[key].setMap(null);
+            panoramiotoggleState[key] = false;
           }
           $("#getlocations_togglePanoramio_" + key).click( function() {
-            if ( global_settings.panoramiotoggleState[key] == 1) {
-              global_settings.panoramioLayer[key].setMap(null);
-              global_settings.panoramiotoggleState[key] = 0;
+            if (panoramiotoggleState[key]) {
+              panoramioLayer[key].setMap(null);
+              panoramiotoggleState[key] = false;
               label = Drupal.t('Panoramio On');
             }
             else {
-              global_settings.panoramioLayer[key].setMap(getlocations_map[key]);
-              global_settings.panoramiotoggleState[key] = 1;
+              panoramioLayer[key].setMap(getlocations_map[key]);
+              panoramiotoggleState[key] = true;
               label = Drupal.t('Panoramio Off');
             }
-            $("#getlocations_togglePanoramio_" + key).val(label);
+            $(this).val(label);
           });
         }
 
         // weather layer
         if (settings.weather_use && settings.weather_show) {
+          var weatherLayer = {};
+          var weathertoggleState = {};
           tu = google.maps.weather.TemperatureUnit.CELSIUS;
           if (settings.weather_temp == 2) {
             tu = google.maps.weather.TemperatureUnit.FAHRENHEIT;
@@ -503,55 +502,54 @@ var getlocations_settings = {};
               weatherOpts.labelColor = google.maps.weather.LabelColor.WHITE;
             }
           }
-          global_settings.weatherLayer[key] = new google.maps.weather.WeatherLayer(weatherOpts);
+          weatherLayer[key] = new google.maps.weather.WeatherLayer(weatherOpts);
           if (settings.weather_state > 0) {
-            global_settings.weatherLayer[key].setMap(getlocations_map[key]);
-            global_settings.weathertoggleState[key] = 1;
+            weatherLayer[key].setMap(getlocations_map[key]);
+            weathertoggleState[key] = true;
           }
           else {
-            global_settings.weatherLayer[key].setMap(null);
-            global_settings.weathertoggleState[key] = 0;
+            weatherLayer[key].setMap(null);
+            weathertoggleState[key] = false;
           }
-          global_settings.weather_cloud = settings.weather_cloud;
+
           if (settings.weather_cloud) {
-            global_settings.cloudLayer[key] = new google.maps.weather.CloudLayer();
+            var cloudLayer = {};
+            var cloudtoggleState = [];
+            cloudLayer[key] = new google.maps.weather.CloudLayer();
             if (settings.weather_cloud_state > 0) {
-              global_settings.cloudLayer[key].setMap(getlocations_map[key]);
-              global_settings.cloudtoggleState[key] = 1;
+              cloudLayer[key].setMap(getlocations_map[key]);
+              cloudtoggleState[key] = true;
             }
             else {
-              global_settings.cloudLayer[key].setMap(null);
-              global_settings.cloudtoggleState[key] = 0;
+              cloudLayer[key].setMap(null);
+              cloudtoggleState[key] = false;
             }
             $("#getlocations_toggleCloud_" + key).click( function() {
-              if ( global_settings.cloudtoggleState[key] == 1) {
-                global_settings.cloudLayer[key].setMap(null);
-                global_settings.cloudtoggleState[key] = 0;
+              if (cloudtoggleState[key] == 1) {
+                cloudLayer[key].setMap(null);
+                cloudtoggleState[key] = false;
                 label = Drupal.t('Clouds On');
               }
               else {
-                global_settings.cloudLayer[key].setMap(getlocations_map[key]);
-                global_settings.cloudtoggleState[key] = 1;
+                cloudLayer[key].setMap(getlocations_map[key]);
+                cloudtoggleState[key] = true;
                 label = Drupal.t('Clouds Off');
               }
-              $("#getlocations_toggleCloud_" + key).val(label);
+              $(this).val(label);
             });
           }
-          else {
-            global_settings.cloudLayer[key] = null;
-          }
           $("#getlocations_toggleWeather_" + key).click( function() {
-            if ( global_settings.weathertoggleState[key] == 1) {
-              global_settings.weatherLayer[key].setMap(null);
-              global_settings.weathertoggleState[key] = 0;
+            if (weathertoggleState[key]) {
+              weatherLayer[key].setMap(null);
+              weathertoggleState[key] = false;
               label = Drupal.t('Weather On');
             }
             else {
-              global_settings.weatherLayer[key].setMap(getlocations_map[key]);
-              global_settings.weathertoggleState[key] = 1;
+              weatherLayer[key].setMap(getlocations_map[key]);
+              weathertoggleState[key] = true;
               label = Drupal.t('Weather Off');
             }
-            $("#getlocations_toggleWeather_" + key).val(label);
+            $(this).val(label);
           });
         }
 
