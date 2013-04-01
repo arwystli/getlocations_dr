@@ -367,6 +367,7 @@ var getlocations_settings = {};
           );
         }
 
+        // Traffic Layer
         if (settings.trafficinfo) {
           var trafficInfo = {};
           var traffictoggleState = [];
@@ -393,7 +394,7 @@ var getlocations_settings = {};
             $(this).val(label);
           });
         }
-
+        // Bicycling Layer
         if (settings.bicycleinfo) {
           var bicycleInfo = {};
           var bicycletoggleState =  [];
@@ -420,7 +421,7 @@ var getlocations_settings = {};
             $(this).val(label);
           });
         }
-
+        // Transit Layer
         if (settings.transitinfo) {
           var transitInfo = {};
           var transittoggleState = [];
@@ -447,7 +448,7 @@ var getlocations_settings = {};
             $(this).val(label);
           });
         }
-
+        // Panoramio Layer
         if (settings.panoramio_use && settings.panoramio_show) {
           var panoramioLayer = {};
           var panoramiotoggleState = [];
@@ -474,8 +475,7 @@ var getlocations_settings = {};
             $(this).val(label);
           });
         }
-
-        // weather layer
+        // Weather Layer
         if (settings.weather_use && settings.weather_show) {
           var weatherLayer = {};
           var weathertoggleState = {};
@@ -511,7 +511,7 @@ var getlocations_settings = {};
             weatherLayer[key].setMap(null);
             weathertoggleState[key] = false;
           }
-
+          // Cloud Layer
           if (settings.weather_cloud) {
             var cloudLayer = {};
             var cloudtoggleState = [];
