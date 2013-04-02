@@ -1951,6 +1951,7 @@ function getlocations_fields_js_settings_do($defaults, $mapid) {
       'restrict_by_country' => $defaults['restrict_by_country'],
       'search_country' => $defaults['search_country'],
       'smart_ip_path' => url("getlocations_fields/smart_ip"),
+      'street_num_pos' => $defaults['street_num_pos'],
     ),
   );
 
@@ -2028,6 +2029,7 @@ function getlocations_fields_defaults() {
     'province_autocomplete'           => 0,
     'city_autocomplete'               => 0,
     'per_item_marker'                 => 0,
+    'street_num_pos'                  => 1,
     'latlon_warning'                  => 0,
     'autocomplete_bias'               => 0,
     'restrict_by_country'             => 0,
@@ -2161,6 +2163,7 @@ function getlocations_fields_field_info_defaults() {
         'city_autocomplete'               => $getlocations_fields_defaults['city_autocomplete'],
         'country'                         => $getlocations_fields_defaults['country'],
         'per_item_marker'                 => $getlocations_fields_defaults['per_item_marker'],
+        'street_num_pos'                  => $getlocations_fields_defaults['street_num_pos'],
         'latlon_warning'                  => $getlocations_fields_defaults['latlon_warning'],
         'use_geolocation_button'          => $getlocations_fields_defaults['use_geolocation_button'],
         'autocomplete_bias'               => $getlocations_fields_defaults['autocomplete_bias'],
@@ -2638,6 +2641,14 @@ function getlocations_fields_input_settings_form($defaults) {
     t('Marker select position'),
     $defaults['input_marker_weight'],
     ''
+  );
+
+  // street_num_pos
+  $form['street_num_pos'] = getlocations_element_dd(
+    t('Street number position'),
+    $defaults['street_num_pos'],
+    array(1 => t('Before'), 2 => t('After')),
+    t('Placement of street number, if available.')
   );
 
   // latlon_warning

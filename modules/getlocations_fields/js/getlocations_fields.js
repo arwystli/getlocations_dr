@@ -27,6 +27,7 @@
     var lonfield = 'getlocations_longitude_';
     var point = [];
     var is_mobile = 0;
+    var street_num_pos = 1;
 
     // each map has its own settings
     $.each(Drupal.settings.getlocations_fields, function (key, settings) {
@@ -43,6 +44,7 @@
         var restrict_by_country = settings.restrict_by_country;
         var search_country = settings.search_country;
         var smart_ip_path = settings.smart_ip_path;
+        street_num_pos = settings.street_num_pos;
 
         // we need to see if this is an update
         lat = $("#" + latfield + key).val();
@@ -274,7 +276,13 @@
           postal_codefield_value = address_components[i].long_name;
         }
       }
-      $("#" + streetfield + k).val( (streetnumber_value ? streetnumber_value + ' ' : '') + streetfield_value);
+
+      if (street_num_pos == 1) {
+        $("#" + streetfield + k).val((streetnumber_value ? streetnumber_value + ' ' : '') + streetfield_value);
+      }
+      else {
+        $("#" + streetfield + k).val(streetfield_value + (streetnumber_value ? ' ' + streetnumber_value : ''));
+      }
 
       if (admin_area_level_1) {
         provincefield_value = admin_area_level_1;
