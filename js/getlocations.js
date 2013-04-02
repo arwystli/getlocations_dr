@@ -159,6 +159,7 @@ var getlocations_settings = {};
         var js_path = settings.js_path;
 
         global_settings.info_path = settings.info_path;
+        global_settings.lidinfo_path = settings.lidinfo_path;
         global_settings.preload_data = settings.preload_data;
         if (settings.preload_data) {
           global_settings.getlocations_info = Drupal.settings.getlocations_info[key];
@@ -651,8 +652,7 @@ var getlocations_settings = {};
       }
       else {
         // fetch link and relocate
-        var path = Drupal.settings.basePath + "getlocations_cb/lidinfo";
-        $.get(path, {'lid': lid, 'key': lidkey}, function(data) {
+        $.get(gs.lidinfo_path, {'lid': lid, 'key': lidkey}, function(data) {
           if (data.content) {
             window.location = data.content;
           }
