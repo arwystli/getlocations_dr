@@ -1,9 +1,19 @@
-commit 9dbb047
+commit 960ec28
+Author: hutch <hutch@midwales.net>
+Date:   Fri Apr 12 08:20:29 2013 +0100
+
+    added openstreetmap
+
+getlocations.module
+js/getlocations.js
+
+commit fb2138e
 Author: hutch <hutch@midwales.net>
 Date:   Tue Apr 2 19:09:18 2013 +0100
 
     added street_num_pos feature
 
+CHANGELOG.txt
 modules/getlocations_fields/getlocations_fields.module
 modules/getlocations_fields/js/getlocations_fields.js
 

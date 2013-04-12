@@ -742,6 +742,7 @@ function getlocations_defaults() {
       'Satellite'               => 1,
       'Hybrid'                  => 1,
       'Physical'                => 1,
+      'OpenStreetMap'           => 0,
     ),
     'scale'                     => 0,
     'overview'                  => 0,
@@ -2228,6 +2229,10 @@ function getlocations_element_map_baselayers($view, $default) {
   elseif ($view == 'Physical') {
     $title = t('Terrain map');
     $description = t('Map with physical data (terrain, vegetation.)');
+  }
+  elseif ($view == 'OpenStreetMap') {
+    $title = t('OpenStreet map');
+    $description = t('Map from the OpenStreetMap Foundation.');
   }
   if ($title) {
     $element = getlocations_element_map_checkbox($title, $default, $description);

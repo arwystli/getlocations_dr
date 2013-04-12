@@ -102,6 +102,14 @@ var getlocations_settings = {};
         }
       }
 
+      function updateCopyrights() {
+        if(getlocations_map[key].getMapTypeId() == "OSM") {
+          copyrightNode.innerHTML = "OSM map data @<a target=\"_blank\" href=\"http://www.openstreetmap.org/\"> OpenStreetMap</a>-contributors,<a target=\"_blank\" href=\"http://creativecommons.org/licenses/by-sa/2.0/legalcode\"> CC BY-SA</a>";
+        }
+        else {
+          copyrightNode.innerHTML = "";
+        }
+      }
 
       // end functions
 
@@ -157,6 +165,7 @@ var getlocations_settings = {};
         var map_backgroundcolor = settings.map_backgroundcolor;
         var fullscreen = (settings.fullscreen ? true : false);
         var js_path = settings.js_path;
+        var useOpenStreetMap = false;
 
         global_settings.info_path = settings.info_path;
         global_settings.lidinfo_path = settings.lidinfo_path;
@@ -264,10 +273,9 @@ var getlocations_settings = {};
           cenlon = ((minlon + maxlon)/2);
         }
         // menu type
-        var mtc = settings.mtc;
-        if (mtc == 'standard') { mtc = google.maps.MapTypeControlStyle.HORIZONTAL_BAR; }
-        else if (mtc == 'menu' ) { mtc = google.maps.MapTypeControlStyle.DROPDOWN_MENU; }
-        else { mtc = false; }
+        var mtc = false;
+        if (settings.mtc == 'standard') { mtc = google.maps.MapTypeControlStyle.HORIZONTAL_BAR; }
+        else if (settings.mtc == 'menu' ) { mtc = google.maps.MapTypeControlStyle.DROPDOWN_MENU; }
 
         // nav control type
         if (controltype == 'default') { controltype = google.maps.ZoomControlStyle.DEFAULT; }
@@ -286,6 +294,16 @@ var getlocations_settings = {};
             if (baselayers.Satellite) { maptypes.push(google.maps.MapTypeId.SATELLITE); }
             if (baselayers.Hybrid) { maptypes.push(google.maps.MapTypeId.HYBRID); }
             if (baselayers.Physical) { maptypes.push(google.maps.MapTypeId.TERRAIN); }
+            if (baselayers.OpenStreetMap) {
+              maptypes.push("OSM");
+              var copyrightNode = document.createElement('div');
+              copyrightNode.id = 'copyright-control';
+              copyrightNode.style.fontSize = '11px';
+              copyrightNode.style.fontFamily = 'Arial, sans-serif';
+              copyrightNode.style.margin = '0 2px 2px 0';
+              copyrightNode.style.whiteSpace = 'nowrap';
+              useOpenStreetMap = true;
+            }
         }
         else {
           maptype = google.maps.MapTypeId.ROADMAP;
@@ -340,6 +358,24 @@ var getlocations_settings = {};
         }
 
         getlocations_map[key] = new google.maps.Map(document.getElementById("getlocations_map_canvas_" + key), mapOpts);
+
+        // OpenStreetMap
+        if (useOpenStreetMap) {
+          var tle = Drupal.t("OpenStreetMap");
+          if (settings.mtc == 'menu') {
+            tle = Drupal.t("OpenSMap");
+          }
+          getlocations_map[key].mapTypes.set("OSM", new google.maps.ImageMapType({
+            getTileUrl: function(coord, zoom) {
+              return "http://tile.openstreetmap.org/" + zoom + "/" + coord.x + "/" + coord.y + ".png";
+            },
+            tileSize: new google.maps.Size(256, 256),
+            name: tle,
+            maxZoom: 18
+          }));
+          google.maps.event.addListener(getlocations_map[key], 'maptypeid_changed', updateCopyrights);
+          getlocations_map[key].controls[google.maps.ControlPosition.BOTTOM_RIGHT].push(copyrightNode);
+        }
 
         // input map
         if (settings.inputmap) {
