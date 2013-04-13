@@ -123,6 +123,10 @@ class getlocations_plugin_style_map extends views_plugin_style {
     $options['polylines_coords']         = array('default' => $getlocations_defaults['polylines_coords']);
     $options['polylines_clickable']      = array('default' => $getlocations_defaults['polylines_clickable']);
     $options['polylines_message']        = array('default' => $getlocations_defaults['polylines_message']);
+    $options['kml_url']                  = array('default' => $getlocations_defaults['kml_url']);
+    $options['kml_url_click']            = array('default' => $getlocations_defaults['kml_url_click']);
+    $options[ 'kml_url_infowindow']      = array('default' => $getlocations_defaults['kml_url_infowindow']);
+    $options[ 'kml_url_viewport']        = array('default' => $getlocations_defaults['kml_url_viewport']);
 
     // categories
     $options['category_method']               = array('default' => $getlocations_defaults['category_method']);

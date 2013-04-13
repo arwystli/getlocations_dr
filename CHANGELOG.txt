@@ -1,9 +1,29 @@
-commit 960ec28
+commit 58e9f9e
+Author: hutch <hutch@midwales.net>
+Date:   Sat Apr 13 21:59:36 2013 +0100
+
+    added kml editor
+
+getlocations.module
+js/getlocations.js
+modules/getlocations_search/getlocations_search.module
+views/getlocations_plugin_style_map.inc
+
+commit a3f1b08
+Author: hutch <hutch@midwales.net>
+Date:   Sat Apr 13 21:59:00 2013 +0100
+
+    added version label
+
+getlocations.info
+
+commit 01bfac5
 Author: hutch <hutch@midwales.net>
 Date:   Fri Apr 12 08:20:29 2013 +0100
 
     added openstreetmap
 
+CHANGELOG.txt
 getlocations.module
 js/getlocations.js
 

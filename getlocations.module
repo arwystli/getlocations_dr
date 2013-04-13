@@ -840,6 +840,10 @@ function getlocations_defaults() {
     'category_term_reference_field' => '',
     'category_showhide_buttons'     => 0,
     'categories'                    => '',
+    'kml_url'                       => '',
+    'kml_url_click'                 => 1,
+    'kml_url_infowindow'            => 0,
+    'kml_url_viewport'              => 1,
   );
 
   $fieldables = getlocations_get_fieldable_entity_types();
@@ -1790,6 +1794,10 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
       'lidinfo_path'            => url("getlocations_cb/lidinfo"),
       'fullscreen'              => $defaults['fullscreen'],
       'show_bubble_on_one_marker' => $defaults['show_bubble_on_one_marker'],
+      'kml_url'                 => $defaults['kml_url'],
+      'kml_url_click'           => $defaults['kml_url_click'],
+      'kml_url_infowindow'      => $defaults['kml_url_infowindow'],
+      'kml_url_viewport'        => $defaults['kml_url_viewport'],
     ),
   );
   if ($defaults['weather_use']) {
@@ -2923,6 +2931,24 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
       '#description' => t('A pipe delimited list of latitude,longitude pairs, one set of polylines per line. You must have at least 2 pairs for each set.'),
     );
     $form['polylines_coords']['#suffix'] = '</div>';
+
+    $form['kml_url'] = getlocations_element_map_tf(
+      t('Kml url'),
+      $defaults['kml_url'],
+      t('A full url to a publicly accessible kml file.')
+    );
+    $form['kml_url_click'] = getlocations_element_map_checkbox(
+      t('Kml layer clickable'),
+      $defaults['kml_url_click']
+    );
+    $form['kml_url_infowindow'] = getlocations_element_map_checkbox(
+      t('Suppress Kml layer InfoWindows'),
+      $defaults['kml_url_infowindow']
+    );
+    $form['kml_url_viewport'] = getlocations_element_map_checkbox(
+      t('Preserve viewport'),
+      $defaults['kml_url_viewport']
+    );
 
   }
 

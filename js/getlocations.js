@@ -166,6 +166,10 @@ var getlocations_settings = {};
         var fullscreen = (settings.fullscreen ? true : false);
         var js_path = settings.js_path;
         var useOpenStreetMap = false;
+        var kml_url = settings.kml_url;
+        var kml_url_click = (settings.kml_url_click ? true : false);
+        var kml_url_infowindow = (settings.kml_url_infowindow ? true : false);
+        var kml_url_viewport = (settings.kml_url_viewport ? true : false);
 
         global_settings.info_path = settings.info_path;
         global_settings.lidinfo_path = settings.lidinfo_path;
@@ -402,6 +406,17 @@ var getlocations_settings = {};
               title: global_settings.cmgr_title
             }
           );
+        }
+
+        // KML
+        if (kml_url) {
+          var kmlLayer = new google.maps.KmlLayer({
+            url: kml_url,
+            preserveViewport: kml_url_viewport,
+            clickable: kml_url_click,
+            suppressInfoWindows: kml_url_infowindow,
+            map: getlocations_map[key]
+          });
         }
 
         // Traffic Layer
