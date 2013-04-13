@@ -1,3 +1,4 @@
+; getlocations-7.x-2.x
 name = Get Locations
 description = "Show locations on a Google map."
 package = "Location"
