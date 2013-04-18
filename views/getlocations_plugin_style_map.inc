@@ -127,6 +127,9 @@ class getlocations_plugin_style_map extends views_plugin_style {
     $options['kml_url_click']            = array('default' => $getlocations_defaults['kml_url_click']);
     $options[ 'kml_url_infowindow']      = array('default' => $getlocations_defaults['kml_url_infowindow']);
     $options[ 'kml_url_viewport']        = array('default' => $getlocations_defaults['kml_url_viewport']);
+    $options['kml_url_button']           = array('default' => $getlocations_defaults['kml_url_button']);
+    $options['kml_url_button_label']     = array('default' => $getlocations_defaults['kml_url_button_label']);
+    $options['kml_url_button_state']     = array('default' => $getlocations_defaults['kml_url_button_state']);
 
     // categories
     $options['category_method']               = array('default' => $getlocations_defaults['category_method']);

@@ -1,9 +1,21 @@
-commit 58e9f9e
+commit b62058a
+Author: hutch <hutch@midwales.net>
+Date:   Thu Apr 18 15:34:11 2013 +0100
+
+    more kml features
+
+getlocations.module
+js/getlocations.js
+modules/getlocations_search/getlocations_search.module
+views/getlocations_plugin_style_map.inc
+
+commit cac3ccb
 Author: hutch <hutch@midwales.net>
 Date:   Sat Apr 13 21:59:36 2013 +0100
 
     added kml editor
 
+CHANGELOG.txt
 getlocations.module
 js/getlocations.js
 modules/getlocations_search/getlocations_search.module

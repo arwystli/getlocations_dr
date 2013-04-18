@@ -410,12 +410,34 @@ var getlocations_settings = {};
 
         // KML
         if (kml_url) {
-          var kmlLayer = new google.maps.KmlLayer({
+          var kmlLayer = {};
+          var kmlLayertoggleState = [];
+          kmlLayer[key] = new google.maps.KmlLayer({
             url: kml_url,
             preserveViewport: kml_url_viewport,
             clickable: kml_url_click,
-            suppressInfoWindows: kml_url_infowindow,
-            map: getlocations_map[key]
+            suppressInfoWindows: kml_url_infowindow
+          });
+          if (settings.kml_url_button_state > 0) {
+            kmlLayer[key].setMap(getlocations_map[key]);
+            kmlLayertoggleState[key] = true;
+          }
+          else {
+            kmlLayer[key].setMap(null);
+            kmlLayertoggleState[key] = false;
+          }
+          $("#getlocations_toggleKmlLayer_" + key).click( function() {
+            if (kmlLayertoggleState[key]) {
+              kmlLayer[key].setMap(null);
+              kmlLayertoggleState[key] = false;
+              label = Drupal.t('Kml Layer On');
+            }
+            else {
+              kmlLayer[key].setMap(getlocations_map[key]);
+              kmlLayertoggleState[key] = true;
+              label = Drupal.t('Kml Layer Off');
+            }
+            $(this).val(label);
           });
         }
 
