@@ -11,113 +11,104 @@
   Drupal.behaviors.getlocations_fields_formatter = {
     attach: function() {
 
-      if ($("#edit-fields-field-location-settings-edit-form-settings-trafficinfo, #edit-style-options-trafficinfo").is('input')) {
-        if ($("#edit-fields-field-location-settings-edit-form-settings-trafficinfo, #edit-style-options-trafficinfo").attr('checked')) {
+      if ($("input[id$=settings-trafficinfo], input[id$=options-trafficinfo]").attr('checked')) {
+        $("#wrap-getlocations-trafficinfo").show();
+      }
+      else {
+        $("#wrap-getlocations-trafficinfo").hide();
+      }
+      $("input[id$=settings-trafficinfo], input[id$=options-trafficinfo]").change(function() {
+        if ($(this).attr('checked')) {
           $("#wrap-getlocations-trafficinfo").show();
         }
         else {
           $("#wrap-getlocations-trafficinfo").hide();
         }
-        $("#edit-fields-field-location-settings-edit-form-settings-trafficinfo, #edit-style-options-trafficinfo").change(function() {
-          if ($(this).attr('checked')) {
-            $("#wrap-getlocations-trafficinfo").show();
-          }
-          else {
-            $("#wrap-getlocations-trafficinfo").hide();
-          }
-        });
-      }
+      });
 
-      if ($("#edit-fields-field-location-settings-edit-form-settings-bicycleinfo, #edit-style-options-bicycleinfo").is('input')) {
-        if ($("#edit-fields-field-location-settings-edit-form-settings-bicycleinfo, #edit-style-options-bicycleinfo").attr('checked')) {
+      if ($("input[id$=settings-bicycleinfo], input[id$=options-bicycleinfo]").attr('checked')) {
+        $("#wrap-getlocations-bicycleinfo").show();
+      }
+      else {
+        $("#wrap-getlocations-bicycleinfo").hide();
+      }
+      $("input[id$=settings-bicycleinfo], input[id$=options-bicycleinfo]").change(function() {
+        if ($(this).attr('checked')) {
           $("#wrap-getlocations-bicycleinfo").show();
         }
         else {
           $("#wrap-getlocations-bicycleinfo").hide();
         }
-        $("#edit-fields-field-location-settings-edit-form-settings-bicycleinfo, #edit-style-options-bicycleinfo").change(function() {
-          if ($(this).attr('checked')) {
-            $("#wrap-getlocations-bicycleinfo").show();
-          }
-          else {
-            $("#wrap-getlocations-bicycleinfo").hide();
-          }
-        });
-      }
+      });
 
-      if ($("#edit-fields-field-location-settings-edit-form-settings-transitinfo, #edit-style-options-transitinfo").is('input')) {
-        if ($("#edit-fields-field-location-settings-edit-form-settings-transitinfo, #edit-style-options-transitinfo").attr('checked')) {
+      if ($("input[id$=settings-transitinfo], input[id$=options-transitinfo]").attr('checked')) {
+        $("#wrap-getlocations-transitinfo").show();
+      }
+      else {
+        $("#wrap-getlocations-transitinfo").hide();
+      }
+      $("input[id$=settings-transitinfo], input[id$=options-transitinfo]").change(function() {
+        if ($(this).attr('checked')) {
           $("#wrap-getlocations-transitinfo").show();
         }
         else {
           $("#wrap-getlocations-transitinfo").hide();
         }
-        $("#edit-fields-field-location-settings-edit-form-settings-transitinfo, #edit-style-options-transitinfo").change(function() {
-          if ($(this).attr('checked')) {
-            $("#wrap-getlocations-transitinfo").show();
-          }
-          else {
-            $("#wrap-getlocations-transitinfo").hide();
-          }
-        });
-      }
+      });
 
-      if ($("#edit-fields-field-location-settings-edit-form-settings-panoramio-show, #edit-style-options-panoramio-show").is('input')) {
-        if ($("#edit-fields-field-location-settings-edit-form-settings-panoramio-show, #edit-style-options-panoramio-show").attr('checked')) {
+      if ($("input[id$=settings-panoramio-show], input[id$=options-panoramio-show]").attr('checked')) {
+        $("#wrap-getlocations-panoramio").show();
+      }
+      else {
+        $("#wrap-getlocations-panoramio").hide();
+      }
+      $("input[id$=settings-panoramio-show], input[id$=options-panoramio-show]").change(function() {
+        if ($(this).attr('checked')) {
           $("#wrap-getlocations-panoramio").show();
         }
         else {
           $("#wrap-getlocations-panoramio").hide();
         }
-        $("#edit-fields-field-location-settings-edit-form-settings-panoramio-show, #edit-style-options-panoramio-show").change(function() {
-          if ($(this).attr('checked')) {
-            $("#wrap-getlocations-panoramio").show();
-          }
-          else {
-            $("#wrap-getlocations-panoramio").hide();
-          }
-        });
-      }
+      });
 
-      if ($("#edit-fields-field-location-settings-edit-form-settings-weather-show, #edit-style-options-weather-show").is('input')) {
-        if ($("#edit-fields-field-location-settings-edit-form-settings-weather-show, #edit-style-options-weather-show").attr('checked')) {
+      if ($("input[id$=settings-weather-show], input[id$=options-weather-show]").attr('checked')) {
+        $("#wrap-getlocations-weather").show();
+      }
+      else {
+        $("#wrap-getlocations-weather").hide();
+      }
+      $("input[id$=settings-weather-show], input[id$=options-weather-show]").change(function() {
+        if ($(this).attr('checked')) {
           $("#wrap-getlocations-weather").show();
         }
         else {
           $("#wrap-getlocations-weather").hide();
         }
-        $("#edit-fields-field-location-settings-edit-form-settings-weather-show, #edit-style-options-weather-show").change(function() {
-          if ($(this).attr('checked')) {
-            $("#wrap-getlocations-weather").show();
-          }
-          else {
-            $("#wrap-getlocations-weather").hide();
-          }
-        });
+      });
 
-        if ($("#edit-fields-field-location-settings-edit-form-settings-weather-cloud, #edit-style-options-weather-cloud").attr('checked')) {
+      if ($("input[id$=settings-weather-cloud], input[id$=options-weather-cloud]").attr('checked')) {
+        $("#wrap-getlocations-weather-cloud").show();
+      }
+      else {
+        $("#wrap-getlocations-weather-cloud").hide();
+      }
+      $("input[id$=settings-weather-cloud], input[id$=options-weather-cloud]").change(function() {
+        if ($(this).attr('checked')) {
           $("#wrap-getlocations-weather-cloud").show();
         }
         else {
           $("#wrap-getlocations-weather-cloud").hide();
         }
-        $("#edit-fields-field-location-settings-edit-form-settings-weather-cloud, #edit-style-options-weather-cloud").change(function() {
-          if ($(this).attr('checked')) {
-            $("#wrap-getlocations-weather-cloud").show();
-          }
-          else {
-            $("#wrap-getlocations-weather-cloud").hide();
-          }
-        });
-      }
+      });
 
-      if ($("#edit-fields-field-location-settings-edit-form-settings-polygons-enable, #edit-style-options-polygons-enable").attr('checked')) {
+
+      if ($("input[id*=polygons-enable]").attr('checked')) {
         $("#wrap-getlocations-polygons").show();
       }
       else {
         $("#wrap-getlocations-polygons").hide();
       }
-      $("#edit-fields-field-location-settings-edit-form-settings-polygons-enable, #edit-style-options-polygons-enable").change(function() {
+      $("input[id*=polygons-enable]").change(function() {
         if ($(this).attr('checked')) {
           $("#wrap-getlocations-polygons").show();
         }
@@ -126,13 +117,13 @@
         }
       });
 
-      if ($("#edit-fields-field-location-settings-edit-form-settings-rectangles-enable, #edit-style-options-rectangles-enable").attr('checked')) {
+      if ($("input[id*=rectangles-enable]").attr('checked')) {
         $("#wrap-getlocations-rectangles").show();
       }
       else {
         $("#wrap-getlocations-rectangles").hide();
       }
-      $("#edit-fields-field-location-settings-edit-form-settings-rectangles-enable, #edit-style-options-rectangles-enable").change(function() {
+      $("input[id*=rectangles-enable]").change(function() {
         if ($(this).attr('checked')) {
           $("#wrap-getlocations-rectangles").show();
         }
@@ -141,13 +132,13 @@
         }
       });
 
-      if ($("#edit-fields-field-location-settings-edit-form-settings-circles-enable, #edit-style-options-circles-enable").attr('checked')) {
+      if ($("input[id*=circles-enable]").attr('checked')) {
         $("#wrap-getlocations-circles").show();
       }
       else {
         $("#wrap-getlocations-circles").hide();
       }
-      $("#edit-fields-field-location-settings-edit-form-settings-circles-enable, #edit-style-options-circles-enable").change(function() {
+      $("input[id*=circles-enable]").change(function() {
         if ($(this).attr('checked')) {
           $("#wrap-getlocations-circles").show();
         }
@@ -156,13 +147,13 @@
         }
       });
 
-      if ($("#edit-fields-field-location-settings-edit-form-settings-polylines-enable, #edit-style-options-polylines-enable").attr('checked')) {
-        $("#wrap-getlocations-polylines").show();
+      if ($("input[id*=polylines-enable]").attr('checked')) {
+       $("#wrap-getlocations-polylines").show();
       }
       else {
         $("#wrap-getlocations-polylines").hide();
       }
-      $("#edit-fields-field-location-settings-edit-form-settings-polylines-enable, #edit-style-options-polylines-enable").change(function() {
+      $("input[id*=polylines-enable]").change(function() {
         if ($(this).attr('checked')) {
           $("#wrap-getlocations-polylines").show();
         }
@@ -174,3 +165,4 @@
     }
   };
 })(jQuery);
+
