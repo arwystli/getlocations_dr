@@ -4263,7 +4263,9 @@ function theme_getlocations_show($variables) {
       }
     }
   }
-  if (isset($defaults['kml_url_button']) && $defaults['kml_url_button']) {
+
+  // KML
+  if ($defaults['kml_url'] && $defaults['kml_url_button']) {
     $kmlbuttonlabel = t('Kml Layer');
     if ($defaults['kml_url_button_label']) {
       $kmlbuttonlabel = $defaults['kml_url_button_label'];
