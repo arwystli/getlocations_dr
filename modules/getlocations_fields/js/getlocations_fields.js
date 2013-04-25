@@ -488,4 +488,4 @@
       $(".field-type-getlocations-fields input.field-add-more-submit").hide();
     }
   };
-})(jQuery);
+}(jQuery));

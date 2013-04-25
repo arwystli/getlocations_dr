@@ -235,4 +235,4 @@ Drupal.getlocations.addHandler('getlocations', function (elem) {
 });
 
 */
-})(jQuery);
+}(jQuery));

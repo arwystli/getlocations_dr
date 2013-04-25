@@ -62,7 +62,7 @@ var getlocations_settings = {};
         },200);
       }
 
-      function doAllMarkers (map, gs, mkey) {
+      function doAllMarkers(map, gs, mkey) {
 
         var arr = gs.latlons;
         for (var i = 0; i < arr.length; i++) {
@@ -94,7 +94,7 @@ var getlocations_settings = {};
         }
         // add batchr
         if (gs.usemarkermanager) {
-        gs.mgr.addMarkers(gs.batchr, gs.minzoom, gs.maxzoom);
+         gs.mgr.addMarkers(gs.batchr, gs.minzoom, gs.maxzoom);
           gs.mgr.refresh();
         }
         else if (gs.useclustermanager) {
@@ -316,7 +316,6 @@ var getlocations_settings = {};
           maptypes.push(google.maps.MapTypeId.HYBRID);
           maptypes.push(google.maps.MapTypeId.TERRAIN);
         }
-
         // map styling
         var styles_array = [];
         if (map_styles) {
@@ -427,15 +426,16 @@ var getlocations_settings = {};
             kmlLayertoggleState[key] = false;
           }
           $("#getlocations_toggleKmlLayer_" + key).click( function() {
+            l = (settings.kml_url_button_label ? settings.kml_url_button_label : Drupal.t('Kml Layer'));
             if (kmlLayertoggleState[key]) {
               kmlLayer[key].setMap(null);
               kmlLayertoggleState[key] = false;
-              label = Drupal.t('Kml Layer On');
+              label = l + ' ' + Drupal.t('On');
             }
             else {
               kmlLayer[key].setMap(getlocations_map[key]);
               kmlLayertoggleState[key] = true;
-              label = Drupal.t('Kml Layer Off');
+              label = l + ' ' + Drupal.t('Off');
             }
             $(this).val(label);
           });
@@ -944,4 +944,4 @@ var getlocations_settings = {};
     }
   };
 
-})(jQuery);
+}(jQuery));
