@@ -226,7 +226,7 @@ function getlocations_settings_form() {
         foreach ($field_names AS $field_name => $marker_data) {
           $bundle_label = $marker_data['bundle_label'];
           $form['getlocations_markers'][$entity_type][$bundle][$field_name]['marker'] = getlocations_element_map_marker(
-            t('Type %etl, Bundle %name, Field %field Map marker', array('%etl' => $entity_type_label,'%name' => $bundle_label, '%field' => $field_name)),
+            t('Type %etl, Bundle %name, Field %field Map marker', array('%etl' => $entity_type_label, '%name' => $bundle_label, '%field' => $field_name)),
             $markers,
             (isset($getlocations_markers[$entity_type][$bundle][$field_name]['marker'] ) ? $getlocations_markers[$entity_type][$bundle][$field_name]['marker'] : (isset($getlocations_defaults[$entity_type . '_map_marker']) ? $getlocations_defaults[$entity_type . '_map_marker'] : $getlocations_defaults['map_marker']))
           );
@@ -498,10 +498,10 @@ function getlocations_settings_validate($form, &$form_state) {
   // markers
   $type_markers = getlocations_get_type_markers();
   foreach ($type_markers AS $entity_type => $bundles) {
-     if (isset($form_state['values']['getlocations_' . $entity_type . '_marker']) && ! $form_state['values']['getlocations_' . $entity_type . '_marker']['enable']) {
+    if (isset($form_state['values']['getlocations_' . $entity_type . '_marker']) && ! $form_state['values']['getlocations_' . $entity_type . '_marker']['enable']) {
       unset($form_state['values']['getlocations_' . $entity_type . '_marker']);
       $form_state['values']['getlocations_' . $entity_type . '_marker']['enable'] = 0;
-     }
+    }
   }
 
 }

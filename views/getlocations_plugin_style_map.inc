@@ -204,7 +204,7 @@ class getlocations_plugin_style_map extends views_plugin_style {
               $this->options[$mkey] = (isset($getlocations_markers[$entity_type][$bundle][$field_name]['marker'] ) ? $getlocations_markers[$entity_type][$bundle][$field_name]['marker'] : (isset($getlocations_defaults[$entity_type . '_map_marker']) ? $this->options[$entity_type . '_map_marker'] : $this->options['map_marker']));
             }
             $form[$mkey] = getlocations_element_map_marker(
-              t('Type %etl, Bundle %name, Field %field Map marker', array('%etl' => $entity_type_label,'%name' => $bundle_label, '%field' => $field_name)),
+              t('Type %etl, Bundle %name, Field %field Map marker', array('%etl' => $entity_type_label, '%name' => $bundle_label, '%field' => $field_name)),
               $markers,
               $this->options[$mkey]
             );

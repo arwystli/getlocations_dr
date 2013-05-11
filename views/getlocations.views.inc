@@ -89,7 +89,7 @@ function template_preprocess_getlocations_view_map(&$variables) {
       }
       elseif (module_exists('location') && isset($location['lid']) && $location['lid'] > 0) {
         $lid = $location['lid'];
-        ### if we have lid we can get field_name from location_instance.genid, then we can get the rest from the field_data
+        // if we have lid we can get field_name from location_instance.genid, then we can get the rest from the field_data
         $query = db_select('location_instance', 'i')
           ->fields('i', array('nid', 'uid', 'genid'))
           ->condition('i.lid', $lid);

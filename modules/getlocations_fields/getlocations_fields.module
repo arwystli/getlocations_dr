@@ -642,7 +642,7 @@ function getlocations_fields_field_formatter_settings_form($field, $instance, $v
               $bundle_label = $marker_data['bundle_label'];
               #$element['marker'][$entity_type][$bundle][$field_name]['marker'] = getlocations_element_map_marker(
               $element['marker_ma'] = getlocations_element_map_marker(
-                t('Type %etl, Bundle %name, Field %field Map marker', array('%etl' => $entity_type_label,'%name' => $bundle_label, '%field' => $field_name)),
+                t('Type %etl, Bundle %name, Field %field Map marker', array('%etl' => $entity_type_label, '%name' => $bundle_label, '%field' => $field_name)),
                 $markers,
                 (isset($getlocations_markers[$entity_type][$bundle][$field_name]['marker'] ) ? $getlocations_markers[$entity_type][$bundle][$field_name]['marker'] : (isset($getlocations_defaults[$entity_type . '_map_marker']) ? $getlocations_defaults[$entity_type . '_map_marker'] : $getlocations_defaults['map_marker']))
               );
@@ -1835,7 +1835,7 @@ function getlocations_fields_load_locations($entity_id, $entity_type, $field_nam
           $locations[$ct]['bundle'] = $entity_info['bundle'];
 
           // figure out the marker
-          if(empty($location['marker'])) {
+          if (empty($location['marker'])) {
             $location['marker'] = $getlocations_defaults['map_marker'];
             if (isset($location['map_marker']) && $location['map_marker']) {
               $location['marker'] = $location['map_marker'];
@@ -1912,7 +1912,7 @@ function getlocations_fields_load_location($glid) {
       $location['entity_key']  = $entity_get_info['entity keys']['id'];
 
       // figure out the marker
-      if(empty($location['marker'])) {
+      if (empty($location['marker'])) {
         $marker = $getlocations_defaults['map_marker'];
         $markertype = $location['entity_type'] . '_map_marker';
         if (isset($getlocations_defaults[$markertype]) && $getlocations_defaults[$markertype]) {
