@@ -2475,6 +2475,7 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
 
   $form['maptype'] = getlocations_element_map_maptype($defaults['maptype'], $defaults['baselayers']);
 
+  $getlocations_defaults = getlocations_defaults();
 
   $form['baselayers'] =  array(
     '#type' => 'fieldset',
@@ -2604,7 +2605,7 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
       );
       $form['panoramio_state']['#suffix'] = '</div></div>';
     }
-    elseif ($defaults['panoramio_use']) {
+    elseif ($getlocations_defaults['panoramio_use']) {
       $form['panoramio_show'] = getlocations_element_map_checkbox(
         t('Enable Panoramio'),
         $defaults['panoramio_show'],
@@ -2677,7 +2678,7 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
       );
       $form['weather_info']['#suffix'] = '</div>';
     }
-    elseif ($defaults['weather_use']) {
+    elseif ($getlocations_defaults['weather_use']) {
       $form['weather_show'] = getlocations_element_map_checkbox(
         t('Enable Weather information'),
         $defaults['weather_show'],
