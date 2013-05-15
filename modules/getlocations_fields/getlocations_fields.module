@@ -1805,57 +1805,63 @@ function getlocations_fields_load_locations($entity_id, $entity_type, $field_nam
     foreach ($field_names AS $fn) {
       if (isset($entity->{$fn} )) {
         $lang = $entity->language;
-        foreach ($entity->{$fn}[$lang] AS $location) {
-          $locations[$ct]['glid'] = $location['glid'];
-          $locations[$ct]['lid'] = $location['glid'];
-          $locations[$ct]['name'] = $location['name'];
-          $locations[$ct]['street'] = $location['street'];
-          $locations[$ct]['additional'] = $location['additional'];
-          $locations[$ct]['city'] = $location['city'];
-          $locations[$ct]['province'] = $location['province'];
-          $locations[$ct]['province_name'] = $location['province_name'];
-          $locations[$ct]['postal_code'] = $location['postal_code'];
-          if ($getlocations_fields_defaults['country_full'] && drupal_strlen($location['country']) == 2) {
-            $location[$ct]['country_name'] = getlocations_get_country_name($location['country']);
-          }
-          else {
-            $location[$ct]['country_name'] = $location['country'];
-          }
-          $locations[$ct]['country'] = $location['country'];
-          $locations[$ct]['address'] = $location['address'];
-          $locations[$ct]['latitude'] = $location['latitude'];
-          $locations[$ct]['longitude'] = $location['longitude'];
-          $locations[$ct]['field_name'] = $fn;
-          $locations[$ct]['entity_type'] = $entity_type;
-          $locations[$ct]['entity_id'] = $entity_id;
-          $locations[$ct]['entity_key'] = $entity_key;
-
-          $entity_info = getlocations_get_entity_info_from_glid($location['glid']);
-          $bundle = $entity_info['bundle'];
-          $locations[$ct]['bundle'] = $entity_info['bundle'];
-
-          // figure out the marker
-          if (empty($location['marker'])) {
-            $location['marker'] = $getlocations_defaults['map_marker'];
-            if (isset($location['map_marker']) && $location['map_marker']) {
-              $location['marker'] = $location['map_marker'];
+        if ($field_lang = getlocations_get_field_lang($entity_id, $entity_type, $fn)) {
+          $lang = $field_lang;
+        }
+        if (isset($entity->{$fn}[$lang])) {
+          foreach ($entity->{$fn}[$lang] AS $location) {
+            $locations[$ct]['glid'] = $location['glid'];
+            $locations[$ct]['lid'] = $location['glid'];
+            $locations[$ct]['name'] = $location['name'];
+            $locations[$ct]['street'] = $location['street'];
+            $locations[$ct]['additional'] = $location['additional'];
+            $locations[$ct]['city'] = $location['city'];
+            $locations[$ct]['province'] = $location['province'];
+            $locations[$ct]['province_name'] = $location['province_name'];
+            $locations[$ct]['postal_code'] = $location['postal_code'];
+            if ($getlocations_fields_defaults['country_full'] && drupal_strlen($location['country']) == 2) {
+              $location[$ct]['country_name'] = getlocations_get_country_name($location['country']);
             }
             else {
-              $markertype = $entity_type . '_map_marker';
-              if (isset($getlocations_defaults[$markertype]) && $getlocations_defaults[$markertype]) {
-                $location['marker'] = $getlocations_defaults[$markertype];
-              }
+              $location[$ct]['country_name'] = $location['country'];
+            }
+            $locations[$ct]['country'] = $location['country'];
+            $locations[$ct]['address'] = $location['address'];
+            $locations[$ct]['latitude'] = $location['latitude'];
+            $locations[$ct]['longitude'] = $location['longitude'];
+            $locations[$ct]['field_name'] = $fn;
+            $locations[$ct]['entity_type'] = $entity_type;
+            $locations[$ct]['entity_id'] = $entity_id;
+            $locations[$ct]['entity_key'] = $entity_key;
+            $locations[$ct]['language'] = $lang;
 
-              $getlocations_markers = variable_get('getlocations_markers', array());
-              if (isset($getlocations_markers[$entity_type]['enable']) && $getlocations_markers[$entity_type]['enable']) {
-                if (isset($getlocations_markers[$entity_type][$bundle][$fn]['marker']) && $getlocations_markers[$entity_type][$bundle][$fn]['marker']) {
-                  $location['marker'] = $getlocations_markers[$entity_type][$bundle][$fn]['marker'];
+            $entity_info = getlocations_get_entity_info_from_glid($location['glid']);
+            $bundle = $entity_info['bundle'];
+            $locations[$ct]['bundle'] = $entity_info['bundle'];
+
+            // figure out the marker
+            if (empty($location['marker'])) {
+              $location['marker'] = $getlocations_defaults['map_marker'];
+              if (isset($location['map_marker']) && $location['map_marker']) {
+                $location['marker'] = $location['map_marker'];
+              }
+              else {
+                $markertype = $entity_type . '_map_marker';
+                if (isset($getlocations_defaults[$markertype]) && $getlocations_defaults[$markertype]) {
+                  $location['marker'] = $getlocations_defaults[$markertype];
+                }
+
+                $getlocations_markers = variable_get('getlocations_markers', array());
+                if (isset($getlocations_markers[$entity_type]['enable']) && $getlocations_markers[$entity_type]['enable']) {
+                  if (isset($getlocations_markers[$entity_type][$bundle][$fn]['marker']) && $getlocations_markers[$entity_type][$bundle][$fn]['marker']) {
+                    $location['marker'] = $getlocations_markers[$entity_type][$bundle][$fn]['marker'];
+                  }
                 }
               }
             }
+            $locations[$ct]['marker'] = $location['marker'];
+            $ct++;
           }
-          $locations[$ct]['marker'] = $location['marker'];
-          $ct++;
         }
       }
     }

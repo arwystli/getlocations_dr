@@ -587,9 +587,9 @@ function getlocations_setup_js($defaults, $googleonly = FALSE) {
   if ($defaults['use_jsapi']) {
     $jsapilink =  url($scheme . '://' . 'www.google.com/jsapi');
     if (!stristr($current_js, $jsapilink)) {
-       $js_opts = array();
-       $js_opts['weight'] = $getlocations_js_weight;
-       $js_opts['type'] = 'external';
+      $js_opts = array();
+      $js_opts['weight'] = $getlocations_js_weight;
+      $js_opts['type'] = 'external';
       drupal_add_js($jsapilink, $js_opts);
       $getlocations_js_weight++;
     }
@@ -1509,7 +1509,7 @@ function getlocations_check_entity_type($entity_type = '', $bundle = '') {
     $query->join('field_config_instance', 'i', 'f.id=i.field_id');
     $query->condition('f.module', $module);
     if ($entity_type) {
-       $query->condition('i.entity_type', $entity_type);
+      $query->condition('i.entity_type', $entity_type);
     }
     if ($bundle) {
       $query->condition('i.bundle', $bundle);
@@ -3370,6 +3370,24 @@ function getlocations_get_bundles($module = 'getlocations_fields', $type = 'getl
 }
 
 /**
+ * Get the field specific language.
+ */
+function getlocations_get_field_lang($entity_id, $entity_type, $field_name) {
+
+  $table = 'field_data_' . $field_name;
+  $query = db_select($table, 't');
+  $query->fields('t', array('language'));
+  $query->condition('t.entity_type', $entity_type)->condition('t.entity_id', $entity_id);
+  $row = $query->execute()->fetchAssoc();
+  if ($row['language']) {
+    return $row['language'];
+  }
+  return FALSE;
+
+}
+
+
+/**
  * Fetch a list of the core Drupal list of countries.
  * from location module
  *
@@ -3382,7 +3400,7 @@ function getlocations_get_countries_list($upper = TRUE, $only_continents = '', $
   if (module_exists('countries')) {
     $filter = array('enabled' => COUNTRIES_ENABLED);
     if ($only_countries) {
-      $only_countries = strtoupper($only_countries);
+      $only_countries = drupal_strtoupper($only_countries);
       $oc = explode(',', $only_countries);
       if (! empty($oc)) {
         $filter['countries'] = $oc;
@@ -3390,7 +3408,7 @@ function getlocations_get_countries_list($upper = TRUE, $only_continents = '', $
     }
     elseif (is_array($only_continents)) {
       $oc = array();
-      foreach($only_continents AS $v) {
+      foreach ($only_continents AS $v) {
         $oc[] = $v;
       }
       if (! empty($oc)) {
@@ -3638,10 +3656,11 @@ function getlocations_earth_longitude_range($latitude, $longitude, $distance) {
   $lat = deg2rad($latitude);
   $radius = getlocations_earth_radius($latitude) * cos($lat);
 
-  if($radius > 0) {
+  if ($radius > 0) {
     $angle = abs($distance / $radius );
     $angle = min($angle, pi());
-  } else {
+  }
+  else {
     $angle = pi();
   }
   $minlong = $long - $angle;
@@ -4260,7 +4279,7 @@ function theme_getlocations_show($variables) {
   if (isset($defaults['category_showhide_buttons']) && $defaults['category_showhide_buttons']) {
     if (isset($defaults['categories']) && $defaults['categories']) {
       foreach ($defaults['categories'] AS $cat => $label) {
-        $buttons[] = '<input type="button" value="' . t('!cat Off', array('!cat' => $label)) . '" id="getlocations_toggle_' . $cat .  '_' . $mapid . '" class="form-submit" />';
+        $buttons[] = '<input type="button" value="' . t('!cat Off', array('!cat' => $label)) . '" id="getlocations_toggle_' . $cat . '_' . $mapid . '" class="form-submit" />';
       }
     }
   }
@@ -4378,7 +4397,7 @@ function theme_getlocations_info($variables) {
   }
   $output .= '</div>';
   if (isset($location['sdist'])) {
-    if($location['sdist'] <> 1) {
+    if ($location['sdist'] <> 1) {
       $unit_disp = getlocations_get_unit_names($location['sunit']);
     }
     else {

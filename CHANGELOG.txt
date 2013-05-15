@@ -1,9 +1,39 @@
-commit dd99901
+commit 64b47b8
+Author: hutch <hutch@midwales.net>
+Date:   Wed May 15 10:12:37 2013 +0100
+
+    fixed field lang bug
+
+getlocations.module
+modules/getlocations_fields/getlocations_fields.module
+
+commit 54e0c35
+Author: hutch <hutch@midwales.net>
+Date:   Sat May 11 21:38:08 2013 +0100
+
+    coder review
+
+getlocations.admin.inc
+modules/getlocations_fields/getlocations_fields.install
+modules/getlocations_fields/getlocations_fields.module
+views/getlocations.views.inc
+views/getlocations_plugin_style_map.inc
+
+commit 68bc477
+Author: hutch <hutch@midwales.net>
+Date:   Sat May 11 20:54:34 2013 +0100
+
+    fixed bug in panoramio and weather config
+
+getlocations.module
+
+commit c1fdf50
 Author: hutch <hutch@midwales.net>
 Date:   Thu Apr 25 19:57:09 2013 +0100
 
     fixed jquery sig
 
+CHANGELOG.txt
 js/getlocations.js
 js/getlocations_admin.js
 js/getlocations_box.js
