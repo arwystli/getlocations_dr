@@ -296,7 +296,10 @@ function getlocations_entity_type_map($type, $entity_id) {
   if (count($locations)) {
     // we should loop over them and dump bummers with no lat/lon
     foreach ($locations AS $key => $location) {
-      if (getlocations_latlon_check($location['latitude'] . ',' . $location['longitude']) ) {
+      if ($latlon = getlocations_latlon_check($location['latitude'] . ',' . $location['longitude'])) {
+        $ll = explode(',', $latlon);
+        $location['latitude'] = $ll[0];
+        $location['longitude'] = $ll[1];
         $minmaxes = getlocations_do_minmaxes($ct, $location, $minmaxes);
         $location['entity_id'] = $entity_id;
         $location['entity_type'] = $entity_type;
@@ -360,7 +363,10 @@ function getlocations_usersmap() {
     if (count($locations)) {
       // we should loop over them and dump bummers with no lat/lon
       foreach ($locations AS $key => $location) {
-        if (getlocations_latlon_check($location['latitude'] . ',' . $location['longitude']) ) {
+        if ($latlon = getlocations_latlon_check($location['latitude'] . ',' . $location['longitude'])) {
+          $ll = explode(',', $latlon);
+          $location['latitude'] = $ll[0];
+          $location['longitude'] = $ll[1];
           $minmaxes = getlocations_do_minmaxes($ct, $location, $minmaxes);
           if (! isset($location['key'])) {
             $location['key'] = '';
@@ -413,7 +419,10 @@ function getlocations_lids($lidlist) {
   if (count($locations)) {
     // we should loop over them and dump bummers with no lat/lon
     foreach ($locations AS $key => $location) {
-      if (getlocations_latlon_check($location['latitude'] . ',' . $location['longitude']) ) {
+      if ($latlon = getlocations_latlon_check($location['latitude'] . ',' . $location['longitude'])) {
+        $ll = explode(',', $latlon);
+        $location['latitude'] = $ll[0];
+        $location['longitude'] = $ll[1];
         $minmaxes = getlocations_do_minmaxes($ct, $location, $minmaxes);
         $location['key'] = '';
         $ct++;
@@ -461,7 +470,10 @@ function getlocations_nids($nidlist) {
   if (count($locations)) {
     // we should loop over them and dump bummers with no lat/lon
     foreach ($locations AS $key => $location) {
-      if (getlocations_latlon_check($location['latitude'] . ',' . $location['longitude']) ) {
+      if ($latlon = getlocations_latlon_check($location['latitude'] . ',' . $location['longitude'])) {
+        $ll = explode(',', $latlon);
+        $location['latitude'] = $ll[0];
+        $location['longitude'] = $ll[1];
         $minmaxes = getlocations_do_minmaxes($ct, $location, $minmaxes);
         if (! isset($location['key'])) {
           $location['key'] = '';
@@ -886,10 +898,39 @@ function getlocations_defaults_check() {
  *   Returns true or false
  */
 function getlocations_latlon_check($latlon) {
-  if (! empty($latlon) && preg_match("/[0-9.\-],[0-9.\-]/", $latlon)) {
+
+  if (! empty($latlon)) {
     $ll = explode(',', $latlon);
-    if (! ($ll[0] == 0 && $ll[1] == 0) && isset($ll[0]) && is_numeric($ll[0]) && isset($ll[1]) && is_numeric($ll[1])) {
-      return $latlon;
+    $lat = (isset( $ll[0]) ? $ll[0] : FALSE);
+    $lon = (isset( $ll[1]) ? $ll[1] : FALSE);
+    $lat = trim($lat);
+    $lon = trim($lon);
+
+    if ((abs($lat) || abs($lon)) && is_numeric($lat) && is_numeric($lon)) {
+      $latregex = "/[-+]{0,1}[0-9]{1,}\.{1}[0-9]{1,}/";
+      if (! strpos($lat, '.')) {
+        $latregex = "/[-+]{0,1}[0-9]{1,}/";
+      }
+      $lonregex = "/[-+]{0,1}[0-9]{1,}\.{1}[0-9]{1,}/";
+      if (! strpos($lon, '.')) {
+        $lonregex = "/[-+]{0,1}[0-9]{1,}/";
+      }
+      if (preg_match($latregex, $lat) && preg_match($lonregex, $lon)) {
+        // Normalize coordinates.
+        while ($lat > 90) {
+          $lat -= 180;
+        }
+        while ($lat < -90) {
+          $lat += 180;
+        }
+        while ($lon > 180) {
+          $lon -= 360;
+        }
+        while ($lon < -180) {
+          $lon += 360;
+        }
+        return "$lat" . "," . "$lon";
+      }
     }
   }
   return FALSE;
@@ -1982,9 +2023,10 @@ function getlocations_other_load_locations($entity_id, $entity_type, $module = '
           $ct = 0;
           foreach ($geo[$lang] AS $g) {
             if (isset($g['lat']) && isset($g['lon'])) {
-              if (getlocations_latlon_check($g['lat'] . ',' . $g['lon'])) {
-                $locations[$ct]['latitude']  = $g['lat'];
-                $locations[$ct]['longitude'] = $g['lon'];
+              if ($latlon = getlocations_latlon_check($g['lat'] . ',' . $g['lon'])) {
+                $ll = explode(',', $latlon);
+                $locations[$ct]['latitude']  = $ll[0];
+                $locations[$ct]['longitude'] = $ll[1];
                 $locations[$ct]['entity_key'] = $entity_key;
                 $locations[$ct]['entity_id'] = $entity_id;
                 $locations[$ct]['entity_type'] = $entity_type;
@@ -2019,9 +2061,10 @@ function getlocations_other_load_locations($entity_id, $entity_type, $module = '
           $ct = 0;
           foreach ($geo[$lang] AS $g) {
             if (isset($g['lat']) && isset($g['lng'])) {
-              if (getlocations_latlon_check($g['lat'] . ',' . $g['lng'])) {
-                $locations[$ct]['latitude']  = $g['lat'];
-                $locations[$ct]['longitude'] = $g['lng'];
+              if ($latlon = getlocations_latlon_check($g['lat'] . ',' . $g['lng'])) {
+                $ll = explode(',', $latlon);
+                $locations[$ct]['latitude']  = $ll[0];
+                $locations[$ct]['longitude'] = $ll[1];
                 $locations[$ct]['entity_key'] = $entity_key;
                 $locations[$ct]['entity_id'] = $entity_id;
                 $locations[$ct]['entity_type'] = $entity_type;
@@ -3038,7 +3081,6 @@ function getlocations_colorbox_settings() {
 function getlocations_get_polygon_settings($defaults) {
   $coords = preg_replace("/\r/", '', $defaults['polygons_coords']);
   $coords_arr = preg_split("/\n/", $coords);
-  $regex = "/[-+]{0,1}[0-9]{1,}\.{1}[0-9]{1,}\,[-+]{0,1}[0-9]{1,}\.{1}[0-9]{1,}/";
   $lla = array();
   $polygons = array();
   $ct = 0;
@@ -3056,8 +3098,8 @@ function getlocations_get_polygon_settings($defaults) {
 
     $linebits = explode("|", $line);
     foreach ($linebits AS $linebit) {
-      if (preg_match($regex, $linebit)) {
-        $lla[] = $linebit;
+      if ($latlon = getlocations_latlon_check($linebit)) {
+        $lla[] = $latlon;
       }
       else {
         // not a latlon so could be a setting
@@ -3102,7 +3144,6 @@ function getlocations_get_polygon_settings($defaults) {
 function getlocations_get_rectangle_settings($defaults) {
   $coords = preg_replace("/\r/", '', $defaults['rectangles_coords']);
   $coords_arr = preg_split("/\n/", $coords);
-  $regex = "/[-+]{0,1}[0-9]{1,}\.{1}[0-9]{1,}\,[-+]{0,1}[0-9]{1,}\.{1}[0-9]{1,}/";
   $lla = array();
   $rectangles = array();
   $ct = 0;
@@ -3120,8 +3161,8 @@ function getlocations_get_rectangle_settings($defaults) {
 
     $linebits = explode("|", $line);
     foreach ($linebits AS $linebit) {
-      if (preg_match($regex, $linebit)) {
-        $lla[] = $linebit;
+      if ($latlon = getlocations_latlon_check($linebit)) {
+        $lla[] = $latlon;
       }
       else {
         // not a latlon so could be a setting
@@ -3166,7 +3207,6 @@ function getlocations_get_rectangle_settings($defaults) {
 function getlocations_get_circle_settings($defaults) {
   $coords = preg_replace("/\r/", '', $defaults['circles_coords']);
   $coords_arr = preg_split("/\n/", $coords);
-  $regex = "/[-+]{0,1}[0-9]{1,}\.{1}[0-9]{1,}\,[-+]{0,1}[0-9]{1,}\.{1}[0-9]{1,}/";
   $lla = array();
   $circles = array();
   $ct = 0;
@@ -3185,8 +3225,8 @@ function getlocations_get_circle_settings($defaults) {
 
     $linebits = explode("|", $line);
     foreach ($linebits AS $linebit) {
-      if (preg_match($regex, $linebit)) {
-        $lla[] = $linebit;
+      if ($latlon = getlocations_latlon_check($linebit)) {
+        $lla[] = $latlon;
       }
       else {
         // not a latlon so could be a setting
@@ -3235,7 +3275,6 @@ function getlocations_get_circle_settings($defaults) {
 function getlocations_get_polyline_settings($defaults) {
   $coords = preg_replace("/\r/", '', $defaults['polylines_coords']);
   $coords_arr = preg_split("/\n/", $coords);
-  $regex = "/[-+]{0,1}[0-9]{1,}\.{1}[0-9]{1,}\,[-+]{0,1}[0-9]{1,}\.{1}[0-9]{1,}/";
   $lla = array();
   $polylines = array();
   $ct = 0;
@@ -3251,8 +3290,8 @@ function getlocations_get_polyline_settings($defaults) {
 
     $linebits = explode("|", $line);
     foreach ($linebits AS $linebit) {
-      if (preg_match($regex, $linebit)) {
-        $lla[] = $linebit;
+      if ($latlon = getlocations_latlon_check($linebit)) {
+        $lla[] = $latlon;
       }
       else {
         // not a latlon so could be a setting

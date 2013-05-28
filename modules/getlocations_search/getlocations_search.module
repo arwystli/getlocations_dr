@@ -792,8 +792,10 @@ function getlocations_search_allinfo() {
 
   $dms = ($getlocations_search_defaults['display_dms'] ? TRUE : FALSE);
   // sanity check
-  $latlon = $lat . ',' . $lon;
-  if (getlocations_latlon_check($latlon)) {
+  if ($latlon = getlocations_latlon_check($lat . ',' . $lon)) {
+    $ll = explode(',', $latlon);
+    $lat = $ll[0];
+    $lon = $ll[1];
     $output = getlocations_search_info_sql($lat, $lon, $distance, $units, $type, $dosort, $limits, $dms);
     drupal_json_output($output);
   }

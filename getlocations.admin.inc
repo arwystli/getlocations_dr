@@ -420,7 +420,10 @@ function getlocations_settings_form() {
 
 function getlocations_settings_validate($form, &$form_state) {
 
-  if (! getlocations_latlon_check(  $form_state['values']['getlocations_default']['latlong']  )   ) {
+  if ($latlon = getlocations_latlon_check($form_state['values']['getlocations_default']['latlong'])) {
+    $form_state['values']['getlocations_default']['latlong'] = $latlon;
+  }
+  else {
     form_set_error('getlocations_default][latlong', t('Map coordinates must be expressed as a decimal latitude and longitude, separated by a comma.'));
   }
   $found = FALSE;

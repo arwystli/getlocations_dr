@@ -1410,9 +1410,8 @@ function getlocations_fields_getmap($settings, $active) {
   if (module_exists('smart_ip') && $settings['use_smart_ip_latlon']) {
     $lla = getlocations_fields_smart_ip_get();
     if ($lla && is_array($lla)) {
-      $ll = $lla['latitude'] . ',' . $lla['longitude'];
-      if (getlocations_latlon_check($ll)) {
-        $getlocations_defaults['latlong'] = $ll;
+      if ($latlon = getlocations_latlon_check($lla['latitude'] . ',' . $lla['longitude'])) {
+        $getlocations_defaults['latlong'] = $latlon;
       }
     }
   }

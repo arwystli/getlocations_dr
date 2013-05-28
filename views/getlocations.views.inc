@@ -166,8 +166,11 @@ function template_preprocess_getlocations_view_map(&$variables) {
         if (isset($location['marker']) && ! empty($location['marker'])) {
           $marker = $location['marker'];
         }
-
-        if (getlocations_latlon_check($location['latitude'] . ',' . $location['longitude']) ) {
+        // dump bummers with no lat/lon
+        if ($latlon = getlocations_latlon_check($location['latitude'] . ',' . $location['longitude'])) {
+          $ll = explode(',', $latlon);
+          $location['latitude'] = $ll[0];
+          $location['longitude'] = $ll[1];
           $minmaxes = getlocations_do_minmaxes($ct, $location, $minmaxes);
           $ct++;
           $name = htmlspecialchars_decode(isset($location['name']) && $location['name'] ? strip_tags($location['name']) : (isset($location['title']) && $location['title'] ? strip_tags($location['title']) : ''), ENT_QUOTES);

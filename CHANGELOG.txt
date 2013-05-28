@@ -1,9 +1,22 @@
-commit 64b47b8
+commit 8df5657
+Author: hutch <hutch@midwales.net>
+Date:   Tue May 28 11:01:07 2013 +0100
+
+    better getlocations_latlon_check()
+
+getlocations.admin.inc
+getlocations.module
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_search/getlocations_search.module
+views/getlocations.views.inc
+
+commit 68e0399
 Author: hutch <hutch@midwales.net>
 Date:   Wed May 15 10:12:37 2013 +0100
 
     fixed field lang bug
 
+CHANGELOG.txt
 getlocations.module
 modules/getlocations_fields/getlocations_fields.module
 
