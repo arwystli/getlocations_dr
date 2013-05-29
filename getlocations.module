@@ -2254,6 +2254,7 @@ function getlocations_element_map_maptype($default, $baselayers) {
     'Satellite' => t('Standard satellite map'),
     'Hybrid' => t('Hybrid satellite map'),
     'Physical' => t('Terrain map'),
+    'OpenStreetMap' => t('OpenStreet map'),
   );
   foreach ($layers AS $key => $layer) {
     if ($baselayers[$key]) {
@@ -2271,6 +2272,7 @@ function getlocations_element_map_maptype($default, $baselayers) {
 
 function getlocations_element_map_baselayers($view, $default) {
   // Map Satellite Hybrid Physical
+  $title = FALSE;
   if ($view == 'Map') {
     $title = t('Standard street map');
     $description = t('The standard default street map.');
@@ -2515,6 +2517,22 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
   $form['controltype'] = getlocations_element_map_zoom_controltype($defaults['controltype']);
   $form['pancontrol'] = getlocations_element_map_checkbox(t('Show Pan control'), $defaults['pancontrol']);
   $form['mtc'] = getlocations_element_map_mtc($defaults['mtc']);
+
+  // a hack to get this in
+  if (! isset($defaults['baselayers']['OpenStreetMap'])) {
+    $defaults['baselayers']['OpenStreetMap'] = 0;
+  }
+  // make sure at least one layer is set
+  $found = FALSE;
+  foreach ($defaults['baselayers'] AS $key => $value) {
+    if ($value) {
+      $found = TRUE;
+    }
+  }
+  if (! $found) {
+    $defaults['baselayers']['Map'] = 1;
+    $defaults['maptype'] = 'Map';
+  }
 
   $form['maptype'] = getlocations_element_map_maptype($defaults['maptype'], $defaults['baselayers']);
 
