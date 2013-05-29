@@ -366,7 +366,7 @@ var getlocations_settings = {};
         if (useOpenStreetMap) {
           var tle = Drupal.t("OpenStreetMap");
           if (settings.mtc == 'menu') {
-            tle = Drupal.t("OpenSMap");
+            tle = Drupal.t("OSM map");
           }
           getlocations_map[key].mapTypes.set("OSM", new google.maps.ImageMapType({
             getTileUrl: function(coord, zoom) {
