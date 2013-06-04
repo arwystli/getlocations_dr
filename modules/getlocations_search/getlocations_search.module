@@ -260,7 +260,7 @@ function getlocations_search_getmap($which = 'page') {
     'circles_fillcolor', 'circles_fillopacity', 'circles_coords', 'circles_radius', 'circles_clickable', 'circles_message',
     'polylines_enable', 'polylines_strokecolor', 'polylines_strokeopacity', 'polylines_strokeweight',
     'polylines_coords', 'polylines_clickable', 'polylines_message',
-    'kml_url', 'kml_url_click', 'kml_url_infowindow', 'kml_url_viewport', 'kml_url_button', 'kml_url_button_label', 'kml_url_button_state',
+    'kml_url', 'kml_url_click', 'kml_url_infowindow', 'kml_url_viewport', 'kml_url_button', 'kml_url_button_label', 'kml_url_button_state', 'visual_refresh',
   );
   foreach ($keys AS $key) {
     $getlocations_defaults[$key] = $getlocations_search_defaults[$key];
@@ -648,6 +648,7 @@ function getlocations_search_defaults() {
     'kml_url_button'            => $getlocations_defaults['kml_url_button'],
     'kml_url_button_label'      => $getlocations_defaults['kml_url_button_label'],
     'kml_url_button_state'      => $getlocations_defaults['kml_url_button_state'],
+    'visual_refresh'            => $getlocations_defaults['visual_refresh'],
   );
 
   $settings = variable_get('getlocations_search_defaults', $defaults);

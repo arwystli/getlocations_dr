@@ -190,6 +190,10 @@ function getlocations_type_load($arg) {
   return ((isset($row['type']) && $row['type']) ? $arg : FALSE);
 }
 
+/**
+ * sanity check on list of nids
+ *
+ */
 function getlocations_cdints_load($arg) {
   $arr = explode(',', $arg);
   foreach ($arr AS $a) {
@@ -200,6 +204,10 @@ function getlocations_cdints_load($arg) {
   return $arg;
 }
 
+/**
+ * sanity check on entity type
+ *
+ */
 function getlocations_entity_type_load($arg) {
   if (getlocations_check_entity_type($arg)) {
     return $arg;
@@ -494,7 +502,6 @@ function getlocations_nids($nidlist) {
 /**
  * Set up javascript settings and map
  */
-// DONE
 function getlocations_setlocations($latlons, $minmaxes='', $entity_info = '', $object = '', $width='', $height='') {
   if (! getlocations_defaults_check()) {
     return t('You need to !c first.', array('!c' => l('Configure Getlocations', 'admin/config/services/getlocations')));
@@ -859,6 +866,7 @@ function getlocations_defaults() {
     'kml_url_button'                => 0,
     'kml_url_button_label'          => 'Kml Layer',
     'kml_url_button_state'          => 0,
+    'visual_refresh'                => 0,
   );
 
   $fieldables = getlocations_get_fieldable_entity_types();
@@ -953,6 +961,14 @@ function getlocations_get_vid($nid) {
   return FALSE;
 }
 
+/**
+ * Function to get the nid from node table.
+ *
+ * @param int $vid
+ *
+ * @return
+ *   Returns nid.
+ */
 function getlocations_get_nid($vid) {
   if (is_numeric($vid) && $vid ) {
     $query = db_select('node', 'n')->fields('n', array('nid'))->condition('n.vid', $vid);
@@ -962,7 +978,14 @@ function getlocations_get_nid($vid) {
   return FALSE;
 }
 
-// used by location module
+/**
+ * Function to get nid from location_instance table.
+ *
+ * @param int $lid
+ *
+ * @return
+ *   Returns nid.
+ */
 function getlocations_get_nid_from_lid($lid) {
   if (is_numeric($lid) && $lid) {
     if (module_exists('location') && (module_exists('location_cck') || module_exists('location_node'))) {
@@ -974,7 +997,14 @@ function getlocations_get_nid_from_lid($lid) {
   return FALSE;
 }
 
-// used by location module
+/**
+ * Function to get uid from location_instance table.
+ *
+ * @param int $lid
+ *
+ * @return
+ *   Returns uid.
+ */
 function getlocations_get_uid_from_lid($lid) {
   if (is_numeric($lid) && $lid) {
     if (module_exists('location') && module_exists('location_user')) {
@@ -986,7 +1016,15 @@ function getlocations_get_uid_from_lid($lid) {
   return FALSE;
 }
 
-// for getlocations_fields and location modules only
+/**
+ * Function to get type for getlocations_fields and location modules only
+ *
+ * @param int $lid
+ *
+ * @return
+ *   Returns node type
+ *
+ */
 function getlocations_get_type_from_lid($lid) {
   if (is_numeric($lid) && $lid) {
     $query = FALSE;
@@ -1017,7 +1055,7 @@ function getlocations_get_type_from_lid($lid) {
   }
   return FALSE;
 }
-/////////////////////////////////////////////////////
+
 /**
  * Function to return entity information from a supplied location identifier
  *
@@ -1042,7 +1080,7 @@ function getlocations_get_entity_info_from_glid($glid) {
     }
   }
 }
-/////////////////////////////////////////////////////
+
 
 /**
  * Function to return url from a supplied location identifier
@@ -1411,7 +1449,10 @@ function getlocations_do_minmaxes($ct, $location, $minmaxes) {
 }
 
 /**
- * for colorbox and suchlike
+ * Function for colorbox and suchlike
+ *
+ * @return
+ *   Returns themed content
  *
  */
 function getlocations_box() {
@@ -1458,6 +1499,14 @@ function getlocations_box() {
   exit;
 }
 
+/**
+ * Function to fetch node types
+ *
+ *
+ * @return
+ *   Returns array of node types supported by the current supported locative module
+ *
+ */
 function getlocations_get_types() {
   $options = array();
   foreach (node_type_get_types() as $type => $object) {
@@ -1468,6 +1517,15 @@ function getlocations_get_types() {
   return $options;
 }
 
+/**
+ * Function to check if bundle has a locative field
+ *
+ * @param string $bundle
+ *
+ * @return
+ *   Returns boolean
+ *
+ */
 function getlocations_check_node($bundle) {
 
   $module = getlocations_get_current_supported_module();
@@ -1491,6 +1549,16 @@ function getlocations_check_node($bundle) {
   return FALSE;
 }
 
+/**
+ * Function to collect field name
+ *
+ * @param string $bundle
+ * @param string $entity_type
+ *
+ * @return
+ *   Returns field name or FALSE
+ *
+ */
 function getlocations_get_fieldname($bundle, $entity_type='node') {
 
   $module = getlocations_get_current_supported_module();
@@ -1515,6 +1583,16 @@ function getlocations_get_fieldname($bundle, $entity_type='node') {
   return FALSE;
 }
 
+/**
+ * Function to collect field names
+ *
+ * @param string $bundle
+ * @param string $entity_type
+ *
+ * @return
+ *   Returns field names or FALSE
+ *
+ */
 function getlocations_get_fieldname2($bundle, $entity_type='node') {
 
   $module = getlocations_get_current_supported_module();
@@ -1539,7 +1617,16 @@ function getlocations_get_fieldname2($bundle, $entity_type='node') {
   return FALSE;
 }
 
-// is an entity_type location enabled?
+/**
+ * Function is an entity_type location enabled?
+ *
+ * @param string $entity_type
+ * @param string $bundle
+ *
+ * @return
+ *   Returns boolean
+ *
+ */
 function getlocations_check_entity_type($entity_type = '', $bundle = '') {
   if ($entity_type == 'term') {
     $entity_type = 'taxonomy_term';
@@ -1564,6 +1651,13 @@ function getlocations_check_entity_type($entity_type = '', $bundle = '') {
   return FALSE;
 }
 
+/**
+ * Function gets list of vocabularies
+ *
+ * @return
+ *   Returns array
+ *
+ */
 function getlocations_get_vocabularies() {
   if (module_exists('taxonomy')) {
     $vocabularies = taxonomy_get_vocabularies();
@@ -1580,6 +1674,13 @@ function getlocations_get_vocabularies() {
   return FALSE;
 }
 
+/**
+ * Function gets list of vocabulary machine names
+ *
+ * @return
+ *   Returns array
+ *
+ */
 function getlocations_get_machine_vocabularies() {
   if (module_exists('taxonomy')) {
     $vocabularies = taxonomy_get_vocabularies();
@@ -1596,6 +1697,13 @@ function getlocations_get_machine_vocabularies() {
   return FALSE;
 }
 
+/**
+ * Function to check a vocabulary
+ *
+ * @return
+ *   Returns bool
+ *
+ */
 function getlocations_check_vocabulary($machine_name) {
   if (module_exists('taxonomy')) {
     return getlocations_check_entity_type('taxonomy_term', $machine_name);
@@ -1603,6 +1711,13 @@ function getlocations_check_vocabulary($machine_name) {
   return FALSE;
 }
 
+/**
+ * Function list of term reference fields
+ *
+ * @return
+ *   Returns array
+ *
+ */
 function getlocations_get_term_reference_fields() {
   $module = 'taxonomy';
   $type = 'taxonomy_term_reference';
@@ -1771,6 +1886,17 @@ function getlocations_get_path_from_entity_type($entity_type) {
 }
 /////////////////////////////////////////////////////
 
+/**
+ * Function sets up javascript settings
+ *
+ * @param array $defaults
+ * @param array $latlons
+ * @param array $minmaxes
+ * @param string $mapid
+ * @param bool $inputmap
+ * @param bool $searchmap
+ *
+ */
 function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $inputmap = FALSE, $searchmap = FALSE) {
   global $language;
   $lla = explode(',', $defaults['latlong']);
@@ -1845,6 +1971,7 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
       'kml_url_button'          => $defaults['kml_url_button'],
       'kml_url_button_label'    => $defaults['kml_url_button_label'],
       'kml_url_button_state'    => $defaults['kml_url_button_state'],
+      'visual_refresh'          => $defaults['visual_refresh'],
     ),
   );
   if ($defaults['weather_use']) {
@@ -2583,6 +2710,14 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
     t('Can be a color name or HTML hex, eg #FF0000. Leave empty for the default color.'),
     10
   );
+
+  // Enable the visual refresh feature
+  $form['visual_refresh'] = getlocations_element_map_checkbox(
+    t('Google Visual Refresh'),
+    $defaults['visual_refresh'],
+    t('Enable the Visual Refresh feature.')
+  );
+
   if ($extras) {
 
     $form['show_maplinks'] = getlocations_element_map_checkbox(

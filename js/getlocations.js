@@ -170,6 +170,8 @@ var getlocations_settings = {};
         var kml_url_click = (settings.kml_url_click ? true : false);
         var kml_url_infowindow = (settings.kml_url_infowindow ? true : false);
         var kml_url_viewport = (settings.kml_url_viewport ? true : false);
+        // Enable the visual refresh
+        google.maps.visualRefresh = (settings.visual_refresh ?  true : false);
 
         global_settings.info_path = settings.info_path;
         global_settings.lidinfo_path = settings.lidinfo_path;

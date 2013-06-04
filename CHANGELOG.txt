@@ -1,9 +1,37 @@
-commit 8df5657
+commit 52a5591
+Author: hutch <hutch@midwales.net>
+Date:   Tue Jun 4 16:25:14 2013 +0100
+
+    added visual refresh feature
+
+getlocations.module
+js/getlocations.js
+modules/getlocations_search/getlocations_search.module
+views/getlocations_plugin_style_map.inc
+
+commit 07c6e77
+Author: hutch <hutch@midwales.net>
+Date:   Wed May 29 11:47:54 2013 +0100
+
+    fixed OSM label
+
+js/getlocations.js
+
+commit a0a25b3
+Author: hutch <hutch@midwales.net>
+Date:   Wed May 29 10:13:11 2013 +0100
+
+    better baselayers defaults
+
+getlocations.module
+
+commit 7b3b8eb
 Author: hutch <hutch@midwales.net>
 Date:   Tue May 28 11:01:07 2013 +0100
 
     better getlocations_latlon_check()
 
+CHANGELOG.txt
 getlocations.admin.inc
 getlocations.module
 modules/getlocations_fields/getlocations_fields.module
