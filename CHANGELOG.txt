@@ -1,9 +1,26 @@
-commit 52a5591
+commit 892a49d
+Author: hutch <hutch@midwales.net>
+Date:   Wed Jun 5 15:48:59 2013 +0100
+
+    added region_bias, added map_resize
+
+getlocations.module
+
+commit 780a21a
+Author: hutch <hutch@midwales.net>
+Date:   Tue Jun 4 23:15:09 2013 +0100
+
+    more improvements to openstreetmaps
+
+js/getlocations.js
+
+commit ee63a95
 Author: hutch <hutch@midwales.net>
 Date:   Tue Jun 4 16:25:14 2013 +0100
 
     added visual refresh feature
 
+CHANGELOG.txt
 getlocations.module
 js/getlocations.js
 modules/getlocations_search/getlocations_search.module

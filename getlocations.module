@@ -567,6 +567,10 @@ function getlocations_setup_js($defaults, $googleonly = FALSE) {
   $query['sensor'] = (getlocations_is_mobile() ? 'true' : 'false');
   $query['language'] = (isset($language->language) ? $language->language : 'und');
 
+  if ($defaults['region_bias']) {
+    $query['region'] = $defaults['region_bias'];
+  }
+
   $libraries = array();
   if ($defaults['panoramio_use']) {
     $libraries[] = 'panoramio';
@@ -867,6 +871,8 @@ function getlocations_defaults() {
     'kml_url_button_label'          => 'Kml Layer',
     'kml_url_button_state'          => 0,
     'visual_refresh'                => 0,
+    'map_resize'                    => 0,
+    'region_bias'                   => variable_get('site_default_country', ''),
   );
 
   $fieldables = getlocations_get_fieldable_entity_types();
@@ -2604,6 +2610,13 @@ function getlocations_map_display_basics_form($defaults, $labels = array()) {
     TRUE
   );
 
+  // map_resize
+  $form['map_resize'] = getlocations_element_map_checkbox(
+    t('Automatic map resize'),
+    $defaults['map_resize'],
+    t('Set the map dimensions to 100% if the browser is on a mobile device.')
+  );
+
   $form['styles'] = array(
     '#type' => 'textarea',
     '#title' => $label['styles'],
@@ -2717,6 +2730,15 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
     $defaults['visual_refresh'],
     t('Enable the Visual Refresh feature.')
   );
+
+  if ($config) {
+    $form['region_bias'] = getlocations_element_dd(
+      t('Regional bias'),
+      $defaults['region_bias'],
+      array('' => t('None')) + getlocations_get_countries_list(),
+      t('Bias the maps to a particular country')
+    );
+  }
 
   if ($extras) {
 
@@ -4431,6 +4453,11 @@ function theme_getlocations_show($variables) {
     if ($returnlink) {
       $output .= $returnlink;
     }
+  }
+
+  if ($defaults['map_resize'] && getlocations_is_mobile()) {
+    $width = '100%';
+    $height = '100%';
   }
 
   // show maplinks if enabled
