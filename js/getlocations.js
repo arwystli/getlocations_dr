@@ -182,6 +182,9 @@ var getlocations_settings = {};
         var map_styles = settings.styles;
         var map_backgroundcolor = settings.map_backgroundcolor;
         var fullscreen = (settings.fullscreen ? true : false);
+        if (settings.is_mobile && settings.fullscreen_disable) {
+          fullscreen = false;
+        }
         var js_path = settings.js_path;
         var useOpenStreetMap = false;
         var kml_url = settings.kml_url;
