@@ -377,7 +377,21 @@
           $("#wrap-getlocations-polylines").hide();
         }
       });
-
+      // search_places
+      if ($("#edit-getlocations-default-search-places").attr('checked')) {
+        $("#wrap-getlocations-search-places").show();
+      }
+      else {
+        $("#wrap-getlocations-search-places").hide();
+      }
+      $("#edit-getlocations-default-search-places").change(function() {
+        if ($(this).attr('checked')) {
+          $("#wrap-getlocations-search-places").show();
+        }
+        else {
+          $("#wrap-getlocations-search-places").hide();
+        }
+      });
 
     }
   };

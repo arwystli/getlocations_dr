@@ -240,6 +240,21 @@
         }
       });
 
+      // search_places
+      if ($("#edit-getlocations-search-defaults-search-places").attr('checked')) {
+        $("#wrap-getlocations-search-places").show();
+      }
+      else {
+        $("#wrap-getlocations-search-places").hide();
+      }
+      $("#edit-getlocations-search-defaults-search-places").change(function() {
+        if ($(this).attr('checked')) {
+          $("#wrap-getlocations-search-places").show();
+        }
+        else {
+          $("#wrap-getlocations-search-places").hide();
+        }
+      });
 
       // search marker
       if ($("#edit-getlocations-search-defaults-do-search-marker").is('input')) {

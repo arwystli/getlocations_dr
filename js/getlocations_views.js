@@ -215,6 +215,22 @@
         }
       });
 
+      // search_places
+      if ($("#edit-fields-field-address-settings-edit-form-settings-search-places, #edit-style-options-search-places").attr('checked')) {
+        $("#wrap-getlocations-search-places").show();
+      }
+      else {
+        $("#wrap-getlocations-search-places").hide();
+      }
+      $("#edit-fields-field-address-settings-edit-form-settings-search-places, #edit-style-options-search-places").change(function() {
+        if ($(this).attr('checked')) {
+          $("#wrap-getlocations-search-places").show();
+        }
+        else {
+          $("#wrap-getlocations-search-places").hide();
+        }
+      });
+
       // categories
       if ($("#edit-style-options-category-method").val() > 0) {
         $("#wrap-category1").show();

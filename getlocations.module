@@ -727,6 +727,16 @@ function getlocations_setup_js($defaults, $googleonly = FALSE) {
       $getlocations_js_weight++;
     }
   }
+  // search_places
+  if ($defaults['search_places']) {
+    if (!stristr($current_js, $getlocations_paths['getlocations_search_places_path'])) {
+      $js_opts = array();
+      $js_opts['weight'] = $getlocations_js_weight;
+      $js_opts['type'] = 'file';
+      drupal_add_js($getlocations_paths['getlocations_search_places_path'], $js_opts);
+      $getlocations_js_weight++;
+    }
+  }
 
   // categories
   if ($defaults['category_method'] && $defaults['category_showhide_buttons']) {
@@ -749,116 +759,116 @@ function getlocations_setup_js($defaults, $googleonly = FALSE) {
  */
 function getlocations_defaults() {
   $defaults = array(
-    'api_version'               => 3,
-    'width'                     => '300px',
-    'height'                    => '200px',
-    'zoom'                      => 3,
-    'minzoom_map'               => -1,
-    'maxzoom_map'               => -1,
-    'controltype'               => 'small',
-    'pancontrol'                => 1,
-    'latlong'                   => '40,0',
-    'maptype'                   => 'Map',
-    'mtc'                       => 'standard',
+    'api_version'                   => 3,
+    'width'                         => '300px',
+    'height'                        => '200px',
+    'zoom'                          => 3,
+    'minzoom_map'                   => -1,
+    'maxzoom_map'                   => -1,
+    'controltype'                   => 'small',
+    'pancontrol'                    => 1,
+    'latlong'                       => '40,0',
+    'maptype'                       => 'Map',
+    'mtc'                           => 'standard',
     'baselayers' => array(
-      'Map'                     => 1,
-      'Satellite'               => 1,
-      'Hybrid'                  => 1,
-      'Physical'                => 1,
-      'OpenStreetMap'           => 0,
+      'Map'                         => 1,
+      'Satellite'                   => 1,
+      'Hybrid'                      => 1,
+      'Physical'                    => 1,
+      'OpenStreetMap'               => 0,
     ),
-    'scale'                     => 0,
-    'overview'                  => 0,
-    'overview_opened'           => 0,
-    'scrollwheel'               => 0,
-    'streetview_show'           => 0,
-    'trafficinfo'               => 0,
-    'trafficinfo_state'         => 0,
-    'bicycleinfo'               => 0,
-    'bicycleinfo_state'         => 0,
-    'transitinfo'               => 0,
-    'transitinfo_state'         => 0,
-    'panoramio_use'             => 0,
-    'panoramio_show'            => 0,
-    'panoramio_state'           => 0,
-    'places'                    => 0,
-    'poi_show'                  => 1,
-    'transit_show'              => 1,
-    'map_marker'                => 'drupal',
-    'input_map_marker'          => 'drupal',
-    'vocabulary_map_marker'     => 'drupal',
-    'markeraction'              => 0,
-    'markeractiontype'          => 1,
-    'minzoom'                   => 6,
-    'maxzoom'                   => 16,
-    'nodezoom'                  => 12,
-    'markermanagertype'         => 0,
-    'usemarkermanager'          => 0,
-    'useclustermanager'         => 0,
-    'markerclusterer_style'     => -1,
-    'markerclusterer_zoom'      => -1,
-    'markerclusterer_size'      => -1,
-    'markerclusterer_minsize'   => -1,
-    'markerclusterer_title'     => t('Click here to see more'),
-    'pansetting'                => 2,
-    'draggable'                 => 1,
-    'styles'                    => '',
-    'getlocations_js_weight'    => 0,
-    'custom_content_enable'     => 0,
-    'custom_content_source'     => '',
-    'use_jsapi'                 => 0,
-    'preload_data'              => 0,
-    'is_mobile'                 => (getlocations_is_mobile() ? 1 : 0),
-    'geometry'                  => 0,
-    'weather_use'               => 0,
-    'weather_show'              => 0,
-    'weather_state'             => 0,
-    'weather_temp'              => 1,
-    'weather_speed'             => 1,
-    'weather_label'             => 0,
-    'weather_cloud'             => 1,
-    'weather_cloud_state'       => 0,
-    'weather_clickable'         => 1,
-    'weather_info'              => 1,
-    'map_backgroundcolor'       => '',
-    'show_maplinks'             => 0,
-    'fullscreen'                => 0,
-    'show_bubble_on_one_marker' => 0,
-    'polygons_enable'           => 0,
-    'polygons_strokecolor'      => "#FF0000",
-    'polygons_strokeopacity'    => "0.8",
-    'polygons_strokeweight'     => "3",
-    'polygons_fillcolor'        => "#FF0000",
-    'polygons_fillopacity'      => "0.35",
-    'polygons_coords'           => "",
-    'polygons_clickable'        => 0,
-    'polygons_message'          => "",
-    'rectangles_enable'         => 0,
-    'rectangles_strokecolor'    => "#FF0000",
-    'rectangles_strokeopacity'  => "0.8",
-    'rectangles_strokeweight'   => "3",
-    'rectangles_fillcolor'      => "#FF0000",
-    'rectangles_fillopacity'    => "0.35",
-    'rectangles_coords'         => "",
-    'rectangles_clickable'      => 0,
-    'rectangles_message'        => "",
-    'circles_enable'           => 0,
-    'circles_strokecolor'      => "#FF0000",
-    'circles_strokeopacity'    => "0.8",
-    'circles_strokeweight'     => "3",
-    'circles_fillcolor'        => "#FF0000",
-    'circles_fillopacity'      => "0.35",
-    'circles_coords'           => "",
-    'circles_clickable'        => 0,
-    'circles_message'          => "",
-    'circles_radius'           => 0,
-    'polylines_enable'           => 0,
-    'polylines_strokecolor'      => "#FF0000",
-    'polylines_strokeopacity'    => "0.8",
-    'polylines_strokeweight'     => "3",
-    'polylines_coords'           => "",
-    'polylines_clickable'        => 0,
-    'polylines_message'          => "",
+    'scale'                         => 0,
+    'overview'                      => 0,
+    'overview_opened'               => 0,
+    'scrollwheel'                   => 0,
+    'streetview_show'               => 0,
+    'trafficinfo'                   => 0,
+    'trafficinfo_state'             => 0,
+    'bicycleinfo'                   => 0,
+    'bicycleinfo_state'             => 0,
+    'transitinfo'                   => 0,
+    'transitinfo_state'             => 0,
+    'panoramio_use'                 => 0,
+    'panoramio_show'                => 0,
+    'panoramio_state'               => 0,
+    'places'                        => 0,
+    'poi_show'                      => 1,
+    'transit_show'                  => 1,
+    'map_marker'                    => 'drupal',
+    'input_map_marker'              => 'drupal',
+    'vocabulary_map_marker'         => 'drupal',
+    'markeraction'                  => 0,
+    'markeractiontype'              => 1,
+    'minzoom'                       => 6,
+    'maxzoom'                       => 16,
+    'nodezoom'                      => 12,
+    'markermanagertype'             => 0,
+    'usemarkermanager'              => 0,
+    'useclustermanager'             => 0,
+    'markerclusterer_style'         => -1,
+    'markerclusterer_zoom'          => -1,
+    'markerclusterer_size'          => -1,
+    'markerclusterer_minsize'       => -1,
+    'markerclusterer_title'         => t('Click here to see more'),
+    'pansetting'                    => 2,
+    'draggable'                     => 1,
+    'styles'                        => '',
+    'getlocations_js_weight'        => 0,
+    'custom_content_enable'         => 0,
+    'custom_content_source'         => '',
+    'use_jsapi'                     => 0,
+    'preload_data'                  => 0,
+    'is_mobile'                     => (getlocations_is_mobile() ? 1 : 0),
+    'geometry'                      => 0,
+    'weather_use'                   => 0,
+    'weather_show'                  => 0,
+    'weather_state'                 => 0,
+    'weather_temp'                  => 1,
+    'weather_speed'                 => 1,
+    'weather_label'                 => 0,
+    'weather_cloud'                 => 1,
+    'weather_cloud_state'           => 0,
+    'weather_clickable'             => 1,
+    'weather_info'                  => 1,
+    'map_backgroundcolor'           => '',
+    'show_maplinks'                 => 0,
+    'fullscreen'                    => 0,
+    'show_bubble_on_one_marker'     => 0,
+    'polygons_enable'               => 0,
+    'polygons_strokecolor'          => "#FF0000",
+    'polygons_strokeopacity'        => "0.8",
+    'polygons_strokeweight'         => "3",
+    'polygons_fillcolor'            => "#FF0000",
+    'polygons_fillopacity'          => "0.35",
+    'polygons_coords'               => "",
+    'polygons_clickable'            => 0,
+    'polygons_message'              => "",
+    'rectangles_enable'             => 0,
+    'rectangles_strokecolor'        => "#FF0000",
+    'rectangles_strokeopacity'      => "0.8",
+    'rectangles_strokeweight'       => "3",
+    'rectangles_fillcolor'          => "#FF0000",
+    'rectangles_fillopacity'        => "0.35",
+    'rectangles_coords'             => "",
+    'rectangles_clickable'          => 0,
+    'rectangles_message'            => "",
+    'circles_enable'                => 0,
+    'circles_strokecolor'           => "#FF0000",
+    'circles_strokeopacity'         => "0.8",
+    'circles_strokeweight'          => "3",
+    'circles_fillcolor'             => "#FF0000",
+    'circles_fillopacity'           => "0.35",
+    'circles_coords'                => "",
+    'circles_clickable'             => 0,
+    'circles_message'               => "",
+    'circles_radius'                => 0,
+    'polylines_enable'              => 0,
+    'polylines_strokecolor'         => "#FF0000",
+    'polylines_strokeopacity'       => "0.8",
+    'polylines_strokeweight'        => "3",
+    'polylines_coords'              => "",
+    'polylines_clickable'           => 0,
+    'polylines_message'             => "",
     'category_method'               => 0,
     'category_term_reference_field' => '',
     'category_showhide_buttons'     => 0,
@@ -874,6 +884,11 @@ function getlocations_defaults() {
     'map_resize'                    => 0,
     'region_bias'                   => variable_get('site_default_country', ''),
     'fullscreen_disable'            => 0,
+    'search_places'                 => 0,
+    'search_places_size'            => 40,
+    'search_places_position'        => 'outside_above',
+    'search_places_label'           => t('Google Places Search'),
+    'search_places_placeholder'     => '',
   );
 
   $fieldables = getlocations_get_fieldable_entity_types();
@@ -1911,88 +1926,93 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
   $lng = $lla[1];
   $settings = array(
     $mapid => array(
-      'lat'                     => trim($lat),
-      'lng'                     => trim($lng),
-      'locale_prefix'           => $language->prefix,
-      'zoom'                    => $defaults['zoom'],
-      'minzoom_map'             => $defaults['minzoom_map'],
-      'maxzoom_map'             => $defaults['maxzoom_map'],
-      'maptype'                 => $defaults['maptype'],
-      'controltype'             => $defaults['controltype'],
-      'mtc'                     => $defaults['mtc'],
-      'baselayers'              => $defaults['baselayers'],
-      'scale'                   => $defaults['scale'],
-      'overview'                => $defaults['overview'],
-      'overview_opened'         => $defaults['overview_opened'],
-      'scrollwheel'             => $defaults['scrollwheel'],
-      'trafficinfo'             => $defaults['trafficinfo'],
-      'trafficinfo_state'       => $defaults['trafficinfo_state'],
-      'bicycleinfo'             => $defaults['bicycleinfo'],
-      'bicycleinfo_state'       => $defaults['bicycleinfo_state'],
-      'transitinfo'             => $defaults['transitinfo'],
-      'transitinfo_state'       => $defaults['transitinfo_state'],
-      'streetview_show'         => $defaults['streetview_show'],
-      'pancontrol'              => $defaults['pancontrol'],
-      'panoramio_use'           => $defaults['panoramio_use'],
-      'panoramio_show'          => $defaults['panoramio_show'],
-      'panoramio_state'         => $defaults['panoramio_state'],
-      'poi_show'                => $defaults['poi_show'],
-      'transit_show'            => $defaults['transit_show'],
-      'map_marker'              => $defaults['map_marker'],
-      'markeraction'            => $defaults['markeraction'],
-      'markeractiontype'        => $defaults['markeractiontype'],
-      'minzoom'                 => $defaults['minzoom'],
-      'maxzoom'                 => $defaults['maxzoom'],
-      'nodezoom'                => $defaults['nodezoom'],
-      'markermanagertype'       => $defaults['markermanagertype'],
-      'usemarkermanager'        => $defaults['usemarkermanager'],
-      'useclustermanager'       => $defaults['useclustermanager'],
-      'markerclusterer_style'   => $defaults['markerclusterer_style'],
-      'markerclusterer_zoom'    => $defaults['markerclusterer_zoom'],
-      'markerclusterer_size'    => $defaults['markerclusterer_size'],
-      'markerclusterer_minsize' => $defaults['markerclusterer_minsize'],
-      'markerclusterer_title'   => $defaults['markerclusterer_title'],
-      'pansetting'              => $defaults['pansetting'],
-      'draggable'               => $defaults['draggable'],
-      'styles'                  => $defaults['styles'],
-      'datanum'                 => count($latlons),
-      'latlons'                 => $latlons,
-      'minmaxes'                => (empty($minmaxes) ? '' : implode(',', $minmaxes)),
-      'inputmap'                => ($inputmap ? 1 : 0),
-      'searchmap'               => ($searchmap ? 1 : 0),
-      'custom_content_enable'   => $defaults['custom_content_enable'],
-      'preload_data'            => $defaults['preload_data'],
-      'is_mobile'               => (getlocations_is_mobile() ? 1 : 0),
-      'weather_use'             => $defaults['weather_use'],
-      'map_backgroundcolor'     => $defaults['map_backgroundcolor'],
-      'show_maplinks'           => $defaults['show_maplinks'],
-      'js_path'                 => base_path() . GETLOCATIONS_PATH . '/js/',
-      'info_path'               => url("getlocations_cb/info"),
-      'lidinfo_path'            => url("getlocations_cb/lidinfo"),
-      'fullscreen'              => $defaults['fullscreen'],
+      'lat'                       => trim($lat),
+      'lng'                       => trim($lng),
+      'locale_prefix'             => $language->prefix,
+      'zoom'                      => $defaults['zoom'],
+      'minzoom_map'               => $defaults['minzoom_map'],
+      'maxzoom_map'               => $defaults['maxzoom_map'],
+      'maptype'                   => $defaults['maptype'],
+      'controltype'               => $defaults['controltype'],
+      'mtc'                       => $defaults['mtc'],
+      'baselayers'                => $defaults['baselayers'],
+      'scale'                     => $defaults['scale'],
+      'overview'                  => $defaults['overview'],
+      'overview_opened'           => $defaults['overview_opened'],
+      'scrollwheel'               => $defaults['scrollwheel'],
+      'trafficinfo'               => $defaults['trafficinfo'],
+      'trafficinfo_state'         => $defaults['trafficinfo_state'],
+      'bicycleinfo'               => $defaults['bicycleinfo'],
+      'bicycleinfo_state'         => $defaults['bicycleinfo_state'],
+      'transitinfo'               => $defaults['transitinfo'],
+      'transitinfo_state'         => $defaults['transitinfo_state'],
+      'streetview_show'           => $defaults['streetview_show'],
+      'pancontrol'                => $defaults['pancontrol'],
+      'panoramio_use'             => $defaults['panoramio_use'],
+      'panoramio_show'            => $defaults['panoramio_show'],
+      'panoramio_state'           => $defaults['panoramio_state'],
+      'poi_show'                  => $defaults['poi_show'],
+      'transit_show'              => $defaults['transit_show'],
+      'map_marker'                => $defaults['map_marker'],
+      'markeraction'              => $defaults['markeraction'],
+      'markeractiontype'          => $defaults['markeractiontype'],
+      'minzoom'                   => $defaults['minzoom'],
+      'maxzoom'                   => $defaults['maxzoom'],
+      'nodezoom'                  => $defaults['nodezoom'],
+      'markermanagertype'         => $defaults['markermanagertype'],
+      'usemarkermanager'          => $defaults['usemarkermanager'],
+      'useclustermanager'         => $defaults['useclustermanager'],
+      'markerclusterer_style'     => $defaults['markerclusterer_style'],
+      'markerclusterer_zoom'      => $defaults['markerclusterer_zoom'],
+      'markerclusterer_size'      => $defaults['markerclusterer_size'],
+      'markerclusterer_minsize'   => $defaults['markerclusterer_minsize'],
+      'markerclusterer_title'     => $defaults['markerclusterer_title'],
+      'pansetting'                => $defaults['pansetting'],
+      'draggable'                 => $defaults['draggable'],
+      'styles'                    => $defaults['styles'],
+      'datanum'                   => count($latlons),
+      'latlons'                   => $latlons,
+      'minmaxes'                  => (empty($minmaxes) ? '' : implode(',', $minmaxes)),
+      'inputmap'                  => ($inputmap ? 1 : 0),
+      'searchmap'                 => ($searchmap ? 1 : 0),
+      'custom_content_enable'     => $defaults['custom_content_enable'],
+      'preload_data'              => $defaults['preload_data'],
+      'is_mobile'                 => (getlocations_is_mobile() ? 1 : 0),
+      'weather_use'               => $defaults['weather_use'],
+      'map_backgroundcolor'       => $defaults['map_backgroundcolor'],
+      'show_maplinks'             => $defaults['show_maplinks'],
+      'js_path'                   => base_path() . GETLOCATIONS_PATH . '/js/',
+      'info_path'                 => url("getlocations_cb/info"),
+      'lidinfo_path'              => url("getlocations_cb/lidinfo"),
+      'fullscreen'                => $defaults['fullscreen'],
       'show_bubble_on_one_marker' => $defaults['show_bubble_on_one_marker'],
-      'kml_url'                 => $defaults['kml_url'],
-      'kml_url_click'           => $defaults['kml_url_click'],
-      'kml_url_infowindow'      => $defaults['kml_url_infowindow'],
-      'kml_url_viewport'        => $defaults['kml_url_viewport'],
-      'kml_url_button'          => $defaults['kml_url_button'],
-      'kml_url_button_label'    => $defaults['kml_url_button_label'],
-      'kml_url_button_state'    => $defaults['kml_url_button_state'],
-      'visual_refresh'          => $defaults['visual_refresh'],
-      'fullscreen_disable'      => $defaults['fullscreen_disable'],
-      'places'                  => $defaults['places'],
+      'kml_url'                   => $defaults['kml_url'],
+      'kml_url_click'             => $defaults['kml_url_click'],
+      'kml_url_infowindow'        => $defaults['kml_url_infowindow'],
+      'kml_url_viewport'          => $defaults['kml_url_viewport'],
+      'kml_url_button'            => $defaults['kml_url_button'],
+      'kml_url_button_label'      => $defaults['kml_url_button_label'],
+      'kml_url_button_state'      => $defaults['kml_url_button_state'],
+      'visual_refresh'            => $defaults['visual_refresh'],
+      'fullscreen_disable'        => $defaults['fullscreen_disable'],
+      'places'                    => $defaults['places'],
+      'search_places'             => $defaults['search_places'],
+      'search_places_size'        => $defaults['search_places_size'],
+      'search_places_position'    => $defaults['search_places_position'],
+      'search_places_label'       => $defaults['search_places_label'],
+      'search_places_placeholder' => $defaults['search_places_placeholder'],
     ),
   );
   if ($defaults['weather_use']) {
-    $settings[$mapid]['weather_show'] = $defaults['weather_show'];
-    $settings[$mapid]['weather_state'] = $defaults['weather_state'];
-    $settings[$mapid]['weather_temp'] = $defaults['weather_temp'];
-    $settings[$mapid]['weather_speed'] = $defaults['weather_speed'];
-    $settings[$mapid]['weather_label'] = $defaults['weather_label'];
-    $settings[$mapid]['weather_cloud'] = $defaults['weather_cloud'];
+    $settings[$mapid]['weather_show']        = $defaults['weather_show'];
+    $settings[$mapid]['weather_state']       = $defaults['weather_state'];
+    $settings[$mapid]['weather_temp']        = $defaults['weather_temp'];
+    $settings[$mapid]['weather_speed']       = $defaults['weather_speed'];
+    $settings[$mapid]['weather_label']       = $defaults['weather_label'];
+    $settings[$mapid]['weather_cloud']       = $defaults['weather_cloud'];
     $settings[$mapid]['weather_cloud_state'] = $defaults['weather_cloud_state'];
-    $settings[$mapid]['weather_clickable'] = $defaults['weather_clickable'];
-    $settings[$mapid]['weather_info'] = $defaults['weather_info'];
+    $settings[$mapid]['weather_clickable']   = $defaults['weather_clickable'];
+    $settings[$mapid]['weather_info']        = $defaults['weather_info'];
   }
   // categories
   if (isset($defaults['categories'])) {
@@ -3198,6 +3218,62 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
       $defaults['kml_url_button_state'],
       t('Activate Kml layer when map is first displayed.')
     );
+    // search_places
+    // enable
+    $desc = t('Provide a textfield to query Google Places Search.');
+    if ($config) {
+      $desc .= ' ' . t('This will be enabled for all maps if enabled here.');
+    }
+    $form['search_places'] = getlocations_element_map_checkbox(
+      t('Enable Google Places Search'),
+      $defaults['search_places'],
+      $desc
+    );
+    $form['search_places']['#suffix'] = '<div id="wrap-getlocations-search-places">';
+    // size
+    $form['search_places_size'] = getlocations_element_map_tf(
+      t('Textbox width'),
+      $defaults['search_places_size'],
+      t('The width of the Google Places Search textbox. Must be a positive number.'),
+      10,
+      10,
+      TRUE
+    );
+    // placement
+    $pos = array(
+      'outside_above' => t('Above the map'),
+      'outside_below' => t('Below the map'),
+    );
+    $form['search_places_position'] = getlocations_element_dd(
+      t('Textbox Position'),
+      $defaults['search_places_position'],
+      $pos,
+      t('The position of the Google Places Search textbox.')
+    );
+    // label
+    $form['search_places_label'] = getlocations_element_map_tf(
+      t('Textbox label'),
+      $defaults['search_places_label'],
+      t('The label for the Google Places Search textbox.'),
+      30,
+      40
+    );
+    // placeholder
+    $form['search_places_placeholder'] = getlocations_element_map_tf(
+      t('Text in Textbox'),
+      $defaults['search_places_placeholder'],
+      t('The text inside the Google Places Search textbox. Leave empty for the default.'),
+      30,
+      40
+    );
+    $form['search_places_placeholder']['#suffix'] = '</div>';
+
+    if ($config) {
+      $form['places'] = array(
+        '#type' => 'value',
+        '#value' => $defaults['places'],
+      );
+    }
 
   }
 
@@ -3219,6 +3295,7 @@ function getlocations_paths_get() {
     'getlocations_circles_path' => GETLOCATIONS_PATH . '/js/getlocations_circles.js',
     'getlocations_polylines_path' => GETLOCATIONS_PATH . '/js/getlocations_polylines.js',
     'getlocations_categories_path' => GETLOCATIONS_PATH . '/js/getlocations_categories.js',
+    'getlocations_search_places_path' => GETLOCATIONS_PATH . '/js/getlocations_search_places.js',
   );
   $settings = variable_get('getlocations_paths', $defaults);
   $getlocations_paths = getlocations_adjust_vars($defaults, $settings);
@@ -4473,10 +4550,35 @@ function theme_getlocations_show($variables) {
   if ($defaults['show_maplinks']) {
     $output .= '<a id="maptop_' . $mapid . '" name="maptop_' . $mapid . '"></a>';
   }
-  // do map
+  // search_places
+  $sp = '';
+  if ($defaults['search_places']) {
+    $sp .= '<div class="search_places_input_wrapper">';
+    if ($defaults['search_places_label']) {
+      $sp .= '<label for="search_places_input_' . $mapid . '">' . $defaults['search_places_label'] . '</label>';
+    }
+    $placeholder = '';
+    if ($defaults['search_places_placeholder']) {
+      $placeholder = 'placeholder="' . $defaults['search_places_placeholder'] . '"';
+    }
+    $sp .= '<input type="text" id="search_places_input_' . $mapid . '" size="' . $defaults['search_places_size'] . '" class="form-text" ' . $placeholder . ' />';
+    $sp .= '&nbsp;&nbsp;<input type="button" value="' . t('Reset') . '" onClick="Drupal.getlocations_search_places_clearmarkers(\'' . $mapid . '\', true)"  class="form-submit" />';
+    $sp .= '</div>';
+  }
+  if ($defaults['search_places'] && $defaults['search_places_position'] == 'outside_above') {
+    $output .= $sp;
+  }
+
+  // wrap the map
   $output .= '<div id="getlocations_map_wrapper_' . $mapid . '"  style="width: ' . $width . '; height: ' . $height . '" >';
   $output .= '<div class="getlocations_map_canvas" id="getlocations_map_canvas_' . $mapid . '" style="width: 100%; height: 100%" ></div>';
   $output .= '</div>';
+
+  // search_places
+  if ($defaults['search_places'] && $defaults['search_places_position'] == 'outside_below') {
+    $output .= $sp;
+  }
+
   // show maplinks if enabled
   if ($defaults['show_maplinks']) {
     $output .= '<div class="getlocations_map_links" id="getlocations_map_links_' . $mapid . '" ><ul></ul></div>';

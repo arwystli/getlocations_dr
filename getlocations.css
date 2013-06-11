@@ -67,3 +67,15 @@ div.fullscreen {
   overflow: hidden !important;
 }
 
+.search_places_input_wrapper {
+  padding-bottom: 4px;
+}
+.sp_left1 {
+  float: left;
+  width: 71px;
+  padding-right: 8px;
+}
+.sp_left2 {
+  float: left;
+  width: 270px;
+}

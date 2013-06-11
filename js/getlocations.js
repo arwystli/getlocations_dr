@@ -690,6 +690,11 @@ var getlocations_settings = {};
           getlocations_map[key].controls[google.maps.ControlPosition.TOP_RIGHT].setAt(0, fsdoc);
         }
 
+        // search_places
+        if (settings.search_places) {
+          Drupal.getlocations_search_places(key);
+        }
+
       }
     }); // end each setting loop
     $("body").addClass("getlocations-maps-processed");
