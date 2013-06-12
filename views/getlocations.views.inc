@@ -44,6 +44,7 @@ function template_preprocess_getlocations_view_map(&$variables) {
   $base_field = $variables['view']->style_plugin->view->base_field;
   $entity_get_info = entity_get_info();
   $entity_type = FALSE;
+  $entity_type_found = FALSE;
   foreach ($entity_get_info AS $et => $entity_info) {
     if ($base_field == $entity_info['entity keys']['id']) {
       $entity_type = $et;
