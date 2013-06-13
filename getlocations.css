@@ -38,6 +38,10 @@
 }
 .vcard h4 {
 }
+/* stop long titles from creeping in under the close button */
+.location.vcard {
+  margin-top: 8px;
+}
 .adr {
 }
 .street-address {
@@ -72,10 +76,33 @@ div.fullscreen {
 }
 .sp_left1 {
   float: left;
-  width: 71px;
+  width: 25px;
   padding-right: 8px;
 }
 .sp_left2 {
   float: left;
-  width: 270px;
+  width: 275px;
+}
+
+.sp_main {
+  clear: both;
+  width: 310px;
+}
+
+.placeIcon {
+  height: 25px;
+  width: 25px;
+}
+.sp_left3 {
+  float: left;
+  width: 75px;
+  padding-right: 8px;
+}
+.sp_left4 {
+  float: left;
+  width: 225px;
+}
+
+.sp_picture {
+
 }
