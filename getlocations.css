@@ -71,6 +71,7 @@ div.fullscreen {
   overflow: hidden !important;
 }
 
+/* search_places css */
 .search_places_input_wrapper {
   padding-bottom: 4px;
 }
@@ -83,12 +84,10 @@ div.fullscreen {
   float: left;
   width: 275px;
 }
-
 .sp_main {
   clear: both;
   width: 310px;
 }
-
 .placeIcon {
   height: 25px;
   width: 25px;
@@ -102,7 +101,6 @@ div.fullscreen {
   float: left;
   width: 225px;
 }
-
 .sp_picture {
-
 }
+

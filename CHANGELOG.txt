@@ -1,9 +1,69 @@
-commit 892a49d
+commit e94579c
+Author: hutch <hutch@midwales.net>
+Date:   Fri Jun 14 11:14:12 2013 +0100
+
+    added dropdown option to search places, getdirections link in bubble
+
+getlocations.css
+getlocations.module
+js/getlocations_search_places.js
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_search/getlocations_search.module
+views/getlocations_plugin_style_map.inc
+
+commit 75f5036
+Author: hutch <hutch@midwales.net>
+Date:   Thu Jun 13 16:15:24 2013 +0100
+
+    better search_places bubble
+
+getlocations.css
+js/getlocations_search_places.js
+
+commit ec48f15
+Author: hutch <hutch@midwales.net>
+Date:   Wed Jun 12 11:53:21 2013 +0100
+
+    fixed some defaults
+
+modules/getlocations_fields/getlocations_fields.module
+views/getlocations.views.inc
+
+commit 042d38f
+Author: hutch <hutch@midwales.net>
+Date:   Tue Jun 11 09:36:17 2013 +0100
+
+    added search_places feature
+
+getlocations.admin.inc
+getlocations.css
+getlocations.module
+js/getlocations.js
+js/getlocations_admin.js
+js/getlocations_search_places.js
+js/getlocations_views.js
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_fields/js/getlocations_fields_formatter.js
+modules/getlocations_search/getlocations_search.module
+modules/getlocations_search/js/getlocations_search_admin.js
+views/getlocations_plugin_style_map.inc
+
+commit 047b017
+Author: hutch <hutch@midwales.net>
+Date:   Sun Jun 9 11:44:57 2013 +0100
+
+    added fullscreen_disable feature
+
+getlocations.module
+js/getlocations.js
+
+commit 8a8aa3d
 Author: hutch <hutch@midwales.net>
 Date:   Wed Jun 5 15:48:59 2013 +0100
 
     added region_bias, added map_resize
 
+CHANGELOG.txt
 getlocations.module
 
 commit 780a21a

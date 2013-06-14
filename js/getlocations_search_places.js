@@ -12,42 +12,35 @@
   var places_service;
 
   Drupal.getlocations_search_places = function(key) {
-    // attach it
-    var getlocations_search_places_Box = new google.maps.places.SearchBox(document.getElementById('search_places_input_' + key));
-    getlocations_search_places_Box.bindTo('bounds', getlocations_map[key]);
-    google.maps.event.addListener(getlocations_search_places_Box, 'places_changed', function() {
-      var places = getlocations_search_places_Box.getPlaces();
-      places_service = new google.maps.places.PlacesService(getlocations_map[key]);
-
-      // clear out existing markers
-      Drupal.getlocations_search_places_clearmarkers(key, false);
-      for (var ip = 0; ip < places.length; ip++) {
-        var place = places[ip];
-        var image = {
-          url: place.icon,
-          size: new google.maps.Size(71, 71),
-          origin: new google.maps.Point(0, 0),
-          anchor: new google.maps.Point(17, 34),
-          scaledSize: new google.maps.Size(25, 25)
-        };
-
-        var sp_marker = new google.maps.Marker({
-          map: getlocations_map[key],
-          icon: image,
-          title: place.name,
-          position: place.geometry.location
+    var sp_switch = Drupal.settings.getlocations[key].search_places_dd;
+    if (sp_switch) {
+      // dropdown
+      $("#search_places_go_btn_" + key).click( function() {
+        places_service = new google.maps.places.PlacesService(getlocations_map[key]);
+        var t = $("#search_places_select_" + key).val();
+        var b = getlocations_map[key].getBounds();
+        var s = {bounds:b, types:[t]};
+        places_service.search(s, function(places, status) {
+          if (status == google.maps.places.PlacesServiceStatus.OK) {
+            sp_do_places(places, key);
+          }
         });
-
-        sp_getdetails(sp_marker, place, key);
-
-        sp_markers.push(sp_marker);
-      }
-    });
-
+        return false;
+      });
+    }
+    else {
+      // textbox
+      var getlocations_search_places_Box = new google.maps.places.SearchBox(document.getElementById('search_places_input_' + key));
+      getlocations_search_places_Box.bindTo('bounds', getlocations_map[key]);
+      google.maps.event.addListener(getlocations_search_places_Box, 'places_changed', function() {
+        var places = getlocations_search_places_Box.getPlaces();
+        places_service = new google.maps.places.PlacesService(getlocations_map[key]);
+        sp_do_places(places, key);
+      });
+    }
   }
 
   function do_sp_bubble(marker, p, key) {
-
     var ver = Drupal.getlocations.msiedetect();
     var pushit = false;
     if ( (ver == '') || (ver && ver > 8)) {
@@ -69,6 +62,10 @@
     if (p.url !== undefined) {
       main += '<p>' + Drupal.t('Google') + ': ' + '<a href="' + p.url + '" target="_blank" >' + p.name + '</a></p>';
     }
+    // link to Getdirections
+    if (Drupal.settings.getlocations[key].getdirections_enabled && p.geometry !== undefined) {
+      main += '<p><a href="' + Drupal.settings.basePath + 'getdirections/latlon/to/' + p.geometry.location.lat() + ',' + p.geometry.location.lng() + '/' + p.name + '" target="_blank">' + Drupal.t('Directions') + '</a></p>';
+    }
 
     photo = '';
     if (p.photos !== undefined && p.photos.length > 0 ) {
@@ -82,7 +79,6 @@
       ph = p.photos[rn - 1].getUrl({'maxWidth': 75});
       photo += '<img class="sp_picture" src="' + ph + '" alt="' + p.name + '" title="' + p.name + '" />';
     }
-
     var sp_content = "";
     sp_content += '<div class="location vcard">';
     sp_content += '<div class="container-inline">';
@@ -111,7 +107,6 @@
     }
     sp_content += '</div>';
     sp_content += '</div>';
-
     google.maps.event.addListener(marker, 'click', function() {
       // close any previous instances
       if (pushit) {
@@ -130,7 +125,6 @@
         getlocations_settings[key].infoBubbles.push(sp_iw);
       }
     });
-
   }
 
   function sp_getdetails(m, p, k) {
@@ -142,6 +136,29 @@
         do_sp_bubble(m, p, k);
       }
     });
+  }
+
+  function sp_do_places(places, key) {
+    // clear out existing markers
+    Drupal.getlocations_search_places_clearmarkers(key, false);
+    for (var ip = 0; ip < places.length; ip++) {
+      var place = places[ip];
+      var image = {
+        url: place.icon,
+        size: new google.maps.Size(71, 71),
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(17, 34),
+        scaledSize: new google.maps.Size(25, 25)
+      };
+      var sp_marker = new google.maps.Marker({
+        map: getlocations_map[key],
+        icon: image,
+        title: place.name,
+        position: place.geometry.location
+      });
+      sp_getdetails(sp_marker, place, key);
+      sp_markers.push(sp_marker);
+    }
   }
 
   Drupal.getlocations_search_places_clearmarkers = function(key, state) {

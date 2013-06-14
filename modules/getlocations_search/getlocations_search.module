@@ -253,7 +253,7 @@ function getlocations_search_getmap($which = 'page') {
     'circles_enable', 'circles_strokecolor', 'circles_strokeopacity', 'circles_strokeweight', 'circles_fillcolor', 'circles_fillopacity', 'circles_coords', 'circles_radius', 'circles_clickable', 'circles_message',
     'polylines_enable', 'polylines_strokecolor', 'polylines_strokeopacity', 'polylines_strokeweight', 'polylines_coords', 'polylines_clickable', 'polylines_message',
     'kml_url', 'kml_url_click', 'kml_url_infowindow', 'kml_url_viewport', 'kml_url_button', 'kml_url_button_label', 'kml_url_button_state',
-    'visual_refresh', 'map_resize', 'region_bias', 'fullscreen_disable', 'search_places', 'search_places_size', 'search_places_position', 'search_places_label', 'search_places_placeholder',
+    'visual_refresh', 'map_resize', 'region_bias', 'fullscreen_disable', 'search_places', 'search_places_size', 'search_places_position', 'search_places_label', 'search_places_placeholder', 'search_places_dd',
   );
   foreach ($keys AS $key) {
     $getlocations_defaults[$key] = $getlocations_search_defaults[$key];
@@ -650,6 +650,7 @@ function getlocations_search_defaults() {
     'search_places_position'    => $getlocations_defaults['search_places_position'],
     'search_places_label'       => $getlocations_defaults['search_places_label'],
     'search_places_placeholder' => $getlocations_defaults['search_places_placeholder'],
+    'search_places_dd'          => $getlocations_defaults['search_places_dd'],
   );
 
   $settings = variable_get('getlocations_search_defaults', $defaults);

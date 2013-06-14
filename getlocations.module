@@ -889,6 +889,8 @@ function getlocations_defaults() {
     'search_places_position'        => 'outside_above',
     'search_places_label'           => t('Google Places Search'),
     'search_places_placeholder'     => '',
+    'search_places_dd'              => 0,
+    'getdirections_enabled'         => (module_exists('getdirections') ? 1 : 0),
   );
 
   $fieldables = getlocations_get_fieldable_entity_types();
@@ -2001,6 +2003,8 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
       'search_places_position'    => $defaults['search_places_position'],
       'search_places_label'       => $defaults['search_places_label'],
       'search_places_placeholder' => $defaults['search_places_placeholder'],
+      'search_places_dd'          => $defaults['search_places_dd'],
+      'getdirections_enabled'     => $defaults['getdirections_enabled'],
     ),
   );
   if ($defaults['weather_use']) {
@@ -3266,7 +3270,12 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
       30,
       40
     );
-    $form['search_places_placeholder']['#suffix'] = '</div>';
+    // dropdown
+    $form['search_places_dd'] = getlocations_element_map_checkbox(
+      t('Provide a Dropdown instead of a Textbox to Google Places Search'),
+      $defaults['search_places_dd']
+    );
+    $form['search_places_dd']['#suffix'] = '</div>';
 
     if ($config) {
       $form['places'] = array(
@@ -4553,17 +4562,132 @@ function theme_getlocations_show($variables) {
   // search_places
   $sp = '';
   if ($defaults['search_places']) {
+
     $sp .= '<div class="search_places_input_wrapper">';
     if ($defaults['search_places_label']) {
-      $sp .= '<label for="search_places_input_' . $mapid . '">' . $defaults['search_places_label'] . '</label>';
+      $sp .= '<label for="search_places_select_' . $mapid . '">' . $defaults['search_places_label'] . '</label>';
     }
-    $placeholder = '';
-    if ($defaults['search_places_placeholder']) {
-      $placeholder = 'placeholder="' . $defaults['search_places_placeholder'] . '"';
+
+    if ($defaults['search_places_dd']) {
+      // alternative dropdown
+      $sp_opts = array(
+      'accounting'              => t('Accounting'),
+      'airport'                 => t('Airport'),
+      'amusement_park'          => t('Amusement park'),
+      'aquarium'                => t('Aquarium'),
+      'art_gallery'             => t('Art gallery'),
+      'atm'                     => t('ATM'),
+      'bakery'                  => t('Bakery'),
+      'bank'                    => t('Bank'),
+      'bar'                     => t('Bar'),
+      'beauty_salon'            => t('Beauty salon'),
+      'bicycle_store'           => t('Bicycle store'),
+      'book_store'              => t('Book store'),
+      'bowling_alley'           => t('Bowling alley'),
+      'bus_station'             => t('Bus station'),
+      'cafe'                    => t('Cafe'),
+      'campground'              => t('Campground'),
+      'car_dealer'              => t('Car dealer'),
+      'car_rental'              => t('Car rental'),
+      'car_repair'              => t('Car repair'),
+      'car_wash'                => t('Car wash'),
+      'casino'                  => t('Casino'),
+      'cemetery'                => t('Cemetery'),
+      'church'                  => t('Church'),
+      'city_hall'               => t('City hall'),
+      'clothing_store'          => t('Clothing store'),
+      'convenience_store'       => t('Convenience store'),
+      'courthouse'              => t('Courthouse'),
+      'dentist'                 => t('Dentist'),
+      'department_store'        => t('Department store'),
+      'doctor'                  => t('Doctor'),
+      'electrician'             => t('Electrician'),
+      'electronics_store'       => t('Electronics store'),
+      'embassy'                 => t('Embassy'),
+      'establishment'           => t('Establishment'),
+      'finance'                 => t('Finance'),
+      'fire_station'            => t('Fire station'),
+      'florist'                 => t('Florist'),
+      'food'                    => t('Food'),
+      'funeral_home'            => t('Funeral home'),
+      'furniture_store'         => t('Furniture store'),
+      'gas_station'             => t('Gas station'),
+      'general_contractor'      => t('General contractor'),
+      'grocery_or_supermarket'  => t('Grocery or supermarket'),
+      'gym'                     => t('Gym'),
+      'hair_care'               => t('Hair care'),
+      'hardware_store'          => t('Hardware store'),
+      'health'                  => t('Health'),
+      'hindu_temple'            => t('Hindu temple'),
+      'home_goods_store'        => t('Home goods store'),
+      'hospital'                => t('Hospital'),
+      'insurance_agency'        => t('Insurance agency'),
+      'jewelry_store'           => t('Jewelry store'),
+      'laundry'                 => t('Laundry'),
+      'lawyer'                  => t('Lawyer'),
+      'library'                 => t('Library'),
+      'liquor_store'            => t('Liquor store'),
+      'local_government_office' => t('Local government office'),
+      'locksmith'               => t('Locksmith'),
+      'lodging'                 => t('Lodging'),
+      'meal_delivery'           => t('Meal delivery'),
+      'meal_takeaway'           => t('Meal takeaway'),
+      'mosque'                  => t('Mosque'),
+      'movie_rental'            => t('Movie rental'),
+      'movie_theater'           => t('Movie theater'),
+      'moving_company'          => t('Moving company'),
+      'museum'                  => t('Museum'),
+      'night_club'              => t('Night club'),
+      'painter'                 => t('Painter'),
+      'park'                    => t('Park'),
+      'parking'                 => t('Parking'),
+      'pet_store'               => t('Pet store'),
+      'pharmacy'                => t('Pharmacy'),
+      'physiotherapist'         => t('Physiotherapist'),
+      'place_of_worship'        => t('Place of worship'),
+      'plumber'                 => t('Plumber'),
+      'police'                  => t('Police'),
+      'post_office'             => t('Post office'),
+      'real_estate_agency'      => t('Real estate agency'),
+      'restaurant'              => t('Restaurant'),
+      'roofing_contractor'      => t('Roofing contractor'),
+      'rv_park'                 => t('RV park'),
+      'school'                  => t('School'),
+      'shoe_store'              => t('Shoe store'),
+      'shopping_mall'           => t('Shopping mall'),
+      'spa'                     => t('Spa'),
+      'stadium'                 => t('Stadium'),
+      'storage'                 => t('Storage'),
+      'store'                   => t('Store'),
+      'subway_station'          => t('Subway station'),
+      'synagogue'               => t('Synagogue'),
+      'taxi_stand'              => t('Taxi stand'),
+      'train_station'           => t('Train station'),
+      'travel_agency'           => t('Travel agency'),
+      'university'              => t('University'),
+      'veterinary_care'         => t('Veterinary care'),
+      'zoo'                     => t('Zoo'),
+      );
+
+      $sp .= '<select id="search_places_select_' . $mapid . '" class="form-select" >';
+      foreach ($sp_opts AS $k_opt => $opt) {
+        $sp .= '<option value="' . $k_opt . '">' . $opt . '</option>';
+      }
+      $sp .= '</select>';
+      $sp .= '&nbsp;&nbsp;<input type="button" value="' . t('Go') . '" id="search_places_go_btn_' . $mapid . '" class="form-submit" />';
+      $sp .= '&nbsp;&nbsp;<input type="button" value="' . t('Reset') . '" onClick="Drupal.getlocations_search_places_clearmarkers(\'' . $mapid . '\', true)"  class="form-submit" />';
+      $sp .= '</div>';
     }
-    $sp .= '<input type="text" id="search_places_input_' . $mapid . '" size="' . $defaults['search_places_size'] . '" class="form-text" ' . $placeholder . ' />';
-    $sp .= '&nbsp;&nbsp;<input type="button" value="' . t('Reset') . '" onClick="Drupal.getlocations_search_places_clearmarkers(\'' . $mapid . '\', true)"  class="form-submit" />';
-    $sp .= '</div>';
+    else {
+      $placeholder = '';
+      if ($defaults['search_places_placeholder']) {
+        $placeholder = 'placeholder="' . $defaults['search_places_placeholder'] . '"';
+      }
+      $sp .= '<input type="text" id="search_places_input_' . $mapid . '" size="' . $defaults['search_places_size'] . '" class="form-text" ' . $placeholder . ' />';
+      $sp .= '&nbsp;&nbsp;<input type="button" value="' . t('Reset') . '" onClick="Drupal.getlocations_search_places_clearmarkers(\'' . $mapid . '\', true)"  class="form-submit" />';
+      $sp .= '</div>';
+    }
+
   }
   if ($defaults['search_places'] && $defaults['search_places_position'] == 'outside_above') {
     $output .= $sp;
