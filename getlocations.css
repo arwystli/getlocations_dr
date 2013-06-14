@@ -104,3 +104,26 @@ div.fullscreen {
 .sp_picture {
 }
 
+.sp_listing_wrapper {
+  border: 1px solid #CCCCCC;
+  width: 494px;
+  padding: 4px;
+  margin-bottom: 8px;
+}
+.sp_listing {
+  max-height: 200px;
+  overflow: auto;
+  cursor: pointer;
+}
+.sp_ul {
+  list-style-type: none;
+  margin-left: 0px;
+}
+.sp_link {
+  vertical-align: middle;
+}
+.sp_link:hover {
+  background: #F0F0F0;
+}
+
+

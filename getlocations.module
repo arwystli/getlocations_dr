@@ -890,6 +890,7 @@ function getlocations_defaults() {
     'search_places_label'           => t('Google Places Search'),
     'search_places_placeholder'     => '',
     'search_places_dd'              => 0,
+    'search_places_list'            => 0,
     'getdirections_enabled'         => (module_exists('getdirections') ? 1 : 0),
   );
 
@@ -2004,6 +2005,7 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
       'search_places_label'       => $defaults['search_places_label'],
       'search_places_placeholder' => $defaults['search_places_placeholder'],
       'search_places_dd'          => $defaults['search_places_dd'],
+      'search_places_list'        => $defaults['search_places_list'],
       'getdirections_enabled'     => $defaults['getdirections_enabled'],
     ),
   );
@@ -3269,6 +3271,11 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
       t('The text inside the Google Places Search textbox. Leave empty for the default.'),
       30,
       40
+    );
+    // list
+    $form['search_places_list'] = getlocations_element_map_checkbox(
+      t('Provide a List of what was found linked to a bubble'),
+      $defaults['search_places_list']
     );
     // dropdown
     $form['search_places_dd'] = getlocations_element_map_checkbox(
@@ -4671,7 +4678,11 @@ function theme_getlocations_show($variables) {
 
       $sp .= '<select id="search_places_select_' . $mapid . '" class="form-select" >';
       foreach ($sp_opts AS $k_opt => $opt) {
-        $sp .= '<option value="' . $k_opt . '">' . $opt . '</option>';
+        $sel = '';
+        if ($k_opt == 'establishment') {
+          $sel = 'selected';
+        }
+        $sp .= '<option value="' . $k_opt . '" ' . $sel . '>' . $opt . '</option>';
       }
       $sp .= '</select>';
       $sp .= '&nbsp;&nbsp;<input type="button" value="' . t('Go') . '" id="search_places_go_btn_' . $mapid . '" class="form-submit" />';
@@ -4686,6 +4697,9 @@ function theme_getlocations_show($variables) {
       $sp .= '<input type="text" id="search_places_input_' . $mapid . '" size="' . $defaults['search_places_size'] . '" class="form-text" ' . $placeholder . ' />';
       $sp .= '&nbsp;&nbsp;<input type="button" value="' . t('Reset') . '" onClick="Drupal.getlocations_search_places_clearmarkers(\'' . $mapid . '\', true)"  class="form-submit" />';
       $sp .= '</div>';
+    }
+    if ($defaults['search_places_list']) {
+      $sp .= '<div class="sp_listing_wrapper"><p><b>' . t('Google Places search results') . '</b></p><div class="sp_listing"><ul class="sp_ul" id="search_places_results_' . $mapid . '"></ul></div></div>';
     }
 
   }

@@ -139,6 +139,7 @@ class getlocations_plugin_style_map extends views_plugin_style {
     $options['search_places_label']      = array('default' => $getlocations_defaults['search_places_label']);
     $options['search_places_placeholder'] = array('default' => $getlocations_defaults['search_places_placeholder']);
     $options['search_places_dd']         = array('default' => $getlocations_defaults['search_places_dd']);
+    $options['search_places_list']       = array('default' => $getlocations_defaults['search_places_list']);
 
     // categories
     $options['category_method']               = array('default' => $getlocations_defaults['category_method']);

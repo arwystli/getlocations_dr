@@ -67,16 +67,16 @@
       main += '<p><a href="' + Drupal.settings.basePath + 'getdirections/latlon/to/' + p.geometry.location.lat() + ',' + p.geometry.location.lng() + '/' + p.name + '" target="_blank">' + Drupal.t('Directions') + '</a></p>';
     }
 
-    photo = '';
+    var photo = '';
     if (p.photos !== undefined && p.photos.length > 0 ) {
       if (p.photos.length > 1)   {
         // pick one at random
-        rn = Math.floor((Math.random() * p.photos.length )+1);
+        var rn = Math.floor((Math.random() * p.photos.length )+1);
       }
       else {
-        rn = p.photos.length;
+        var rn = p.photos.length;
       }
-      ph = p.photos[rn - 1].getUrl({'maxWidth': 75});
+      var ph = p.photos[rn - 1].getUrl({'maxWidth': 75});
       photo += '<img class="sp_picture" src="' + ph + '" alt="' + p.name + '" title="' + p.name + '" />';
     }
     var sp_content = "";
@@ -127,13 +127,15 @@
     });
   }
 
-  function sp_getdetails(m, p, k) {
+  function sp_getdetails(m, p, k, i) {
     places_service.getDetails({reference: p.reference}, function(result, status) {
       if (status == google.maps.places.PlacesServiceStatus.OK) {
         do_sp_bubble(m, result, k);
+        sp_do_result(result, k, i);
       }
       else {
         do_sp_bubble(m, p, k);
+        sp_do_result(p, k, i);
       }
     });
   }
@@ -156,8 +158,20 @@
         title: place.name,
         position: place.geometry.location
       });
-      sp_getdetails(sp_marker, place, key);
-      sp_markers.push(sp_marker);
+      //sp_markers.push(sp_marker);
+      sp_markers[ip] = sp_marker;
+      sp_getdetails(sp_marker, place, key, ip);
+    }
+  }
+
+  function sp_do_result(p, k, i) {
+    if ($("#search_places_results_" + k).is('ul')) {
+      var out = '<li class="sp_link" id="sp_link_' + i + '"><img class="placeIcon" src="' + p.icon + '">&nbsp;&nbsp;' + p.name + '</li>';
+      $("#search_places_results_" + k).append(out);
+
+      $("#sp_link_" + i).click( function() {
+        google.maps.event.trigger(sp_markers[i], 'click');
+      });
     }
   }
 
@@ -171,6 +185,7 @@
     if (state) {
       $("#search_places_input_" + key).val('');
     }
+    $("#search_places_results_" + key).html('');
   }
 
 }(jQuery));

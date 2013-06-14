@@ -66,18 +66,18 @@ var getlocations_settings = {};
 
         var arr = gs.latlons;
         for (var i = 0; i < arr.length; i++) {
-          arr2 = arr[i];
+          var arr2 = arr[i];
           if (arr2.length < 2) {
             return;
           }
-          lat = arr2[0];
-          lon = arr2[1];
-          lid = arr2[2];
-          name = arr2[3];
-          mark = arr2[4];
-          lidkey = arr2[5];
-          customContent = arr2[6];
-          cat = arr2[7];
+          var lat = arr2[0];
+          var lon = arr2[1];
+          var lid = arr2[2];
+          var name = arr2[3];
+          var mark = arr2[4];
+          var lidkey = arr2[5];
+          var customContent = arr2[6];
+          var cat = arr2[7];
 
           if (mark === '') {
             gs.markdone = gs.defaultIcon;
@@ -85,7 +85,7 @@ var getlocations_settings = {};
           else {
             gs.markdone = Drupal.getlocations.getIcon(mark);
           }
-          m = Drupal.getlocations.makeMarker(map, gs, lat, lon, lid, name, lidkey, customContent, cat, mkey);
+          var m = Drupal.getlocations.makeMarker(map, gs, lat, lon, lid, name, lidkey, customContent, cat, mkey);
           // still experimental
           getlocations_markers[mkey].lids[lid] = m;
           if (gs.usemarkermanager || gs.useclustermanager) {
@@ -135,7 +135,7 @@ var getlocations_settings = {};
       if ( $("#getlocations_map_canvas_" + key).is('div') ) {
 
         // defaults
-        global_settings = {
+        var global_settings = {
           maxzoom: 16,
           minzoom: 7,
           nodezoom: 12,
@@ -291,7 +291,7 @@ var getlocations_settings = {};
         var cenlon = '';
 
         if (minmaxes) {
-          mmarr = minmaxes.split(',');
+          var mmarr = minmaxes.split(',');
           minlat = parseFloat(mmarr[0]);
           minlon = parseFloat(mmarr[1]);
           maxlat = parseFloat(mmarr[2]);
@@ -311,7 +311,7 @@ var getlocations_settings = {};
         else { controltype = false; }
 
         // map type
-        maptypes = [];
+        var maptypes = [];
         if (maptype) {
           if (maptype == 'Map' && baselayers.Map) { maptype = google.maps.MapTypeId.ROADMAP; }
             if (maptype == 'Satellite' && baselayers.Satellite) { maptype = google.maps.MapTypeId.SATELLITE; }
@@ -741,7 +741,7 @@ var getlocations_settings = {};
     }
 
     // relocate function
-    get_winlocation = function(gs, lid, lidkey) {
+    var get_winlocation = function(gs, lid, lidkey) {
       if (gs.preload_data) {
         arr = gs.getlocations_info;
         for (var i = 0; i < arr.length; i++) {
