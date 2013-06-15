@@ -317,6 +317,7 @@ var getlocations_settings = {};
             if (maptype == 'Satellite' && baselayers.Satellite) { maptype = google.maps.MapTypeId.SATELLITE; }
             if (maptype == 'Hybrid' && baselayers.Hybrid) { maptype = google.maps.MapTypeId.HYBRID; }
             if (maptype == 'Physical' && baselayers.Physical) { maptype = google.maps.MapTypeId.TERRAIN; }
+            if (maptype == 'OpenStreetMap' && baselayers.OpenStreetMap) { maptype = "OSM"; }
             if (baselayers.Map) { maptypes.push(google.maps.MapTypeId.ROADMAP); }
             if (baselayers.Satellite) { maptypes.push(google.maps.MapTypeId.SATELLITE); }
             if (baselayers.Hybrid) { maptypes.push(google.maps.MapTypeId.HYBRID); }
@@ -400,6 +401,9 @@ var getlocations_settings = {};
             maxZoom: 18
           }));
           google.maps.event.addListener(getlocations_map[key], 'maptypeid_changed', updateCopyrights);
+          if (maptype == "OSM") {
+            updateCopyrights();
+          }
           getlocations_map[key].controls[google.maps.ControlPosition.BOTTOM_RIGHT].push(copyrightNode);
         }
 

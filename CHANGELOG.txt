@@ -1,9 +1,42 @@
-commit e94579c
+commit b6021a5
+Author: hutch <hutch@midwales.net>
+Date:   Sat Jun 15 21:47:43 2013 +0100
+
+    fixed OSM as default
+
+js/getlocations.js
+modules/getlocations_search/getlocations_search.module
+
+commit ffbf9ca
+Author: hutch <hutch@midwales.net>
+Date:   Sat Jun 15 20:09:35 2013 +0100
+
+    more improvements to search_places
+
+getlocations.module
+js/getlocations_search_places.js
+
+commit 8b5f09c
+Author: hutch <hutch@midwales.net>
+Date:   Fri Jun 14 20:19:50 2013 +0100
+
+    added list feature to search_places
+
+getlocations.css
+getlocations.module
+js/getlocations.js
+js/getlocations_search_places.js
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_search/getlocations_search.module
+views/getlocations_plugin_style_map.inc
+
+commit 27b05b1
 Author: hutch <hutch@midwales.net>
 Date:   Fri Jun 14 11:14:12 2013 +0100
 
     added dropdown option to search places, getdirections link in bubble
 
+CHANGELOG.txt
 getlocations.css
 getlocations.module
 js/getlocations_search_places.js

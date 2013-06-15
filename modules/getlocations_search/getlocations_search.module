@@ -557,6 +557,7 @@ function getlocations_search_defaults() {
       'Satellite'               => $getlocations_defaults['baselayers']['Satellite'],
       'Hybrid'                  => $getlocations_defaults['baselayers']['Hybrid'],
       'Physical'                => $getlocations_defaults['baselayers']['Physical'],
+      'OpenStreetMap'           => $getlocations_defaults['baselayers']['OpenStreetMap'],
     ),
     'scale'                     => $getlocations_defaults['scale'],
     'overview'                  => $getlocations_defaults['overview'],
