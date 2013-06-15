@@ -29,6 +29,8 @@
 
 /* map links feature */
 .getlocations_map_links ul {
+  list-style-type: none;
+  margin-left: 0px;
 }
 
 /**
@@ -126,4 +128,9 @@ div.fullscreen {
   background: #F0F0F0;
 }
 
-
+.sp_address {
+}
+.sp_phone {
+}
+.sp_web {
+}

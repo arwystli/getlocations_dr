@@ -1,9 +1,18 @@
-commit b6021a5
+commit bbf8910
+Author: hutch <hutch@midwales.net>
+Date:   Sat Jun 15 23:03:35 2013 +0100
+
+    added css
+
+getlocations.css
+
+commit cdde459
 Author: hutch <hutch@midwales.net>
 Date:   Sat Jun 15 21:47:43 2013 +0100
 
     fixed OSM as default
 
+CHANGELOG.txt
 js/getlocations.js
 modules/getlocations_search/getlocations_search.module
 
