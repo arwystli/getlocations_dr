@@ -1923,7 +1923,8 @@ function getlocations_get_path_from_entity_type($entity_type) {
  *
  */
 function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $inputmap = FALSE, $searchmap = FALSE) {
-  global $language;
+  global $language, $is_https;
+
   $lla = explode(',', $defaults['latlong']);
   $lat = $lla[0];
   $lng = $lla[1];
@@ -2007,6 +2008,7 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
       'search_places_dd'          => $defaults['search_places_dd'],
       'search_places_list'        => $defaults['search_places_list'],
       'getdirections_enabled'     => $defaults['getdirections_enabled'],
+      'is_https'                  => ($is_https ? 1 : 0),
     ),
   );
   if ($defaults['weather_use']) {
@@ -4786,9 +4788,8 @@ function theme_getlocations_info($variables) {
   $output = '';
 
   $output .= '<div class="location vcard">';
-  $output .= '<br />';
 
-  // this logic gives the location name field precedence over the node title
+  // this logic gives the location name field precedence over the entity title
 
   $entity_link = FALSE;
   $entity_title = FALSE;
