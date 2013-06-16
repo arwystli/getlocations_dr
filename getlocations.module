@@ -3299,7 +3299,7 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
 
 }
 
-function getlocations_paths_get() {
+function getlocations_paths_get($reset = FALSE) {
 
   $defaults = array(
     'infobubble_path' => GETLOCATIONS_PATH . '/js/infobubble.js',
@@ -3315,8 +3315,13 @@ function getlocations_paths_get() {
     'getlocations_categories_path' => GETLOCATIONS_PATH . '/js/getlocations_categories.js',
     'getlocations_search_places_path' => GETLOCATIONS_PATH . '/js/getlocations_search_places.js',
   );
-  $settings = variable_get('getlocations_paths', $defaults);
-  $getlocations_paths = getlocations_adjust_vars($defaults, $settings);
+  if ($reset) {
+    $getlocations_paths = $defaults;
+  }
+  else {
+    $settings = variable_get('getlocations_paths', $defaults);
+    $getlocations_paths = getlocations_adjust_vars($defaults, $settings);
+  }
 
   return $getlocations_paths;
 }
