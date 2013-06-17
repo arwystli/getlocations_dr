@@ -3281,7 +3281,7 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
     );
     // dropdown
     $form['search_places_dd'] = getlocations_element_map_checkbox(
-      t('Provide a Dropdown instead of a Textbox to Google Places Search'),
+      t('Provide a Dropdown instead of a Textbox for Google Places Search'),
       $defaults['search_places_dd']
     );
     $form['search_places_dd']['#suffix'] = '</div>';

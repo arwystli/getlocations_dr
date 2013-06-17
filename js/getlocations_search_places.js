@@ -67,14 +67,14 @@
     }
     // link to Getdirections or google
     if (p.geometry !== undefined) {
+      var scheme = 'http';
+      if (Drupal.settings.getlocations[key].is_https) {
+        scheme = 'https';
+      }
       if (Drupal.settings.getlocations[key].getdirections_enabled) {
         main += '<span class="sp_web"><a href="' + Drupal.settings.basePath + 'getdirections/latlon/to/' + p.geometry.location.lat() + ',' + p.geometry.location.lng() + '/' + p.name + '" target="_blank">' + Drupal.t('Directions') + '</a></span><br />';
       }
       else {
-        var scheme = 'http';
-        if (Drupal.settings.getlocations[key].is_https) {
-          scheme = 'https';
-        }
         main += '<span class="sp_web"><a href="' + scheme + '://maps.google.com/maps?f=d&ie=UTF8&daddr=' + p.name + '@' + p.geometry.location.lat() + ',' + p.geometry.location.lng() + '"  target="_blank">' + Drupal.t('Google Getdirections')  + '</a></span><br />';
       }
     }
@@ -193,6 +193,14 @@
       sp_marker.setMap(null);
     }
     sp_markers = [];
+
+    var ver = Drupal.getlocations.msiedetect();
+    if ( (ver == '') || (ver && ver > 8)) {
+      for (var i in getlocations_settings[key].infoBubbles) {
+        getlocations_settings[key].infoBubbles[i].close();
+      }
+    }
+
     if (state) {
       $("#search_places_input_" + key).val('');
     }
