@@ -158,7 +158,7 @@ function getlocations_menu() {
   // ajax callbacks
   // getlocations/info?lid     # ajax callback to fetch an address
   $items['getlocations_cb/info'] = array(
-    'page callback' => 'getlocations_info',
+    'page callback' => 'getlocations_adinfo',
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
@@ -1152,7 +1152,7 @@ function getlocations_get_path_from_lid($lid) {
 }
 
 // ajax callback to fill infobubble
-function getlocations_info() {
+function getlocations_adinfo() {
 
   $lid = $_GET['lid'];
   $lidkey = $_GET['key'];
@@ -1215,7 +1215,7 @@ function getlocations_getinfo($lid, $lidkey, $extra=FALSE) {
       }
     }
 
-    $content = theme('getlocations_info', array('location' => $location));
+    $content = theme('getlocations_adinfo', array('location' => $location));
   }
   return $content;
 
@@ -4472,7 +4472,7 @@ function getlocations_theme() {
         'object' => '',
       ),
     ),
-    'getlocations_info' => array(
+    'getlocations_adinfo' => array(
       'variables' => array(
         'location' => NULL,
       ),
@@ -4788,7 +4788,7 @@ function theme_getlocations_show($variables) {
  *   Returns $output
  *
  */
-function theme_getlocations_info($variables) {
+function theme_getlocations_adinfo($variables) {
   $location = $variables['location'];
   $output = '';
 
