@@ -1,9 +1,45 @@
-commit bbf8910
+commit ebb0e28
+Author: hutch <hutch@midwales.net>
+Date:   Sat Jun 22 05:38:47 2013 +0100
+
+    improved geolocation button
+
+modules/getlocations_search/getlocations_search.module
+modules/getlocations_search/js/getlocations_search.js
+
+commit 9f4f70b
+Author: hutch <hutch@midwales.net>
+Date:   Wed Jun 19 12:31:37 2013 +0100
+
+    more hook clash avoidance
+
+getlocations.module
+
+commit 12e675c
+Author: hutch <hutch@midwales.net>
+Date:   Mon Jun 17 19:18:28 2013 +0100
+
+    some tidying up
+
+getlocations.module
+js/getlocations_search_places.js
+
+commit 6e98da4
+Author: hutch <hutch@midwales.net>
+Date:   Sun Jun 16 11:34:59 2013 +0100
+
+    added paths reset
+
+getlocations.admin.inc
+getlocations.module
+
+commit 7efecaf
 Author: hutch <hutch@midwales.net>
 Date:   Sat Jun 15 23:03:35 2013 +0100
 
     added css
 
+CHANGELOG.txt
 getlocations.css
 
 commit cdde459

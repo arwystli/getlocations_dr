@@ -86,17 +86,17 @@
           });
         }
 
-        if (gset.is_mobile) {
-          if (navigator && navigator.geolocation) {
-            $("#getlocations_search_geolocation_button-" + mapid2).click( function () {
-              do_Geolocationbutton(getlocations_map[key], gset, key);
-              return false;
-            });
-          }
-          else {
-            $("#getlocations_search_geolocation_button-" + mapid2).hide();
-          }
+        // geolocation by browser
+        if (gset.is_mobile && navigator && navigator.geolocation) {
+          $("#getlocations_search_geolocation_button_" + mapid).click( function () {
+            do_Geolocationbutton(getlocations_map[key], gset, key);
+            return false;
+          });
         }
+        else {
+          $("#getlocations_search_geolocation_button_wrapper_" + mapid).hide();
+        }
+
       }
     });
   }
@@ -273,7 +273,7 @@
   }
 
   function do_Geolocationbutton(map, gs, mkey) {
-    var statusdiv = '#getlocations_search_geolocation_status';
+    var statusdiv = '#getlocations_search_geolocation_status_' + mkey;
     var statusmsg = '';
     $(statusdiv).html(statusmsg);
     navigator.geolocation.getCurrentPosition(
