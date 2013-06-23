@@ -88,13 +88,12 @@
 
         // geolocation by browser
         if (gset.is_mobile && navigator && navigator.geolocation) {
-          $("#getlocations_search_geolocation_button_" + mapid).click( function () {
+          $("#getlocations_search_geolocation_button_" + key).click( function () {
             do_Geolocationbutton(getlocations_map[key], gset, key);
-            return false;
           });
         }
         else {
-          $("#getlocations_search_geolocation_button_wrapper_" + mapid).hide();
+          $("#getlocations_search_geolocation_button_wrapper_" + key).hide();
         }
 
       }

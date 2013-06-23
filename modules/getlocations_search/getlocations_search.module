@@ -358,7 +358,7 @@ function theme_getlocations_search_form($variables) {
   $form['getlocations_search_submit']['#suffix'] = '</div>';
 
   if (getlocations_is_mobile() && isset($form['getlocations_search_geolocation_button_' . $mapid])) {
-    $geolocation_button = '<div id="getlocations_search_geolocation_button_wrapper_' . $mapid . '"><p><input type="submit" value="' . t('Find current Location') . '" title="' . t('Get the latitude and longitude for this location from the browser') . '" id="getlocations_search_geolocation_button_' . $mapid . '" class="form-submit" />&nbsp;<span id="getlocations_search_geolocation_status_' . $mapid . '" ></span></p>';
+    $geolocation_button = '<div id="getlocations_search_geolocation_button_wrapper_' . $mapid . '"><p><input type="button" value="' . t('Find current Location') . '" title="' . t('Get the latitude and longitude for this location from the browser') . '" id="getlocations_search_geolocation_button_' . $mapid . '" class="form-submit" />&nbsp;<span id="getlocations_search_geolocation_status_' . $mapid . '" ></span></p>';
     $geolocation_button .= '<p>Use the browser to find your current location</p></div>';
     $form['getlocations_search_geolocation_button_' . $mapid]['#markup'] = $geolocation_button;
   }
