@@ -242,18 +242,32 @@ function getlocations_search_getmap($which = 'page') {
 
   // we need to update $getlocations_defaults with data from $getlocations_search_defaults
   $keys = array(
-    'width', 'height', 'styles', 'latlong', 'zoom', 'controltype', 'pancontrol', 'mtc', 'maptype', 'baselayers', 'scale', 'overview', 'overview_opened',
-    'scrollwheel', 'draggable', 'streetview_show', 'trafficinfo', 'trafficinfo_state', 'bicycleinfo', 'bicycleinfo_state', 'transitinfo',
-    'transitinfo_state', 'panoramio_use', 'panoramio_state', 'poi_show', 'transit_show', 'minzoom', 'maxzoom', 'nodezoom', 'markermanagertype',
-    'usemarkermanager', 'useclustermanager', 'markerclusterer_style', 'markerclusterer_zoom', 'markerclusterer_size', 'markerclusterer_minsize',
-    'markerclusterer_title', 'markeraction', 'markeractiontype', 'weather_show', 'weather_state', 'weather_cloud', 'weather_cloud_state',
-    'map_backgroundcolor', 'show_maplinks', 'minzoom_map', 'maxzoom_map', 'fullscreen', 'show_bubble_on_one_marker',
-    'polygons_enable', 'polygons_strokecolor', 'polygons_strokeopacity', 'polygons_strokeweight', 'polygons_fillcolor', 'polygons_fillopacity', 'polygons_coords', 'polygons_clickable', 'polygons_message',
-    'rectangles_enable', 'rectangles_strokecolor', 'rectangles_strokeopacity', 'rectangles_strokeweight', 'rectangles_fillcolor', 'rectangles_fillopacity', 'rectangles_coords', 'rectangles_clickable', 'rectangles_message',
-    'circles_enable', 'circles_strokecolor', 'circles_strokeopacity', 'circles_strokeweight', 'circles_fillcolor', 'circles_fillopacity', 'circles_coords', 'circles_radius', 'circles_clickable', 'circles_message',
-    'polylines_enable', 'polylines_strokecolor', 'polylines_strokeopacity', 'polylines_strokeweight', 'polylines_coords', 'polylines_clickable', 'polylines_message',
-    'kml_url', 'kml_url_click', 'kml_url_infowindow', 'kml_url_viewport', 'kml_url_button', 'kml_url_button_label', 'kml_url_button_state',
-    'visual_refresh', 'map_resize', 'region_bias', 'fullscreen_disable', 'search_places', 'search_places_size', 'search_places_position', 'search_places_label', 'search_places_placeholder', 'search_places_dd', 'search_places_list',
+    'width', 'height', 'styles', 'latlong',
+    'zoom', 'controltype', 'pancontrol', 'mtc',
+    'maptype', 'baselayers', 'scale', 'overview', 'overview_opened', 'scrollwheel', 'draggable',
+    'streetview_show', 'trafficinfo', 'trafficinfo_state', 'bicycleinfo',
+    'bicycleinfo_state', 'transitinfo', 'transitinfo_state', 'panoramio_use',
+    'panoramio_state', 'poi_show', 'transit_show', 'minzoom',
+    'maxzoom', 'nodezoom', 'markermanagertype', 'usemarkermanager',
+    'useclustermanager', 'markerclusterer_style', 'markerclusterer_zoom', 'markerclusterer_size',
+    'markerclusterer_minsize', 'markerclusterer_title', 'markeraction', 'markeractiontype',
+    'weather_show', 'weather_state', 'weather_cloud', 'weather_cloud_state',
+    'map_backgroundcolor', 'show_maplinks', 'minzoom_map', 'maxzoom_map',
+    'fullscreen', 'show_bubble_on_one_marker', 'polygons_enable', 'polygons_strokecolor',
+    'polygons_strokeopacity', 'polygons_strokeweight', 'polygons_fillcolor', 'polygons_fillopacity',
+    'polygons_coords', 'polygons_clickable', 'polygons_message', 'rectangles_enable',
+    'rectangles_strokecolor', 'rectangles_strokeopacity', 'rectangles_strokeweight', 'rectangles_fillcolor',
+    'rectangles_fillopacity', 'rectangles_coords', 'rectangles_clickable', 'rectangles_message',
+    'circles_enable', 'circles_strokecolor', 'circles_strokeopacity', 'circles_strokeweight',
+    'circles_fillcolor', 'circles_fillopacity', 'circles_coords', 'circles_radius',
+    'circles_clickable', 'circles_message', 'polylines_enable', 'polylines_strokecolor',
+    'polylines_strokeopacity', 'polylines_strokeweight', 'polylines_coords', 'polylines_clickable',
+    'polylines_message', 'kml_url', 'kml_url_click', 'kml_url_infowindow',
+    'kml_url_viewport', 'kml_url_button', 'kml_url_button_label', 'kml_url_button_state',
+    'visual_refresh', 'map_resize', 'region_bias', 'fullscreen_disable',
+    'search_places', 'search_places_size', 'search_places_position', 'search_places_label',
+    'search_places_placeholder', 'search_places_dd', 'search_places_list',
+    'search_radcircle_toggle', 'search_radcircle_toggle_active', 'search_radcircle_enable',
   );
   foreach ($keys AS $key) {
     $getlocations_defaults[$key] = $getlocations_search_defaults[$key];
@@ -295,23 +309,29 @@ function getlocations_search_js_settings_do($defaults, $mapid) {
   $do_lookup = getlocations_search_do_types();
   $settings = array(
     $mapid => array(
-      'method' => $defaults['method'],
-      'maxzoom' => $defaults['maxzoom'],
-      'do_lookup' => ($do_lookup ? 1 : 0),
-      'autocomplete_bias' => $defaults['autocomplete_bias'],
-      'restrict_by_country' => $defaults['restrict_by_country'],
-      'country' => $defaults['country'],
-      'show_distance' => $defaults['show_distance'],
-      'search_marker' => $defaults['search_marker'],
-      'do_search_marker' => $defaults['do_search_marker'],
-      'search_info_path' => url("getlocations_search/info"),
+      'method'                         => $defaults['method'],
+      'maxzoom'                        => $defaults['maxzoom'],
+      'do_lookup'                      => ($do_lookup ? 1 : 0),
+      'autocomplete_bias'              => $defaults['autocomplete_bias'],
+      'restrict_by_country'            => $defaults['restrict_by_country'],
+      'country'                        => $defaults['country'],
+      'show_distance'                  => $defaults['show_distance'],
+      'search_marker'                  => $defaults['search_marker'],
+      'do_search_marker'               => $defaults['do_search_marker'],
+      'search_info_path'               => url("getlocations_search/info"),
+      'search_radcircle_enable'        => $defaults['search_radcircle_enable'],
+      'search_radcircle_strokecolor'   => $defaults['search_radcircle_strokecolor'],
+      'search_radcircle_strokeopacity' => $defaults['search_radcircle_strokeopacity'],
+      'search_radcircle_strokeweight'  => $defaults['search_radcircle_strokeweight'],
+      'search_radcircle_fillcolor'     => $defaults['search_radcircle_fillcolor'],
+      'search_radcircle_fillopacity'   => $defaults['search_radcircle_fillopacity'],
+      'search_radcircle_toggle'        => $defaults['search_radcircle_toggle'],
+      'search_radcircle_toggle_active' => $defaults['search_radcircle_toggle_active'],
     ),
   );
 
   drupal_add_js(array('getlocations_search' => $settings), 'setting');
 }
-
-
 
 /**
  * Implements hook_theme().
@@ -653,6 +673,14 @@ function getlocations_search_defaults() {
     'search_places_placeholder' => $getlocations_defaults['search_places_placeholder'],
     'search_places_dd'          => $getlocations_defaults['search_places_dd'],
     'search_places_list'        => $getlocations_defaults['search_places_list'],
+    'search_radcircle_enable'        => 0,
+    'search_radcircle_strokecolor'   => $getlocations_defaults['circles_strokecolor'],
+    'search_radcircle_strokeopacity' => $getlocations_defaults['circles_strokeopacity'],
+    'search_radcircle_strokeweight'  => $getlocations_defaults['circles_strokeweight'],
+    'search_radcircle_fillcolor'     => $getlocations_defaults['circles_fillcolor'],
+    'search_radcircle_fillopacity'   => $getlocations_defaults['circles_fillopacity'],
+    'search_radcircle_toggle'        => 0,
+    'search_radcircle_toggle_active' => 1,
   );
 
   $settings = variable_get('getlocations_search_defaults', $defaults);
@@ -1154,7 +1182,7 @@ function getlocations_search_info_sql($lat, $lon, $distance, $units, $type, $dos
     $latout = round($lat, 6);
     $lonout = round($lon, 6);
   }
-  $infoarr = array($distance, $units, ($type ? $type : 'all'), $latout, $lonout);
+  $infoarr = array($distance, $units, ($type ? $type : 'all'), $latout, $lonout, $distance_meters);
   $info = implode(",", $infoarr);
   $ret = array('locations' => $locations, 'minmaxes' => $minmaxes, 'info' => $info);
 

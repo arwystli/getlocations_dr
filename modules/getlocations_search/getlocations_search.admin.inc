@@ -141,6 +141,56 @@ function _getlocations_search_settings_form($defaults, $which = 'admin') {
     $defaults['search_units']
   );
 
+  // Radius circle
+  $form[$varname]['search_radcircle_enable'] = getlocations_element_map_checkbox(
+    t('Enable Radius circle'),
+    $defaults['search_radcircle_enable'],
+    t('Show Search distance as a circle.')
+  );
+  $form[$varname]['search_radcircle_enable']['#suffix'] = '<div id="wrap-getlocations-search-radcircle">';
+
+  $form[$varname]['search_radcircle_strokecolor'] = getlocations_element_map_tf(
+    t('Circle line color'),
+    $defaults['search_radcircle_strokecolor'],
+    t('Any CSS3 color such as HTML hex, eg #FF0000.'),
+    10
+  );
+  $form[$varname]['search_radcircle_strokeopacity'] = getlocations_element_map_tf(
+    t('Circle line opacity'),
+    $defaults['search_radcircle_strokeopacity'],
+    t('Must be between 0 and 1.'),
+    10
+  );
+  $form[$varname]['search_radcircle_strokeweight'] = getlocations_element_map_tf(
+    t('Circle line thickness'),
+    $defaults['search_radcircle_strokeweight'],
+    t('Must be an integer.'),
+    10
+  );
+  $form[$varname]['search_radcircle_fillcolor'] = getlocations_element_map_tf(
+    t('Circle fill color'),
+    $defaults['search_radcircle_fillcolor'],
+    t('Any CSS3 color such as HTML hex, eg #FF0000.'),
+    10
+  );
+  $form[$varname]['search_radcircle_fillopacity'] = getlocations_element_map_tf(
+    t('Circle fill opacity'),
+    $defaults['search_radcircle_fillopacity'],
+    t('Must be between 0 and 1.'),
+    10
+  );
+  $form[$varname]['search_radcircle_toggle'] = getlocations_element_map_checkbox(
+    t('Enable Radius circle toggle button'),
+    $defaults['search_radcircle_toggle'],
+    t('Show a button to switch visibility on or off.')
+  );
+  $form[$varname]['search_radcircle_toggle_active'] = getlocations_element_map_checkbox(
+    t('Initial state of Radius circle'),
+    $defaults['search_radcircle_toggle_active'],
+    t('Set initial visibility on.')
+  );
+  $form[$varname]['search_radcircle_toggle_active']['#suffix'] = '</div>';
+
   // are there any modules providing locations?
   if (getlocations_search_do_types()) {
 
