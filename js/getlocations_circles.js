@@ -22,9 +22,15 @@
       $.each(Drupal.settings.getlocations_circles, function (key, settings) {
 
         var strokeColor = (settings.strokeColor ? settings.strokeColor : default_circle_settings.strokeColor);
+        if (! strokeColor.match("/^#/")) {
+          strokeColor = '#' + strokeColor;
+        }
         var strokeOpacity = (settings.strokeOpacity ? settings.strokeOpacity : default_circle_settings.strokeOpacity);
         var strokeWeight = (settings.strokeWeight ? settings.strokeWeight : default_circle_settings.strokeWeight);
         var fillColor = (settings.fillColor ? settings.fillColor : default_circle_settings.fillColor);
+        if (! fillColor.match("/^#/")) {
+          fillColor = '#' + fillColor;
+        }
         var fillOpacity = (settings.fillOpacity ? settings.fillOpacity : default_circle_settings.fillOpacity);
         var clickable = (settings.clickable ? settings.clickable : default_circle_settings.clickable);
         var message = (settings.message ? settings.message : default_circle_settings.message);
@@ -43,6 +49,9 @@
           rc = circles[i];
           if (rc.coords) {
             if (rc.strokeColor) {
+              if (! rc.strokeColor.match("/^#/")) {
+                rc.strokeColor = '#' + rc.strokeColor;
+              }
               p_strokeColor = rc.strokeColor;
             }
             if (rc.strokeOpacity) {
@@ -52,6 +61,9 @@
               p_strokeWeight = rc.strokeWeight;
             }
             if (rc.fillColor) {
+              if (! rc.fillColor.match("/^#/")) {
+                rc.fillColor = '#' + rc.fillColor;
+              }
               p_fillColor = rc.fillColor;
             }
             if (rc.fillOpacity) {

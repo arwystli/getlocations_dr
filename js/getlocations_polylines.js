@@ -19,6 +19,9 @@
       $.each(Drupal.settings.getlocations_polylines, function (key, settings) {
 
         var strokeColor = (settings.strokeColor ? settings.strokeColor : default_polyline_settings.strokeColor);
+        if (! strokeColor.match("/^#/")) {
+          strokeColor = '#' + strokeColor;
+        }
         var strokeOpacity = (settings.strokeOpacity ? settings.strokeOpacity : default_polyline_settings.strokeOpacity);
         var strokeWeight = (settings.strokeWeight ? settings.strokeWeight : default_polyline_settings.strokeWeight);
         var clickable = (settings.clickable ? settings.clickable : default_polyline_settings.clickable);
@@ -34,6 +37,9 @@
           pl = polylines[i];
           if (pl.coords) {
             if (pl.strokeColor) {
+              if (! pl.strokeColor.match("/^#/")) {
+                pl.strokeColor = '#' + pl.strokeColor;
+              }
               p_strokeColor = pl.strokeColor;
             }
             if (pl.strokeOpacity) {

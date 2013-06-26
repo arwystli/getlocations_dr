@@ -2110,6 +2110,7 @@ function getlocations_fields_defaults() {
     'search_places_dd'          => $getlocations_defaults['search_places_dd'],
     'search_places_list'        => $getlocations_defaults['search_places_list'],
     'visual_refresh'            => $getlocations_defaults['visual_refresh'],
+    'jquery_colorpicker_enabled' => $getlocations_defaults['jquery_colorpicker_enabled'],
   );
 
   $getlocations_fields_defaults = variable_get('getlocations_fields_defaults', $defaults);
@@ -2242,6 +2243,7 @@ function getlocations_fields_field_info_defaults() {
         'search_places_dd'                => $getlocations_fields_defaults['search_places_dd'],
         'search_places_list'              => $getlocations_fields_defaults['search_places_list'],
         'visual_refresh'                  => $getlocations_fields_defaults['visual_refresh'],
+        'jquery_colorpicker_enabled'      => $getlocations_fields_defaults['jquery_colorpicker_enabled'],
       ),
     ),
   );
@@ -2358,8 +2360,9 @@ function getlocations_fields_field_formatter_info_defaults() {
     'search_places_label'       => $getlocations_defaults['search_places_label'],
     'search_places_placeholder' => $getlocations_defaults['search_places_placeholder'],
     'search_places_dd'          => $getlocations_defaults['search_places_dd'],
-    'search_places_list'          => $getlocations_defaults['search_places_list'],
+    'search_places_list'        => $getlocations_defaults['search_places_list'],
     'visual_refresh'            => $getlocations_defaults['visual_refresh'],
+    'jquery_colorpicker_enabled' => $getlocations_defaults['jquery_colorpicker_enabled'],
   );
 
   $fieldables = getlocations_get_fieldable_entity_types();

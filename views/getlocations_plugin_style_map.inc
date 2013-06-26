@@ -140,6 +140,9 @@ class getlocations_plugin_style_map extends views_plugin_style {
     $options['search_places_placeholder'] = array('default' => $getlocations_defaults['search_places_placeholder']);
     $options['search_places_dd']         = array('default' => $getlocations_defaults['search_places_dd']);
     $options['search_places_list']       = array('default' => $getlocations_defaults['search_places_list']);
+    // jquery_colorpicker TODO does not work in Views Getlocations | settings
+    $options['jquery_colorpicker_enabled'] = array('default' => 0);
+    #$options['jquery_colorpicker_enabled'] = array('default' => $getlocations_defaults['jquery_colorpicker_enabled']);
 
     // categories
     $options['category_method']               = array('default' => $getlocations_defaults['category_method']);

@@ -20,9 +20,15 @@
       $.each(Drupal.settings.getlocations_polygons, function (key, settings) {
 
         var strokeColor = (settings.strokeColor ? settings.strokeColor : default_polygon_settings.strokeColor);
+        if (! strokeColor.match("/^#/")) {
+          strokeColor = '#' + strokeColor;
+        }
         var strokeOpacity = (settings.strokeOpacity ? settings.strokeOpacity : default_polygon_settings.strokeOpacity);
         var strokeWeight = (settings.strokeWeight ? settings.strokeWeight : default_polygon_settings.strokeWeight);
         var fillColor = (settings.fillColor ? settings.fillColor : default_polygon_settings.fillColor);
+        if (! fillColor.match("/^#/")) {
+          fillColor = '#' + fillColor;
+        }
         var fillOpacity = (settings.fillOpacity ? settings.fillOpacity : default_polygon_settings.fillOpacity);
         var clickable = (settings.clickable ? settings.clickable : default_polygon_settings.clickable);
         var message = (settings.message ? settings.message : default_polygon_settings.message);
@@ -39,6 +45,9 @@
           pg = polygons[i];
           if (pg.coords) {
             if (pg.strokeColor) {
+              if (! pg.strokeColor.match("/^#/")) {
+                pg.strokeColor = '#' + pg.strokeColor;
+              }
               p_strokeColor = pg.strokeColor;
             }
             if (pg.strokeOpacity) {
@@ -48,6 +57,9 @@
               p_strokeWeight = pg.strokeWeight;
             }
             if (pg.fillColor) {
+              if (! pg.fillColor.match("/^#/")) {
+                pg.fillColor = '#' + pg.fillColor;
+              }
               p_fillColor = pg.fillColor;
             }
             if (pg.fillOpacity) {

@@ -41,6 +41,7 @@ function getlocations_search_settings_form() {
   $form = system_settings_form($form);
   unset($form['#theme']);
   $form['#theme'] = 'getlocations_search_settings_form';
+  $form['#validate'][] = 'getlocations_search_settings_validate';
   return $form;
 
 }
@@ -48,6 +49,9 @@ function getlocations_search_settings_form() {
 // form shared between admin config and block config
 function _getlocations_search_settings_form($defaults, $which = 'admin') {
   drupal_add_js(GETLOCATIONS_SEARCH_PATH . '/js/getlocations_search_admin.js');
+
+  $getlocations_defaults = getlocations_defaults();
+  $defaults['jquery_colorpicker_enabled'] = $getlocations_defaults['jquery_colorpicker_enabled'];
 
   $form = array();
   $varname = 'getlocations_search_defaults';
@@ -149,35 +153,70 @@ function _getlocations_search_settings_form($defaults, $which = 'admin') {
   );
   $form[$varname]['search_radcircle_enable']['#suffix'] = '<div id="wrap-getlocations-search-radcircle">';
 
-  $form[$varname]['search_radcircle_strokecolor'] = getlocations_element_map_tf(
-    t('Circle line color'),
-    $defaults['search_radcircle_strokecolor'],
-    t('Any CSS3 color such as HTML hex, eg #FF0000.'),
-    10
-  );
+  // jquery_colorpicker
+  if (module_exists('jquery_colorpicker') && $getlocations_defaults['jquery_colorpicker_enabled']) {
+    $form[$varname]['search_radcircle_strokecolor'] = array(
+      '#type' => 'jquery_colorpicker',
+      '#title' => t('Circle line color'),
+      '#default_value' => preg_replace("/^#/", '', $defaults['search_radcircle_strokecolor']),
+      '#description' => t('Click on the Colorpicker icon to select a color'),
+    );
+  }
+  else {
+    $form[$varname]['search_radcircle_strokecolor'] = getlocations_element_map_tf(
+      t('Circle line color'),
+      $defaults['search_radcircle_strokecolor'],
+      t('HTML hex, eg #FF0000.'),
+      10,
+      10,
+      TRUE
+    );
+  }
+
   $form[$varname]['search_radcircle_strokeopacity'] = getlocations_element_map_tf(
     t('Circle line opacity'),
     $defaults['search_radcircle_strokeopacity'],
     t('Must be between 0 and 1.'),
-    10
+    10,
+    10,
+    TRUE
   );
   $form[$varname]['search_radcircle_strokeweight'] = getlocations_element_map_tf(
     t('Circle line thickness'),
     $defaults['search_radcircle_strokeweight'],
     t('Must be an integer.'),
-    10
+    10,
+    10,
+    TRUE
   );
-  $form[$varname]['search_radcircle_fillcolor'] = getlocations_element_map_tf(
-    t('Circle fill color'),
-    $defaults['search_radcircle_fillcolor'],
-    t('Any CSS3 color such as HTML hex, eg #FF0000.'),
-    10
-  );
+
+  // jquery_colorpicker
+  if (module_exists('jquery_colorpicker') && $getlocations_defaults['jquery_colorpicker_enabled']) {
+    $form[$varname]['search_radcircle_fillcolor'] = array(
+      '#type' => 'jquery_colorpicker',
+      '#title' => t('Circle fill color'),
+      '#default_value' => preg_replace("/^#/", '', $defaults['search_radcircle_fillcolor']),
+      '#description' => t('Click on the Colorpicker icon to select a color'),
+    );
+  }
+  else {
+    $form[$varname]['search_radcircle_fillcolor'] = getlocations_element_map_tf(
+      t('Circle fill color'),
+      $defaults['search_radcircle_fillcolor'],
+      t('HTML hex, eg #FF0000.'),
+      10,
+      10,
+      TRUE
+    );
+  }
+
   $form[$varname]['search_radcircle_fillopacity'] = getlocations_element_map_tf(
     t('Circle fill opacity'),
     $defaults['search_radcircle_fillopacity'],
     t('Must be between 0 and 1.'),
-    10
+    10,
+    10,
+    TRUE
   );
   $form[$varname]['search_radcircle_toggle'] = getlocations_element_map_checkbox(
     t('Enable Radius circle toggle button'),
