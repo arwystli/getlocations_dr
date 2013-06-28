@@ -306,6 +306,11 @@ function _getlocations_search_settings_form($defaults, $which = 'admin') {
       '#value' => 0,
     );
   }
+  $form[$varname]['display_latlon'] = getlocations_element_map_checkbox(
+    t('Show Latitude/Longitude'),
+    $defaults['display_latlon'],
+    ''
+  );
   $form[$varname]['display_dms'] = getlocations_element_map_checkbox(
     t('Show Latitude/Longitude in Degrees, minutes, seconds'),
     $defaults['display_dms'],
@@ -393,5 +398,28 @@ function _getlocations_search_settings_form($defaults, $which = 'admin') {
   $form[$varname]['markerclusterer_minsize'] = getlocations_element_markerclusterer_minsize($defaults['markerclusterer_minsize']);
 
   return $form;
+
+}
+
+function getlocations_search_settings_validate($form, &$form_state) {
+  // jquery_colorpicker munge
+  if (isset($form_state['values']['getlocations_search_defaults'])) {
+    if (! preg_match("/^#/", $form_state['values']['getlocations_search_defaults']['search_radcircle_strokecolor'])) {
+      $form_state['values']['getlocations_search_defaults']['search_radcircle_strokecolor'] = '#' . $form_state['values']['getlocations_search_defaults']['search_radcircle_strokecolor'];
+    }
+    if (! preg_match("/^#/", $form_state['values']['getlocations_search_defaults']['search_radcircle_fillcolor'])) {
+      $form_state['values']['getlocations_search_defaults']['search_radcircle_fillcolor'] = '#' . $form_state['values']['getlocations_search_defaults']['search_radcircle_fillcolor'];
+    }
+
+  }
+  elseif (isset($form_state['values']['getlocations_search_block_defaults'])) {
+    if (! preg_match("/^#/", $form_state['values']['getlocations_search_block_defaults']['search_radcircle_strokecolor'])) {
+      $form_state['values']['getlocations_search_block_defaults']['search_radcircle_strokecolor'] = '#' . $form_state['values']['getlocations_search_block_defaults']['search_radcircle_strokecolor'];
+    }
+    if (! preg_match("/^#/", $form_state['values']['getlocations_search_block_defaults']['search_radcircle_fillcolor'])) {
+      $form_state['values']['getlocations_search_block_defaults']['search_radcircle_fillcolor'] = '#' . $form_state['values']['getlocations_search_block_defaults']['search_radcircle_fillcolor'];
+    }
+
+  }
 
 }

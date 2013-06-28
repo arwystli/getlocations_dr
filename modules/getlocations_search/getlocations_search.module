@@ -101,6 +101,7 @@ function getlocations_search_form($form, &$form_state, $which, $mapid) {
   // pass this on to the theme
   $form['which'] = array('#type' => 'value', '#value' => $which);
   $form['mapid'] = array('#type' => 'value', '#value' => $mapid);
+  $form['display_latlon'] = array('#type' => 'value', '#value' => $getlocations_search_defaults['display_latlon']);
 
   if ($getlocations_search_defaults['method'] == 'vocab' && $getlocations_search_defaults['vocab_element'] == 'dropdown') {
     //
@@ -373,6 +374,8 @@ function theme_getlocations_search_form($variables) {
   unset($form['which']);
   $mapid = $form['mapid']['#value'];
   unset($form['mapid']);
+  $display_latlon = $form['display_latlon']['#value'];
+  unset($form['display_latlon']['#value']);
   $output = '';
   $form['getlocations_search_' . $mapid]['#prefix'] = '<div id="getlocations_search_wrapper">';
   $form['getlocations_search_submit']['#suffix'] = '</div>';
@@ -400,8 +403,10 @@ function theme_getlocations_search_form($variables) {
   $output .= '<div id="getlocations_search_count_' . $mapid . '"></div>';
   $output .= '<div id="getlocations_search_type_' . $mapid . '"></div>';
   $output .= '<div id="getlocations_search' . ($which == 'block' ? '_block' : '') . '_latlon_wrapper">';
-  $output .= '<div id="getlocations_search_lat_' . $mapid . '" class="getlocations_search' . ($which == 'block' ? '_block' : '') . '_lat"></div>';
-  $output .= '<div id="getlocations_search_lon_' . $mapid . '" class="getlocations_search' . ($which == 'block' ? '_block' : '') . '_lon"></div>';
+  if ($display_latlon) {
+    $output .= '<div id="getlocations_search_lat_' . $mapid . '" class="getlocations_search' . ($which == 'block' ? '_block' : '') . '_lat"></div>';
+    $output .= '<div id="getlocations_search_lon_' . $mapid . '" class="getlocations_search' . ($which == 'block' ? '_block' : '') . '_lon"></div>';
+  }
   $output .= '</div>';
   $output .= '</div>';
   // hidden
@@ -550,6 +555,7 @@ function getlocations_search_defaults() {
     'search_limits' => 0,
     'search_type' => 'all',
     'display_dms' => 0,
+    'display_latlon' => 0,
     'show_distance' => 0,
     'search_marker' => 'drupal',
     'do_search_marker' => 0,
