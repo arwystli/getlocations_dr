@@ -453,6 +453,7 @@ var getlocations_settings = {};
             kmlLayertoggleState[key] = false;
           }
           $("#getlocations_toggleKmlLayer_" + key).click( function() {
+            var label = '';
             l = (settings.kml_url_button_label ? settings.kml_url_button_label : Drupal.t('Kml Layer'));
             if (kmlLayertoggleState[key]) {
               kmlLayer[key].setMap(null);
@@ -482,6 +483,7 @@ var getlocations_settings = {};
             traffictoggleState[key] = false;
           }
           $("#getlocations_toggleTraffic_" + key).click( function() {
+            var label = '';
             if (traffictoggleState[key]) {
               trafficInfo[key].setMap(null);
               traffictoggleState[key] = false;
@@ -509,6 +511,7 @@ var getlocations_settings = {};
             bicycletoggleState[key] = false;
           }
           $("#getlocations_toggleBicycle_" + key).click( function() {
+            var label = '';
             if (bicycletoggleState[key]) {
               bicycleInfo[key].setMap(null);
               bicycletoggleState[key] = false;
@@ -536,6 +539,7 @@ var getlocations_settings = {};
             transittoggleState[key] = false;
           }
           $("#getlocations_toggleTransit_" + key).click( function() {
+            var label = '';
             if (transittoggleState[key]) {
               transitInfo[key].setMap(null);
               transittoggleState[key] = false;
@@ -563,6 +567,7 @@ var getlocations_settings = {};
             panoramiotoggleState[key] = false;
           }
           $("#getlocations_togglePanoramio_" + key).click( function() {
+            var label = '';
             if (panoramiotoggleState[key]) {
               panoramioLayer[key].setMap(null);
               panoramiotoggleState[key] = false;
@@ -626,6 +631,7 @@ var getlocations_settings = {};
               cloudtoggleState[key] = false;
             }
             $("#getlocations_toggleCloud_" + key).click( function() {
+              var label = '';
               if (cloudtoggleState[key] == 1) {
                 cloudLayer[key].setMap(null);
                 cloudtoggleState[key] = false;
@@ -640,6 +646,7 @@ var getlocations_settings = {};
             });
           }
           $("#getlocations_toggleWeather_" + key).click( function() {
+            var label = '';
             if (weathertoggleState[key]) {
               weatherLayer[key].setMap(null);
               weathertoggleState[key] = false;
