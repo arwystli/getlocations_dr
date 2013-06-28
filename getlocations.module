@@ -4910,11 +4910,6 @@ function theme_getlocations_show($variables) {
   $output .= '<div class="getlocations_map_canvas" id="getlocations_map_canvas_' . $mapid . '" style="width: 100%; height: 100%" ></div>';
   $output .= '</div>';
 
-  // search_places
-  if ($defaults['search_places'] && $defaults['search_places_position'] == 'outside_below') {
-    $output .= $sp;
-  }
-
   // show maplinks if enabled
   if ($defaults['show_maplinks']) {
     $output .= '<div class="getlocations_map_links" id="getlocations_map_links_' . $mapid . '" ><ul></ul></div>';
@@ -4969,6 +4964,11 @@ function theme_getlocations_show($variables) {
     $output .= '<div class="getlocations_map_buttons container-inline">';
     $output .= implode('&nbsp;', $buttons);
     $output .= '</div>';
+  }
+
+  // search_places
+  if ($defaults['search_places'] && $defaults['search_places_position'] == 'outside_below') {
+    $output .= $sp;
   }
 
   return $output;
