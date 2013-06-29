@@ -131,6 +131,9 @@ function getlocations_search_form($form, &$form_state, $which, $mapid) {
 
   if ($getlocations_search_defaults['display_search_distance']) {
     $form['getlocations_search_distance_' . $mapid] = getlocations_element_search_distance($getlocations_search_defaults['search_distance'], t('Search distance'), t('The distance away from the center to search for locations.'));
+    if (! $getlocations_search_defaults['display_search_units']) {
+      $form['getlocations_search_distance_' . $mapid]['#field_suffix'] = getlocations_get_unit_names($getlocations_search_defaults['search_units'], 'plurals');
+    }
   }
   else {
     $form['getlocations_search_distance_' . $mapid] = array(
