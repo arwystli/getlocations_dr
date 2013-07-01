@@ -63,6 +63,9 @@ function _getlocations_search_settings_form($defaults, $which = 'admin') {
     $desc = t('The settings here will provide the defaults for Getlocations Search Block.');
   }
 
+  // pass on to theme
+  $form['varname'] = array('#type' => 'value', '#value' => $varname);
+
   $form[$varname] = array(
     '#type' => 'fieldset',
     '#title' => $title,
@@ -141,31 +144,39 @@ function _getlocations_search_settings_form($defaults, $which = 'admin') {
     t('The distance away from the center to search for locations.')
   );
 
+  //     'search_distance_type' => 'mbr',
+  $form[$varname]['search_distance_type'] = getlocations_element_dd(
+    t('Proximity Search type'),
+    $defaults['search_distance_type'],
+    array('mbr' => t('Rectangular'), 'dist' => t('Circular')),
+    t('"Rectangular" is faster, "Circular" is more accurate.')
+  );
+
   $form[$varname]['search_units'] = getlocations_element_distance_unit(
     $defaults['search_units']
   );
 
-  // Radius circle
-  $form[$varname]['search_radcircle_enable'] = getlocations_element_map_checkbox(
-    t('Enable Radius circle'),
-    $defaults['search_radcircle_enable'],
-    t('Show Search distance as a circle.')
+  // search area shape
+  $form[$varname]['search_radshape_enable'] = getlocations_element_map_checkbox(
+    t('Enable Show search area'),
+    $defaults['search_radshape_enable'],
+    t('Show Search area as a rectangle or circle.')
   );
-  $form[$varname]['search_radcircle_enable']['#suffix'] = '<div id="wrap-getlocations-search-radcircle">';
+  $form[$varname]['search_radshape_enable']['#suffix'] = '<div id="wrap-getlocations-search-radshape">';
 
   // jquery_colorpicker
   if (module_exists('jquery_colorpicker') && $getlocations_defaults['jquery_colorpicker_enabled']) {
-    $form[$varname]['search_radcircle_strokecolor'] = array(
+    $form[$varname]['search_radshape_strokecolor'] = array(
       '#type' => 'jquery_colorpicker',
-      '#title' => t('Circle line color'),
-      '#default_value' => preg_replace("/^#/", '', $defaults['search_radcircle_strokecolor']),
+      '#title' => t('Search area line color'),
+      '#default_value' => preg_replace("/^#/", '', $defaults['search_radshape_strokecolor']),
       '#description' => t('Click on the Colorpicker icon to select a color'),
     );
   }
   else {
-    $form[$varname]['search_radcircle_strokecolor'] = getlocations_element_map_tf(
-      t('Circle line color'),
-      $defaults['search_radcircle_strokecolor'],
+    $form[$varname]['search_radshape_strokecolor'] = getlocations_element_map_tf(
+      t('Search area line color'),
+      $defaults['search_radshape_strokecolor'],
       t('HTML hex, eg #FF0000.'),
       10,
       10,
@@ -173,17 +184,17 @@ function _getlocations_search_settings_form($defaults, $which = 'admin') {
     );
   }
 
-  $form[$varname]['search_radcircle_strokeopacity'] = getlocations_element_map_tf(
-    t('Circle line opacity'),
-    $defaults['search_radcircle_strokeopacity'],
+  $form[$varname]['search_radshape_strokeopacity'] = getlocations_element_map_tf(
+    t('Search area line opacity'),
+    $defaults['search_radshape_strokeopacity'],
     t('Must be between 0 and 1.'),
     10,
     10,
     TRUE
   );
-  $form[$varname]['search_radcircle_strokeweight'] = getlocations_element_map_tf(
-    t('Circle line thickness'),
-    $defaults['search_radcircle_strokeweight'],
+  $form[$varname]['search_radshape_strokeweight'] = getlocations_element_map_tf(
+    t('Search area line thickness'),
+    $defaults['search_radshape_strokeweight'],
     t('Must be an integer.'),
     10,
     10,
@@ -192,17 +203,17 @@ function _getlocations_search_settings_form($defaults, $which = 'admin') {
 
   // jquery_colorpicker
   if (module_exists('jquery_colorpicker') && $getlocations_defaults['jquery_colorpicker_enabled']) {
-    $form[$varname]['search_radcircle_fillcolor'] = array(
+    $form[$varname]['search_radshape_fillcolor'] = array(
       '#type' => 'jquery_colorpicker',
-      '#title' => t('Circle fill color'),
-      '#default_value' => preg_replace("/^#/", '', $defaults['search_radcircle_fillcolor']),
+      '#title' => t('Search area fill color'),
+      '#default_value' => preg_replace("/^#/", '', $defaults['search_radshape_fillcolor']),
       '#description' => t('Click on the Colorpicker icon to select a color'),
     );
   }
   else {
-    $form[$varname]['search_radcircle_fillcolor'] = getlocations_element_map_tf(
-      t('Circle fill color'),
-      $defaults['search_radcircle_fillcolor'],
+    $form[$varname]['search_radshape_fillcolor'] = getlocations_element_map_tf(
+      t('Search area fill color'),
+      $defaults['search_radshape_fillcolor'],
       t('HTML hex, eg #FF0000.'),
       10,
       10,
@@ -210,25 +221,25 @@ function _getlocations_search_settings_form($defaults, $which = 'admin') {
     );
   }
 
-  $form[$varname]['search_radcircle_fillopacity'] = getlocations_element_map_tf(
-    t('Circle fill opacity'),
-    $defaults['search_radcircle_fillopacity'],
+  $form[$varname]['search_radshape_fillopacity'] = getlocations_element_map_tf(
+    t('Search area fill opacity'),
+    $defaults['search_radshape_fillopacity'],
     t('Must be between 0 and 1.'),
     10,
     10,
     TRUE
   );
-  $form[$varname]['search_radcircle_toggle'] = getlocations_element_map_checkbox(
-    t('Enable Radius circle toggle button'),
-    $defaults['search_radcircle_toggle'],
+  $form[$varname]['search_radshape_toggle'] = getlocations_element_map_checkbox(
+    t('Enable Search area toggle button'),
+    $defaults['search_radshape_toggle'],
     t('Show a button to switch visibility on or off.')
   );
-  $form[$varname]['search_radcircle_toggle_active'] = getlocations_element_map_checkbox(
-    t('Initial state of Radius circle'),
-    $defaults['search_radcircle_toggle_active'],
+  $form[$varname]['search_radshape_toggle_active'] = getlocations_element_map_checkbox(
+    t('Initial state of Search area'),
+    $defaults['search_radshape_toggle_active'],
     t('Set initial visibility on.')
   );
-  $form[$varname]['search_radcircle_toggle_active']['#suffix'] = '</div>';
+  $form[$varname]['search_radshape_toggle_active']['#suffix'] = '</div>';
 
   // are there any modules providing locations?
   if (getlocations_search_do_types()) {
@@ -334,6 +345,17 @@ function _getlocations_search_settings_form($defaults, $which = 'admin') {
     ''
   );
 
+  $form[$varname]['search_marker_toggle'] = getlocations_element_map_checkbox(
+    t('Enable Search Marker toggle button'),
+    $defaults['search_marker_toggle'],
+    t('Show a button to switch visibility on or off.')
+  );
+  $form[$varname]['search_marker_toggle_active'] = getlocations_element_map_checkbox(
+    t('Initial state of Search Marker'),
+    $defaults['search_marker_toggle_active'],
+    t('Set initial visibility on.')
+  );
+
   $form[$varname] += getlocations_map_display_basics_form($defaults);
 
   $form[$varname] += getlocations_map_display_options_form($defaults, FALSE, TRUE);
@@ -404,20 +426,20 @@ function _getlocations_search_settings_form($defaults, $which = 'admin') {
 function getlocations_search_settings_validate($form, &$form_state) {
   // jquery_colorpicker munge
   if (isset($form_state['values']['getlocations_search_defaults'])) {
-    if (! preg_match("/^#/", $form_state['values']['getlocations_search_defaults']['search_radcircle_strokecolor'])) {
-      $form_state['values']['getlocations_search_defaults']['search_radcircle_strokecolor'] = '#' . $form_state['values']['getlocations_search_defaults']['search_radcircle_strokecolor'];
+    if (! preg_match("/^#/", $form_state['values']['getlocations_search_defaults']['search_radshape_strokecolor'])) {
+      $form_state['values']['getlocations_search_defaults']['search_radshape_strokecolor'] = '#' . $form_state['values']['getlocations_search_defaults']['search_radshape_strokecolor'];
     }
-    if (! preg_match("/^#/", $form_state['values']['getlocations_search_defaults']['search_radcircle_fillcolor'])) {
-      $form_state['values']['getlocations_search_defaults']['search_radcircle_fillcolor'] = '#' . $form_state['values']['getlocations_search_defaults']['search_radcircle_fillcolor'];
+    if (! preg_match("/^#/", $form_state['values']['getlocations_search_defaults']['search_radshape_fillcolor'])) {
+      $form_state['values']['getlocations_search_defaults']['search_radshape_fillcolor'] = '#' . $form_state['values']['getlocations_search_defaults']['search_radshape_fillcolor'];
     }
 
   }
   elseif (isset($form_state['values']['getlocations_search_block_defaults'])) {
-    if (! preg_match("/^#/", $form_state['values']['getlocations_search_block_defaults']['search_radcircle_strokecolor'])) {
-      $form_state['values']['getlocations_search_block_defaults']['search_radcircle_strokecolor'] = '#' . $form_state['values']['getlocations_search_block_defaults']['search_radcircle_strokecolor'];
+    if (! preg_match("/^#/", $form_state['values']['getlocations_search_block_defaults']['search_radshape_strokecolor'])) {
+      $form_state['values']['getlocations_search_block_defaults']['search_radshape_strokecolor'] = '#' . $form_state['values']['getlocations_search_block_defaults']['search_radshape_strokecolor'];
     }
-    if (! preg_match("/^#/", $form_state['values']['getlocations_search_block_defaults']['search_radcircle_fillcolor'])) {
-      $form_state['values']['getlocations_search_block_defaults']['search_radcircle_fillcolor'] = '#' . $form_state['values']['getlocations_search_block_defaults']['search_radcircle_fillcolor'];
+    if (! preg_match("/^#/", $form_state['values']['getlocations_search_block_defaults']['search_radshape_fillcolor'])) {
+      $form_state['values']['getlocations_search_block_defaults']['search_radshape_fillcolor'] = '#' . $form_state['values']['getlocations_search_block_defaults']['search_radshape_fillcolor'];
     }
 
   }

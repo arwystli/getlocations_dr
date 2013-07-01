@@ -274,20 +274,20 @@
         });
       }
 
-      // radius circle
-      if ($("#edit-getlocations-search-defaults-search-radcircle-enable, #edit-getlocations-search-block-defaults-search-radcircle-enable").is('input')) {
-        if ($("#edit-getlocations-search-defaults-search-radcircle-enable, #edit-getlocations-search-block-defaults-search-radcircle-enable").attr('checked')) {
-          $("#wrap-getlocations-search-radcircle").show();
+      // search area shape
+      if ($("#edit-getlocations-search-defaults-search-radshape-enable, #edit-getlocations-search-block-defaults-search-radshape-enable").is('input')) {
+        if ($("#edit-getlocations-search-defaults-search-radshape-enable, #edit-getlocations-search-block-defaults-search-radshape-enable").attr('checked')) {
+          $("#wrap-getlocations-search-radshape").show();
         }
         else {
-          $("#wrap-getlocations-search-radcircle").hide();
+          $("#wrap-getlocations-search-radshape").hide();
         }
-        $("#edit-getlocations-search-defaults-search-radcircle-enable, #edit-getlocations-search-block-defaults-search-radcircle-enable").change(function() {
+        $("#edit-getlocations-search-defaults-search-radshape-enable, #edit-getlocations-search-block-defaults-search-radshape-enable").change(function() {
           if ($(this).attr('checked')) {
-            $("#wrap-getlocations-search-radcircle").show();
+            $("#wrap-getlocations-search-radshape").show();
           }
           else {
-            $("#wrap-getlocations-search-radcircle").hide();
+            $("#wrap-getlocations-search-radshape").hide();
           }
         });
       }

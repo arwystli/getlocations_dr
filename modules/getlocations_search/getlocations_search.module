@@ -124,16 +124,11 @@ function getlocations_search_form($form, &$form_state, $which, $mapid) {
   }
 
   if ($getlocations_search_defaults['use_geolocation_button']) {
-    $form['getlocations_search_geolocation_button_' . $mapid] = array(
-      '#markup' => '',
-    );
+    $form['getlocations_search_geolocation_button_' . $mapid] = array('#markup' => '');
   }
 
   if ($getlocations_search_defaults['display_search_distance']) {
     $form['getlocations_search_distance_' . $mapid] = getlocations_element_search_distance($getlocations_search_defaults['search_distance'], t('Search distance'), t('The distance away from the center to search for locations.'));
-    if (! $getlocations_search_defaults['display_search_units']) {
-      $form['getlocations_search_distance_' . $mapid]['#field_suffix'] = getlocations_get_unit_names($getlocations_search_defaults['search_units'], 'plurals');
-    }
   }
   else {
     $form['getlocations_search_distance_' . $mapid] = array(
@@ -271,7 +266,8 @@ function getlocations_search_getmap($which = 'page') {
     'visual_refresh', 'map_resize', 'region_bias', 'fullscreen_disable',
     'search_places', 'search_places_size', 'search_places_position', 'search_places_label',
     'search_places_placeholder', 'search_places_dd', 'search_places_list',
-    'search_radcircle_toggle', 'search_radcircle_toggle_active', 'search_radcircle_enable',
+    'search_radshape_toggle', 'search_radshape_toggle_active', 'search_radshape_enable',
+    'do_search_marker', 'search_marker_toggle', 'search_marker_toggle_active',
   );
   foreach ($keys AS $key) {
     $getlocations_defaults[$key] = $getlocations_search_defaults[$key];
@@ -322,15 +318,18 @@ function getlocations_search_js_settings_do($defaults, $mapid) {
       'show_distance'                  => $defaults['show_distance'],
       'search_marker'                  => $defaults['search_marker'],
       'do_search_marker'               => $defaults['do_search_marker'],
+      'search_marker_toggle'           => $defaults['search_marker_toggle'],
+      'search_marker_toggle_active'    => $defaults['search_marker_toggle_active'],
       'search_info_path'               => url("getlocations_search/info"),
-      'search_radcircle_enable'        => $defaults['search_radcircle_enable'],
-      'search_radcircle_strokecolor'   => $defaults['search_radcircle_strokecolor'],
-      'search_radcircle_strokeopacity' => $defaults['search_radcircle_strokeopacity'],
-      'search_radcircle_strokeweight'  => $defaults['search_radcircle_strokeweight'],
-      'search_radcircle_fillcolor'     => $defaults['search_radcircle_fillcolor'],
-      'search_radcircle_fillopacity'   => $defaults['search_radcircle_fillopacity'],
-      'search_radcircle_toggle'        => $defaults['search_radcircle_toggle'],
-      'search_radcircle_toggle_active' => $defaults['search_radcircle_toggle_active'],
+      'search_radshape_enable'        => $defaults['search_radshape_enable'],
+      'search_radshape_strokecolor'   => $defaults['search_radshape_strokecolor'],
+      'search_radshape_strokeopacity' => $defaults['search_radshape_strokeopacity'],
+      'search_radshape_strokeweight'  => $defaults['search_radshape_strokeweight'],
+      'search_radshape_fillcolor'     => $defaults['search_radshape_fillcolor'],
+      'search_radshape_fillopacity'   => $defaults['search_radshape_fillopacity'],
+      'search_radshape_toggle'        => $defaults['search_radshape_toggle'],
+      'search_radshape_toggle_active' => $defaults['search_radshape_toggle_active'],
+      'search_distance_type'          => $defaults['search_distance_type'],
     ),
   );
 
@@ -383,6 +382,11 @@ function theme_getlocations_search_form($variables) {
   $form['getlocations_search_' . $mapid]['#prefix'] = '<div id="getlocations_search_wrapper">';
   $form['getlocations_search_submit']['#suffix'] = '</div>';
 
+  // if the units dropdown is not exposed show the units after the distance box
+  if ($form['getlocations_search_units_' . $mapid]['#type'] == 'hidden' && $form['getlocations_search_distance_' . $mapid]['#type'] !== 'hidden') {
+    $form['getlocations_search_distance_' . $mapid]['#field_suffix'] = getlocations_get_unit_names($form['getlocations_search_units_' . $mapid]['#value'], 'plurals');
+  }
+
   if (getlocations_is_mobile() && isset($form['getlocations_search_geolocation_button_' . $mapid])) {
     $geolocation_button = '<div id="getlocations_search_geolocation_button_wrapper_' . $mapid . '"><p><input type="button" value="' . t('Find current Location') . '" title="' . t('Get the latitude and longitude for this location from the browser') . '" id="getlocations_search_geolocation_button_' . $mapid . '" class="form-submit" />&nbsp;<span id="getlocations_search_geolocation_status_' . $mapid . '" ></span></p>';
     $geolocation_button .= '<p>Use the browser to find your current location</p></div>';
@@ -434,58 +438,33 @@ function theme_getlocations_search_form($variables) {
 function theme_getlocations_search_settings_form($variables) {
   $form = $variables['form'];
   $output = '';
+  $varname = $form['varname']['#value'];
+  unset($form['varname']);
 
-  if (isset($form['getlocations_search_defaults']['vocab']) ) {
-    $form['getlocations_search_defaults']['vocab']['#prefix'] = '<div id="getlocations_search_defaults_vocab">';
-    $form['getlocations_search_defaults']['vocab_element']['#suffix'] = '</div>';
+  if (isset($form[$varname]['vocab']) ) {
+    $form[$varname]['vocab']['#prefix'] = '<div id="getlocations_search_defaults_vocab">';
+    $form[$varname]['vocab_element']['#suffix'] = '</div>';
   }
-  $form['getlocations_search_defaults']['useclustermanager']['#prefix'] = '<div id="wrap-getlocations-clusteropts">';
-  $form['getlocations_search_defaults']['markerclusterer_minsize']['#suffix'] = '</div>';
+  $form[$varname]['useclustermanager']['#prefix'] = '<div id="wrap-getlocations-clusteropts">';
+  $form[$varname]['markerclusterer_minsize']['#suffix'] = '</div>';
 
-  $form['getlocations_search_defaults']['usemarkermanager']['#prefix'] = '<div id="wrap-getlocations-markeropts">';
-  $form['getlocations_search_defaults']['maxzoom']['#suffix'] = '</div>';
+  $form[$varname]['usemarkermanager']['#prefix'] = '<div id="wrap-getlocations-markeropts">';
+  $form[$varname]['maxzoom']['#suffix'] = '</div>';
 
-  $form['getlocations_search_defaults']['do_search_marker']['#suffix'] = '<div id="wrap-getlocations-search-marker">';
-  $form['getlocations_search_defaults']['search_marker']['#suffix'] = '</div>';
+  $form[$varname]['do_search_marker']['#suffix'] = '<div id="wrap-getlocations-search-marker">';
+  $form[$varname]['search_marker_toggle_active']['#suffix'] = '</div>';
 
   if (module_exists('colorbox')) {
     $getlocations_colorbox = getlocations_colorbox_settings();
     if ($getlocations_colorbox['marker_enable']) {
-      $link = getlocations_markerpicker_link($form['getlocations_search_defaults']['search_marker']['#id'], 's');
-      $form['getlocations_search_defaults']['search_marker']['#field_suffix'] = '&nbsp;' . $link;
+      $link = getlocations_markerpicker_link($form[$varname]['search_marker']['#id'], 's');
+      $form[$varname]['search_marker']['#field_suffix'] = '&nbsp;' . $link;
     }
   }
 
   $output .= drupal_render_children($form);
   return $output;
 
-}
-
-/**
- * Themes getlocations_search settings form
- *
- * @param array $variables
- *
- * @return
- *   Returns $output
- *
- */
-function theme_getlocations_search_block_settings_form($variables) {
-  $form = $variables['form'];
-  $output = '';
-
-  if (isset($form['getlocations_search_block_defaults']['vocab']) ) {
-    $form['getlocations_search_block_defaults']['vocab']['#prefix'] = '<div id="getlocations_search_defaults_vocab">';
-    $form['getlocations_search_block_defaults']['vocab_element']['#suffix'] = '</div>';
-  }
-  $form['getlocations_search_block_defaults']['useclustermanager']['#prefix'] = '<div id="wrap-getlocations-clusteropts">';
-  $form['getlocations_search_block_defaults']['markerclusterer_minsize']['#suffix'] = '</div>';
-
-  $form['getlocations_search_block_defaults']['usemarkermanager']['#prefix'] = '<div id="wrap-getlocations-markeropts">';
-  $form['getlocations_search_block_defaults']['maxzoom']['#suffix'] = '</div>';
-
-  $output .= drupal_render_children($form);
-  return $output;
 }
 
 /**
@@ -554,6 +533,7 @@ function getlocations_search_defaults() {
     'vocab_element' => 'dropdown',
     'search_map_marker' => 'drupal',
     'search_distance' => 1,
+    'search_distance_type' => 'mbr',
     'search_units' => 'km',
     'search_limits' => 0,
     'search_type' => 'all',
@@ -562,6 +542,8 @@ function getlocations_search_defaults() {
     'show_distance' => 0,
     'search_marker' => 'drupal',
     'do_search_marker' => 0,
+    'search_marker_toggle' => 0,
+    'search_marker_toggle_active' => 1,
     'display_search_distance' => 1,
     'display_search_units' => 1,
     'display_search_limits' => 1,
@@ -682,14 +664,14 @@ function getlocations_search_defaults() {
     'search_places_placeholder' => $getlocations_defaults['search_places_placeholder'],
     'search_places_dd'          => $getlocations_defaults['search_places_dd'],
     'search_places_list'        => $getlocations_defaults['search_places_list'],
-    'search_radcircle_enable'        => 0,
-    'search_radcircle_strokecolor'   => $getlocations_defaults['circles_strokecolor'],
-    'search_radcircle_strokeopacity' => $getlocations_defaults['circles_strokeopacity'],
-    'search_radcircle_strokeweight'  => $getlocations_defaults['circles_strokeweight'],
-    'search_radcircle_fillcolor'     => $getlocations_defaults['circles_fillcolor'],
-    'search_radcircle_fillopacity'   => $getlocations_defaults['circles_fillopacity'],
-    'search_radcircle_toggle'        => 0,
-    'search_radcircle_toggle_active' => 1,
+    'search_radshape_enable'        => 0,
+    'search_radshape_strokecolor'   => $getlocations_defaults['circles_strokecolor'],
+    'search_radshape_strokeopacity' => $getlocations_defaults['circles_strokeopacity'],
+    'search_radshape_strokeweight'  => $getlocations_defaults['circles_strokeweight'],
+    'search_radshape_fillcolor'     => $getlocations_defaults['circles_fillcolor'],
+    'search_radshape_fillopacity'   => $getlocations_defaults['circles_fillopacity'],
+    'search_radshape_toggle'        => 0,
+    'search_radshape_toggle_active' => 1,
   );
 
   $settings = variable_get('getlocations_search_defaults', $defaults);
@@ -832,21 +814,22 @@ function getlocations_search_allinfo() {
     }
   }
 
-  $dms = ($getlocations_search_defaults['display_dms'] ? TRUE : FALSE);
   // sanity check
   if ($latlon = getlocations_latlon_check($lat . ',' . $lon)) {
     $ll = explode(',', $latlon);
     $lat = $ll[0];
     $lon = $ll[1];
-    $output = getlocations_search_info_sql($lat, $lon, $distance, $units, $type, $dosort, $limits, $dms);
+    $output = getlocations_search_info_sql($lat, $lon, $distance, $units, $type, $dosort, $limits);
     drupal_json_output($output);
   }
 }
 
 // $type can be node, user, comment, term. anything else is all
-function getlocations_search_info_sql($lat, $lon, $distance, $units, $type, $dosort, $limits, $dms) {
+function getlocations_search_info_sql($lat, $lon, $distance, $units, $type, $dosort, $limits) {
 
   $getlocations_defaults = getlocations_defaults();
+  $getlocations_search_defaults = getlocations_search_defaults();
+  $dms = ($getlocations_search_defaults['display_dms'] ? TRUE : FALSE);
 
   $distance_meters = getlocations_convert_distance_to_meters($distance, $units);
   $latrange = getlocations_earth_latitude_range($lat, $lon, $distance_meters);
@@ -880,6 +863,11 @@ function getlocations_search_info_sql($lat, $lon, $distance, $units, $type, $dos
         $where = "gf.latitude > :minlat AND gf.latitude < :maxlat AND gf.longitude > :minlon AND gf.longitude < :maxlon";
       }
       $sqlarr = array(':minlat' => $latrange[0], ':maxlat' => $latrange[1], ':minlon' => $lonrange[0], ':maxlon' => $lonrange[1]);
+
+      if ($getlocations_search_defaults['search_distance_type'] == 'dist') {
+        $where .= " AND " . getlocations_earth_distance_sql($lat, $lon, 'g') . ' < :distance';
+        $sqlarr += array(':distance' => $distance_meters);
+      }
 
       $fields = array();
       $fields[] = 'gf.glid';
@@ -1064,6 +1052,11 @@ function getlocations_search_info_sql($lat, $lon, $distance, $units, $type, $dos
         $where = "$latfield > :minlat AND $latfield < :maxlat AND $lonfield > :minlon AND $lonfield < :maxlon";
       }
       $sqlarr = array(':minlat' => $latrange[0], ':maxlat' => $latrange[1], ':minlon' => $lonrange[0], ':maxlon' => $lonrange[1]);
+
+      if ($getlocations_search_defaults['search_distance_type'] == 'dist') {
+        $where .= " AND " . getlocations_earth_distance_sql($lat, $lon, 'g') . ' < :distance';
+        $sqlarr += array(':distance' => $distance_meters);
+      }
 
       $fields = array();
       $fields[] = "$latfield AS latitude";

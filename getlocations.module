@@ -4955,9 +4955,15 @@ function theme_getlocations_show($variables) {
     $buttons[] = '<input type="button" value="' . $kmlbuttonlabel . '" id="getlocations_toggleKmlLayer_' . $mapid . '" class="form-submit"  />';
   }
 
-  // radius circle
-  if (isset($defaults['search_radcircle_toggle']) && $defaults['search_radcircle_toggle'] && $defaults['search_radcircle_enable']) {
-    $buttons[] = '<input type="button" value="' . t('Circle !t', array('!t' => ($defaults['search_radcircle_toggle_active'] ? t('Off') : t('On')))) . '" id="getlocations_search_toggleCircle_' . $mapid . '" class="form-submit" />';
+  if (module_exists('getlocations_search')) {
+    // search area shape
+    if (isset($defaults['search_radshape_toggle']) && $defaults['search_radshape_toggle'] && $defaults['search_radshape_enable']) {
+      $buttons[] = '<input type="button" value="' . t('Search area !t', array('!t' => ($defaults['search_radshape_toggle_active'] ? t('Off') : t('On')))) . '" id="getlocations_search_toggleShape_' . $mapid . '" class="form-submit" />';
+    }
+    // search marker toggle button
+    if (isset($defaults['do_search_marker']) && $defaults['do_search_marker'] && $defaults['search_marker_toggle']) {
+      $buttons[] = '<input type="button" value="' . t('Marker !t', array('!t' => ($defaults['search_marker_toggle_active'] ? t('Off') : t('On')))) . '" id="getlocations_search_toggleMarker_' . $mapid . '" class="form-submit" />';
+    }
   }
 
   if (count($buttons)) {

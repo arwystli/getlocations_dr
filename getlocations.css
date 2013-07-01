@@ -28,6 +28,15 @@
 }
 
 /* map links feature */
+.getlocations_map_links {
+  border: 1px solid #CCCCCC;
+  width: 494px;
+  padding: 4px;
+  margin-bottom: 8px;
+  margin-top: 8px;
+  max-height: 150px;
+  overflow: auto;
+}
 .getlocations_map_links ul {
   list-style-type: none;
   margin-left: 0px;
@@ -133,4 +142,8 @@ div.fullscreen {
 .sp_phone {
 }
 .sp_web {
+}
+
+.search_places_input_wrapper {
+  margin: 8px 0px 8px 0px;
 }

@@ -1,9 +1,83 @@
-commit 9133066
+commit ab5c807
+Author: hutch <hutch@midwales.net>
+Date:   Mon Jul 1 10:05:51 2013 +0100
+
+    improved getlocations_search
+
+getlocations.css
+getlocations.module
+modules/getlocations_search/getlocations_search.admin.inc
+modules/getlocations_search/getlocations_search.module
+modules/getlocations_search/js/getlocations_search.js
+modules/getlocations_search/js/getlocations_search_admin.js
+
+commit 0fb795e
+Author: hutch <hutch@midwales.net>
+Date:   Sat Jun 29 08:16:07 2013 +0100
+
+    better units display
+
+modules/getlocations_search/getlocations_search.module
+
+commit 8792962
+Author: hutch <hutch@midwales.net>
+Date:   Fri Jun 28 20:08:44 2013 +0100
+
+    moved outside_below to below buttons
+
+getlocations.module
+
+commit 7592996
+Author: hutch <hutch@midwales.net>
+Date:   Fri Jun 28 11:04:16 2013 +0100
+
+    added display_latlon
+
+modules/getlocations_search/getlocations_search.admin.inc
+modules/getlocations_search/getlocations_search.module
+
+commit 79d1ab0
+Author: hutch <hutch@midwales.net>
+Date:   Fri Jun 28 11:03:36 2013 +0100
+
+    added var label
+
+js/getlocations.js
+
+commit c4234a8
+Author: hutch <hutch@midwales.net>
+Date:   Wed Jun 26 14:53:28 2013 +0100
+
+    added jquery_colorpicker option
+
+getlocations.module
+js/getlocations_circles.js
+js/getlocations_polygons.js
+js/getlocations_polylines.js
+js/getlocations_rectangles.js
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_search/getlocations_search.admin.inc
+views/getlocations_plugin_style_map.inc
+
+commit 1682e61
+Author: hutch <hutch@midwales.net>
+Date:   Wed Jun 26 10:34:10 2013 +0100
+
+    added radius circle feature to getlocations_search
+
+getlocations.module
+modules/getlocations_search/getlocations_search.admin.inc
+modules/getlocations_search/getlocations_search.module
+modules/getlocations_search/js/getlocations_search.js
+modules/getlocations_search/js/getlocations_search_admin.js
+
+commit ff7553c
 Author: hutch <hutch@midwales.net>
 Date:   Sun Jun 23 18:58:07 2013 +0100
 
     better navigator geolocation
 
+CHANGELOG.txt
 modules/getlocations_search/getlocations_search.module
 modules/getlocations_search/js/getlocations_search.js
 

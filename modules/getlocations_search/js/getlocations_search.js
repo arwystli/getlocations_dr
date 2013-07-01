@@ -9,11 +9,171 @@
 (function ($) {
 
   var search_markersArray = [];
-  var radCircle = [];
+  var radShape = [];
+  var searchmarker = [];
+  var shapetoggleState = [];
+  var markertoggleState = [];
+
+  // getlocations_search_geo
+  var getlocations_search_geo = {};
+  getlocations_search_geo.EARTH_RADIUS_SEMIMAJOR = 6378137.0;
+  //getlocations_search_geo.EARTH_FLATTENING = (1/298.257223563);
+  getlocations_search_geo.EARTH_RADIUS_SEMIMINOR = (6378137.0*(1-(1/298.257223563)));
+  //getlocations_search_geo.EARTH_ECCENTRICITY_SQ = (2*(1/298.257223563)-Math.pow((1/298.257223563), 2));
+
+  /**
+   * Normalizes a latitude to the [-90,90] range. Latitudes above 90 or
+   * below -90 are capped, not wrapped.
+   * @param {Number} lat The latitude to normalize, in degrees.
+   * @type Number
+   * @return Returns the latitude, fit within the [-90,90] range.
+  */
+  getlocations_search_geo.normalizeLat = function(lat) {
+    return Math.max(-90, Math.min(90, lat));
+  };
+
+  /**
+   * Normalizes a longitude to the [-180,180] range. Longitudes above 180
+   * or below -180 are wrapped.
+   * @param {Number} lng The longitude to normalize, in degrees.
+   * @type Number
+   * @return Returns the latitude, fit within the [-90,90] range.
+  */
+  getlocations_search_geo.normalizeLng = function(lng) {
+    if (lng % 360 == 180) {
+      return 180;
+    }
+
+    lng = lng % 360;
+    return lng < -180 ? lng + 360 : lng > 180 ? lng - 360 : lng;
+  };
+
+  /**
+   * Decimal Degrees to Radians.
+   * @param {Number} Decimal Degrees
+   * @returns {Number} Radians
+   *
+  */
+  getlocations_search_geo.toRad = function(deg) {
+    return deg * Math.PI / 180;
+  }
+
+  /**
+   * Radians to Decimal Degrees.
+   * @param {Number} Radians
+   * @returns {Number} Decimal Degrees
+   *
+  */
+  getlocations_search_geo.toDeg = function(rad) {
+    return rad * 180 / Math.PI;
+  }
+
+  /**
+   * Returns the earth's radius at a given latitude
+   * @param {Number} Latitude
+   * @returns {Number} radius
+   *
+  */
+  getlocations_search_geo.earth_radius = function(latitude) {
+    var lat = getlocations_search_geo.toRad(latitude);
+    var x = (Math.cos(lat) / getlocations_search_geo.EARTH_RADIUS_SEMIMAJOR);
+    var y = (Math.sin(lat) / getlocations_search_geo.EARTH_RADIUS_SEMIMINOR);
+    var r = (1 / (Math.sqrt(x * x + y * y)));
+    return r;
+  }
+
+  /**
+   * Estimate the min and max longitudes within distance of a given location.
+   * @param {Number} latitude
+   * @param {Number} longitude
+   * @param {Number} distance in meters
+   * @returns {Array}
+   *
+  */
+  getlocations_search_geo.earth_longitude_range = function(latitude, longitude, distance) {
+
+    if (! distance > 0) {
+      distance = 1;
+    }
+    latitude = parseFloat(latitude);
+    longitude = parseFloat(longitude);
+    distance = parseInt(distance);
+    var lng = getlocations_search_geo.toRad(longitude);
+    var lat =  getlocations_search_geo.toRad(latitude);
+    var radius = getlocations_search_geo.earth_radius(latitude) * Math.cos(lat);
+    var angle = 0;
+    if (radius > 0) {
+      angle = Math.abs(distance / radius);
+      angle = Math.min(angle, Math.PI);
+    }
+    else {
+      angle = Math.PI;
+    }
+    var minlong = lng - angle;
+    var maxlong = lng + angle;
+    if (minlong < -Math.PI) {
+      minlong = minlong + Math.PI * 2;
+    }
+    if (maxlong > Math.PI) {
+      maxlong = maxlong - Math.PI * 2;
+    }
+    var minlongDeg = getlocations_search_geo.toDeg(minlong);
+    minlongDeg = getlocations_search_geo.normalizeLng(minlongDeg);
+    var maxlongDeg = getlocations_search_geo.toDeg(maxlong);
+    maxlongDeg = getlocations_search_geo.normalizeLng(maxlongDeg);
+    var r = [minlongDeg.toFixed(6), maxlongDeg.toFixed(6)];
+    return r;
+  }
+
+  /**
+   * Estimate the min and max latitudes within distance of a given location.
+   * @param {Number} latitude
+   * @param {Number} longitude
+   * @param {Number} distance in meters
+   * @returns {Array}
+   *
+  */
+  getlocations_search_geo.earth_latitude_range = function(latitude, longitude, distance) {
+
+    if (! distance > 0) {
+      distance = 1;
+    }
+    latitude = parseFloat(latitude);
+    longitude = parseFloat(longitude);
+    distance = parseInt(distance);
+    var lng = getlocations_search_geo.toRad(longitude);
+    var lat =  getlocations_search_geo.toRad(latitude);
+    var radius = getlocations_search_geo.earth_radius(latitude);
+    var angle = distance / radius;
+    var minlat = lat - angle;
+    var maxlat = lat + angle;
+    var rightangle = Math.PI / 2;
+    var overshoot = 0;
+    if (minlat < -rightangle) { // wrapped around the south pole
+      overshoot = -minlat - rightangle;
+      minlat = -rightangle + overshoot;
+      if (minlat > maxlat) {
+        maxlat = minlat;
+      }
+      minlat = -rightangle;
+    }
+    if (maxlat > rightangle) { // wrapped around the north pole
+      overshoot = maxlat - rightangle;
+      maxlat = rightangle - overshoot;
+      if (maxlat < minlat) {
+        minlat = maxlat;
+      }
+      maxlat = rightangle;
+    }
+    var minlatDeg = getlocations_search_geo.toDeg(minlat);
+    minlatDeg = getlocations_search_geo.normalizeLat(minlatDeg);
+    var maxlatDeg = getlocations_search_geo.toDeg(maxlat);
+    maxlatDeg = getlocations_search_geo.normalizeLat(maxlatDeg);
+    var r = [minlatDeg.toFixed(6), maxlatDeg.toFixed(6)];
+    return r;
+  }
 
   function getlocations_search_init() {
-
-    var searchmarker = {};
 
     // each map has its own settings
     $.each(Drupal.settings.getlocations_search, function (key, searchsettings) {
@@ -26,29 +186,49 @@
         gset.show_distance = searchsettings.show_distance;
         gset.do_search_marker = searchsettings.do_search_marker;
         gset.search_marker = searchsettings.search_marker;
+        gset.search_distance_type = searchsettings.search_distance_type;
+        gset.search_marker_toggle = searchsettings.search_marker_toggle;
         gset.search_info_path = searchsettings.search_info_path;
         var autocomplete_bias = searchsettings.autocomplete_bias;
         var restrict_by_country = searchsettings.restrict_by_country;
         var country = searchsettings.country;
         var maxzoom = searchsettings.maxzoom;
+
         var mapid = key;
         var mapid2 = key.replace("_", "-");
 
-        // radius circle
-        gset.search_radcircle_enable = searchsettings.search_radcircle_enable;
-        if (searchsettings.search_radcircle_enable) {
-          // radius circle
-          radCircle[key] = new google.maps.Circle({
-            map: getlocations_map[key],
-            radius: 0,
-            strokeColor: searchsettings.search_radcircle_strokecolor,
-            strokeOpacity: searchsettings.search_radcircle_strokeopacity,
-            strokeWeight: searchsettings.search_radcircle_strokeweight,
-            fillColor: searchsettings.search_radcircle_fillcolor,
-            fillOpacity: searchsettings.search_radcircle_fillopacity,
-            clickable: false
-          });
-          $("#getlocations_search_toggleCircle_" + key).attr('disabled', true);
+        // search area shape
+        gset.search_radshape_enable = searchsettings.search_radshape_enable;
+        if (searchsettings.search_radshape_enable) {
+          if (searchsettings.search_distance_type == 'dist') {
+            // radius circle
+            radShape[key] = new google.maps.Circle({
+              map: getlocations_map[key],
+              strokeColor: searchsettings.search_radshape_strokecolor,
+              strokeOpacity: searchsettings.search_radshape_strokeopacity,
+              strokeWeight: searchsettings.search_radshape_strokeweight,
+              fillColor: searchsettings.search_radshape_fillcolor,
+              fillOpacity: searchsettings.search_radshape_fillopacity,
+              visible: false,
+              clickable: false
+            });
+          }
+          else if (searchsettings.search_distance_type == 'mbr') {
+            // rectangle
+            var shcoords = new google.maps.LatLng(parseFloat(0.0), parseFloat(0.0));
+            var shbounds = new google.maps.LatLngBounds(shcoords, shcoords);
+            radShape[key] = new google.maps.Rectangle({
+              map: getlocations_map[key],
+              strokeColor: searchsettings.search_radshape_strokecolor,
+              strokeOpacity: searchsettings.search_radshape_strokeopacity,
+              strokeWeight: searchsettings.search_radshape_strokeweight,
+              fillColor: searchsettings.search_radshape_fillcolor,
+              fillOpacity: searchsettings.search_radshape_fillopacity,
+              visible: false,
+              clickable: false
+            });
+          }
+          $("#getlocations_search_toggleShape_" + key).attr('disabled', true);
         }
 
         if (gset.markermanagertype == 1 && gset.usemarkermanager == 1) {
@@ -114,33 +294,68 @@
           $("#getlocations_search_geolocation_button_wrapper_" + key).hide();
         }
 
-        // radius circle
-        if (searchsettings.search_radcircle_toggle) {
-          var circletoggleState = [];
-          if ( searchsettings.search_radcircle_toggle > 0 ) {
-            circletoggleState[key] = true;
-          }
-          else {
-            circletoggleState[key] = false;
-          }
-          $("#getlocations_search_toggleCircle_" + key).click( function() {
-            if (circletoggleState[key]) {
-              radCircle[key].setVisible(false);
-              circletoggleState[key] = false;
-              label = Drupal.t('Circle On');
+        // search area shape
+        if (searchsettings.search_radshape_enable) {
+          if (searchsettings.search_radshape_toggle) {
+            if ( searchsettings.search_radshape_toggle_active) {
+              shapetoggleState[key] = true;
             }
             else {
-              radCircle[key].setVisible(true);
-              circletoggleState[key] = true;
-              label = Drupal.t('Circle Off');
+              shapetoggleState[key] = false;
             }
-            $(this).val(label);
-          });
+            $("#getlocations_search_toggleShape_" + key).click( function() {
+              var label = '';
+              if (shapetoggleState[key]) {
+                radShape[key].setVisible(false);
+                shapetoggleState[key] = false;
+                label = Drupal.t('Search area On');
+              }
+              else {
+                radShape[key].setVisible(true);
+                shapetoggleState[key] = true;
+                label = Drupal.t('Search area Off');
+              }
+              $(this).val(label);
+            });
+          }
+          else {
+            shapetoggleState[key] = true;
+          }
+        }
+
+        // search marker toggle
+        if (searchsettings.do_search_marker) {
+          if (searchsettings.search_marker_toggle) {
+            $("#getlocations_search_toggleMarker_" + key).attr('disabled', true);
+            if ( searchsettings.search_marker_toggle_active > 0 ) {
+              markertoggleState[key] = true;
+            }
+            else {
+              markertoggleState[key] = false;
+            }
+            $("#getlocations_search_toggleMarker_" + key).click( function() {
+              var label = '';
+              if (markertoggleState[key]) {
+                searchmarker[key].setVisible(false);
+                markertoggleState[key] = false;
+                label = Drupal.t('Marker On');
+              }
+              else {
+                searchmarker[key].setVisible(true);
+                markertoggleState[key] = true;
+                label = Drupal.t('Marker Off');
+              }
+              $(this).val(label);
+            });
+          }
+          else {
+            markertoggleState[key] = true;
+          }
         }
 
       }
-    });
-  }
+    }); // end each
+  } // end init
 
   // cleans out any existing markers, sets up a new geocoder and runs it, filling in the results.
   function do_Geocode(map, gs, adrs, mkey) {
@@ -160,7 +375,7 @@
       oldslat = $("#getlocations_search_slat_" + mkey).html();
       oldslon = $("#getlocations_search_slon_" + mkey).html();
       if (oldslat) {
-        searchmarker.setMap();
+        searchmarker[mkey].setMap();
       }
     }
 
@@ -180,10 +395,10 @@
       $("div#getlocations_map_links_" + mkey + " ul").html("");
     }
 
-    // radius circle
-    if (gs.search_radcircle_enable) {
-      radCircle[mkey].setVisible(false);
-      $("#getlocations_search_toggleCircle_" + mkey).attr('disabled', true);
+    // switch off area shape
+    if (gs.search_radshape_enable) {
+      radShape[mkey].setVisible(false);
+      $("#getlocations_search_toggleShape_" + mkey).attr('disabled', true);
     }
 
     // set up some display vars
@@ -301,7 +516,7 @@
           // search marker
           if (gs.do_search_marker) {
             smark = gs.search_marker;
-            makeSearchcenterMarker(slat, slon, smark, map);
+            makeSearchcenterMarker(slat, slon, smark, map, mkey);
           }
           if (locationct == 1) {
             map.setZoom(gs.nodezoom);
@@ -311,9 +526,9 @@
             }
           }
 
-          // radius circle
-          if (gs.search_radcircle_enable) {
-            makeRadCircle(slat, slon, distance_meters, mkey);
+          // search area shape
+          if (gs.search_radshape_enable) {
+            makeRadShape(slat, slon, distance_meters, gs, mkey);
           }
 
         });
@@ -347,10 +562,10 @@
     );
   }
 
-  function makeSearchcenterMarker(slat, slon, smark, map) {
+  function makeSearchcenterMarker(slat, slon, smark, map, k) {
     smarkdone = Drupal.getlocations.getIcon(smark);
     var p = new google.maps.LatLng(slat, slon);
-    searchmarker = new google.maps.Marker({
+    searchmarker[k] = new google.maps.Marker({
       icon: smarkdone.image,
       shadow: smarkdone.shadow,
       shape: smarkdone.shape,
@@ -359,15 +574,46 @@
       title: Drupal.t('Search center'),
       optimized: false
     });
+    if (markertoggleState[k]) {
+      searchmarker[k].setVisible(true);
+    }
+    else {
+      searchmarker[k].setVisible(false);
+    }
+    $("#getlocations_search_toggleMarker_" + k).attr('disabled', false);
   }
 
-  // Radius circle
-  function makeRadCircle(slat, slon, distance_meters, k) {
-    var p = new google.maps.LatLng(parseFloat(slat), parseFloat(slon));
-    radCircle[k].setRadius(parseInt(distance_meters));
-    radCircle[k].setCenter(p);
-    radCircle[k].setVisible(true);
-    $("#getlocations_search_toggleCircle_" + k).attr('disabled', false);
+  // search area shape
+  function makeRadShape(slat, slon, distance_meters, gs, k) {
+    var done = false;
+    if (gs.search_distance_type == 'dist') {
+      // circle
+      var p = new google.maps.LatLng(parseFloat(slat), parseFloat(slon));
+      radShape[k].setRadius(parseInt(distance_meters));
+      radShape[k].setCenter(p);
+      done = true;
+    }
+    else if (gs.search_distance_type == 'mbr') {
+      // rectangle
+      var lats = getlocations_search_geo.earth_latitude_range(slat, slon, distance_meters);
+      var lngs = getlocations_search_geo.earth_longitude_range(slat, slon, distance_meters);
+
+      var mcoords = [];
+      mcoords[0] = new google.maps.LatLng(parseFloat(lats[0]), parseFloat(lngs[0]));
+      mcoords[1] = new google.maps.LatLng(parseFloat(lats[1]), parseFloat(lngs[1]));
+      var b = new google.maps.LatLngBounds(mcoords[0], mcoords[1]);
+      radShape[k].setBounds(b);
+      done = true;
+    }
+    if (done) {
+      if (shapetoggleState[k]) {
+        radShape[k].setVisible(true);
+      }
+      else {
+        radShape[k].setVisible(false);
+      }
+      $("#getlocations_search_toggleShape_" + k).attr('disabled', false);
+    }
   }
 
   // Deletes all markers in the array by removing references to them
