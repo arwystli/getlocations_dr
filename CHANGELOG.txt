@@ -1,9 +1,18 @@
-commit 9e84700
+commit faf1761
+Author: hutch <hutch@midwales.net>
+Date:   Tue Jul 2 09:50:13 2013 +0100
+
+    fixed bug in map background color
+
+getlocations.module
+
+commit c350043
 Author: hutch <hutch@midwales.net>
 Date:   Thu Oct 11 13:18:41 2012 +0100
 
     added new feature map background color
 
+CHANGELOG.txt
 getlocations.module
 getlocations_plugin_style_map.inc
 js/getlocations.js
