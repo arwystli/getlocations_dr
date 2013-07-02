@@ -1530,7 +1530,8 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
     $defaults['map_backgroundcolor'],
     10,
     128,
-    t('Can be a color name or HTML hex, eg #FF0000. Leave empty for the default color.')
+    t('Can be a color name or HTML hex, eg #FF0000. Leave empty for the default color.'),
+    FALSE
   );
 
   if ($extras) {
