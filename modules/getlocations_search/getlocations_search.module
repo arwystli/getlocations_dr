@@ -160,20 +160,8 @@ function getlocations_search_form($form, &$form_state, $which, $mapid) {
     );
   }
 
-  if ($getlocations_search_defaults['display_search_type']) {
-
-    // use entity_get_info to find all the fieldable types available
-    $entity_allinfo = entity_get_info();
-    $opts = array('all' => t('Show All'));
-    foreach ($entity_allinfo AS $entity_type => $entity_info) {
-      if ($entity_info['fieldable']) {
-        $access_callback = $entity_info['access callback'];
-        if ($access_callback('view', NULL, NULL, $entity_type)) {
-          $opts[$entity_type] = $entity_info['label'];
-        }
-      }
-    }
-
+  $opts = getlocations_search_type_options();
+  if ($getlocations_search_defaults['display_search_type'] && count($opts)) {
     $form['getlocations_search_type_' . $mapid] = array(
       '#type' => 'select',
       '#title' => t('Restrict the search'),
@@ -181,7 +169,6 @@ function getlocations_search_form($form, &$form_state, $which, $mapid) {
       '#default_value' => $getlocations_search_defaults['search_type'],
       '#description' => t('Restrict the search to a content type'),
     );
-
   }
   else {
     $form['getlocations_search_type_' . $mapid] = array(
@@ -330,10 +317,53 @@ function getlocations_search_js_settings_do($defaults, $mapid) {
       'search_radshape_toggle'        => $defaults['search_radshape_toggle'],
       'search_radshape_toggle_active' => $defaults['search_radshape_toggle_active'],
       'search_distance_type'          => $defaults['search_distance_type'],
+      'zoom_on_single_use'            => $defaults['zoom_on_single_use'],
     ),
   );
 
   drupal_add_js(array('getlocations_search' => $settings), 'setting');
+}
+
+/**
+ * Collect information about which entity_types have fields for supported module
+ * and return an array suitable for a dropdown
+ *
+ * @return Array
+ *
+ */
+function getlocations_search_type_options() {
+  $module = getlocations_get_current_supported_module();
+
+  $query = db_select('field_config', 'f');
+  $query->fields('i', array('entity_type'));
+  $query->join('field_config_instance', 'i', 'f.id=i.field_id');
+  $query->condition('f.module', $module)->condition('f.active', 1);
+  $rows = $query->execute();
+  $opts = array();
+  foreach ($rows AS $row) {
+    $found = FALSE;
+    $entity_type = $row->entity_type;
+    if ($entity_type == 'user' && getlocations_access_user_location()) {
+      $found = TRUE;
+    }
+    elseif ($entity_type == 'comment' && user_access('access comments') ) {
+      $found = TRUE;
+    }
+    else if (getlocations_access_location()) {
+      $found = TRUE;
+    }
+
+    if ($found) {
+      $entity_get_info = entity_get_info($entity_type);
+      $label = (isset($entity_get_info['plural label']) ? $entity_get_info['plural label'] : $entity_get_info['label'] );
+      $opts[$entity_type] = $label;
+    }
+  }
+  if (count($opts) > 1) {
+    $opts = array('all' => t('Show All')) + $opts;
+    return $opts;
+  }
+  return array();
 }
 
 /**
@@ -672,6 +702,7 @@ function getlocations_search_defaults() {
     'search_radshape_fillopacity'   => $getlocations_defaults['circles_fillopacity'],
     'search_radshape_toggle'        => 0,
     'search_radshape_toggle_active' => 1,
+    'zoom_on_single_use'            => 1,
   );
 
   $settings = variable_get('getlocations_search_defaults', $defaults);
@@ -771,7 +802,7 @@ function getlocations_search_allinfo() {
   if (isset($_GET['distance']) && is_numeric($_GET['distance'])) {
     $distance = $_GET['distance'];
     // sanity check
-    if ($distance < 1) {
+    if (! $distance > 0) {
       $distance = $getlocations_search_defaults['search_distance'];
     }
   }

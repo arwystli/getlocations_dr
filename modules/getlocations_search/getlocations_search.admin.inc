@@ -367,6 +367,11 @@ function _getlocations_search_settings_form($defaults, $which = 'admin') {
     $defaults['markeraction']
   );
 
+  $form[$varname]['zoom_on_single_use'] = getlocations_element_map_checkbox(
+    t('Apply Default Zoom for Single location'),
+    $defaults['zoom_on_single_use'],
+    t('Apply a Default zoom level for a single marker.')
+  );
   $form[$varname]['nodezoom'] = getlocations_element_map_zoom(
     t('Default Zoom for Single location'),
     $defaults['nodezoom'],

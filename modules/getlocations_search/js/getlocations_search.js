@@ -189,6 +189,7 @@
         gset.search_distance_type = searchsettings.search_distance_type;
         gset.search_marker_toggle = searchsettings.search_marker_toggle;
         gset.search_info_path = searchsettings.search_info_path;
+        gset.zoom_on_single_use = searchsettings.zoom_on_single_use;
         var autocomplete_bias = searchsettings.autocomplete_bias;
         var restrict_by_country = searchsettings.restrict_by_country;
         var country = searchsettings.country;
@@ -404,7 +405,7 @@
     // set up some display vars
     var unitsdisplay = {'km': Drupal.t('Kilometer'), 'm': Drupal.t('Meter'), 'mi': Drupal.t('Mile'), 'yd': Drupal.t('Yard'), 'nmi': Drupal.t('Nautical mile')};
     var unitsdisplaypl = {'km': Drupal.t('Kilometers'), 'm': Drupal.t('Meters'), 'mi': Drupal.t('Miles'), 'yd': Drupal.t('Yards'), 'nmi': Drupal.t('Nautical miles')};
-    var typesdisplay = {'all': Drupal.t('All'), 'node': Drupal.t('Nodes'), 'user': Drupal.t('Users'), 'term': Drupal.t('Terms'), 'comment': Drupal.t('Comments')};
+    var typesdisplay = {'all': Drupal.t('All'), 'node': Drupal.t('Nodes'), 'user': Drupal.t('Users'), 'taxonomy_term': Drupal.t('Taxonomy Terms'), 'term': Drupal.t('Terms'), 'comment': Drupal.t('Comments')};
     // get settings from the DOM
     var mapid2 = mkey.replace("_", "-");
     var distance = $("#edit-getlocations-search-distance-" + mapid2).val();
@@ -519,7 +520,9 @@
             makeSearchcenterMarker(slat, slon, smark, map, mkey);
           }
           if (locationct == 1) {
-            map.setZoom(gs.nodezoom);
+            if (gs.zoom_on_single_use) {
+              map.setZoom(gs.nodezoom);
+            }
             // show_bubble_on_one_marker
             if (gs.show_bubble_on_one_marker && (gs.useInfoWindow || gs.useInfoBubble)) {
               google.maps.event.trigger(marker, 'click');
