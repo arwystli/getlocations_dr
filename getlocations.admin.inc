@@ -409,6 +409,14 @@ function getlocations_settings_form() {
     128,
     t('Where the getlocations search places javascript file is located.')
   );
+  // geo
+  $form['getlocations_paths']['getlocations_geo_path'] = getlocations_element_path(
+    t('Path to getlocations Geo javascript file'),
+    $getlocations_paths['getlocations_geo_path'],
+    60,
+    128,
+    t('Where the getlocations geo javascript file is located.')
+  );
 
   $form['getlocations_paths']['getlocations_path'] = getlocations_element_path(
     t('Path to getlocations javascript file'),
