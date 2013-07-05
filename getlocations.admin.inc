@@ -66,6 +66,16 @@ function getlocations_settings_form() {
     FALSE
   );
 
+  // preview
+  $form['getlocations_preview'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Getlocations Preview'),
+    '#description' => t('A preview of the current map settings.<br />You can adjust the default map center, zoom and type by changing the map.<br />For all other changes Save Configuration.'),
+    // This will store all the defaults in one variable.
+    '#tree' => FALSE,
+  );
+  $form['getlocations_preview']['preview_map'] = array('#markup' => '');
+
   $form['getlocations_default'] = array(
     '#type' => 'fieldset',
     '#title' => t('Getlocations Default map settings'),
@@ -417,6 +427,14 @@ function getlocations_settings_form() {
     128,
     t('Where the getlocations geo javascript file is located.')
   );
+  // preview
+  $form['getlocations_paths']['getlocations_preview_path'] = getlocations_element_path(
+    t('Path to getlocations Preview javascript file'),
+    $getlocations_paths['getlocations_preview_path'],
+    60,
+    128,
+    t('Where the getlocations preview javascript file is located.')
+  );
 
   $form['getlocations_paths']['getlocations_path'] = getlocations_element_path(
     t('Path to getlocations javascript file'),
@@ -505,7 +523,7 @@ function getlocations_settings_validate($form, &$form_state) {
     }
   }
 
-  $list = array('Map', 'Satellite', 'Hybrid', 'Physical');
+  $list = array('Map', 'Satellite', 'Hybrid', 'Physical', 'OpenStreetMap');
   $found = FALSE;
   foreach ($list AS $maptype) {
     if ($form_state['values']['getlocations_default']['maptype'] == $maptype && $form_state['values']['getlocations_default']['baselayers'][$maptype] ) {

@@ -649,7 +649,7 @@ function getlocations_setup_js($defaults, $googleonly = FALSE) {
     $js_opts = array();
     $js_opts['weight'] = $getlocations_js_weight;
     $js_opts['type'] = 'file';
-    drupal_add_js(GETLOCATIONS_PATH . '/js/getlocations_geo.js', $js_opts);
+    drupal_add_js($getlocations_paths['getlocations_geo_path'], $js_opts);
     $getlocations_js_weight++;
   }
 
@@ -753,6 +753,17 @@ function getlocations_setup_js($defaults, $googleonly = FALSE) {
       $js_opts['weight'] = $getlocations_js_weight;
       $js_opts['type'] = 'file';
       drupal_add_js($getlocations_paths['getlocations_categories_path'], $js_opts);
+      $getlocations_js_weight++;
+    }
+  }
+
+  // preview map
+  if ($defaults['extcontrol'] == 'preview_map') {
+    if (!stristr($current_js, $getlocations_paths['getlocations_preview_path'])) {
+      $js_opts = array();
+      $js_opts['weight'] = $getlocations_js_weight;
+      $js_opts['type'] = 'file';
+      drupal_add_js($getlocations_paths['getlocations_preview_path'], $js_opts);
       $getlocations_js_weight++;
     }
   }
@@ -2681,8 +2692,8 @@ function getlocations_map_display_basics_form($defaults, $labels = array()) {
     $label['latlong'],
     $defaults['latlong'],
     t('The default center coordinates of a Google map, expressed as a decimal latitude and longitude, separated by a comma. This must not be 0,0'),
-    30,
-    30,
+    40,
+    50,
     TRUE
   );
 
@@ -3478,6 +3489,7 @@ function getlocations_paths_get($reset = FALSE) {
     'getlocations_categories_path'    => GETLOCATIONS_PATH . '/js/getlocations_categories.js',
     'getlocations_search_places_path' => GETLOCATIONS_PATH . '/js/getlocations_search_places.js',
     'getlocations_geo_path'           => GETLOCATIONS_PATH . '/js/getlocations_geo.js',
+    'getlocations_preview_path'       => GETLOCATIONS_PATH . '/js/getlocations_preview.js',
   );
   if ($reset) {
     $getlocations_paths = $defaults;
@@ -5347,6 +5359,16 @@ function theme_getlocations_settings_form($variables) {
 
   $form['getlocations_default']['usemarkermanager']['#prefix'] = '<div id="wrap-getlocations-markeropts">';
   $form['getlocations_default']['maxzoom']['#suffix'] = '</div>';
+
+  // preview
+  $getlocations_defaults = getlocations_defaults();
+  $getlocations_defaults['extcontrol'] = 'preview_map';
+  $mapid = getlocations_setup_map($getlocations_defaults);
+  $minmaxes = '';
+  $latlons = array();
+  getlocations_js_settings_do($getlocations_defaults, $latlons, $minmaxes, $mapid, FALSE, $getlocations_defaults['extcontrol']);
+  $preview_map = theme('getlocations_show', array('width' => $getlocations_defaults['width'] , 'height' => $getlocations_defaults['height'] , 'defaults' => $getlocations_defaults, 'mapid' => $mapid, 'type' => '', 'node' => ''));
+  $form['getlocations_preview']['preview_map']['#markup'] = '<div id="getlocations_preview_map">' . $preview_map . '</div>';
 
   $output .= drupal_render_children($form);
   return $output;
