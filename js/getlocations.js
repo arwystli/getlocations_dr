@@ -187,10 +187,6 @@ var getlocations_settings = {};
         }
         var js_path = settings.js_path;
         var useOpenStreetMap = false;
-        var kml_url = settings.kml_url;
-        var kml_url_click = (settings.kml_url_click ? true : false);
-        var kml_url_infowindow = (settings.kml_url_infowindow ? true : false);
-        var kml_url_viewport = (settings.kml_url_viewport ? true : false);
         // Enable the visual refresh
         google.maps.visualRefresh = (settings.visual_refresh ?  true : false);
 
@@ -435,14 +431,14 @@ var getlocations_settings = {};
         }
 
         // KML
-        if (kml_url) {
+        if (settings.kml_url) {
           var kmlLayer = {};
           var kmlLayertoggleState = [];
           kmlLayer[key] = new google.maps.KmlLayer({
-            url: kml_url,
-            preserveViewport: kml_url_viewport,
-            clickable: kml_url_click,
-            suppressInfoWindows: kml_url_infowindow
+            url: settings.kml_url,
+            preserveViewport: (settings.kml_url_viewport ? true : false),
+            clickable: (settings.kml_url_click ? true : false),
+            suppressInfoWindows: (settings.kml_url_infowindow ? true : false)
           });
           if (settings.kml_url_button_state > 0) {
             kmlLayer[key].setMap(getlocations_map[key]);
@@ -665,7 +661,7 @@ var getlocations_settings = {};
         getlocations_settings[key] = global_settings;
 
         // markers and bounding
-        if (! settings.inputmap && ! settings.searchmap) {
+        if (! settings.inputmap && ! settings.extcontrol) {
           //setTimeout(function() { doAllMarkers(getlocations_map[key], global_settings, key) }, 300);
           doAllMarkers(getlocations_map[key], global_settings, key);
 

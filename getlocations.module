@@ -645,7 +645,7 @@ function getlocations_setup_js($defaults, $googleonly = FALSE) {
 
   $getlocations_paths = getlocations_paths_get();
 
-  if ( isset($defaults['load_geo']) && $defaults['load_geo'] && !stristr($current_js, $getlocations_paths['getlocations_geo_path'])) {
+  if ($defaults['geo_enable'] && !stristr($current_js, $getlocations_paths['getlocations_geo_path'])) {
     $js_opts = array();
     $js_opts['weight'] = $getlocations_js_weight;
     $js_opts['type'] = 'file';
@@ -901,6 +901,7 @@ function getlocations_defaults() {
     'search_places_list'            => 0,
     'getdirections_enabled'         => (module_exists('getdirections') ? 1 : 0),
     'jquery_colorpicker_enabled'    => (module_exists('jquery_colorpicker') ? 1 : 0),
+    'geo_enable'                    => 0,
   );
 
   $fieldables = getlocations_get_fieldable_entity_types();
@@ -1931,7 +1932,7 @@ function getlocations_get_path_from_entity_type($entity_type) {
  * @param bool $searchmap
  *
  */
-function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $inputmap = FALSE, $searchmap = FALSE) {
+function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $inputmap = FALSE, $extcontrol = '') {
   global $language, $is_https;
 
   $lla = explode(',', $defaults['latlong']);
@@ -1987,7 +1988,7 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
       'latlons'                   => $latlons,
       'minmaxes'                  => (empty($minmaxes) ? '' : implode(',', $minmaxes)),
       'inputmap'                  => ($inputmap ? 1 : 0),
-      'searchmap'                 => ($searchmap ? 1 : 0),
+      'extcontrol'                => $extcontrol,
       'custom_content_enable'     => $defaults['custom_content_enable'],
       'preload_data'              => $defaults['preload_data'],
       'is_mobile'                 => (getlocations_is_mobile() ? 1 : 0),
@@ -2000,26 +2001,23 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
       'fullscreen'                => $defaults['fullscreen'],
       'show_bubble_on_one_marker' => $defaults['show_bubble_on_one_marker'],
       'kml_url'                   => $defaults['kml_url'],
-      'kml_url_click'             => $defaults['kml_url_click'],
-      'kml_url_infowindow'        => $defaults['kml_url_infowindow'],
-      'kml_url_viewport'          => $defaults['kml_url_viewport'],
-      'kml_url_button'            => $defaults['kml_url_button'],
-      'kml_url_button_label'      => $defaults['kml_url_button_label'],
-      'kml_url_button_state'      => $defaults['kml_url_button_state'],
       'visual_refresh'            => $defaults['visual_refresh'],
       'fullscreen_disable'        => $defaults['fullscreen_disable'],
       'places'                    => $defaults['places'],
       'search_places'             => $defaults['search_places'],
-      'search_places_size'        => $defaults['search_places_size'],
-      'search_places_position'    => $defaults['search_places_position'],
-      'search_places_label'       => $defaults['search_places_label'],
-      'search_places_placeholder' => $defaults['search_places_placeholder'],
-      'search_places_dd'          => $defaults['search_places_dd'],
-      'search_places_list'        => $defaults['search_places_list'],
       'getdirections_enabled'     => $defaults['getdirections_enabled'],
       'is_https'                  => ($is_https ? 1 : 0),
     ),
   );
+  // only set these if wanted
+  if ($defaults['kml_url']) {
+    $settings[$mapid]['kml_url_click']        = $defaults['kml_url_click'];
+    $settings[$mapid]['kml_url_infowindow']   = $defaults['kml_url_infowindow'];
+    $settings[$mapid]['kml_url_viewport']     = $defaults['kml_url_viewport'];
+    $settings[$mapid]['kml_url_button']       = $defaults['kml_url_button'];
+    $settings[$mapid]['kml_url_button_label'] = $defaults['kml_url_button_label'];
+    $settings[$mapid]['kml_url_button_state'] = $defaults['kml_url_button_state'];
+  }
   if ($defaults['weather_use']) {
     $settings[$mapid]['weather_show']        = $defaults['weather_show'];
     $settings[$mapid]['weather_state']       = $defaults['weather_state'];
@@ -2031,6 +2029,15 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
     $settings[$mapid]['weather_clickable']   = $defaults['weather_clickable'];
     $settings[$mapid]['weather_info']        = $defaults['weather_info'];
   }
+  if ($defaults['search_places']) {
+    $settings[$mapid]['search_places_size']        = $defaults['search_places_size'];
+    $settings[$mapid]['search_places_position']    = $defaults['search_places_position'];
+    $settings[$mapid]['search_places_label']       = $defaults['search_places_label'];
+    $settings[$mapid]['search_places_placeholder'] = $defaults['search_places_placeholder'];
+    $settings[$mapid]['search_places_dd']          = $defaults['search_places_dd'];
+    $settings[$mapid]['search_places_list']        = $defaults['search_places_list'];
+  }
+
   // categories
   if (isset($defaults['categories'])) {
     $settings[$mapid]['categories'] = $defaults['categories'];
