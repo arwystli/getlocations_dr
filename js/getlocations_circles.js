@@ -22,13 +22,13 @@
       $.each(Drupal.settings.getlocations_circles, function (key, settings) {
 
         var strokeColor = (settings.strokeColor ? settings.strokeColor : default_circle_settings.strokeColor);
-        if (! strokeColor.match("/^#/")) {
+        if (typeof strokeColor.match("/^#/") === null) {
           strokeColor = '#' + strokeColor;
         }
         var strokeOpacity = (settings.strokeOpacity ? settings.strokeOpacity : default_circle_settings.strokeOpacity);
         var strokeWeight = (settings.strokeWeight ? settings.strokeWeight : default_circle_settings.strokeWeight);
         var fillColor = (settings.fillColor ? settings.fillColor : default_circle_settings.fillColor);
-        if (! fillColor.match("/^#/")) {
+        if (typeof fillColor.match("/^#/") === null) {
           fillColor = '#' + fillColor;
         }
         var fillOpacity = (settings.fillOpacity ? settings.fillOpacity : default_circle_settings.fillOpacity);
@@ -45,11 +45,12 @@
         var p_clickable = clickable;
         var p_message = message;
         var p_radius = radius;
+        var rc = [];
         for (var i = 0; i < circles.length; i++) {
           rc = circles[i];
           if (rc.coords) {
             if (rc.strokeColor) {
-              if (! rc.strokeColor.match("/^#/")) {
+              if (typeof rc.strokeColor.match("/^#/") === null) {
                 rc.strokeColor = '#' + rc.strokeColor;
               }
               p_strokeColor = rc.strokeColor;
@@ -61,7 +62,7 @@
               p_strokeWeight = rc.strokeWeight;
             }
             if (rc.fillColor) {
-              if (! rc.fillColor.match("/^#/")) {
+              if (typeof rc.fillColor.match("/^#/") === null) {
                 rc.fillColor = '#' + rc.fillColor;
               }
               p_fillColor = rc.fillColor;
@@ -78,12 +79,13 @@
             if (rc.radius) {
               p_radius = rc.radius;
             }
+
             p_clickable = (p_clickable ? true : false);
             p_radius = parseInt(p_radius);
             var mcoords = '';
             var circ = [];
-            ll = rc.coords[0];
-            lla = ll.split(",");
+            var ll = rc.coords[0];
+            var lla = ll.split(",");
             mcoords = new google.maps.LatLng(parseFloat(lla[0]), parseFloat(lla[1]));
             var circOpts = {};
             circOpts.strokeColor = p_strokeColor;

@@ -10,6 +10,7 @@
 (function ($) {
   Drupal.behaviors.getlocations_rectangles = {
     attach: function() {
+
       var default_rectangle_settings = {
         strokeColor: '#FF0000',
         strokeOpacity: 0.8,
@@ -21,13 +22,13 @@
       $.each(Drupal.settings.getlocations_rectangles, function (key, settings) {
 
         var strokeColor = (settings.strokeColor ? settings.strokeColor : default_rectangle_settings.strokeColor);
-        if (! strokeColor.match("/^#/")) {
+        if (typeof strokeColor.match("/^#/") === null) {
           strokeColor = '#' + strokeColor;
         }
         var strokeOpacity = (settings.strokeOpacity ? settings.strokeOpacity : default_rectangle_settings.strokeOpacity);
         var strokeWeight = (settings.strokeWeight ? settings.strokeWeight : default_rectangle_settings.strokeWeight);
         var fillColor = (settings.fillColor ? settings.fillColor : default_rectangle_settings.fillColor);
-        if (! fillColor.match("/^#/")) {
+        if (typeof fillColor.match("/^#/") === null) {
           fillColor = '#' + fillColor;
         }
         var fillOpacity = (settings.fillOpacity ? settings.fillOpacity : default_rectangle_settings.fillOpacity);
@@ -42,11 +43,12 @@
         var p_fillOpacity = fillOpacity;
         var p_clickable = clickable;
         var p_message = message;
+        var rc = [];
         for (var i = 0; i < rectangles.length; i++) {
           rc = rectangles[i];
           if (rc.coords) {
             if (rc.strokeColor) {
-              if (! rc.strokeColor.match("/^#/")) {
+              if (typeof rc.strokeColor.match("/^#/") === null) {
                 rc.strokeColor = '#' + rc.strokeColor;
               }
               p_strokeColor = rc.strokeColor;
@@ -58,7 +60,7 @@
               p_strokeWeight = rc.strokeWeight;
             }
             if (rc.fillColor) {
-              if (! rc.fillColor.match("/^#/")) {
+              if (typeof rc.fillColor.match("/^#/") === null) {
                 rc.fillColor = '#' + rc.fillColor;
               }
               p_fillColor = rc.fillColor;
@@ -77,8 +79,8 @@
             var rect = [];
             scoords = rc.coords.split("|");
             for (var s = 0; s < scoords.length; s++) {
-              ll = scoords[s];
-              lla = ll.split(",");
+              var ll = scoords[s];
+              var lla = ll.split(",");
               mcoords[s] = new google.maps.LatLng(parseFloat(lla[0]), parseFloat(lla[1]));
             }
             if (mcoords.length == 2) {

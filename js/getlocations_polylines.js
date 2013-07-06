@@ -16,10 +16,11 @@
         strokeOpacity: 0.8,
         strokeWeight: 3,
       };
+
       $.each(Drupal.settings.getlocations_polylines, function (key, settings) {
 
         var strokeColor = (settings.strokeColor ? settings.strokeColor : default_polyline_settings.strokeColor);
-        if (! strokeColor.match("/^#/")) {
+        if (typeof strokeColor.match("/^#/") === null) {
           strokeColor = '#' + strokeColor;
         }
         var strokeOpacity = (settings.strokeOpacity ? settings.strokeOpacity : default_polyline_settings.strokeOpacity);
@@ -33,11 +34,12 @@
         var p_strokeWeight = strokeWeight;
         var p_clickable = clickable;
         var p_message = message;
+        var pl = [];
         for (var i = 0; i < polylines.length; i++) {
           pl = polylines[i];
           if (pl.coords) {
             if (pl.strokeColor) {
-              if (! pl.strokeColor.match("/^#/")) {
+              if (typeof pl.strokeColor.match("/^#/") === null) {
                 pl.strokeColor = '#' + pl.strokeColor;
               }
               p_strokeColor = pl.strokeColor;
@@ -59,8 +61,8 @@
             var poly = [];
             scoords = pl.coords.split("|");
             for (var s = 0; s < scoords.length; s++) {
-              ll = scoords[s];
-              lla = ll.split(",");
+              var ll = scoords[s];
+              var lla = ll.split(",");
               mcoords[s] = new google.maps.LatLng(parseFloat(lla[0]), parseFloat(lla[1]));
             }
             if (mcoords.length > 1) {

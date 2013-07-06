@@ -10,6 +10,7 @@
 (function ($) {
   Drupal.behaviors.getlocations_polygons = {
     attach: function() {
+
       var default_polygon_settings = {
         strokeColor: '#FF0000',
         strokeOpacity: 0.8,
@@ -17,16 +18,17 @@
         fillColor: '#FF0000',
         fillOpacity: 0.35
       };
+
       $.each(Drupal.settings.getlocations_polygons, function (key, settings) {
 
         var strokeColor = (settings.strokeColor ? settings.strokeColor : default_polygon_settings.strokeColor);
-        if (! strokeColor.match("/^#/")) {
+        if (typeof strokeColor.match("/^#/") === null) {
           strokeColor = '#' + strokeColor;
         }
         var strokeOpacity = (settings.strokeOpacity ? settings.strokeOpacity : default_polygon_settings.strokeOpacity);
         var strokeWeight = (settings.strokeWeight ? settings.strokeWeight : default_polygon_settings.strokeWeight);
         var fillColor = (settings.fillColor ? settings.fillColor : default_polygon_settings.fillColor);
-        if (! fillColor.match("/^#/")) {
+        if (typeof fillColor.match("/^#/") === null) {
           fillColor = '#' + fillColor;
         }
         var fillOpacity = (settings.fillOpacity ? settings.fillOpacity : default_polygon_settings.fillOpacity);
@@ -41,11 +43,12 @@
         var p_fillOpacity = fillOpacity;
         var p_clickable = clickable;
         var p_message = message;
+        var pg = [];
         for (var i = 0; i < polygons.length; i++) {
           pg = polygons[i];
           if (pg.coords) {
             if (pg.strokeColor) {
-              if (! pg.strokeColor.match("/^#/")) {
+              if (typeof pg.strokeColor.match("/^#/") === null) {
                 pg.strokeColor = '#' + pg.strokeColor;
               }
               p_strokeColor = pg.strokeColor;
@@ -57,7 +60,7 @@
               p_strokeWeight = pg.strokeWeight;
             }
             if (pg.fillColor) {
-              if (! pg.fillColor.match("/^#/")) {
+              if (typeof pg.fillColor.match("/^#/") === null) {
                 pg.fillColor = '#' + pg.fillColor;
               }
               p_fillColor = pg.fillColor;
@@ -76,8 +79,8 @@
             var poly = [];
             scoords = pg.coords.split("|");
             for (var s = 0; s < scoords.length; s++) {
-              ll = scoords[s];
-              lla = ll.split(",");
+              var ll = scoords[s];
+              var lla = ll.split(",");
               mcoords[s] = new google.maps.LatLng(parseFloat(lla[0]), parseFloat(lla[1]));
             }
             if (mcoords.length > 2) {
