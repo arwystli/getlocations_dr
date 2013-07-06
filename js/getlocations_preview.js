@@ -4,7 +4,7 @@
  * @copyright GNU GPL
  *
  * Javascript functions for getlocations module for Drupal 7
- * Manages the preview map in config/admin/getlocations
+ * Manages the preview map in admin/config/getlocations
  * this is for googlemaps API version 3
 */
 

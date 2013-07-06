@@ -263,6 +263,7 @@ function getlocations_search_getmap($which = 'page') {
   #if ($getlocations_search_defaults['use_geolocation_button']) {
   #  $getlocations_defaults['use_jsapi'] = 1;
   #}
+  $getlocations_defaults['extcontrol'] = 'getlocations_search';
   $mapid = getlocations_setup_map($getlocations_defaults);
 
   getlocations_search_js_settings_do($getlocations_search_defaults, $mapid);
@@ -277,7 +278,7 @@ function getlocations_search_getmap($which = 'page') {
   #$lla = explode(',', $getlocations_search_defaults['latlong']);
   #$latlons[] = array($lla[0], $lla[1], 0, '', $getlocations_search_defaults['search_map_marker'], '');
   $latlons = array();
-  getlocations_js_settings_do($getlocations_defaults, $latlons, $minmaxes, $mapid, FALSE, 'getlocations_search');
+  getlocations_js_settings_do($getlocations_defaults, $latlons, $minmaxes, $mapid, FALSE, $getlocations_defaults['extcontrol']);
 
   $map = theme('getlocations_show', array('width' => $getlocations_defaults['width'] , 'height' => $getlocations_defaults['height'] , 'defaults' => $getlocations_defaults, 'mapid' => $mapid, 'entity_info' => '', 'object' => ''));
   return array('map' => $map, 'mapid' => $mapid);

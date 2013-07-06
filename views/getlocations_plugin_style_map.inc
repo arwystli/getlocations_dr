@@ -340,7 +340,7 @@ class getlocations_plugin_style_map extends views_plugin_style {
 
   function options_validate(&$form, &$form_state) {
 
-    $list = array('Map', 'Satellite', 'Hybrid', 'Physical');
+    $list = array('Map', 'Satellite', 'Hybrid', 'Physical', 'OpenStreetMap');
     $found = FALSE;
     foreach ($list AS $maptype) {
       if (isset($form_state['values']['maptype']) && $form_state['values']['maptype'] == $maptype && $form_state['values']['baselayers'][$maptype] ) {
