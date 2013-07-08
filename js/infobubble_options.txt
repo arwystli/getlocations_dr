@@ -26,3 +26,9 @@ var infoBubbleOptions = {
 //infoBubbleOptions.minHeight = 200;
 //infoBubbleOptions.maxWidth = 350;
 //infoBubbleOptions.maxHeight = 300;
+
+// infobubble_extended brings in two more options:
+//infoBubbleOptions.bubbleBackgroundClassName = 'your cssclass';
+//infoBubbleOptions.closeImage = 'url_to_button';
+
+// bubbleBackgroundClassName applies to the whole bubble

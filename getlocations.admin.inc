@@ -344,6 +344,14 @@ function getlocations_settings_form() {
     128,
     t('Where the InfoBubble javascript file is located.')
   );
+  $form['getlocations_paths']['infobubble_extended_path'] = getlocations_element_path(
+    t('Path to InfoBubble extended javascript file'),
+    $getlocations_paths['infobubble_extended_path'],
+    60,
+    128,
+    t('Where the InfoBubble extended javascript file is located.')
+  );
+
   $form['getlocations_paths']['infowindow_options_path'] = getlocations_element_path(
     t('Path to InfoWindow options javascript file'),
     $getlocations_paths['infowindow_options_path'],

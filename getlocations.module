@@ -506,7 +506,7 @@ function getlocations_setlocations($latlons, $minmaxes='', $entity_info = '', $o
   if (! getlocations_defaults_check()) {
     return t('You need to !c first.', array('!c' => l('Configure Getlocations', 'admin/config/services/getlocations')));
   }
-  global $language;
+
   $getlocations_defaults = getlocations_defaults();
   $mapid = getlocations_setup_map($getlocations_defaults);
   getlocations_js_settings_do($getlocations_defaults, $latlons, $minmaxes, $mapid);
@@ -672,9 +672,15 @@ function getlocations_setup_js($defaults, $googleonly = FALSE) {
     $js_opts = array();
     $js_opts['weight'] = $getlocations_js_weight;
     $js_opts['type'] = 'file';
-
     drupal_add_js($getlocations_paths['infobubble_path'], $js_opts);
     $getlocations_js_weight++;
+
+    $js_opts = array();
+    $js_opts['weight'] = $getlocations_js_weight;
+    $js_opts['type'] = 'file';
+    drupal_add_js($getlocations_paths['infobubble_extended_path'], $js_opts);
+    $getlocations_js_weight++;
+
     if (file_exists($getlocations_paths['infobubble_options_path'])) {
       $js_opts = array();
       $js_opts['weight'] = $getlocations_js_weight;
@@ -972,18 +978,8 @@ function getlocations_latlon_check($latlon) {
       }
       if (preg_match($latregex, $lat) && preg_match($lonregex, $lon)) {
         // Normalize coordinates.
-        while ($lat > 90) {
-          $lat -= 180;
-        }
-        while ($lat < -90) {
-          $lat += 180;
-        }
-        while ($lon > 180) {
-          $lon -= 360;
-        }
-        while ($lon < -180) {
-          $lon += 360;
-        }
+        $lat = getlocations_normalizelat($lat);
+        $lon = getlocations_normalizelng($lon);
         return "$lat" . "," . "$lon";
       }
     }
@@ -3479,6 +3475,7 @@ function getlocations_paths_get($reset = FALSE) {
   $defaults = array(
     'infobubble_path'                 => GETLOCATIONS_PATH . '/js/infobubble.js',
     'infobubble_options_path'         => GETLOCATIONS_PATH . '/js/infobubble_options.js',
+    'infobubble_extended_path'        => GETLOCATIONS_PATH . '/js/infobubble_extended.js',
     'markermanager_path'              => GETLOCATIONS_PATH . '/js/markermanager.js',
     'markerclusterer_path'            => GETLOCATIONS_PATH . '/js/markerclusterer.js',
     'infowindow_options_path'         => GETLOCATIONS_PATH . '/js/infowindow_options.js',
@@ -4460,6 +4457,37 @@ function getlocations_element_search_distance($default, $title = '', $descriptio
     $element['#description'] = $description;
   }
   return $element;
+}
+
+/**
+ * Normalizes a latitude to the [-90,90] range. Latitudes above 90 or
+ * below -90 are capped, not wrapped.
+ * @param {Number} lat The latitude to normalize, in degrees.
+ * @type Number
+ * @return Returns the latitude, fit within the [-90,90] range.
+ */
+function getlocations_normalizelat($lat) {
+  return max(-90, min(90, $lat));
+}
+
+/**
+ * Normalizes a longitude to the [-180,180] range. Longitudes above 180
+ * or below -180 are wrapped.
+ * @param {Number} lng The longitude to normalize, in degrees.
+ * @type Number
+ * @return Returns the longitude, fit within the [-180,180] range.
+ */
+function getlocations_normalizelng($lng) {
+  if ($lng % 360 == 180) {
+      return 180;
+    }
+    while ($lng > 180) {
+      $lng -= 360;
+    }
+    while ($lng < -180) {
+      $lng += 360;
+    }
+    return $lng;
 }
 
 function getlocations_is_mobile() {
