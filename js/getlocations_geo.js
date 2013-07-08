@@ -5,7 +5,7 @@
  *
  * Javascript geo functions for getlocations module for Drupal 7
  * this is for googlemaps API version 3
-*/
+ */
 
 (function ($) {
   Drupal.getlocations.geo = {};
@@ -20,7 +20,7 @@
    * @param {Number} lat The latitude to normalize, in degrees.
    * @type Number
    * @return Returns the latitude, fit within the [-90,90] range.
-  */
+   */
   Drupal.getlocations.geo.normalizeLat = function(lat) {
     return Math.max(-90, Math.min(90, lat));
   };
@@ -30,8 +30,8 @@
    * or below -180 are wrapped.
    * @param {Number} lng The longitude to normalize, in degrees.
    * @type Number
-   * @return Returns the latitude, fit within the [-90,90] range.
-  */
+   * @return Returns the longitude, fit within the [-180,180] range.
+   */
   Drupal.getlocations.geo.normalizeLng = function(lng) {
     if (lng % 360 == 180) {
       return 180;
@@ -45,7 +45,7 @@
    * @param {Number} Decimal Degrees
    * @returns {Number} Radians
    *
-  */
+   */
   Drupal.getlocations.geo.toRad = function(deg) {
     return deg * Math.PI / 180;
   }
@@ -55,7 +55,7 @@
    * @param {Number} Radians
    * @returns {Number} Decimal Degrees
    *
-  */
+   */
   Drupal.getlocations.geo.toDeg = function(rad) {
     return rad * 180 / Math.PI;
   }
@@ -65,7 +65,7 @@
    * @param {Number} Latitude
    * @returns {Number} radius
    *
-  */
+   */
   Drupal.getlocations.geo.earth_radius = function(latitude) {
     var lat = Drupal.getlocations.geo.toRad(latitude);
     var x = (Math.cos(lat) / Drupal.getlocations.geo.EARTH_RADIUS_SEMIMAJOR);
@@ -81,7 +81,7 @@
    * @param {Number} distance in meters
    * @returns {Array}
    *
-  */
+   */
   Drupal.getlocations.geo.earth_longitude_range = function(latitude, longitude, distance) {
 
     if (! distance > 0) {
@@ -124,7 +124,7 @@
    * @param {Number} distance in meters
    * @returns {Array}
    *
-  */
+   */
   Drupal.getlocations.geo.earth_latitude_range = function(latitude, longitude, distance) {
 
     if (! distance > 0) {
