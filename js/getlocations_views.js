@@ -259,6 +259,21 @@
         }
       });
 
+      // geojson
+      if ($("#edit-fields-field-address-settings-edit-form-settings-geojson-enable, #edit-style-options-geojson-enable").attr('checked')) {
+        $("#wrap-getlocations-geojson-enable").show();
+      }
+      else {
+        $("#wrap-getlocations-geojson-enable").hide();
+      }
+      $("#edit-fields-field-address-settings-edit-form-settings-geojson-enable, #edit-style-options-geojson-enable").change(function() {
+        if ($(this).attr('checked')) {
+          $("#wrap-getlocations-geojson-enable").show();
+        }
+        else {
+          $("#wrap-getlocations-geojson-enable").hide();
+        }
+      });
 
     }
   };

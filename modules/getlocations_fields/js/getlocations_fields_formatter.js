@@ -176,6 +176,21 @@
           $("#wrap-getlocations-search-places").hide();
         }
       });
+      // geojson
+      if ($("input[id*=geojson-enable]").attr('checked')) {
+       $("#wrap-getlocations-geojson-enable").show();
+      }
+      else {
+        $("#wrap-getlocations-geojson-enable").hide();
+      }
+      $("input[id*=geojson-enable]").change(function() {
+        if ($(this).attr('checked')) {
+          $("#wrap-getlocations-geojson-enable").show();
+        }
+        else {
+          $("#wrap-getlocations-geojson-enable").hide();
+        }
+      });
 
     }
   };

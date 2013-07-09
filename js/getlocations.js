@@ -702,6 +702,12 @@ var getlocations_settings = {};
           Drupal.getlocations_search_places(key);
         }
 
+        //geojson
+        if (settings.geojson_enable && settings.geojson_data) {
+          //
+          Drupal.getlocations_geojson(key);
+        }
+
       }
     }); // end each setting loop
     $("body").addClass("getlocations-maps-processed");

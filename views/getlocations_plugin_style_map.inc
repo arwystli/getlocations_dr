@@ -148,6 +148,10 @@ class getlocations_plugin_style_map extends views_plugin_style {
     $options['category_method']               = array('default' => $getlocations_defaults['category_method']);
     $options['category_term_reference_field'] = array('default' => $getlocations_defaults['category_term_reference_field']);
     $options['category_showhide_buttons']     = array('default' => $getlocations_defaults['category_showhide_buttons']);
+    // geojson
+    $options['geojson_enable']  = array('default' => $getlocations_defaults['geojson_enable']);
+    $options['geojson_options'] = array('default' => $getlocations_defaults['geojson_options']);
+    $options['geojson_data']    = array('default' => $getlocations_defaults['geojson_data']);
 
     $fieldables = getlocations_get_fieldable_entity_types();
     foreach ($fieldables AS $entity_type) {

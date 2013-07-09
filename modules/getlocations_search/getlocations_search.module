@@ -255,6 +255,7 @@ function getlocations_search_getmap($which = 'page') {
     'search_places_placeholder', 'search_places_dd', 'search_places_list',
     'search_radshape_toggle', 'search_radshape_toggle_active', 'search_radshape_enable',
     'do_search_marker', 'search_marker_toggle', 'search_marker_toggle_active', 'geo_enable',
+    'geojson_enable', 'geojson_data', 'geojson_options',
   );
   foreach ($keys AS $key) {
     $getlocations_defaults[$key] = $getlocations_search_defaults[$key];
@@ -702,6 +703,9 @@ function getlocations_search_defaults() {
     'search_radshape_toggle_active' => 1,
     'zoom_on_single_use'            => 1,
     'geo_enable'                    => 1,
+    'geojson_enable'                => $getlocations_defaults['geojson_enable'],
+    'geojson_data'                  => $getlocations_defaults['geojson_data'],
+    'geojson_options'               => $getlocations_defaults['geojson_options'],
   );
 
   $settings = variable_get('getlocations_search_defaults', $defaults);

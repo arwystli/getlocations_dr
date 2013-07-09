@@ -443,6 +443,14 @@ function getlocations_settings_form() {
     128,
     t('Where the getlocations preview javascript file is located.')
   );
+  // geojson
+  $form['getlocations_paths']['getlocations_geojson_path'] = getlocations_element_path(
+    t('Path to getlocations Geojson javascript file'),
+    $getlocations_paths['getlocations_geojson_path'],
+    60,
+    128,
+    t('Where the getlocations geojson javascript file is located.')
+  );
 
   $form['getlocations_paths']['getlocations_path'] = getlocations_element_path(
     t('Path to getlocations javascript file'),

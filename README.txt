@@ -264,3 +264,11 @@ You should add these to the pipe delimited list, eg
 
 strokeColor:#0000FF|strokeOpacity:0.8|51.501579,-0.193544|51.498373,-0.144449|51.479882,-0.148054|51.484585,-0.184446
 
+
+GeoJSON
+Getlocations can support GeoJSON objects, see http://www.geojson.org/ for information about this format.
+You can download the library from https://github.com/JasonSanford/GeoJSON-to-Google-Maps.
+It should be installed in your libraries folder so you have a path something like this:
+sites/all/libraries/GeoJSON/GeoJSON.js
+
+Once the library is installed you can enable it globally, per view or per content type

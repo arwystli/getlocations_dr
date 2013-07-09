@@ -774,6 +774,26 @@ function getlocations_setup_js($defaults, $googleonly = FALSE) {
     }
   }
 
+  // geojson
+  if ($defaults['geojson_enable'] && $geojson_path = getlocations_get_geojson_path()) {
+    if (!stristr($current_js, $geojson_path)) {
+      $js_opts = array();
+      $js_opts['weight'] = $getlocations_js_weight;
+      $js_opts['type'] = 'file';
+      drupal_add_js($geojson_path, $js_opts);
+      $getlocations_js_weight++;
+    }
+    if ($defaults['geojson_data']) {
+      if (!stristr($current_js, $getlocations_paths['getlocations_geojson_path'])) {
+        $js_opts = array();
+        $js_opts['weight'] = $getlocations_js_weight;
+        $js_opts['type'] = 'file';
+        drupal_add_js($getlocations_paths['getlocations_geojson_path'], $js_opts);
+        $getlocations_js_weight++;
+      }
+    }
+  }
+
 }
 
 /**
@@ -920,6 +940,9 @@ function getlocations_defaults() {
     'jquery_colorpicker_enabled'    => (module_exists('jquery_colorpicker') ? 1 : 0),
     'geo_enable'                    => 0,
     'extcontrol'                    => '',
+    'geojson_enable'                => 0,
+    'geojson_data'                  => '',
+    'geojson_options'               => '',
   );
 
   $fieldables = getlocations_get_fieldable_entity_types();
@@ -2015,6 +2038,7 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
       'search_places'             => $defaults['search_places'],
       'getdirections_enabled'     => $defaults['getdirections_enabled'],
       'is_https'                  => ($is_https ? 1 : 0),
+      'geojson_enable'            => $defaults['geojson_enable'],
     ),
   );
   // only set these if wanted
@@ -2044,6 +2068,10 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
     $settings[$mapid]['search_places_placeholder'] = $defaults['search_places_placeholder'];
     $settings[$mapid]['search_places_dd']          = $defaults['search_places_dd'];
     $settings[$mapid]['search_places_list']        = $defaults['search_places_list'];
+  }
+  if ($defaults['geojson_enable']) {
+    $settings[$mapid]['geojson_data']    = $defaults['geojson_data'];
+    $settings[$mapid]['geojson_options'] = $defaults['geojson_options'];
   }
 
   // categories
@@ -3397,6 +3425,34 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
       t('Activate Kml layer when map is first displayed.')
     );
 
+    // geojson
+    if (getlocations_get_geojson_path()) {
+      $form['geojson_enable'] = getlocations_element_map_checkbox(
+        t('Enable GeoJSON library'),
+        $defaults['geojson_enable'],
+        t('Show GeoJSON data if defined')
+      );
+      $form['geojson_enable']['#suffix'] = '<div id="wrap-getlocations-geojson-enable">';
+      $form['geojson_data'] = array(
+        '#type' => 'textarea',
+        '#title' => t('GeoJSON data'),
+        '#default_value' => $defaults['geojson_data'],
+        '#description' => t('A GeoJSON object. For more information about GeoJSON see !u', array('!u' => l(t('geojson.org'), 'http://www.geojson.org/', array('attributes' => array('target' => '_blank'))))),
+      );
+      $form['geojson_options'] = array(
+        '#type' => 'textarea',
+        '#title' => t('GeoJSON options'),
+        '#default_value' => $defaults['geojson_options'],
+        '#description' => t('A JSON object.'),
+      );
+      $form['geojson_options']['#suffix'] = '</div>';
+    }
+    else {
+      $form['geojson_enable'] = array('#type' => 'value', '#value' => 0);
+      $form['geojson_data'] = array('#type' => 'value', '#value' => '');
+      $form['geojson_options'] = array('#type' => 'value', '#value' => '');
+    }
+
     // search_places
     // enable
     $desc = t('Provide a textfield to query Google Places Search.');
@@ -3488,6 +3544,7 @@ function getlocations_paths_get($reset = FALSE) {
     'getlocations_search_places_path' => GETLOCATIONS_PATH . '/js/getlocations_search_places.js',
     'getlocations_geo_path'           => GETLOCATIONS_PATH . '/js/getlocations_geo.js',
     'getlocations_preview_path'       => GETLOCATIONS_PATH . '/js/getlocations_preview.js',
+    'getlocations_geojson_path'       => GETLOCATIONS_PATH . '/js/getlocations_geojson.js',
   );
   if ($reset) {
     $getlocations_paths = $defaults;
@@ -3836,6 +3893,31 @@ function getlocations_get_polyline_settings($defaults) {
   return $polylines;
 }
 
+/**
+ * Function
+ *
+ * @param
+ *
+ * @return
+ *   Returns
+ *
+ */
+function getlocations_get_geojson_path() {
+  if ($geojsonpath = libraries_get_path('GeoJSON')) {
+    return $geojsonpath . '/GeoJSON.js';
+  }
+  return FALSE;
+}
+
+/**
+ * Function
+ *
+ * @param
+ *
+ * @return
+ *   Returns
+ *
+ */
 // run string through check_plain but then restore apostrophes
 function getlocations_apoclean($string) {
   $string = trim($string);
