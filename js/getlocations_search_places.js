@@ -8,11 +8,11 @@
 */
 (function ($) {
 
-  var sp_markers = [];
-  var places_service;
+  var getlocations_sp_markers = [];
+  var getlocations_places_service;
 
   Drupal.getlocations_search_places = function(key) {
-    places_service = new google.maps.places.PlacesService(getlocations_map[key]);
+    getlocations_places_service = new google.maps.places.PlacesService(getlocations_map[key]);
     var sp_switch = Drupal.settings.getlocations[key].search_places_dd;
     if (sp_switch) {
       // dropdown
@@ -22,9 +22,9 @@
         var s = {bounds:b, types:[t]};
         // clear out existing markers
         Drupal.getlocations_search_places_clearmarkers(key, false);
-        places_service.search(s, function(places, status) {
+        getlocations_places_service.search(s, function(places, status) {
           if (status == google.maps.places.PlacesServiceStatus.OK) {
-            sp_do_places(places, key);
+            getlocations_sp_do_places(places, key);
           }
         });
         return false;
@@ -38,12 +38,12 @@
         // clear out existing markers
         Drupal.getlocations_search_places_clearmarkers(key, false);
         var places = getlocations_search_places_Box.getPlaces();
-        sp_do_places(places, key);
+        getlocations_sp_do_places(places, key);
       });
     }
-  }
+  };
 
-  function do_sp_bubble(marker, p, key) {
+  function getlocations_do_sp_bubble(marker, p, key) {
     var ver = Drupal.getlocations.msiedetect();
     var pushit = false;
     if ( (ver == '') || (ver && ver > 8)) {
@@ -128,10 +128,24 @@
         }
       }
       if (getlocations_settings[key].markeraction == 2) {
-        var sp_iw = new InfoBubble({content: sp_content});
+        if (typeof(infoBubbleOptions) == 'object') {
+          var infoBubbleOpts = infoBubbleOptions;
+        }
+        else {
+          var infoBubbleOpts = {};
+        }
+        infoBubbleOpts.content = sp_content;
+        var sp_iw = new InfoBubble(infoBubbleOpts);
       }
       else {
-        var sp_iw = new google.maps.InfoWindow({content: sp_content});
+        if (typeof(infoWindowOptions) == 'object') {
+          var infoWindowOpts = infoWindowOptions;
+        }
+        else {
+          var infoWindowOpts = {};
+        }
+        infoWindowOpts.content = sp_content;
+        var sp_iw = new google.maps.InfoWindow(infoWindowOpts);
       }
       sp_iw.open(getlocations_map[key], marker);
       if (pushit) {
@@ -140,20 +154,20 @@
     });
   }
 
-  function sp_getdetails(m, p, k, i) {
-    places_service.getDetails({reference: p.reference}, function(result, status) {
+  function getlocations_sp_getdetails(m, p, k, i) {
+    getlocations_places_service.getDetails({reference: p.reference}, function(result, status) {
       if (status == google.maps.places.PlacesServiceStatus.OK) {
-        do_sp_bubble(m, result, k);
-        sp_do_result(result, k, i);
+        getlocations_do_sp_bubble(m, result, k);
+        getlocations_sp_do_result(result, k, i);
       }
       else {
-        do_sp_bubble(m, p, k);
-        sp_do_result(p, k, i);
+        getlocations_do_sp_bubble(m, p, k);
+        getlocations_sp_do_result(p, k, i);
       }
     });
   }
 
-  function sp_do_places(places, key) {
+  function getlocations_sp_do_places(places, key) {
     for (var ip = 0; ip < places.length; ip++) {
       var place = places[ip];
       var image = {
@@ -169,30 +183,29 @@
         title: place.name,
         position: place.geometry.location
       });
-      //sp_markers.push(sp_marker);
-      sp_markers[ip] = sp_marker;
-      sp_getdetails(sp_marker, place, key, ip);
+      getlocations_sp_markers[ip] = sp_marker;
+      getlocations_sp_getdetails(sp_marker, place, key, ip);
     }
   }
 
-  function sp_do_result(p, k, i) {
+  function getlocations_sp_do_result(p, k, i) {
     if ($("#search_places_results_" + k).is('ul')) {
       var out = '<li class="sp_link" id="sp_link_' + i + '"><img class="placeIcon" src="' + p.icon + '">&nbsp;&nbsp;' + p.name + '</li>';
       $("#search_places_results_" + k).append(out);
 
       $("#sp_link_" + i).click( function() {
-        google.maps.event.trigger(sp_markers[i], 'click');
+        google.maps.event.trigger(getlocations_sp_markers[i], 'click');
       });
     }
   }
 
   Drupal.getlocations_search_places_clearmarkers = function(key, state) {
     // clear out existing markers
-    for (var i = 0; i < sp_markers.length; i++) {
-      sp_marker = sp_markers[i]
+    for (var i = 0; i < getlocations_sp_markers.length; i++) {
+      sp_marker = getlocations_sp_markers[i]
       sp_marker.setMap(null);
     }
-    sp_markers = [];
+    getlocations_sp_markers = [];
 
     var ver = Drupal.getlocations.msiedetect();
     if ( (ver == '') || (ver && ver > 8)) {
@@ -205,6 +218,6 @@
       $("#search_places_input_" + key).val('');
     }
     $("#search_places_results_" + key).html('');
-  }
+  };
 
 }(jQuery));
