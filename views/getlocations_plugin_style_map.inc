@@ -285,17 +285,26 @@ class getlocations_plugin_style_map extends views_plugin_style {
 
     // markermanager option
     if ($this->options['markermanagertype'] == 1) {
+      $form['useclustermanager'] = array('#type' => 'hidden', '#value' => 0);
+
       $form['usemarkermanager'] = getlocations_element_map_checkbox(
         t('Use Marker manager for this map'),
         $this->options['usemarkermanager']
       );
-      $form['useclustermanager'] = array('#type' => 'hidden', '#value' => 0);
+      $form['usemarkermanager']['#suffix'] = '<div id="wrap-usemarkermanager">';
+      $form['minzoom'] = getlocations_element_map_zoom(
+        t('Minimum Zoom'),
+        $this->options['minzoom'],
+        t('The Minimum zoom level at which markers will be visible.')
+      );
+      $form['maxzoom'] = getlocations_element_map_zoom(
+        t('Maximum Zoom'),
+        $this->options['maxzoom'],
+        t('The Maximum zoom level at which markers will be visible.')
+      );
+      $form['maxzoom']['#suffix'] = '</div>';
     }
     elseif ($this->options['markermanagertype'] == 2)  {
-      $form['useclustermanager'] = getlocations_element_map_checkbox(
-        t('Use Cluster manager for this map'),
-        $this->options['useclustermanager']
-      );
       $form['usemarkermanager'] = array('#type' => 'hidden', '#value' => 0);
       if (file_exists(GETLOCATIONS_PATH . '/getlocations.markercluster_override.inc')) {
         module_load_include('inc', 'getlocations', 'getlocations.markercluster_override');
@@ -303,26 +312,22 @@ class getlocations_plugin_style_map extends views_plugin_style {
       else {
         module_load_include('inc', 'getlocations', 'getlocations.markercluster');
       }
+
+      $form['useclustermanager'] = getlocations_element_map_checkbox(
+        t('Use Cluster manager for this map'),
+        $this->options['useclustermanager']
+      );
+      $form['useclustermanager']['#suffix'] = '<div id="wrap-useclustermanager">';
       $form['markerclusterer_style'] = getlocations_element_markerclusterer_style($this->options['markerclusterer_style']);
       $form['markerclusterer_zoom'] = getlocations_element_markerclusterer_zoom($this->options['markerclusterer_zoom']);
       $form['markerclusterer_size'] = getlocations_element_markerclusterer_size($this->options['markerclusterer_size']);
       $form['markerclusterer_minsize'] = getlocations_element_markerclusterer_minsize($this->options['markerclusterer_minsize']);
+      $form['markerclusterer_minsize']['#suffix'] = '</div>';
     }
     else {
       $form['useclustermanager'] = array('#type' => 'hidden', '#value' => 0);
       $form['usemarkermanager'] = array('#type' => 'hidden', '#value' => 0);
     }
-
-    $form['minzoom'] = getlocations_element_map_zoom(
-      t('Minimum Zoom'),
-      $this->options['minzoom'],
-      t('The Minimum zoom level at which markers will be visible.')
-    );
-    $form['maxzoom'] = getlocations_element_map_zoom(
-      t('Maximum Zoom'),
-      $this->options['maxzoom'],
-      t('The Maximum zoom level at which markers will be visible.')
-    );
     $form['nodezoom'] = getlocations_element_map_zoom(
       t('Default Zoom for Single location'),
       $this->options['nodezoom'],

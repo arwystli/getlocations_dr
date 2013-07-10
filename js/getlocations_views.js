@@ -275,6 +275,42 @@
         }
       });
 
+      // markermangers
+      if ( $("#edit-style-options-usemarkermanager").is('input')) {
+        if ($("#edit-style-options-usemarkermanager").attr('checked')) {
+          $("#wrap-usemarkermanager").show();
+        }
+        else {
+          $("#wrap-usemarkermanager").hide();
+        }
+        $("#edit-style-options-usemarkermanager").change(function() {
+          if ($(this).attr('checked')) {
+            $("#wrap-usemarkermanager").show();
+          }
+          else {
+            $("#wrap-usemarkermanager").hide();
+          }
+        });
+      }
+
+      if ( $("#edit-style-options-useclustermanager").is('input')) {
+        if ($("#edit-style-options-useclustermanager").attr('checked')) {
+          $("#wrap-useclustermanager").show();
+        }
+        else {
+          $("#wrap-useclustermanager").hide();
+        }
+        $("#edit-style-options-useclustermanager").change(function() {
+          if ($(this).attr('checked')) {
+            $("#wrap-useclustermanager").show();
+          }
+          else {
+            $("#wrap-useclustermanager").hide();
+          }
+        });
+      }
+
+
     }
   };
 
