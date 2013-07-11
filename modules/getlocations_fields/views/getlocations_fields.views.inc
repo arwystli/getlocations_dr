@@ -42,15 +42,10 @@ function getlocations_fields_views_data() {
       'handler' => 'views_handler_field',
       'click sortable' => TRUE,
     ),
-    // Information for accepting a lid as an argument
-    /*
+    // Information for accepting a glid as an argument. Also supports 1+2+3 for OR or 1,2,3 for AND
     'argument' => array(
-      'handler' => 'views_handler_argument_node_nid',
-      'name field' => 'title', // the field to display in the summary.
-      'numeric' => TRUE,
-      'validate type' => 'nid',
+      'handler' => 'getlocations_fields_handler_argument_glid',
     ),
-    */
     // Information for accepting a glid as a filter
     'filter' => array(
       'handler' => 'views_handler_filter_numeric',
