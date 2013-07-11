@@ -220,16 +220,8 @@ function template_preprocess_getlocations_view_map(&$variables) {
   }
 
   // get the defaults and override with the style plugin options
-  $newdefaults = array();
   $getlocations_defaults = getlocations_defaults();
-  foreach ($getlocations_defaults AS $k => $v) {
-    if (isset($options[$k])) {
-      $newdefaults[$k] = $options[$k];
-    }
-    else {
-      $newdefaults[$k] = $getlocations_defaults[$k];
-    }
-  }
+  $newdefaults = getlocations_adjust_vars($getlocations_defaults, $options);
 
   $mapid = getlocations_setup_map($newdefaults);
   getlocations_js_settings_do($newdefaults, $latlons, $minmaxes, $mapid);
