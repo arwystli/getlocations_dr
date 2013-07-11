@@ -1494,6 +1494,7 @@ function getlocations_fields_getmap_show($settings, $lls = '', $minmaxes = '') {
   $getlocations_defaults['map_marker']                = $settings['map_marker'];
   $getlocations_defaults['markeraction']              = $settings['markeraction'];
   $getlocations_defaults['markeractiontype']          = $settings['markeractiontype'];
+  $getlocations_defaults['nodezoom']                  = $settings['nodezoom'];
   $getlocations_defaults['weather_show']              = $settings['weather_show'];
   $getlocations_defaults['weather_state']             = $settings['weather_state'];
   $getlocations_defaults['weather_cloud']             = $settings['weather_cloud'];
