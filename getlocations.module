@@ -2027,6 +2027,7 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
       'map_backgroundcolor'       => $defaults['map_backgroundcolor'],
       'show_maplinks'             => $defaults['show_maplinks'],
       'js_path'                   => base_path() . GETLOCATIONS_PATH . '/js/',
+      'images_path'               => base_path() . GETLOCATIONS_PATH . '/images/',
       'info_path'                 => url("getlocations_cb/info"),
       'lidinfo_path'              => url("getlocations_cb/lidinfo"),
       'fullscreen'                => $defaults['fullscreen'],
@@ -3564,7 +3565,7 @@ function getlocations_markerpicker_link($id, $cat, $infoimg='') {
       $boxwidth = $getlocations_colorbox['marker_width'];
       $boxheight = $getlocations_colorbox['marker_height'];
       if (empty($infoimg)) {
-        $infoimg = '<img class="getlocations_infoimg" src="' . base_path() . drupal_get_path( 'module', 'getlocations') . '/images/info.png' . '" title="' . t('Click here to select an icon from a colorbox') . '" >';
+        $infoimg = '<img class="getlocations_infoimg" src="' . base_path() . GETLOCATIONS_PATH . '/images/info.png' . '" title="' . t('Click here to select an icon from a colorbox') . '" >';
       }
       $link = l($infoimg, 'getlocations/markerinfo', array(
           'attributes' => array(

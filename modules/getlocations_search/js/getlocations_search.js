@@ -127,7 +127,11 @@
         }
 
         // geolocation by browser
-        if (gset.is_mobile && navigator && navigator.geolocation) {
+        if (navigator && navigator.geolocation) {
+          $("#getlocations_search_geolocation_status_ok_" + key).hide();
+          $("#getlocations_search_geolocation_status_err_" + key).hide();
+          $("#getlocations_search_geolocation_status_ok_" + key).removeClass('js-hide');
+          $("#getlocations_search_geolocation_status_err_" + key).removeClass('js-hide');
           $("#getlocations_search_geolocation_button_" + key).click( function () {
             do_Geolocationbutton(getlocations_map[key], gset, key);
           });
@@ -386,9 +390,6 @@
   }
 
   function do_Geolocationbutton(map, gs, mkey) {
-    var statusdiv = '#getlocations_search_geolocation_status_' + mkey;
-    var statusmsg = '';
-    $(statusdiv).html(statusmsg);
     navigator.geolocation.getCurrentPosition(
       function(position) {
         lat = position.coords.latitude;
@@ -396,12 +397,12 @@
         var p = new google.maps.LatLng(parseFloat(lat), parseFloat(lng));
         var fm_adrs = {'latLng': p};
         do_Geocode(map, gs, fm_adrs, mkey);
-        //statusmsg = Drupal.t('Browser OK');
-        //$(statusdiv).html(statusmsg);
+        $("#getlocations_search_geolocation_status_ok_" + mkey).show();
+        $("#getlocations_search_geolocation_status_err_" + mkey).hide();
       },
       function(error) {
-        statusmsg = Drupal.t("Sorry, I couldn't find your location using the browser") + ' ' + Drupal.getlocations.geolocationErrorMessages(error.code) + ".";
-        $(statusdiv).html(statusmsg);
+        $("#getlocations_search_geolocation_status_ok_" + mkey).hide();
+        $("#getlocations_search_geolocation_status_err_" + mkey).show();
       }, {maximumAge:10000}
     );
   }

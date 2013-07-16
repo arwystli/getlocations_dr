@@ -120,7 +120,7 @@ function _getlocations_search_settings_form($defaults, $which = 'admin') {
   $form[$varname]['use_geolocation_button'] = getlocations_element_map_checkbox(
     t('Provide Browser based geocoding option'),
     $defaults['use_geolocation_button'],
-    t('Use the browser to find a location. For gps enabled mobile devices.')
+    t('Use the browser to find a location. For gps enabled mobile devices and wireless networks.')
   );
 
   // taxonomy support
