@@ -1345,6 +1345,10 @@ function getlocations_markerinfo() {
       if ($pos < 1) {
         $adj = 1;
       }
+      // skip this
+      if ($files[$pos] == 'shadow.png') {
+        continue;
+      }
       $data[$iconct]['path'] = $path . $files[$pos];
       $data[$iconct]['machine_name'] = $machine_names[$pos + $adj];
       $data[$iconct]['display_name'] = $display_names[$pos + $adj];
