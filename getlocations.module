@@ -1278,39 +1278,8 @@ function getlocations_lidinfo() {
  */
 // TODO review this, needs entity_get_info
 function getlocations_getlidinfo($lid, $lidkey) {
-
-  $content = FALSE;
-  if ($lid > 0) {
-    if (module_exists('getlocations_fields') || module_exists('location')) {
-      $path = getlocations_get_path_from_lid($lid);
-      if ($path) {
-        $content = $path;
-      }
-    }
-    elseif (module_exists('geofield') || module_exists('geolocation') ) {
-      if ($lidkey == 'nid') {
-        $path = url('node/' . $lid);
-      }
-      elseif ($lidkey == 'vid') {
-        $nid = getlocations_get_nid($lid);
-        $path = url('node/' . $nid);
-      }
-      elseif ($lidkey == 'uid') {
-        $path = url('user/' . $lid);
-      }
-      elseif ($lidkey == 'tid' && module_exists('taxonomy')) {
-        $path = url('taxonomy/term/' . $lid);
-      }
-      elseif ($lidkey == 'cid' && module_exists('comment')) {
-        $path = url('comment/' . $lid);
-      }
-      if ($path) {
-        $content = $path;
-      }
-    }
-  }
+  $content = theme('getlocations_lidinfo', array('lid' => $lid, 'lidkey' => $lidkey));
   return $content;
-
 }
 
 // provides data for marker colorbox
@@ -4855,6 +4824,12 @@ function getlocations_theme() {
         'address' => array(),
       ),
     ),
+    'getlocations_lidinfo' => array(
+      'variables' =>array(
+        'lid' => '',
+        'lidkey' => '',
+      ),
+    ),
   );
 }
 
@@ -5679,5 +5654,44 @@ function theme_getlocations_addressfield_convert($variables) {
     $location['country'] = $address['country'];
   }
   return $location;
+
+}
+
+// TODO review this, needs entity_get_info
+function theme_getlocations_lidinfo($variables) {
+  $lid = $variables['lid'];
+  $lidkey = $variables['lidkey'];
+
+  $content = FALSE;
+  if ($lid > 0) {
+    if (module_exists('getlocations_fields') || module_exists('location')) {
+      $path = getlocations_get_path_from_lid($lid);
+      if ($path) {
+        $content = $path;
+      }
+    }
+    elseif (module_exists('geofield') || module_exists('geolocation') ) {
+      if ($lidkey == 'nid') {
+        $path = url('node/' . $lid);
+      }
+      elseif ($lidkey == 'vid') {
+        $nid = getlocations_get_nid($lid);
+        $path = url('node/' . $nid);
+      }
+      elseif ($lidkey == 'uid') {
+        $path = url('user/' . $lid);
+      }
+      elseif ($lidkey == 'tid' && module_exists('taxonomy')) {
+        $path = url('taxonomy/term/' . $lid);
+      }
+      elseif ($lidkey == 'cid' && module_exists('comment')) {
+        $path = url('comment/' . $lid);
+      }
+      if ($path) {
+        $content = $path;
+      }
+    }
+  }
+  return $content;
 
 }
