@@ -697,14 +697,13 @@ var getlocations_settings = {};
           getlocations_map[key].controls[google.maps.ControlPosition.TOP_RIGHT].setAt(0, fsdoc);
         }
 
-        // search_places
-        if (settings.search_places) {
+        // search_places in getlocations_search_places.js
+        if (settings.search_places && $.isFunction(Drupal.getlocations_search_places)) {
           Drupal.getlocations_search_places(key);
         }
 
-        //geojson
-        if (settings.geojson_enable && settings.geojson_data) {
-          //
+        //geojson in getlocations_geojson.js
+        if (settings.geojson_enable && settings.geojson_data && $.isFunction(Drupal.getlocations_geojson)) {
           Drupal.getlocations_geojson(key);
         }
 
