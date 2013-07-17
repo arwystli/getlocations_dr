@@ -797,7 +797,7 @@ var getlocations_settings = {};
             if(gs.useCustomContent) {
               var cc = [];
               cc.content = customContent;
-              Drupal.getlocations.showPopup(map, m, gs, cc);
+              Drupal.getlocations.showPopup(map, m, gs, cc, mkey);
             }
             else {
               // fetch bubble content
@@ -806,7 +806,7 @@ var getlocations_settings = {};
                 for (var i = 0; i < arr.length; i++) {
                   data = arr[i];
                   if (lid == data.lid && lidkey == data.lidkey && data.content) {
-                    Drupal.getlocations.showPopup(map, m, gs, data);
+                    Drupal.getlocations.showPopup(map, m, gs, data, mkey);
                   }
                 }
               }
@@ -825,7 +825,7 @@ var getlocations_settings = {};
                 }
 
                 $.get(path, qs, function(data) {
-                  Drupal.getlocations.showPopup(map, m, gs, data);
+                  Drupal.getlocations.showPopup(map, m, gs, data, mkey);
                 });
               }
             }
@@ -873,7 +873,7 @@ var getlocations_settings = {};
 
   };
 
-  Drupal.getlocations.showPopup = function(map, m, gs, data) {
+  Drupal.getlocations.showPopup = function(map, m, gs, data, key) {
     var ver = Drupal.getlocations.msiedetect();
     var pushit = false;
     if ( (ver == '') || (ver && ver > 8)) {
@@ -882,8 +882,8 @@ var getlocations_settings = {};
 
     if (pushit) {
       // close any previous instances
-      for (var i in gs.infoBubbles) {
-        gs.infoBubbles[i].close();
+      for (var i in getlocations_settings[key].infoBubbles) {
+        getlocations_settings[key].infoBubbles[i].close();
       }
     }
 
@@ -899,7 +899,7 @@ var getlocations_settings = {};
       infoBubble.open(map, m);
       if (pushit) {
         // add to the array
-        gs.infoBubbles.push(infoBubble);
+        getlocations_settings[key].infoBubbles.push(infoBubble);
       }
     }
     else {
@@ -914,10 +914,9 @@ var getlocations_settings = {};
       infowindow.open(map, m);
       if (pushit) {
         // add to the array
-        gs.infoBubbles.push(infowindow);
+        getlocations_settings[key].infoBubbles.push(infowindow);
       }
     }
-
   };
 
   Drupal.getlocations.doBounds = function(map, minlat, minlon, maxlat, maxlon, dopan) {
