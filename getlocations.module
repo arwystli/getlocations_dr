@@ -918,13 +918,15 @@ function getlocations_defaults() {
     'category_term_reference_field' => '',
     'category_showhide_buttons'     => 0,
     'categories'                    => '',
-    'kml_url'                       => '',
-    'kml_url_click'                 => 1,
-    'kml_url_infowindow'            => 0,
-    'kml_url_viewport'              => 1,
-    'kml_url_button'                => 0,
-    'kml_url_button_label'          => 'Kml Layer',
-    'kml_url_button_state'          => 0,
+    'kml_group' => array(
+      'kml_url'                     => '',
+      'kml_url_click'               => 1,
+      'kml_url_infowindow'          => 0,
+      'kml_url_viewport'            => 1,
+      'kml_url_button'              => 0,
+      'kml_url_button_label'        => 'Kml Layer',
+      'kml_url_button_state'        => 0,
+    ),
     'visual_refresh'                => 0,
     'map_resize'                    => 0,
     'region_bias'                   => variable_get('site_default_country', ''),
@@ -2005,7 +2007,7 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
       'lidinfo_path'              => url("getlocations_cb/lidinfo"),
       'fullscreen'                => $defaults['fullscreen'],
       'show_bubble_on_one_marker' => $defaults['show_bubble_on_one_marker'],
-      'kml_url'                   => $defaults['kml_url'],
+      'kml_url'                   => $defaults['kml_group']['kml_url'],
       'visual_refresh'            => $defaults['visual_refresh'],
       'fullscreen_disable'        => $defaults['fullscreen_disable'],
       'places'                    => $defaults['places'],
@@ -2016,13 +2018,13 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
     ),
   );
   // only set these if wanted
-  if ($defaults['kml_url']) {
-    $settings[$mapid]['kml_url_click']        = $defaults['kml_url_click'];
-    $settings[$mapid]['kml_url_infowindow']   = $defaults['kml_url_infowindow'];
-    $settings[$mapid]['kml_url_viewport']     = $defaults['kml_url_viewport'];
-    $settings[$mapid]['kml_url_button']       = $defaults['kml_url_button'];
-    $settings[$mapid]['kml_url_button_label'] = $defaults['kml_url_button_label'];
-    $settings[$mapid]['kml_url_button_state'] = $defaults['kml_url_button_state'];
+  if ($defaults['kml_group']['kml_url']) {
+    $settings[$mapid]['kml_url_click']        = $defaults['kml_group']['kml_url_click'];
+    $settings[$mapid]['kml_url_infowindow']   = $defaults['kml_group']['kml_url_infowindow'];
+    $settings[$mapid]['kml_url_viewport']     = $defaults['kml_group']['kml_url_viewport'];
+    $settings[$mapid]['kml_url_button']       = $defaults['kml_group']['kml_url_button'];
+    $settings[$mapid]['kml_url_button_label'] = $defaults['kml_group']['kml_url_button_label'];
+    $settings[$mapid]['kml_url_button_state'] = $defaults['kml_group']['kml_url_button_state'];
   }
   if ($defaults['weather_use']) {
     $settings[$mapid]['weather_show']        = $defaults['weather_show'];
@@ -3363,39 +3365,39 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
       '#title' => t('Kml file'),
       '#description' => t('Attach a kml file.'),
       '#collapsible' => TRUE,
-      '#collapsed' => (empty($defaults['kml_url']) ? TRUE : FALSE ),
-      '#tree' => FALSE,
+      '#collapsed' => (empty($defaults['kml_group']['kml_url']) ? TRUE : FALSE ),
+      '#tree' => TRUE,
     );
     $form['kml_group']['kml_url'] = getlocations_element_map_tf(
       t('Kml url'),
-      $defaults['kml_url'],
+      $defaults['kml_group']['kml_url'],
       t('A full url to a publicly accessible kml file.')
     );
     $form['kml_group']['kml_url_click'] = getlocations_element_map_checkbox(
       t('Kml layer clickable'),
-      $defaults['kml_url_click']
+      $defaults['kml_group']['kml_url_click']
     );
     $form['kml_group']['kml_url_infowindow'] = getlocations_element_map_checkbox(
       t('Suppress Kml layer InfoWindows'),
-      $defaults['kml_url_infowindow']
+      $defaults['kml_group']['kml_url_infowindow']
     );
     $form['kml_group']['kml_url_viewport'] = getlocations_element_map_checkbox(
       t('Preserve viewport'),
-      $defaults['kml_url_viewport']
+      $defaults['kml_group']['kml_url_viewport']
     );
     $form['kml_group']['kml_url_button'] = getlocations_element_map_checkbox(
       t('Show toggle button'),
-      $defaults['kml_url_button']
+      $defaults['kml_group']['kml_url_button']
     );
     $form['kml_group']['kml_url_button_label'] = getlocations_element_map_tf(
       t('Label for toggle button'),
-      $defaults['kml_url_button_label'],
+      $defaults['kml_group']['kml_url_button_label'],
       '',
       30
     );
     $form['kml_group']['kml_url_button_state'] = getlocations_element_map_checkbox(
       t('Activate Kml layer'),
-      $defaults['kml_url_button_state'],
+      $defaults['kml_group']['kml_url_button_state'],
       t('Activate Kml layer when map is first displayed.')
     );
 
