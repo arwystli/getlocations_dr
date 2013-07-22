@@ -5077,12 +5077,12 @@ function theme_getlocations_show($variables) {
   }
 
   // KML
-  if ($defaults['kml_url'] && $defaults['kml_url_button']) {
+  if ($defaults['kml_group']['kml_url'] && $defaults['kml_group']['kml_url_button']) {
     $kmlbuttonlabel = t('Kml Layer');
-    if ($defaults['kml_url_button_label']) {
-      $kmlbuttonlabel = $defaults['kml_url_button_label'];
+    if ($defaults['kml_group']['kml_url_button_label']) {
+      $kmlbuttonlabel = $defaults['kml_group']['kml_url_button_label'];
     }
-    $kmlbuttonlabel .= ' ' . ($defaults['kml_url_button_state'] ? t('Off') : t('On'));
+    $kmlbuttonlabel .= ' ' . ($defaults['kml_group']['kml_url_button_state'] ? t('Off') : t('On'));
     $buttons[] = '<input type="button" value="' . $kmlbuttonlabel . '" id="getlocations_toggleKmlLayer_' . $mapid . '" class="form-submit"  />';
   }
 

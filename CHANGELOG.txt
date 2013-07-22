@@ -1,3 +1,65 @@
+commit c7d72fe
+Author: hutch <hutch@midwales.net>
+Date:   Tue Jul 23 00:00:03 2013 +0100
+
+    more kml
+
+getlocations.module
+modules/getlocations_fields/getlocations_fields.module
+views/getlocations_plugin_style_map.inc
+
+commit 7bba9a3
+Author: hutch <hutch@midwales.net>
+Date:   Sun Jul 21 18:45:49 2013 +0100
+
+    fixed kml
+
+getlocations.module
+
+commit ca34763
+Author: hutch <hutch@midwales.net>
+Date:   Sun Jul 21 18:45:33 2013 +0100
+
+    set template to html5
+
+getlocations_box.tpl.php
+
+commit 9191b73
+Author: hutch <hutch@midwales.net>
+Date:   Wed Jul 17 20:20:28 2013 +0100
+
+    themed getlocations_lidinfo
+
+getlocations.module
+
+commit 069d3ed
+Author: hutch <hutch@midwales.net>
+Date:   Wed Jul 17 19:10:48 2013 +0100
+
+    fixed infobubbles close bug
+
+js/getlocations.js
+js/getlocations_circles.js
+js/getlocations_polygons.js
+js/getlocations_polylines.js
+js/getlocations_rectangles.js
+
+commit 5d03bcb
+Author: hutch <hutch@midwales.net>
+Date:   Wed Jul 17 19:07:59 2013 +0100
+
+    added isFunction check
+
+js/getlocations.js
+
+commit e199d45
+Author: hutch <hutch@midwales.net>
+Date:   Tue Jul 16 11:31:50 2013 +0100
+
+    fixed shadow in markerinfo
+
+CHANGELOG.txt
+
 commit 2d81f43
 Author: hutch <hutch@midwales.net>
 Date:   Tue Jul 16 11:30:25 2013 +0100
