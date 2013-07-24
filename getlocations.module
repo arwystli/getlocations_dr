@@ -5626,32 +5626,32 @@ function theme_getlocations_addressfield_convert($variables) {
     }
     $location['name'] = (count($name) ? implode(", ", $name) : '');
 
-    $location['street'] = $address['thoroughfare'];
+    $location['street'] = (isset($address['thoroughfare']) ? $address['thoroughfare'] : '');
     $additional = array();
-    if ($address['premise']) {
+    if (isset($address['premise']) && $address['premise']) {
       $additional[] = $address['premise'];
     }
-    if ($address['sub_premise']) {
+    if (isset($address['sub_premise']) && $address['sub_premise']) {
       $additional[] = $address['sub_premise'];
     }
     $location['additional'] = (count($additional) ? implode(", ", $additional) : '');
     $city = array();
-    if ($address['dependent_locality']) {
+    if (isset($address['dependent_locality']) && $address['dependent_locality']) {
       $city[] = $address['dependent_locality'];
     }
-    if ($address['locality']) {
+    if (isset($address['locality']) && $address['locality']) {
       $city[] = $address['locality'];
     }
     $location['city'] = (count($city) ? implode(", ", $city) : '');
     $admin_area = array();
-    if ($address['sub_administrative_area']) {
+    if (isset($address['sub_administrative_area']) && $address['sub_administrative_area']) {
       $admin_area[] = $address['sub_administrative_area'];
     }
-    if ($address['administrative_area']) {
+    if (isset($address['administrative_area']) && $address['administrative_area']) {
       $admin_area[] = $address['administrative_area'];
     }
     $location['province_name'] = (count($admin_area) ? implode(", ", $admin_area) :'');
-    $location['postal_code'] = drupal_strtoupper($address['postal_code']);
+    $location['postal_code'] = (isset($address['postal_code']) ? drupal_strtoupper($address['postal_code']) : '');
     $location['country_name'] = (isset($address['country_name']) ? $address['country_name'] : $address['country']);
     $location['country'] = $address['country'];
   }
