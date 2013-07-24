@@ -1,9 +1,18 @@
-commit c7d72fe
+commit bb017e9
+Author: hutch <hutch@midwales.net>
+Date:   Wed Jul 24 14:35:38 2013 +0100
+
+    more kml fix
+
+modules/getlocations_search/getlocations_search.module
+
+commit d71b819
 Author: hutch <hutch@midwales.net>
 Date:   Tue Jul 23 00:00:03 2013 +0100
 
     more kml
 
+CHANGELOG.txt
 getlocations.module
 modules/getlocations_fields/getlocations_fields.module
 views/getlocations_plugin_style_map.inc
