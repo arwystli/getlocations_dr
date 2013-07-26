@@ -4,6 +4,30 @@
  *
  */
 
+/**
+ * Help
+ * "shadowStyle"                Options: 0 (no shadow), 1 (default shadow), 2 (sharp shadow)
+ * "padding"                    Like the css property, the padding of the bubble.
+ * "borderRadius"               Like the css property, the radius of the bubble\'s corners.
+ * "borderWidth"                Like the css property, the width in pixels of the border.
+ * "borderColor"                Like the css property, the hex or rgb color of the border.
+ * "backgroundColor"            This is the background of the content of the bubble, but NOT the entire bubble itself.
+ * "bubbleBackgroundClassName"  A css class for the entire bubble.
+ * "minWidth"                   Like the css property, the minimum width of the bubble.
+ * "maxWidth"                   Like the css property, the maximum width of the bubble.
+ * "minHeight"                  Like the css property, the maximum height of the bubble.
+ * "arrowSize"                  The width of the pointer arrow. NOTE: if you choose an arrow style that only uses half of the arrow, this number will be twice as wide as your arrow at its widest point.
+ * "arrowPosition"              The percent from the left of the bubble where the arrow will appear.
+ * "arrowStyle"                 Options: 0 (full triangle), 1 (half triangle leaning left), 2 (half triangle leaning right)
+ * "closeImage"                 The url of the image to use as the close button for the bubble
+ * "closeCursor"                Like the css property, the style of the cursor as it hovers over your close image. Default is pointer.
+ * "closeZIndex"                Like the css property, the z-index of the close image. Default is 0.
+ * "closeBorder"                Like the css property, the border style of the close image. Default is none.
+ * "closeHeight"                The height of the close image. Default is 12px.
+ * "closeWidth"                 The width of the close image. Default is 12px.
+ * "closePosition"              Like the css property, the position the close image. Default is absolute.
+ */
+
 // defaults
 var infoBubbleOptions = {
   backgroundColor: '#fff',
@@ -26,9 +50,3 @@ var infoBubbleOptions = {
 //infoBubbleOptions.minHeight = 200;
 //infoBubbleOptions.maxWidth = 350;
 //infoBubbleOptions.maxHeight = 300;
-
-// infobubble_extended brings in two more options:
-//infoBubbleOptions.bubbleBackgroundClassName = 'your cssclass';
-//infoBubbleOptions.closeImage = 'url_to_button';
-
-// bubbleBackgroundClassName applies to the whole bubble
