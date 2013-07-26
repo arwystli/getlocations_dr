@@ -1,0 +1,6 @@
+name = GetLocations Map
+description = "Provides Field module integration for a Getlocations map."
+core = 7.x
+php = 5
+package = Fields
+dependencies[] = getlocations
