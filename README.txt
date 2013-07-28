@@ -272,3 +272,10 @@ It should be installed in your libraries folder so you have a path something lik
 sites/all/libraries/GeoJSON/GeoJSON.js
 
 Once the library is installed you can enable it globally, per view or per content type
+
+
+Drush integration for getlocations.
+'drush getlocations-markers' will install the basic getlocations marker set
+'drush getlocations-geojson' will install the GeoJSON javascript library
+If you want the library installed somewhere other than sites/all/libraries then provide the path after the command.
+
