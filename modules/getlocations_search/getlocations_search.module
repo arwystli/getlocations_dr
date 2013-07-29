@@ -23,6 +23,18 @@ function getlocations_search_help($path, $arg) {
 }
 
 /**
+ * Implements hook_permission().
+ */
+function getlocations_search_permission() {
+  $perms = array();
+  $perms['access getlocations search'] = array(
+    'title' => t('Access Getlocations Search'),
+    'description' => t('View and use the Getlocations_search module.')
+  );
+  return $perms;
+}
+
+/**
  * Implements hook_menu().
  */
 function getlocations_search_menu() {
@@ -40,7 +52,7 @@ function getlocations_search_menu() {
 
   $items['getlocations_search'] = array(
     'title' => 'Getlocations search',
-    'access arguments' => array('access getlocations'),
+    'access arguments' => array('access getlocations search'),
     'page callback' => 'getlocations_search',
     'type' => MENU_SUGGESTED_ITEM,
   );
@@ -62,7 +74,7 @@ function getlocations_search_menu() {
   // colorbox
   $items['getlocations_search_box'] = array(
     'title' => 'Getlocations search',
-    'access arguments' => array('access getlocations'),
+    'access arguments' => array('access getlocations search'),
     'page callback' => 'getlocations_search_box',
     'type' => MENU_CALLBACK,
   );

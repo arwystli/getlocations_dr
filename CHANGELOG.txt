@@ -1,9 +1,75 @@
-commit bb017e9
+commit 8875a9f
+Author: hutch <hutch@midwales.net>
+Date:   Mon Jul 29 12:27:27 2013 +0100
+
+    added access rule for getlocations_search
+
+modules/getlocations_search/getlocations_search.module
+
+commit 8b8475b
+Author: hutch <hutch@midwales.net>
+Date:   Mon Jul 29 09:34:36 2013 +0100
+
+    improved getlocations_search
+
+getlocations.css
+modules/getlocations_search/getlocations_search.admin.inc
+modules/getlocations_search/getlocations_search.module
+modules/getlocations_search/js/getlocations_search_admin.js
+
+commit 043153e
+Author: hutch <hutch@midwales.net>
+Date:   Sun Jul 28 03:12:20 2013 +0100
+
+    added drush
+
+README.txt
+drush/getlocations.drush.inc
+
+commit faedf0c
+Author: hutch <hutch@midwales.net>
+Date:   Sun Jul 28 03:11:56 2013 +0100
+
+    add cck_location to getlocations_search
+
+modules/getlocations_search/getlocations_search.module
+
+commit 1b383bd
+Author: hutch <hutch@midwales.net>
+Date:   Fri Jul 26 11:49:08 2013 +0100
+
+    added getlocations_map module
+
+modules/getlocations_map/README.txt
+modules/getlocations_map/getlocations_map.info
+modules/getlocations_map/getlocations_map.install
+modules/getlocations_map/getlocations_map.module
+modules/getlocations_map/js/getlocations_map_formatter.js
+
+commit 2780935
+Author: hutch <hutch@midwales.net>
+Date:   Fri Jul 26 09:44:17 2013 +0100
+
+    more extended infobubble
+
+js/infobubble_extended.js
+js/infobubble_options.txt
+
+commit 22bcd49
+Author: hutch <hutch@midwales.net>
+Date:   Wed Jul 24 21:29:47 2013 +0100
+
+    better addressfield_convert
+
+getlocations.module
+
+commit 7864be3
 Author: hutch <hutch@midwales.net>
 Date:   Wed Jul 24 14:35:38 2013 +0100
 
     more kml fix
 
+CHANGELOG.txt
 modules/getlocations_search/getlocations_search.module
 
 commit d71b819
