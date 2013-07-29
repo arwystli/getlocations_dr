@@ -372,11 +372,13 @@ function _getlocations_search_settings_form($defaults, $which = 'admin') {
     $defaults['zoom_on_single_use'],
     t('Apply a Default zoom level for a single marker.')
   );
+  $form[$varname]['zoom_on_single_use']['#suffix'] = '<div id="wrap-zoom-on-single-use">';
   $form[$varname]['nodezoom'] = getlocations_element_map_zoom(
     t('Default Zoom for Single location'),
     $defaults['nodezoom'],
     t('The Default zoom level for a single marker.')
   );
+  $form[$varname]['nodezoom']['#suffix'] = '</div>';
 
   // marker manager
   $form[$varname]['markermanagertype'] = getlocations_element_markermanagertype($defaults['markermanagertype']);

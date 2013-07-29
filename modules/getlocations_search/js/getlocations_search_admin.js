@@ -310,6 +310,24 @@
         });
       }
 
+      // zoom on single use
+      if ($("#edit-getlocations-search-defaults-zoom-on-single-use, #edit-getlocations-search-block-defaults-zoom-on-single-use").is('input')) {
+        if ($("#edit-getlocations-search-defaults-zoom-on-single-use, #edit-getlocations-search-block-defaults-zoom-on-single-use").attr('checked')) {
+          $("#wrap-zoom-on-single-use").show();
+        }
+        else {
+          $("#wrap-zoom-on-single-use").hide();
+        }
+        $("#edit-getlocations-search-defaults-zoom-on-single-use, #edit-getlocations-search-block-defaults-zoom-on-single-use").change(function() {
+          if ($(this).attr('checked')) {
+            $("#wrap-zoom-on-single-use").show();
+          }
+          else {
+            $("#wrap-zoom-on-single-use").hide();
+          }
+        });
+      }
+
     }
   };
 }(jQuery));
