@@ -1440,7 +1440,7 @@ function getlocations_fields_getmap($settings, $active) {
   drupal_add_css(GETLOCATIONS_FIELDS_PATH . '/getlocations_fields.css');
 
   if ($active) {
-    $getlocations_fields_paths = variable_get('getlocations_fields_paths', array('getlocations_fields_path' => GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields.js'));
+    $getlocations_fields_paths = getlocations_fields_paths_get();
     $js_opts = array();
     $js_opts['weight'] = $getlocations_defaults['getlocations_js_weight'] + 10;
     $js_opts['type'] = 'file';
@@ -2920,6 +2920,20 @@ function getlocations_fields_modules_uninstalled($modules) {
 function getlocations_fields_get_countries_list($upper = TRUE) {
   $countries = getlocations_get_countries_list($upper);
   return $countries;
+}
+
+function getlocations_fields_paths_get($reset = FALSE) {
+
+  $defaults = array('getlocations_fields_path' => GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields.js');
+  if ($reset) {
+    $getlocations_fields_paths = $defaults;
+  }
+  else {
+    $settings = variable_get('getlocations_fields_paths', $defaults);
+    $getlocations_fields_paths = getlocations_adjust_vars($defaults, $settings);
+  }
+  return $getlocations_fields_paths;
+
 }
 
 // Theming functions

@@ -41,13 +41,18 @@ function getlocations_fields_settings_form() {
     // This will store all the defaults in one variable.
     '#tree' => TRUE,
   );
-  $getlocations_fields_paths = variable_get('getlocations_fields_paths', array('getlocations_fields_path' => GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields.js'));
+  $getlocations_fields_paths = getlocations_fields_paths_get();
   $form['getlocations_fields_paths']['getlocations_fields_path'] = getlocations_element_path(
     t('Path to getlocations_fields javascript file'),
     $getlocations_fields_paths['getlocations_fields_path'],
     70,
     128,
     t('Where the getlocations_fields javascript file is located.')
+  );
+  $form['getlocations_fields_paths']['reset'] = getlocations_element_map_checkbox(
+    t('Reset'),
+    0,
+    t('Reset the paths to the defaults.')
   );
 
   unset($form['#theme']);
@@ -93,6 +98,11 @@ function getlocations_fields_settings_validate($form, &$form_state) {
   }
   if (empty($form_state['values']['getlocations_fields_defaults']['input_longitude_width']) || ! is_numeric($form_state['values']['getlocations_fields_defaults']['input_longitude_width']) || $form_state['values']['getlocations_fields_defaults']['input_longitude_width'] < 1 ) {
     form_set_error('getlocations_fields_defaults][input_longitude_width', t('Longitude textbox must be a positive number'));
+  }
+  $reset = $form_state['values']['getlocations_fields_paths']['reset'];
+  unset($form_state['values']['getlocations_fields_paths']['reset']);
+  if ($reset) {
+    $form_state['values']['getlocations_fields_paths'] = getlocations_fields_paths_get(TRUE);
   }
 
 }

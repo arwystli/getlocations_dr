@@ -278,7 +278,7 @@ function getlocations_search_getmap($which = 'page') {
   $mapid = getlocations_setup_map($getlocations_defaults);
 
   getlocations_search_js_settings_do($getlocations_search_defaults, $mapid);
-  $getlocations_search_paths = variable_get('getlocations_search_paths', array('getlocations_search_path' => GETLOCATIONS_SEARCH_PATH . '/js/getlocations_search.js'));
+  $getlocations_search_paths = getlocations_search_paths_get();
   $jsfile = $getlocations_search_paths['getlocations_search_path'];
   $js_opts = array();
   $js_opts['weight'] = $getlocations_defaults['getlocations_js_weight'] + 10;
@@ -792,6 +792,18 @@ function getlocations_search_term_get() {
   }
   ksort($matches);
   return $matches;
+}
+
+function getlocations_search_paths_get($reset = FALSE) {
+  $defaults = array('getlocations_search_path' => GETLOCATIONS_SEARCH_PATH . '/js/getlocations_search.js');
+  if ($reset) {
+    $getlocations_search_paths = $defaults;
+  }
+  else {
+    $settings = variable_get('getlocations_search_paths', $defaults);
+    $getlocations_search_paths = getlocations_adjust_vars($defaults, $settings);
+  }
+  return $getlocations_search_paths;
 }
 
 /**
