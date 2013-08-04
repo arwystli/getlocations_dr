@@ -70,7 +70,7 @@ function getlocations_settings_form() {
   $form['getlocations_preview'] = array(
     '#type' => 'fieldset',
     '#title' => t('Getlocations Preview'),
-    '#description' => t('A preview of the current map settings.<br />You can adjust the default map center, zoom and type by changing the map.<br />For all other changes Save Configuration.'),
+    '#description' => t('A preview of the current map settings.<br />You can adjust the default Map center, Zoom and Default map type by changing the map.<br /> For all other changes use the form. Remember to Save configuration when you are done.'),
     // This will store all the defaults in one variable.
     '#tree' => FALSE,
   );
