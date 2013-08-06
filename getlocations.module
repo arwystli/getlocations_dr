@@ -907,6 +907,7 @@ function getlocations_defaults() {
     'circles_clickable'             => 0,
     'circles_message'               => "",
     'circles_radius'                => 0,
+    'circles_apply'                 => 0,
     'polylines_enable'              => 0,
     'polylines_strokecolor'         => "#FF0000",
     'polylines_strokeopacity'       => "0.8",
@@ -2109,7 +2110,17 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
     }
   }
   // circles
-  if ($defaults['circles_enable'] && ! empty($defaults['circles_coords']) && $defaults['circles_radius'] > 0) {
+  if ($defaults['circles_enable'] && $defaults['circles_radius'] > 0 && (! empty($defaults['circles_coords']) || $defaults['circles_apply'])) {
+    if ($defaults['circles_apply'] && count($latlons)) {
+      // get latlons and set coords
+      $tmp = '';
+      foreach ($latlons AS $ll) {
+        $tmp .= $ll[0] . ',' . $ll[1] . "\n";
+      }
+      if ($tmp) {
+        $defaults['circles_coords'] = $tmp;
+      }
+    }
     $circles = getlocations_get_circle_settings($defaults);
     if ($circles) {
       $circle_settings = array(
@@ -3286,6 +3297,12 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
       '#title' => t('Popup message'),
       '#default_value' => $defaults['circles_message'],
       '#description' => t('The content of the popup.'),
+    );
+
+    $form['circles_apply'] = getlocations_element_map_checkbox(
+      t('Apply a circle to all locations'),
+      $defaults['circles_apply'],
+      t('Draw a circle centered on all locations being displayed. These coordinates will be used instead of the ones below.')
     );
 
     $form['circles_coords'] = array(
