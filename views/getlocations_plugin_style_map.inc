@@ -116,6 +116,7 @@ class getlocations_plugin_style_map extends views_plugin_style {
     $options['circles_clickable']        = array('default' => $getlocations_defaults['circles_clickable']);
     $options['circles_message']          = array('default' => $getlocations_defaults['circles_message']);
     $options['circles_radius']           = array('default' => $getlocations_defaults['circles_radius']);
+    $options['circles_apply']            = array('default' => $getlocations_defaults['circles_apply']);
     $options['polylines_enable']         = array('default' => $getlocations_defaults['polylines_enable']);
     $options['polylines_strokecolor']    = array('default' => $getlocations_defaults['polylines_strokecolor']);
     $options['polylines_strokeopacity']  = array('default' => $getlocations_defaults['polylines_strokeopacity']);

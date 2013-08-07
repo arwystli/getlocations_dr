@@ -1533,6 +1533,7 @@ function getlocations_fields_getmap_show($settings, $lls = '', $minmaxes = '') {
   $getlocations_defaults['circles_clickable']         = $settings['circles_clickable'];
   $getlocations_defaults['circles_message']           = $settings['circles_message'];
   $getlocations_defaults['circles_radius']            = $settings['circles_radius'];
+  $getlocations_defaults['circles_apply']             = $settings['circles_apply'];
   $getlocations_defaults['polylines_enable']          = $settings['polylines_enable'];
   $getlocations_defaults['polylines_strokecolor']     = $settings['polylines_strokecolor'];
   $getlocations_defaults['polylines_strokeopacity']   = $settings['polylines_strokeopacity'];
@@ -2102,6 +2103,7 @@ function getlocations_fields_defaults() {
     'circles_clickable'         => $getlocations_defaults['circles_clickable'],
     'circles_message'           => $getlocations_defaults['circles_message'],
     'circles_radius'            => $getlocations_defaults['circles_radius'],
+    'circles_apply'             => $getlocations_defaults['circles_apply'],
     'polylines_enable'          => $getlocations_defaults['polylines_enable'],
     'polylines_strokecolor'     => $getlocations_defaults['polylines_strokecolor'],
     'polylines_strokeopacity'   => $getlocations_defaults['polylines_strokeopacity'],
@@ -2241,6 +2243,7 @@ function getlocations_fields_field_info_defaults() {
         'circles_clickable'               => $getlocations_fields_defaults['circles_clickable'],
         'circles_message'                 => $getlocations_fields_defaults['circles_message'],
         'circles_radius'                  => $getlocations_fields_defaults['circles_radius'],
+        'circles_apply'                   => $getlocations_fields_defaults['circles_apply'],
         'polylines_enable'                => $getlocations_fields_defaults['polylines_enable'],
         'polylines_strokecolor'           => $getlocations_fields_defaults['polylines_strokecolor'],
         'polylines_strokeopacity'         => $getlocations_fields_defaults['polylines_strokeopacity'],
@@ -2364,6 +2367,7 @@ function getlocations_fields_field_formatter_info_defaults() {
     'circles_clickable'         => $getlocations_defaults['circles_clickable'],
     'circles_message'           => $getlocations_defaults['circles_message'],
     'circles_radius'            => $getlocations_defaults['circles_radius'],
+    'circles_apply'             => $getlocations_defaults['circles_apply'],
     'polylines_enable'          => $getlocations_defaults['polylines_enable'],
     'polylines_strokecolor'     => $getlocations_defaults['polylines_strokecolor'],
     'polylines_strokeopacity'   => $getlocations_defaults['polylines_strokeopacity'],

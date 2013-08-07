@@ -1,9 +1,58 @@
-commit 8875a9f
+commit 1862550
+Author: hutch <hutch@midwales.net>
+Date:   Wed Aug 7 08:29:35 2013 +0100
+
+    more circles_apply
+
+getlocations.module
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_map/getlocations_map.module
+modules/getlocations_search/getlocations_search.admin.inc
+modules/getlocations_search/getlocations_search.module
+views/getlocations_plugin_style_map.inc
+
+commit b9fba6b
+Author: hutch <hutch@midwales.net>
+Date:   Tue Aug 6 19:08:21 2013 +0100
+
+    added circles_apply feature
+
+getlocations.module
+
+commit b9d1489
+Author: hutch <hutch@midwales.net>
+Date:   Sun Aug 4 08:47:48 2013 +0100
+
+    improved help
+
+js/infobubble_options.txt
+
+commit dc5023b
+Author: hutch <hutch@midwales.net>
+Date:   Sun Aug 4 08:47:31 2013 +0100
+
+    improved preview description
+
+getlocations.admin.inc
+
+commit 91528ae
+Author: hutch <hutch@midwales.net>
+Date:   Fri Aug 2 19:41:30 2013 +0100
+
+    added reset to paths for fields and search
+
+modules/getlocations_fields/getlocations_fields.admin.inc
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_search/getlocations_search.admin.inc
+modules/getlocations_search/getlocations_search.module
+
+commit 809b58c
 Author: hutch <hutch@midwales.net>
 Date:   Mon Jul 29 12:27:27 2013 +0100
 
     added access rule for getlocations_search
 
+CHANGELOG.txt
 modules/getlocations_search/getlocations_search.module
 
 commit 8b8475b
