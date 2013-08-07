@@ -1523,6 +1523,8 @@ function getlocations_fields_getmap_show($settings, $lls = '', $minmaxes = '') {
   $getlocations_defaults['rectangles_coords']         = $settings['rectangles_coords'];
   $getlocations_defaults['rectangles_clickable']      = $settings['rectangles_clickable'];
   $getlocations_defaults['rectangles_message']        = $settings['rectangles_message'];
+  $getlocations_defaults['rectangles_apply']          = $settings['rectangles_apply'];
+  $getlocations_defaults['rectangles_dist']           = $settings['rectangles_dist'];
   $getlocations_defaults['circles_enable']            = $settings['circles_enable'];
   $getlocations_defaults['circles_strokecolor']       = $settings['circles_strokecolor'];
   $getlocations_defaults['circles_strokeopacity']     = $settings['circles_strokeopacity'];
@@ -2093,6 +2095,8 @@ function getlocations_fields_defaults() {
     'rectangles_coords'         => $getlocations_defaults['rectangles_coords'],
     'rectangles_clickable'      => $getlocations_defaults['rectangles_clickable'],
     'rectangles_message'        => $getlocations_defaults['rectangles_message'],
+    'rectangles_apply'          => $getlocations_defaults['rectangles_apply'],
+    'rectangles_dist'           => $getlocations_defaults['rectangles_dist'],
     'circles_enable'            => $getlocations_defaults['circles_enable'],
     'circles_strokecolor'       => $getlocations_defaults['circles_strokecolor'],
     'circles_strokeopacity'     => $getlocations_defaults['circles_strokeopacity'],
@@ -2233,6 +2237,8 @@ function getlocations_fields_field_info_defaults() {
         'rectangles_coords'               => $getlocations_fields_defaults['rectangles_coords'],
         'rectangles_clickable'            => $getlocations_fields_defaults['rectangles_clickable'],
         'rectangles_message'              => $getlocations_fields_defaults['rectangles_message'],
+        'rectangles_apply'                => $getlocations_fields_defaults['rectangles_apply'],
+        'rectangles_dist'                 => $getlocations_fields_defaults['rectangles_dist'],
         'circles_enable'                  => $getlocations_fields_defaults['circles_enable'],
         'circles_strokecolor'             => $getlocations_fields_defaults['circles_strokecolor'],
         'circles_strokeopacity'           => $getlocations_fields_defaults['circles_strokeopacity'],
@@ -2357,6 +2363,8 @@ function getlocations_fields_field_formatter_info_defaults() {
     'rectangles_coords'         => $getlocations_defaults['rectangles_coords'],
     'rectangles_clickable'      => $getlocations_defaults['rectangles_clickable'],
     'rectangles_message'        => $getlocations_defaults['rectangles_message'],
+    'rectangles_apply'          => $getlocations_defaults['rectangles_apply'],
+    'rectangles_dist'           => $getlocations_defaults['rectangles_dist'],
     'circles_enable'            => $getlocations_defaults['circles_enable'],
     'circles_strokecolor'       => $getlocations_defaults['circles_strokecolor'],
     'circles_strokeopacity'     => $getlocations_defaults['circles_strokeopacity'],

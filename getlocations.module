@@ -897,6 +897,8 @@ function getlocations_defaults() {
     'rectangles_coords'             => "",
     'rectangles_clickable'          => 0,
     'rectangles_message'            => "",
+    'rectangles_apply'              => 0,
+    'rectangles_dist'               => 0,
     'circles_enable'                => 0,
     'circles_strokecolor'           => "#FF0000",
     'circles_strokeopacity'         => "0.8",
@@ -2100,7 +2102,19 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
     }
   }
   // rectangles
-  if ($defaults['rectangles_enable'] && ! empty($defaults['rectangles_coords'])) {
+  if ($defaults['rectangles_enable'] && (! empty($defaults['rectangles_coords']) || ($defaults['rectangles_apply'] && $defaults['rectangles_dist']))) {
+    if ($defaults['rectangles_apply'] && $defaults['rectangles_dist']) {
+      // get latlons and set coords
+      $tmp = '';
+      foreach ($latlons AS $ll) {
+        $lats = getlocations_earth_latitude_range($ll[0], $ll[1], $defaults['rectangles_dist']);
+        $lngs = getlocations_earth_longitude_range($ll[0], $ll[1], $defaults['rectangles_dist']);
+        $tmp .= $lats[0] . ',' . $lngs[0] . '|' . $lats[1] . ',' . $lngs[1] . "\n";
+      }
+      if ($tmp) {
+        $defaults['rectangles_coords'] = $tmp;
+      }
+    }
     $rectangles = getlocations_get_rectangle_settings($defaults);
     if ($rectangles) {
       $rectangle_settings = array(
@@ -3198,6 +3212,26 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
       '#default_value' => $defaults['rectangles_message'],
       '#description' => t('The content of the popup.'),
     );
+
+    if ($source == 'getlocations_search') {
+      $form['rectangles_apply'] = array('#type' => 'value', '#value' => 0);
+      $form['rectangles_dist'] = array('#type' => 'value', '#value' => 0);
+    }
+    else {
+      $form['rectangles_apply'] = getlocations_element_map_checkbox(
+        t('Apply a rectangle to all locations'),
+        $defaults['rectangles_apply'],
+        t('Draw a rectangle centered on all locations being displayed. These coordinates will be used instead of the ones below.')
+      );
+      $form['rectangles_dist'] = getlocations_element_map_tf(
+        t('Rectangle distance'),
+        $defaults['rectangles_dist'],
+        t("The distance from the center of the rectangle to the edge in meters on the Earth's surface. This will only be used if Apply a rectangle is enabled."),
+        10,
+        10,
+        TRUE
+      );
+    }
 
     $form['rectangles_coords'] = array(
       '#type' => 'textarea',

@@ -106,6 +106,8 @@ class getlocations_plugin_style_map extends views_plugin_style {
     $options['rectangles_coords']        = array('default' => $getlocations_defaults['rectangles_coords']);
     $options['rectangles_clickable']     = array('default' => $getlocations_defaults['rectangles_clickable']);
     $options['rectangles_message']       = array('default' => $getlocations_defaults['rectangles_message']);
+    $options['rectangles_apply']         = array('default' => $getlocations_defaults['rectangles_apply']);
+    $options['rectangles_dist']          = array('default' => $getlocations_defaults['rectangles_dist']);
     $options['circles_enable']           = array('default' => $getlocations_defaults['circles_enable']);
     $options['circles_strokecolor']      = array('default' => $getlocations_defaults['circles_strokecolor']);
     $options['circles_strokeopacity']    = array('default' => $getlocations_defaults['circles_strokeopacity']);

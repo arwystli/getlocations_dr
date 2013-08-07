@@ -666,6 +666,8 @@ function getlocations_search_defaults() {
     'rectangles_coords'             => $getlocations_defaults['rectangles_coords'],
     'rectangles_clickable'          => $getlocations_defaults['rectangles_clickable'],
     'rectangles_message'            => $getlocations_defaults['rectangles_message'],
+    'rectangles_apply'              => $getlocations_defaults['rectangles_apply'],
+    'rectangles_dist'               => $getlocations_defaults['rectangles_dist'],
     'circles_enable'                => $getlocations_defaults['circles_enable'],
     'circles_strokecolor'           => $getlocations_defaults['circles_strokecolor'],
     'circles_strokeopacity'         => $getlocations_defaults['circles_strokeopacity'],
