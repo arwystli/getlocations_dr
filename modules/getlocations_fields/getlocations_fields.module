@@ -417,8 +417,8 @@ function getlocations_fields_field_settings_form($field, $instance, $has_data) {
     t('Input form Map center'),
     $settings['latlong'],
     t('The default center coordinates of a Google map, expressed as a decimal latitude and longitude, separated by a comma. This must not be 0,0'),
-    30,
-    30,
+    40,
+    50,
     TRUE
   );
   // smart_ip latlon option
