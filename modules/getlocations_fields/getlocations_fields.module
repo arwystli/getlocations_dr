@@ -1046,7 +1046,7 @@ function getlocations_fields_field_widget_form(&$form, &$form_state, $field, $in
       if ($settings['use_address']) {
         $element['address'] = array(
           '#type' => 'textfield',
-          '#default_value' => (isset($items[$delta]['address']) ? $items[$delta]['address'] : ''),
+          '#default_value' => (isset($items[$delta]['address']) ? $items[$delta]['address'] : (isset($instance['default_value'][$delta]['address']) ? $instance['default_value'][$delta]['address'] : '')),
           '#size' => $settings['input_address_width'],
           '#attributes' => array('id' => ($active ? 'getlocations_address_' . $mapid : 'getlocations_default_address'), 'placeholder' => t('Enter an address')),
           '#title' => t('Search'),
@@ -1098,24 +1098,24 @@ function getlocations_fields_field_widget_form(&$form, &$form_state, $field, $in
           // hidden form
           $element[$id] = array(
             '#type' => 'hidden',
-            '#value' => (isset($items[$delta][$id]) ? $items[$delta][$id] : ''),
+            '#value' => (isset($items[$delta][$id]) ? $items[$delta][$id] : (isset($instance['default_value'][$delta][$id]) ? $instance['default_value'][$delta][$id] : '')),
             '#attributes' => array('id' => 'getlocations_' . $id . '_' . $mapid),
           );
         }
         elseif ($settings['input_' . $id . '_required'] == 3) {
           $element[$id] = array(
             '#type' => 'hidden',
-            '#value' => (isset($items[$delta][$id]) ? $items[$delta][$id] : ''),
+            '#value' => (isset($items[$delta][$id]) ? $items[$delta][$id] : (isset($instance['default_value'][$delta][$id]) ? $instance['default_value'][$delta][$id] : '')),
             '#attributes' => array('id' => 'getlocations_' . $id . '_' . $mapid),
           );
           $element[$id . '_display'] = array(
-            '#markup' => (isset($items[$delta][$id]) ? $items[$delta][$id] : ''),
+            '#markup' => (isset($items[$delta][$id]) ? $items[$delta][$id] : (isset($instance['default_value'][$delta][$id]) ? $instance['default_value'][$delta][$id] : '')),
           );
         }
         else {
           $element[$id] = array(
             '#type' => 'textfield',
-            '#default_value' => (isset($items[$delta][$id]) ? htmlspecialchars_decode($items[$delta][$id], ENT_QUOTES) : ''),
+            '#default_value' => (isset($items[$delta][$id]) ? htmlspecialchars_decode($items[$delta][$id], ENT_QUOTES) : (isset($instance['default_value'][$delta][$id]) ? htmlspecialchars_decode($instance['default_value'][$delta][$id], ENT_QUOTES) : '')),
            '#size' => $settings['input_' . $id . '_width'],
             '#attributes' => array('id' => 'getlocations_' . $id . '_' . $mapid),
             '#title' => $title,
@@ -1154,7 +1154,7 @@ function getlocations_fields_field_widget_form(&$form, &$form_state, $field, $in
 
       // country
       if ($settings['restrict_by_country'] && $settings['search_country']) {
-        $default_country_value = (isset($items[$delta]['country']) && $items[$delta]['country'] ? $items[$delta]['country'] : $settings['search_country']);
+        $default_country_value = (isset($items[$delta]['country']) && $items[$delta]['country'] ? $items[$delta]['country'] : (isset($instance['default_value'][$delta]['country']) ? $instance['default_value'][$delta]['country'] : $settings['search_country']));
         $default_country_value_long = getlocations_get_country_name($default_country_value);
         $element['country'] = array(
           '#type' => 'hidden',
@@ -1166,7 +1166,7 @@ function getlocations_fields_field_widget_form(&$form, &$form_state, $field, $in
         );
       }
       else {
-        $default_country_value = (isset($items[$delta]['country']) && $items[$delta]['country'] ? $items[$delta]['country'] : $settings['country']);
+        $default_country_value = (isset($items[$delta]['country']) && $items[$delta]['country'] ? $items[$delta]['country'] : (isset($instance['default_value'][$delta]['country']) ? $instance['default_value'][$delta]['country'] : $settings['country']));
         $default_country_value_long = $default_country_value;
         if ($default_country_value && drupal_strlen($default_country_value) == 2) {
           $default_country_value_long = getlocations_get_country_name($default_country_value);
@@ -1249,7 +1249,7 @@ function getlocations_fields_field_widget_form(&$form, &$form_state, $field, $in
         $element['marker'] = getlocations_element_map_marker(
           t('Map marker'),
           $markers,
-          (isset($items[$delta]['marker']) ? $items[$delta]['marker'] : '')
+          (isset($items[$delta]['marker']) ? $items[$delta]['marker'] : (isset($instance['default_value'][$delta]['marker']) ? $instance['default_value'][$delta]['marker'] : ''))
         );
         if (! empty($settings['input_marker_weight'])) {
           $element['marker']['#weight'] = $settings['input_marker_weight'];
@@ -1287,7 +1287,7 @@ function getlocations_fields_field_widget_form(&$form, &$form_state, $field, $in
       // latitude
       $element['latitude'] = array(
         '#type' => 'textfield',
-        '#default_value' => isset($items[$delta]['latitude']) ? $items[$delta]['latitude'] : '',
+        '#default_value' => (isset($items[$delta]['latitude']) ? $items[$delta]['latitude'] : (isset($instance['default_value'][$delta]['latitude']) ? $instance['default_value'][$delta]['latitude'] : NULL)),
         '#size' => $settings['input_latitude_width'],
         '#attributes' => array('id' => 'getlocations_latitude_' . $mapid),
         '#title' => t('Latitude'),
@@ -1299,7 +1299,7 @@ function getlocations_fields_field_widget_form(&$form, &$form_state, $field, $in
       // longitude
       $element['longitude'] = array(
         '#type' => 'textfield',
-        '#default_value' => isset($items[$delta]['longitude']) ? $items[$delta]['longitude'] : NULL,
+        '#default_value' => (isset($items[$delta]['longitude']) ? $items[$delta]['longitude'] : (isset($instance['default_value'][$delta]['longitude']) ? $instance['default_value'][$delta]['longitude'] : NULL)),
         '#size' => $settings['input_longitude_width'],
         '#attributes' => array('id' => 'getlocations_longitude_' . $mapid),
         '#title' => t('Longitude'),

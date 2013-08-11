@@ -39,7 +39,7 @@ function getlocations_map_field_info() {
       'description' => t('Provide Getlocations Map.'),
       'default_formatter' => 'getlocations_map_default',
       'default_widget' => 'getlocations_map',
-      'settings' => array()
+      'settings' => array(),
     )
   );
   return $info;
@@ -118,8 +118,7 @@ function getlocations_map_field_formatter_view($entity_type, $entity, $field, $i
           }
         }
       }
-      elseif ($module == 'location_cck' || $module == 'location_node') {
-        // NOT TESTED
+      elseif ($module == 'location_cck') {
         if (isset($entity->{$locative_field_name}[$lang][$delta])) {
           if ($location = $entity->{$locative_field_name}[$lang][$delta]) {
             $lat = $location['latitude'];
@@ -134,7 +133,6 @@ function getlocations_map_field_formatter_view($entity_type, $entity, $field, $i
         }
       }
       elseif ($module == 'geolocation') {
-        // NOT TESTED
         if ($location = $entity->{$locative_field_name}[$lang][$delta]) {
           $lat = $location['lat'];
           $lon = $location['lng'];
@@ -502,10 +500,8 @@ function getlocations_map_field_widget_form(&$form, &$form_state, $field, $insta
           '#title' => t('Location Field'),
           '#options' => $fieldnames,
           '#description' => t('Field to take locative data from'),
+          '#default_value' => (isset($items[$delta]['locative_field_name']) ? $items[$delta]['locative_field_name'] : (isset($instance['default_value'][$delta]['locative_field_name']) ? $instance['default_value'][$delta]['locative_field_name'] : '')),
         );
-        if (isset($items[$delta]['locative_field_name'])) {
-          $element['locative_field_name']['#default_value'] = $items[$delta]['locative_field_name'];
-        }
       }
       else {
         if (! $active) {
