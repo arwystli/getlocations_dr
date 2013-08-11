@@ -1467,6 +1467,9 @@ function getlocations_getlocations_markerdir() {
  *
  */
 function getlocations_do_minmaxes($ct, $location, $minmaxes) {
+  if ($minmaxes == '') {
+    $minmaxes = array('minlat' => 0, 'minlon' => 0, 'maxlat' => 0, 'maxlon' => 0);
+  }
   if ($ct) {
     // latitudes
     if ($location['latitude'] > $minmaxes['maxlat']) {
@@ -1485,8 +1488,8 @@ function getlocations_do_minmaxes($ct, $location, $minmaxes) {
   }
   else {
     $minmaxes['minlat'] = $location['latitude'];
-    $minmaxes['maxlat'] = $location['latitude'];
     $minmaxes['minlon'] = $location['longitude'];
+    $minmaxes['maxlat'] = $location['latitude'];
     $minmaxes['maxlon'] = $location['longitude'];
   }
   return $minmaxes;
