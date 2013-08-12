@@ -162,13 +162,13 @@
         }
       });
       // search_places
-      if ($("input[id*=search-places]").attr('checked')) {
+      if ($("input[id$=search-places]").attr('checked')) {
        $("#wrap-getlocations-search-places").show();
       }
       else {
         $("#wrap-getlocations-search-places").hide();
       }
-      $("input[id*=search-places]").change(function() {
+      $("input[id$=search-places]").change(function() {
         if ($(this).attr('checked')) {
           $("#wrap-getlocations-search-places").show();
         }

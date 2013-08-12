@@ -1,9 +1,66 @@
-commit 1862550
+commit b56ffe9
+Author: hutch <hutch@midwales.net>
+Date:   Mon Aug 12 18:39:12 2013 +0100
+
+    reworked getlocations_map
+
+getlocations.module
+modules/getlocations_map/getlocations_map.css
+modules/getlocations_map/getlocations_map.module
+modules/getlocations_map/js/getlocations_map_formatter.js
+
+commit 0ff92f8
+Author: hutch <hutch@midwales.net>
+Date:   Sun Aug 11 18:50:41 2013 +0100
+
+    fixed minmaxes
+
+getlocations.module
+
+commit 6ba33c3
+Author: hutch <hutch@midwales.net>
+Date:   Sun Aug 11 08:15:11 2013 +0100
+
+    fixed default value bug in field modules
+
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_map/getlocations_map.module
+
+commit 58d4e91
+Author: hutch <hutch@midwales.net>
+Date:   Sun Aug 11 08:14:25 2013 +0100
+
+    improved comments
+
+getlocations.module
+
+commit c282046
+Author: hutch <hutch@midwales.net>
+Date:   Thu Aug 8 17:21:31 2013 +0100
+
+    fixed Input form Map center
+
+modules/getlocations_fields/getlocations_fields.module
+
+commit addbc02
+Author: hutch <hutch@midwales.net>
+Date:   Wed Aug 7 14:35:31 2013 +0100
+
+    added rectangles_apply feature
+
+getlocations.module
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_map/getlocations_map.module
+modules/getlocations_search/getlocations_search.module
+views/getlocations_plugin_style_map.inc
+
+commit f032d78
 Author: hutch <hutch@midwales.net>
 Date:   Wed Aug 7 08:29:35 2013 +0100
 
     more circles_apply
 
+CHANGELOG.txt
 getlocations.module
 modules/getlocations_fields/getlocations_fields.module
 modules/getlocations_map/getlocations_map.module

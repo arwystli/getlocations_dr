@@ -320,10 +320,10 @@ function getlocations_entity_type_map($type, $entity_id) {
         }
         $name = '';
         if ($location['name']) {
-          $name = htmlspecialchars_decode(strip_tags($location['name']));
+          $name = htmlspecialchars_decode(strip_tags($location['name']), ENT_QUOTES);
         }
         elseif ($entity_title) {
-          $name = htmlspecialchars_decode(strip_tags($entity_title));
+          $name = htmlspecialchars_decode(strip_tags($entity_title), ENT_QUOTES);
         }
         $latlons[] = array($location['latitude'], $location['longitude'], $location['entity_id'], $name, $marker, $location['entity_type']);
         $ct++;
