@@ -68,7 +68,9 @@ function getlocations_permission() {
  * Implements hook_flush_caches().
  */
 function getlocations_flush_caches() {
-  getlocations_regenerate_markers();
+  if (variable_get('getlocations_flush', 1)) {
+    getlocations_regenerate_markers();
+  }
 }
 
 /**

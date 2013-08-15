@@ -45,6 +45,11 @@ function getlocations_settings_form() {
     '#value' => t('Regenerate'),
     '#submit' => array('_getlocations_rebuild_marker_js_submit'),
   );
+  $form['rebuild']['getlocations_flush'] = getlocations_element_map_checkbox(
+    t('Flush marker cache'),
+    variable_get('getlocations_flush', 1),
+    t('Include the marker cache when the Drupal cache is flushed.')
+  );
 
   // google api3 key
   $apikey = variable_get('getlocations_api3_key', '');
