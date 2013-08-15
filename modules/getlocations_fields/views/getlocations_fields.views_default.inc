@@ -669,6 +669,25 @@ function getlocations_fields_views_default_views() {
   $handler->display->display_options['fields']['field_name']['exclude'] = TRUE;
   $handler->display->display_options['fields']['field_name']['element_label_colon'] = FALSE;
 
+  /* Filter criterion: Getlocations Fields: Latitude */
+  $handler->display->display_options['filters']['latitude']['id'] = 'latitude';
+  $handler->display->display_options['filters']['latitude']['table'] = 'getlocations_fields';
+  $handler->display->display_options['filters']['latitude']['field'] = 'latitude';
+  $handler->display->display_options['filters']['latitude']['operator'] = '!=';
+  $handler->display->display_options['filters']['latitude']['value']['value'] = '0';
+  /* Filter criterion: Getlocations Fields: Longitude */
+  $handler->display->display_options['filters']['longitude']['id'] = 'longitude';
+  $handler->display->display_options['filters']['longitude']['table'] = 'getlocations_fields';
+  $handler->display->display_options['filters']['longitude']['field'] = 'longitude';
+  $handler->display->display_options['filters']['longitude']['operator'] = '!=';
+  $handler->display->display_options['filters']['longitude']['value']['value'] = '0';
+  /* Filter criterion: Getlocations Fields: Glid */
+  $handler->display->display_options['filters']['glid']['id'] = 'glid';
+  $handler->display->display_options['filters']['glid']['table'] = 'getlocations_fields';
+  $handler->display->display_options['filters']['glid']['field'] = 'glid';
+  $handler->display->display_options['filters']['glid']['operator'] = '>';
+  $handler->display->display_options['filters']['glid']['value']['value'] = '0';
+
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page_1');
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
