@@ -577,43 +577,59 @@ var getlocations_settings = {};
             $(this).val(label);
           });
         }
+
         // Weather Layer
-        if (settings.weather_use && settings.weather_show) {
-          var weatherLayer = {};
-          var weathertoggleState = {};
-          tu = google.maps.weather.TemperatureUnit.CELSIUS;
-          if (settings.weather_temp == 2) {
-            tu = google.maps.weather.TemperatureUnit.FAHRENHEIT;
-          }
-          sp = google.maps.weather.WindSpeedUnit.KILOMETERS_PER_HOUR;
-          if (settings.weather_speed == 2) {
-            sp = google.maps.weather.WindSpeedUnit.METERS_PER_SECOND;
-          }
-          else if (settings.weather_speed == 3) {
-            sp = google.maps.weather.WindSpeedUnit.MILES_PER_HOUR;
-          }
-          var weatherOpts =  {
-            temperatureUnits: tu,
-            windSpeedUnits: sp,
-            clickable: (settings.weather_clickable ? true : false),
-            suppressInfoWindows: (settings.weather_info ? false : true)
-          };
-          if (settings.weather_label > 0) {
-            weatherOpts.labelColor = google.maps.weather.LabelColor.BLACK;
-            if (settings.weather_label == 2) {
-              weatherOpts.labelColor = google.maps.weather.LabelColor.WHITE;
+        if (settings.weather_use) {
+          if (settings.weather_show) {
+            var weatherLayer = {};
+            var weathertoggleState = {};
+            tu = google.maps.weather.TemperatureUnit.CELSIUS;
+            if (settings.weather_temp == 2) {
+              tu = google.maps.weather.TemperatureUnit.FAHRENHEIT;
             }
+            sp = google.maps.weather.WindSpeedUnit.KILOMETERS_PER_HOUR;
+            if (settings.weather_speed == 2) {
+              sp = google.maps.weather.WindSpeedUnit.METERS_PER_SECOND;
+            }
+            else if (settings.weather_speed == 3) {
+              sp = google.maps.weather.WindSpeedUnit.MILES_PER_HOUR;
+            }
+            var weatherOpts =  {
+              temperatureUnits: tu,
+              windSpeedUnits: sp,
+              clickable: (settings.weather_clickable ? true : false),
+              suppressInfoWindows: (settings.weather_info ? false : true)
+            };
+            if (settings.weather_label > 0) {
+              weatherOpts.labelColor = google.maps.weather.LabelColor.BLACK;
+              if (settings.weather_label == 2) {
+                weatherOpts.labelColor = google.maps.weather.LabelColor.WHITE;
+              }
+            }
+            weatherLayer[key] = new google.maps.weather.WeatherLayer(weatherOpts);
+            if (settings.weather_state > 0) {
+              weatherLayer[key].setMap(getlocations_map[key]);
+              weathertoggleState[key] = true;
+            }
+            else {
+              weatherLayer[key].setMap(null);
+              weathertoggleState[key] = false;
+            }
+            $("#getlocations_toggleWeather_" + key).click( function() {
+              var label = '';
+              if (weathertoggleState[key]) {
+                weatherLayer[key].setMap(null);
+                weathertoggleState[key] = false;
+                label = Drupal.t('Weather On');
+              }
+              else {
+                weatherLayer[key].setMap(getlocations_map[key]);
+                weathertoggleState[key] = true;
+                label = Drupal.t('Weather Off');
+              }
+              $(this).val(label);
+            });
           }
-          weatherLayer[key] = new google.maps.weather.WeatherLayer(weatherOpts);
-          if (settings.weather_state > 0) {
-            weatherLayer[key].setMap(getlocations_map[key]);
-            weathertoggleState[key] = true;
-          }
-          else {
-            weatherLayer[key].setMap(null);
-            weathertoggleState[key] = false;
-          }
-          // Cloud Layer
           if (settings.weather_cloud) {
             var cloudLayer = {};
             var cloudtoggleState = [];
@@ -641,20 +657,6 @@ var getlocations_settings = {};
               $(this).val(label);
             });
           }
-          $("#getlocations_toggleWeather_" + key).click( function() {
-            var label = '';
-            if (weathertoggleState[key]) {
-              weatherLayer[key].setMap(null);
-              weathertoggleState[key] = false;
-              label = Drupal.t('Weather On');
-            }
-            else {
-              weatherLayer[key].setMap(getlocations_map[key]);
-              weathertoggleState[key] = true;
-              label = Drupal.t('Weather Off');
-            }
-            $(this).val(label);
-          });
         }
 
         // exporting global_settings to getlocations_settings

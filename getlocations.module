@@ -1979,6 +1979,7 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
       'panoramio_use'             => $defaults['panoramio_use'],
       'panoramio_show'            => $defaults['panoramio_show'],
       'panoramio_state'           => $defaults['panoramio_state'],
+      'weather_use'               => $defaults['weather_use'],
       'poi_show'                  => $defaults['poi_show'],
       'transit_show'              => $defaults['transit_show'],
       'map_marker'                => $defaults['map_marker'],
@@ -2963,7 +2964,6 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
         $defaults['weather_state'],
         t('Activate Weather information when map is first displayed.')
       );
-      $form['weather_state']['#suffix'] = '</div>';
 
       $form['weather_temp'] = getlocations_element_dd(
         t('Temperature units'),
@@ -2980,6 +2980,17 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
         $defaults['weather_label'],
         array(0 => ('Auto'),  1 => t('Black'), 2 => t('White'))
       );
+
+      $form['weather_clickable'] = getlocations_element_map_checkbox(
+        t('Enable clicking on maps'),
+        $defaults['weather_clickable']
+      );
+      $form['weather_info'] = getlocations_element_map_checkbox(
+        t('Enable weather InfoWindows'),
+        $defaults['weather_info']
+      );
+      $form['weather_info']['#suffix'] = '</div>';
+
       $form['weather_cloud'] = getlocations_element_map_checkbox(
         t('Enable Cloud Layer'),
         $defaults['weather_cloud'],
@@ -2991,17 +3002,8 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
         $defaults['weather_cloud_state'],
         t('Activate Cloud layer when map is first displayed.')
       );
-      $form['weather_cloud_state']['#suffix'] = '</div>';
+      $form['weather_cloud_state']['#suffix'] = '</div></div>';
 
-      $form['weather_clickable'] = getlocations_element_map_checkbox(
-        t('Enable clicking on maps'),
-        $defaults['weather_clickable']
-      );
-      $form['weather_info'] = getlocations_element_map_checkbox(
-        t('Enable weather InfoWindows'),
-        $defaults['weather_info']
-      );
-      $form['weather_info']['#suffix'] = '</div>';
     }
     elseif ($getlocations_defaults['weather_use']) {
       $form['weather_show'] = getlocations_element_map_checkbox(
@@ -3015,6 +3017,7 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
         $defaults['weather_state'],
         t('Activate Weather information when map is first displayed.')
       );
+      $form['weather_state']['#suffix'] = '</div>';
 
       $form['weather_cloud'] = getlocations_element_map_checkbox(
         t('Enable Cloud Layer'),
@@ -3027,7 +3030,7 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
         $defaults['weather_cloud_state'],
         t('Activate Cloud layer when map is first displayed.')
       );
-      $form['weather_cloud_state']['#suffix'] = '</div></div>';
+      $form['weather_cloud_state']['#suffix'] = '</div>';
 
     }
 
@@ -5120,8 +5123,10 @@ function theme_getlocations_show($variables) {
   if ($defaults['panoramio_use'] && $defaults['panoramio_show']) {
     $buttons[] = '<input type="button" value="' . t('Panoramio !t', array('!t' => ($defaults['panoramio_state'] ? t('Off') : t('On')))) . '" id="getlocations_togglePanoramio_' . $mapid . '" class="form-submit" />';
   }
-  if ($defaults['weather_use'] && $defaults['weather_show']) {
-    $buttons[] = '<input type="button" value="' . t('Weather !t', array('!t' => ($defaults['weather_state'] ? t('Off') : t('On')))) . '" id="getlocations_toggleWeather_' . $mapid . '" class="form-submit" />';
+  if ($defaults['weather_use']) {
+    if ($defaults['weather_show']) {
+      $buttons[] = '<input type="button" value="' . t('Weather !t', array('!t' => ($defaults['weather_state'] ? t('Off') : t('On')))) . '" id="getlocations_toggleWeather_' . $mapid . '" class="form-submit" />';
+    }
     if ($defaults['weather_cloud']) {
       $buttons[] = '<input type="button" value="' . t('Clouds !t', array('!t' => ($defaults['weather_cloud_state'] ? t('Off') : t('On')))) . '" id="getlocations_toggleCloud_' . $mapid . '" class="form-submit" />';
     }
