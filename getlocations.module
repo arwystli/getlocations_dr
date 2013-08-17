@@ -575,19 +575,34 @@ function getlocations_setup_js($defaults, $googleonly = FALSE) {
 
   $libraries = array();
   if ($defaults['panoramio_use']) {
-    $libraries[] = 'panoramio';
+    $libraries['panoramio'] = 'panoramio';
   }
   if ($defaults['places'] || module_exists('getlocations_search')) {
-    $libraries[] = 'places';
+    $libraries['places'] = 'places';
   }
   // not active yet
   if ($defaults['geometry']) {
-    $libraries[] = 'geometry';
+    $libraries['geometry'] = 'geometry';
   }
   if ($defaults['weather_use']) {
-    $libraries[] = 'weather';
+    $libraries['weather'] = 'weather';
   }
   // more libraries here
+
+  // compat with getdirections
+  if ($defaults['getdirections_enabled']) {
+    $getdirections_defaults = getdirections_defaults();
+    if ($getdirections_defaults['advanced_autocomplete']) {
+      $libraries['places'] = 'places';
+    }
+    $getdirections_misc_defaults = getdirections_misc_defaults();
+    if ($getdirections_misc_defaults['panoramio_use']) {
+      $libraries['panoramio'] = 'panoramio';
+    }
+    if ($getdirections_misc_defaults['weather_use']) {
+      $libraries['weather'] = 'weather';
+    }
+  }
 
   // load libraries if any
   if (count($libraries)) {
@@ -596,11 +611,11 @@ function getlocations_setup_js($defaults, $googleonly = FALSE) {
 
   global $is_https;
   $scheme = ($is_https ? 'https' : 'http');
-
   $gmapdomain = "maps.google.com/maps/api/js";
   if (! empty($key)) {
     $gmapdomain = "maps.googleapis.com/maps/api/js";
   }
+
   $gmaplink = url($scheme . '://' . $gmapdomain, array('query' => $query));
   if (!stristr($current_js, $scheme . '://' . $gmapdomain)) {
     $js_opts = array();
