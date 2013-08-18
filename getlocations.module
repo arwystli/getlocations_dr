@@ -35,17 +35,6 @@ function getlocations_init() {
     drupal_add_js(GETLOCATIONS_PATH . '/js/getlocations_colorbox.js');
   }
 
-  $getlocations_defaults = getlocations_defaults();
-  if ($getlocations_defaults['markermanagertype'] == 2) {
-    if (file_exists(GETLOCATIONS_PATH . '/getlocations.markercluster_override.inc')) {
-      module_load_include('inc', 'getlocations', 'getlocations.markercluster_override');
-    }
-    else {
-      module_load_include('inc', 'getlocations', 'getlocations.markercluster');
-    }
-    $markerclusterer_styles = getlocations_get_markerclusterer_styles();
-    drupal_add_js(array('getlocations_markerclusterer' => $markerclusterer_styles), 'setting');
-  }
 }
 
 /**
@@ -683,6 +672,18 @@ function getlocations_setup_js($defaults, $googleonly = FALSE) {
     $js_opts['type'] = 'file';
     drupal_add_js($getlocations_paths['markerclusterer_path'], $js_opts);
     $getlocations_js_weight++;
+
+    if (file_exists(GETLOCATIONS_PATH . '/getlocations.markercluster_override.inc')) {
+      module_load_include('inc', 'getlocations', 'getlocations.markercluster_override');
+    }
+    else {
+      module_load_include('inc', 'getlocations', 'getlocations.markercluster');
+    }
+    $markerclusterer_styles = getlocations_get_markerclusterer_styles();
+    $js_opts = array();
+    $js_opts['type'] = 'setting';
+    drupal_add_js(array('getlocations_markerclusterer' => $markerclusterer_styles), $js_opts);
+
   }
 
   if ($defaults['markeraction'] == 2 && !stristr($current_js, $getlocations_paths['infobubble_path'])) {
