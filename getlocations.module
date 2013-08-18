@@ -965,6 +965,8 @@ function getlocations_defaults() {
     'geojson_enable'                => 0,
     'geojson_data'                  => '',
     'geojson_options'               => '',
+    'nokeyboard'                    => 0,
+    'nodoubleclickzoom'             => 0,
   );
 
   $fieldables = getlocations_get_fieldable_entity_types();
@@ -2039,6 +2041,8 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
       'getdirections_enabled'     => $defaults['getdirections_enabled'],
       'is_https'                  => ($is_https ? 1 : 0),
       'geojson_enable'            => $defaults['geojson_enable'],
+      'nokeyboard'                => $defaults['nokeyboard'],
+      'nodoubleclickzoom'         => $defaults['nodoubleclickzoom'],
     ),
   );
   // only set these if wanted
@@ -2828,6 +2832,18 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
     $defaults['draggable'],
     t('Enable dragging the map.')
   );
+
+  $form['nokeyboard'] = getlocations_element_map_checkbox(
+    t('Disable keyboard shortcuts'),
+    $defaults['nokeyboard'],
+    t('Enabling this will disable keyboard shortcuts on the map.')
+  );
+  $form['nodoubleclickzoom'] = getlocations_element_map_checkbox(
+    t('Disable Doubleclick zoom'),
+    $defaults['nodoubleclickzoom'],
+    t('Enabling this will disable doubleclick zooming on the map.')
+  );
+
   $form['map_backgroundcolor'] = getlocations_element_map_tf(
     t('Map background color'),
     $defaults['map_backgroundcolor'],

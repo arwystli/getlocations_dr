@@ -1555,6 +1555,8 @@ function getlocations_fields_getmap_show($settings, $lls = '', $minmaxes = '') {
   $getlocations_defaults['geojson_enable']            = $settings['geojson_enable'];
   $getlocations_defaults['geojson_data']              = $settings['geojson_data'];
   $getlocations_defaults['geojson_options']           = $settings['geojson_options'];
+  $getlocations_defaults['nokeyboard']                = $settings['nokeyboard'];
+  $getlocations_defaults['nodoubleclickzoom']         = $settings['nodoubleclickzoom'];
 
   $fieldables = getlocations_get_fieldable_entity_types();
   foreach ($fieldables AS $entity_type) {
@@ -2127,6 +2129,8 @@ function getlocations_fields_defaults() {
     'geojson_enable'            => $getlocations_defaults['geojson_enable'],
     'geojson_data'              => $getlocations_defaults['geojson_data'],
     'geojson_options'           => $getlocations_defaults['geojson_options'],
+    'nokeyboard'                => $getlocations_defaults['nokeyboard'],
+    'nodoubleclickzoom'         => $getlocations_defaults['nodoubleclickzoom'],
   );
   foreach ($getlocations_defaults['kml_group'] AS $key => $layer) {
     $defaults['kml_group'][$key] = $layer;
@@ -2270,6 +2274,8 @@ function getlocations_fields_field_info_defaults() {
         'geojson_enable'                  => $getlocations_fields_defaults['geojson_enable'],
         'geojson_data'                    => $getlocations_fields_defaults['geojson_data'],
         'geojson_options'                 => $getlocations_fields_defaults['geojson_options'],
+        'nokeyboard'                      => $getlocations_fields_defaults['nokeyboard'],
+        'nodoubleclickzoom'               => $getlocations_fields_defaults['nodoubleclickzoom'],
       ),
     ),
   );
@@ -2396,6 +2402,8 @@ function getlocations_fields_field_formatter_info_defaults() {
     'geojson_enable'            => $getlocations_defaults['geojson_enable'],
     'geojson_data'              => $getlocations_defaults['geojson_data'],
     'geojson_options'           => $getlocations_defaults['geojson_options'],
+    'nokeyboard'                => $getlocations_defaults['nokeyboard'],
+    'nodoubleclickzoom'         => $getlocations_defaults['nodoubleclickzoom'],
   );
 
   $fieldables = getlocations_get_fieldable_entity_types();
