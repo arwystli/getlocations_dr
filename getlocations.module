@@ -585,10 +585,10 @@ function getlocations_setup_js($defaults, $googleonly = FALSE) {
       $libraries['places'] = 'places';
     }
     $getdirections_misc_defaults = getdirections_misc_defaults();
-    if ($getdirections_misc_defaults['panoramio_use']) {
+    if (isset($getdirections_misc_defaults['panoramio_use']) && $getdirections_misc_defaults['panoramio_use']) {
       $libraries['panoramio'] = 'panoramio';
     }
-    if ($getdirections_misc_defaults['weather_use']) {
+    if (isset($getdirections_misc_defaults['weather_use']) && $getdirections_misc_defaults['weather_use']) {
       $libraries['weather'] = 'weather';
     }
   }
@@ -2550,7 +2550,7 @@ function getlocations_element_map_pansetting($default) {
     '#title' => t('Automatic Panning'),
     '#default_value' => $default,
     '#options' => array(0 => t('None'), 1 => t('Pan'), 2 => t('Pan and zoom'), 3 => t('Set Center')),
-    '#description' => t('"None" is No panning,<br />"Pan" keeps the markers in the Viewport,<br />"Pan and zoom" fits the markers to the Viewport,<br /> "Set Center" places the markers in the middle of the map.'),
+    '#description' => t("'None' is No panning,") . '<br />' . t("'Pan' keeps the markers in the Viewport,") . '<br />' . t("'Pan and zoom' fits the markers to the Viewport,") . '<br />' . t("'Set Center' places the markers in the middle of the map."),
   );
   return $element;
 }
@@ -2566,7 +2566,7 @@ function getlocations_element_map_markeraction($default) {
       1 => t('InfoWindow'),
       2 => t('InfoBubble'),
       3 => t('Link')),
-    '#description' => t('"None" is No action,<br />"InfoWindow" show information in a Google InfoWindow,<br />"InfoBubble" use InfoBubble instead,<br /> "Link" go to a page.'),
+    '#description' => t("'None' is No action,") . '<br />' . t("'InfoWindow' show information in a Google InfoWindow,") . '<br />' . t("'InfoBubble' use InfoBubble instead,") . '<br />' . t("'Link' go to a page."),
   );
   return $element;
 }
@@ -2580,7 +2580,7 @@ function getlocations_element_map_markeractiontype($default) {
     '#options' => array(
       1 => t('Click'),
       2 => t('Mouse over')),
-    '#description' => t('"Click" is clicking on the marker,<br />"Mouse over" is holding the mouse over a marker.'),
+    '#description' => t("'Click' is clicking on the marker,") . '<br />' . t("'Mouse over' is holding the mouse over a marker."),
   );
   return $element;
 }
