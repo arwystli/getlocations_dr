@@ -761,6 +761,14 @@ function getlocations_fields_field_formatter_settings_summary($field, $instance,
     if ($settings['draggable']) {
       $summary[] = t('Enable dragging the map: Yes');
     }
+
+    if ($settings['nokeyboard']) {
+      $summary[] = t('Disable Keyboard shortcuts: Yes');
+    }
+    if ($settings['nodoubleclickzoom']) {
+      $summary[] = t('Disable doubleclick zoom: Yes');
+    }
+
     if ($settings['streetview_show']) {
       $summary[] = t('Show streetview button: Yes');
     }
