@@ -820,7 +820,7 @@ function getlocations_setup_js($defaults, $googleonly = FALSE) {
  * @return
  *   Returns the current settings
  */
-function getlocations_defaults() {
+function getlocations_defaults($reset = FALSE) {
   $defaults = array(
     'api_version'                   => 3,
     'width'                         => '300px',
@@ -978,7 +978,9 @@ function getlocations_defaults() {
     $defaults['returnlink_' . $entity_type . '_enable'] = 0;
     $defaults['returnlink_' . $entity_type . '_link'] = t('Return to !l', array('!l' => $label));
   }
-
+  if ($reset) {
+    return $defaults;
+  }
   $getlocations_defaults = variable_get('getlocations_default', $defaults);
   $newdefaults = getlocations_adjust_vars($defaults, $getlocations_defaults);
   return $newdefaults;
