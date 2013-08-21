@@ -1,9 +1,107 @@
-commit b56ffe9
+commit 236de12
+Author: hutch <hutch@midwales.net>
+Date:   Wed Aug 21 15:14:00 2013 +0100
+
+    fields preview map js
+
+modules/getlocations_fields/getlocations_fields.admin.inc
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_fields/js/getlocations_fields_preview.js
+
+commit ef325fb
+Author: hutch <hutch@midwales.net>
+Date:   Wed Aug 21 14:10:23 2013 +0100
+
+    moved call to getlocations_fields_getmap to theme, this fixes validate error bug
+
+modules/getlocations_fields/getlocations_fields.module
+
+commit b139993
+Author: hutch <hutch@midwales.net>
+Date:   Wed Aug 21 14:09:56 2013 +0100
+
+    cleanup
+
+getlocations.module
+
+commit 9856808
+Author: hutch <hutch@midwales.net>
+Date:   Mon Aug 19 17:48:00 2013 +0100
+
+    reorganised translation strings
+
+getlocations.admin.inc
+getlocations.module
+
+commit eec3de3
+Author: hutch <hutch@midwales.net>
+Date:   Mon Aug 19 17:47:33 2013 +0100
+
+    added info to summary
+
+modules/getlocations_fields/getlocations_fields.module
+
+commit 1a6dfc1
+Author: hutch <hutch@midwales.net>
+Date:   Sun Aug 18 22:47:42 2013 +0100
+
+    moved getlocations_markerclusterer into getlocations_setup_js
+
+getlocations.module
+
+commit f915b15
+Author: hutch <hutch@midwales.net>
+Date:   Sun Aug 18 16:41:46 2013 +0100
+
+    added nodoubleclickzoom and nokeyboard features
+
+getlocations.module
+js/getlocations.js
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_map/getlocations_map.module
+modules/getlocations_search/getlocations_search.module
+
+commit 833b471
+Author: hutch <hutch@midwales.net>
+Date:   Sat Aug 17 15:23:16 2013 +0100
+
+    google libraries compat with getdirections
+
+getlocations.module
+
+commit dccc0b4
+Author: hutch <hutch@midwales.net>
+Date:   Fri Aug 16 15:33:27 2013 +0100
+
+    fixed weather bug
+
+getlocations.module
+js/getlocations.js
+
+commit bcfe7c1
+Author: hutch <hutch@midwales.net>
+Date:   Thu Aug 15 10:07:09 2013 +0100
+
+    added default filters to views_default
+
+modules/getlocations_fields/views/getlocations_fields.views_default.inc
+
+commit 4e47462
+Author: hutch <hutch@midwales.net>
+Date:   Thu Aug 15 10:06:08 2013 +0100
+
+    added flush cache option
+
+getlocations.admin.inc
+getlocations.module
+
+commit 7ea0aa6
 Author: hutch <hutch@midwales.net>
 Date:   Mon Aug 12 18:39:12 2013 +0100
 
     reworked getlocations_map
 
+CHANGELOG.txt
 getlocations.module
 modules/getlocations_map/getlocations_map.css
 modules/getlocations_map/getlocations_map.module

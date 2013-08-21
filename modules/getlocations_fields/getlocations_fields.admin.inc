@@ -49,6 +49,13 @@ function getlocations_fields_settings_form() {
     128,
     t('Where the getlocations_fields javascript file is located.')
   );
+  $form['getlocations_fields_paths']['getlocations_fields_preview_path'] = getlocations_element_path(
+    t('Path to getlocations_fields preview javascript file'),
+    $getlocations_fields_paths['getlocations_fields_preview_path'],
+    70,
+    128,
+    t('Where the getlocations_fields preview javascript file is located.')
+  );
   $form['getlocations_fields_paths']['reset'] = getlocations_element_map_checkbox(
     t('Reset'),
     0,

@@ -1433,20 +1433,19 @@ function getlocations_fields_getmap($settings, $active) {
   $mapid = getlocations_setup_map($getlocations_defaults);
   drupal_add_css(GETLOCATIONS_FIELDS_PATH . '/getlocations_fields.css');
 
+  $getlocations_fields_paths = getlocations_fields_paths_get();
+  $js_opts = array();
+  $js_opts['weight'] = $getlocations_defaults['getlocations_js_weight'] + 10;
+  $js_opts['type'] = 'file';
+  $latlons = array();
   if ($active) {
-    $getlocations_fields_paths = getlocations_fields_paths_get();
-    $js_opts = array();
-    $js_opts['weight'] = $getlocations_defaults['getlocations_js_weight'] + 10;
-    $js_opts['type'] = 'file';
     drupal_add_js($getlocations_fields_paths['getlocations_fields_path'], $js_opts);
     $settings['nodezoom'] = $getlocations_defaults['nodezoom'];
     getlocations_fields_js_settings_do($settings, $mapid);
-
-    $latlons = array();
   }
   else {
     // demo mode
-    $latlons = array();
+    drupal_add_js($getlocations_fields_paths['getlocations_fields_preview_path'], $js_opts);
     $getlocations_defaults['nodezoom'] = $getlocations_defaults['zoom'];
   }
 
@@ -2938,7 +2937,10 @@ function getlocations_fields_get_countries_list($upper = TRUE) {
 
 function getlocations_fields_paths_get($reset = FALSE) {
 
-  $defaults = array('getlocations_fields_path' => GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields.js');
+  $defaults = array(
+    'getlocations_fields_path' => GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields.js',
+    'getlocations_fields_preview_path' => GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields_preview.js',
+  );
   if ($reset) {
     $getlocations_fields_paths = $defaults;
   }
@@ -3397,6 +3399,9 @@ function theme_getlocations_fields_field_widget_form($variables) {
   }
 
   $msg = t('To use the map to find a location, drag the marker or click on the map.');
+  if (! $active) {
+    $msg =  t('A preview of the current map settings.') . '<br />' . t('You can adjust the Map center, Zoom and map type by changing the map.') . '<br />' . t('For all other changes use the form. Remember to Save when you are done.');
+  }
   $form['map']['#prefix'] = '<div class="getlocations_fields_map_wrapper">';
   $form['map']['#suffix'] = '</div>';
   $form['map']['#markup'] = '<p>' . $msg . '</p><div class="getlocations_fields_map">' . $map . '</div>';
