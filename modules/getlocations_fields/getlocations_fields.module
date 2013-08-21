@@ -1025,9 +1025,6 @@ function getlocations_fields_field_widget_form(&$form, &$form_state, $field, $in
 
       $cardinality = $field['cardinality'];
       $settings = $field['settings'];
-      $m = getlocations_fields_getmap($settings, $active);
-      $map = $m[0];
-      $mapid = $m[1];
 
       // Wrap in a fieldset for single fields
       if ($cardinality == 1) {
@@ -1056,7 +1053,6 @@ function getlocations_fields_field_widget_form(&$form, &$form_state, $field, $in
           '#type' => 'textfield',
           '#default_value' => (isset($items[$delta]['address']) ? $items[$delta]['address'] : (isset($instance['default_value'][$delta]['address']) ? $instance['default_value'][$delta]['address'] : '')),
           '#size' => $settings['input_address_width'],
-          '#attributes' => array('id' => ($active ? 'getlocations_address_' . $mapid : 'getlocations_default_address'), 'placeholder' => t('Enter an address')),
           '#title' => t('Search'),
           '#description' => t('Start typing an address and select from the dropdown.'),
           '#field_name' => $instance['field_name'],
@@ -1107,14 +1103,12 @@ function getlocations_fields_field_widget_form(&$form, &$form_state, $field, $in
           $element[$id] = array(
             '#type' => 'hidden',
             '#value' => (isset($items[$delta][$id]) ? $items[$delta][$id] : (isset($instance['default_value'][$delta][$id]) ? $instance['default_value'][$delta][$id] : '')),
-            '#attributes' => array('id' => 'getlocations_' . $id . '_' . $mapid),
           );
         }
         elseif ($settings['input_' . $id . '_required'] == 3) {
           $element[$id] = array(
             '#type' => 'hidden',
             '#value' => (isset($items[$delta][$id]) ? $items[$delta][$id] : (isset($instance['default_value'][$delta][$id]) ? $instance['default_value'][$delta][$id] : '')),
-            '#attributes' => array('id' => 'getlocations_' . $id . '_' . $mapid),
           );
           $element[$id . '_display'] = array(
             '#markup' => (isset($items[$delta][$id]) ? $items[$delta][$id] : (isset($instance['default_value'][$delta][$id]) ? $instance['default_value'][$delta][$id] : '')),
@@ -1125,7 +1119,6 @@ function getlocations_fields_field_widget_form(&$form, &$form_state, $field, $in
             '#type' => 'textfield',
             '#default_value' => (isset($items[$delta][$id]) ? htmlspecialchars_decode($items[$delta][$id], ENT_QUOTES) : (isset($instance['default_value'][$delta][$id]) ? htmlspecialchars_decode($instance['default_value'][$delta][$id], ENT_QUOTES) : '')),
            '#size' => $settings['input_' . $id . '_width'],
-            '#attributes' => array('id' => 'getlocations_' . $id . '_' . $mapid),
             '#title' => $title,
             '#maxlength' => 255,
           );
@@ -1167,7 +1160,6 @@ function getlocations_fields_field_widget_form(&$form, &$form_state, $field, $in
         $element['country'] = array(
           '#type' => 'hidden',
           '#value' => $default_country_value,
-          '#attributes' => array('id' => 'getlocations_country_' . $mapid),
         );
         $element['country_display'] = array(
           '#markup' => $default_country_value_long,
@@ -1184,7 +1176,6 @@ function getlocations_fields_field_widget_form(&$form, &$form_state, $field, $in
           $element['country'] = array(
             '#type' => 'hidden',
             '#value' => $default_country_value,
-            '#attributes' => array('id' => 'getlocations_country_' . $mapid),
           );
         }
         elseif ($settings['input_country_required'] == 3) {
@@ -1192,7 +1183,6 @@ function getlocations_fields_field_widget_form(&$form, &$form_state, $field, $in
           $element['country'] = array(
             '#type' => 'hidden',
             '#value' => $default_country_value,
-            '#attributes' => array('id' => 'getlocations_country_' . $mapid),
           );
           $element['country_display'] = array(
             '#markup' => $default_country_value_long,
@@ -1213,7 +1203,6 @@ function getlocations_fields_field_widget_form(&$form, &$form_state, $field, $in
               '#default_value' => $default_country_value,
               '#options' => $countries,
               '#title' => t('Country'),
-              '#attributes' => array('id' => 'getlocations_country_' . $mapid),
             );
           }
           else {
@@ -1222,7 +1211,6 @@ function getlocations_fields_field_widget_form(&$form, &$form_state, $field, $in
               '#default_value' => $default_country_value_long,
               '#autocomplete_path' => ($settings['use_country_dropdown'] == 2 ? 'getlocations_fields/country_autocomplete' : ''),
               '#size' => $settings['input_country_width'],
-              '#attributes' => array('id' => 'getlocations_country_' . $mapid),
               '#title' => t('Country'),
               '#maxlength' => 255,
             );
@@ -1280,15 +1268,10 @@ function getlocations_fields_field_widget_form(&$form, &$form_state, $field, $in
             $element['geobutton']['#weight'] = $settings['input_geobutton_weight'];
           }
         }
-        $element['mapid'] = array(
-          '#type' => 'value',
-          '#value' => $mapid,
-        );
       }
+
       // map
-      $element['map'] = array(
-        '#markup' => $map,
-      );
+      $element['map'] = array( '#markup' => '');
       if (! empty($settings['input_map_weight'])) {
         $element['map']['#weight'] = $settings['input_map_weight'];
       }
@@ -1297,7 +1280,6 @@ function getlocations_fields_field_widget_form(&$form, &$form_state, $field, $in
         '#type' => 'textfield',
         '#default_value' => (isset($items[$delta]['latitude']) ? $items[$delta]['latitude'] : (isset($instance['default_value'][$delta]['latitude']) ? $instance['default_value'][$delta]['latitude'] : NULL)),
         '#size' => $settings['input_latitude_width'],
-        '#attributes' => array('id' => 'getlocations_latitude_' . $mapid),
         '#title' => t('Latitude'),
         '#maxlength' => 20,
       );
@@ -1309,7 +1291,6 @@ function getlocations_fields_field_widget_form(&$form, &$form_state, $field, $in
         '#type' => 'textfield',
         '#default_value' => (isset($items[$delta]['longitude']) ? $items[$delta]['longitude'] : (isset($instance['default_value'][$delta]['longitude']) ? $instance['default_value'][$delta]['longitude'] : NULL)),
         '#size' => $settings['input_longitude_width'],
-        '#attributes' => array('id' => 'getlocations_longitude_' . $mapid),
         '#title' => t('Longitude'),
         '#maxlength' => 20,
       );
@@ -1328,6 +1309,11 @@ function getlocations_fields_field_widget_form(&$form, &$form_state, $field, $in
           '#value' => implode(',', $required),
         );
       }
+
+      $element['settings'] = array(
+        '#type' => 'value',
+        '#value' => $settings,
+      );
 
       unset($element['#theme']);
       $element['#theme'] = 'getlocations_fields_field_widget_form';
@@ -3347,24 +3333,40 @@ function theme_getlocations_fields_field_widget_form($variables) {
 
   $form = $variables['form'];
   $output = '';
-  $mapid = NULL;
-  if (isset($form['mapid']['#value'])) {
-    $mapid = $form['mapid']['#value'];
-    unset($form['mapid']);
+
+  $settings = $form['settings']['#value'];
+  unset($form['settings']);
+
+  $active = $form['active']['#value'];
+
+  list($map, $mapid) = getlocations_fields_getmap($settings, $active);
+
+  // attributes
+  $fieldlist = array('name', 'street', 'additional', 'city', 'province', 'postal_code', 'country', 'latitude', 'longitude');
+  foreach ($fieldlist AS $field) {
+    if (isset($form[$field])) {
+      $form[$field]['#attributes'] = array('id' => 'getlocations_' . $field . '_' . $mapid);
+    }
   }
+  if (isset($form['address'])) {
+    $form['address']['#attributes'] = array('id' => ($active ? 'getlocations_address_' . $mapid : 'getlocations_default_address'), 'placeholder' => t('Enter an address'));
+  }
+
   if ($mapid !== NULL && isset($form['geobutton']) ) {
-    $geobutton = '<p><input type="submit" value="' . t('Geocode this address') . '" title="' . t('Get the latitude and longitude for this address') . '" id="getlocations_geocodebutton_' . $mapid . '" class="form-submit" /></p>';
+    $geobutton = '<p><input type="button" value="' . t('Geocode this address') . '" title="' . t('Get the latitude and longitude for this address') . '" id="getlocations_geocodebutton_' . $mapid . '" class="form-submit" /></p>';
+    if ($settings['use_address'] < 1) {
     $geobutton .= '<p>' . t('If you leave the address empty you can Geocode by moving the marker on the map') . '</p>';
+    }
     $form['geobutton']['#markup'] = $geobutton;
   }
 
   if ($mapid !== NULL && isset($form['smart_ip_button']) && module_exists('smart_ip')) {
-    $smart_ip_button = '<p><input type="submit" value="' . t('Use current user position') . '" title="' . t('Get the latitude and longitude for this address from the user IP') . '" id="getlocations_smart_ip_button_' . $mapid . '" class="form-submit" /></p>';
+    $smart_ip_button = '<p><input type="button" value="' . t('Use current user position') . '" title="' . t('Get the latitude and longitude for this address from the user IP') . '" id="getlocations_smart_ip_button_' . $mapid . '" class="form-submit" /></p>';
     $form['smart_ip_button']['#markup'] = $smart_ip_button;
   }
   // html5 and google
   if (getlocations_is_mobile() && $mapid !== NULL && isset($form['geolocation_button'])) {
-    $geolocation_button = '<p><input type="submit" value="' . t('Find Location') . '" title="' . t('Get the latitude and longitude for this address from the browser') . '" id="getlocations_geolocation_button_' . $mapid . '" class="form-submit" />&nbsp;<span id="getlocations_geolocation_status_' . $mapid . '" ></span></p>';
+    $geolocation_button = '<p><input type="button" value="' . t('Find Location') . '" title="' . t('Get the latitude and longitude for this address from the browser') . '" id="getlocations_geolocation_button_' . $mapid . '" class="form-submit" />&nbsp;<span id="getlocations_geolocation_status_' . $mapid . '" ></span></p>';
     $geolocation_button .= '<p>Use the browser to find your current location</p>';
     $form['geolocation_button']['#markup'] = $geolocation_button;
   }
@@ -3374,7 +3376,7 @@ function theme_getlocations_fields_field_widget_form($variables) {
   $form['longitude']['#prefix'] = '<div class="getlocations_fields_lon_wrapper">';
   $form['longitude']['#suffix'] = '</div></div>';
 
-  if (isset($form['marker'])) {
+  if (isset($form['marker']) && $form['marker']['#type'] != 'value') {
     // colorbox marker
     $link = getlocations_markerpicker_link($form['marker']['#id'], 'i');
     $form['marker']['#field_suffix'] = '&nbsp;' . $link;
@@ -3395,7 +3397,6 @@ function theme_getlocations_fields_field_widget_form($variables) {
   }
 
   $msg = t('To use the map to find a location, drag the marker or click on the map.');
-  $map = $form['map']['#markup'];
   $form['map']['#prefix'] = '<div class="getlocations_fields_map_wrapper">';
   $form['map']['#suffix'] = '</div>';
   $form['map']['#markup'] = '<p>' . $msg . '</p><div class="getlocations_fields_map">' . $map . '</div>';
