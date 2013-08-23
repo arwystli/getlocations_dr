@@ -26,6 +26,9 @@ function _getlocations_get_icondata() {
   $inis = array();
 
   $markerdirs = module_invoke_all('getlocations_markerdir');
+  if (count($markerdirs) < 1) {
+    return FALSE;
+  }
   foreach ($markerdirs as $i => $markerdir) {
     // The following routines are designed to be easy to comprehend, not fast.
     // This whole process gets cached.
@@ -41,6 +44,9 @@ function _getlocations_get_icondata() {
       $inis[$markerdir . $path][] = parse_ini_file($file->uri, TRUE);
     }
     unset($inifiles);
+  }
+  if (count($inis) < 1) {
+    return FALSE;
   }
   // Per directory..
   foreach ($inis as $path => $path_inis) {

@@ -583,6 +583,7 @@ function getlocations_settings_validate($form, &$form_state) {
  * Rebuild marker js.
  */
 function _getlocations_rebuild_marker_js_submit($form, &$form_state) {
-  getlocations_regenerate_markers();
-  drupal_set_message(t('Marker cache regenerated.'));
+  if (getlocations_regenerate_markers()) {
+    drupal_set_message(t('Marker cache regenerated.'));
+  }
 }

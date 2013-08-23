@@ -1404,7 +1404,9 @@ function getlocations_get_icondata($reset = FALSE) {
     module_load_include('inc', 'getlocations', 'getlocations.markerinfo');
     $icons = _getlocations_get_icondata();
   }
-  cache_set('getlocations_icondata', $icons, 'cache');
+  if ($icons) {
+    cache_set('getlocations_icondata', $icons, 'cache');
+  }
   return $icons;
 }
 
@@ -1412,24 +1414,35 @@ function getlocations_get_icondata($reset = FALSE) {
  * Regenerate the markerdata file.
  */
 function getlocations_regenerate_markers() {
-  $contents = '';
+  $icons = getlocations_get_icondata(TRUE);
+  if ($icons) {
+    $contents = '';
 
-  $contents .= "// Getlocations marker image data.\n";
-  $contents .= "Drupal.getlocations.iconpath = " . drupal_json_encode(base_path()) . ";\n";
-  $contents .= "Drupal.getlocations.icondata = " . drupal_json_encode(getlocations_get_icondata(TRUE)) . ";\n";
+    $contents .= "// Getlocations marker image data.\n";
+    $contents .= "Drupal.getlocations.iconpath = " . drupal_json_encode(base_path()) . ";\n";
+    $contents .= "Drupal.getlocations.icondata = " . drupal_json_encode($icons) . ";\n";
 
-  // Create the js/ within the files folder.
-  $jspath = getlocations_get_markerfile(TRUE, FALSE);
-  $jsfile = getlocations_get_markerfile(FALSE, FALSE);
-  if ($jspath && $jsfile && file_prepare_directory($jspath, FILE_CREATE_DIRECTORY) && file_unmanaged_save_data($contents, $jsfile, FILE_EXISTS_REPLACE)) {
-    // Also regenerate the cached marker titles array
-    getlocations_get_marker_titles(TRUE);
+    // Create the js/ within the files folder.
+    $jspath = getlocations_get_markerfile(TRUE, FALSE);
+    $jsfile = getlocations_get_markerfile(FALSE, FALSE);
+    if ($jspath && $jsfile && file_prepare_directory($jspath, FILE_CREATE_DIRECTORY) && file_unmanaged_save_data($contents, $jsfile, FILE_EXISTS_REPLACE)) {
+      // Also regenerate the cached marker titles array
+      getlocations_get_marker_titles(TRUE);
+    }
+    else {
+      // failed
+      drupal_set_message(t('Getlocations is unable to save the marker configuration, so the markers will not work. Please check file system permissions of %filepath!', array('%filepath' => $jsfile)), 'error');
+      watchdog('getlocations', 'Getlocations write error when saving the marker configuration to %filepath.', array('%filepath' => $jsfile), WATCHDOG_ERROR);
+      return FALSE;
+    }
   }
   else {
-    // failed
-    drupal_set_message(t('Getlocations is unable to save the marker configuration, so the markers will not work. Please check file system permissions of %filepath!', array('%filepath' => $jsfile)), 'error');
-    watchdog('getlocations', 'Getlocations write error when saving the marker configuration to %filepath.', array('%filepath' => $jsfile), WATCHDOG_ERROR);
+    // no markers found
+      drupal_set_message(t('No markers found, you need to install some markers, please see the project page for details.'), 'error');
+      watchdog('getlocations', 'No markers found.', array(), WATCHDOG_ERROR);
+      return FALSE;
   }
+  return TRUE;
 }
 
 function getlocations_get_markerfile($dir=FALSE, $check=TRUE) {
