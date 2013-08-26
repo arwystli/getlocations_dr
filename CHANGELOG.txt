@@ -1,9 +1,28 @@
-commit 236de12
+commit e7bafa4
+Author: hutch <hutch@midwales.net>
+Date:   Mon Aug 26 11:05:35 2013 +0100
+
+    added google places check
+
+getlocations.module
+
+commit 23c84fc
+Author: hutch <hutch@midwales.net>
+Date:   Fri Aug 23 14:20:04 2013 +0100
+
+    check for markers
+
+getlocations.admin.inc
+getlocations.markerinfo.inc
+getlocations.module
+
+commit 73592c0
 Author: hutch <hutch@midwales.net>
 Date:   Wed Aug 21 15:14:00 2013 +0100
 
     fields preview map js
 
+CHANGELOG.txt
 modules/getlocations_fields/getlocations_fields.admin.inc
 modules/getlocations_fields/getlocations_fields.module
 modules/getlocations_fields/js/getlocations_fields_preview.js

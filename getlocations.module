@@ -580,10 +580,6 @@ function getlocations_setup_js($defaults, $googleonly = FALSE) {
 
   // compat with getdirections
   if ($defaults['getdirections_enabled']) {
-    $getdirections_defaults = getdirections_defaults();
-    if ($getdirections_defaults['advanced_autocomplete']) {
-      $libraries['places'] = 'places';
-    }
     $getdirections_misc_defaults = getdirections_misc_defaults();
     if (isset($getdirections_misc_defaults['panoramio_use']) && $getdirections_misc_defaults['panoramio_use']) {
       $libraries['panoramio'] = 'panoramio';
@@ -591,6 +587,11 @@ function getlocations_setup_js($defaults, $googleonly = FALSE) {
     if (isset($getdirections_misc_defaults['weather_use']) && $getdirections_misc_defaults['weather_use']) {
       $libraries['weather'] = 'weather';
     }
+  }
+
+  // check for places library
+  if (getlocations_places_check()) {
+    $libraries['places'] = 'places';
   }
 
   // load libraries if any
@@ -1035,6 +1036,34 @@ function getlocations_latlon_check($latlon) {
     }
   }
   return FALSE;
+}
+
+/**
+ * Function to check wether the google places library should be enabled.
+ *
+ */
+function getlocations_places_check() {
+  $found = FALSE;
+  if (module_exists('getlocations_fields')) {
+    $getlocations_fields_defaults = getlocations_fields_defaults();
+    if (isset($getlocations_fields_defaults['use_address']) && $getlocations_fields_defaults['use_address']) {
+      $found = TRUE;
+    }
+  }
+  $getlocations_defaults = getlocations_defaults();
+  if ($getlocations_defaults['getdirections_enabled']) {
+    $getdirections_defaults = getdirections_defaults();
+    if (isset($getdirections_defaults['advanced_autocomplete']) && $getdirections_defaults['advanced_autocomplete']) {
+      $found = TRUE;
+    }
+  }
+  if (module_exists('getlocations_search')) {
+    $getlocations_search_defaults = getlocations_search_defaults();
+    if (isset($getlocations_search_defaults['method']) && $getlocations_search_defaults['method'] == 'google_ac') {
+      $found = TRUE;
+    }
+  }
+  return $found;
 }
 
 /**
