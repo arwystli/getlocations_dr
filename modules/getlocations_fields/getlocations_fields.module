@@ -28,7 +28,7 @@ function getlocations_fields_help($path, $arg) {
 function getlocations_fields_init() {
   module_load_include('inc', 'getlocations_fields', 'getlocations_fields.functions');
   if (! getlocations_fields_column_check('data')) {
-    drupal_set_message(t('You need to run update now.'), 'error');
+    drupal_set_message(t('You need to run update <a href="@url">now</a>.', array('@url' => url('update.php') )), 'error');
   }
 }
 
