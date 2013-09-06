@@ -52,6 +52,7 @@ function getlocations_search_menu() {
 
   $items['getlocations_search'] = array(
     'title' => 'Getlocations search',
+    'description' => 'Search for places on a map',
     'access arguments' => array('access getlocations search'),
     'page callback' => 'getlocations_search',
     'type' => MENU_SUGGESTED_ITEM,
