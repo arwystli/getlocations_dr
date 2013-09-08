@@ -27,7 +27,8 @@ function getlocations_fields_help($path, $arg) {
  */
 function getlocations_fields_init() {
   module_load_include('inc', 'getlocations_fields', 'getlocations_fields.functions');
-  if (! getlocations_fields_column_check('data')) {
+  global $user;
+  if ($user->uid > 0 && ! getlocations_fields_column_check('data')) {
     drupal_set_message(t('You need to run update <a href="@url">now</a>.', array('@url' => url('update.php') )), 'error');
   }
 }
@@ -1599,6 +1600,11 @@ function getlocations_fields_save_locations($locations, $criteria, $mode) {
       if ( empty($locations[$key]['latitude']) && empty($locations[$key]['longitude'])) {
         unset($locations[$key]);
         continue;
+      }
+      else {
+        // normalize
+        $locations[$key]['latitude'] = getlocations_normalizelat($locations[$key]['latitude']);
+        $locations[$key]['longitude'] = getlocations_normalizelng($locations[$key]['longitude']);
       }
 
       // dealing with imports
