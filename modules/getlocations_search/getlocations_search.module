@@ -930,10 +930,12 @@ function getlocations_search_info_sql($lat, $lon, $distance, $units, $type, $dos
       $fields[] = 'gf.longitude';
       $fields[] = 'gf.marker';
       $fields[] = 'gf.field_name';
+      if (getlocations_fields_column_check('data')) {
+        $fields[] = 'gf.data';
+      }
       $fields[] = "t.entity_type";
       $fields[] = "t.entity_id";
       $fields[] = "t.bundle";
-
 
       $sqlsnip1 = "";
       $sqlsnip2 = "";

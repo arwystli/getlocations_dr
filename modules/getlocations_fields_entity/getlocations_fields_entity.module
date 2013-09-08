@@ -44,7 +44,7 @@ function getlocations_fields_entity_getlocations_fields_property_callback(&$info
  * Helper function that returns getlocations_fields key map array
  */
 function getlocations_fields_entity_key_map() {
-  return array(
+  $keys = array(
     'glid' => array(
       'type' => 'integer',
       'label' => t('glid'),
@@ -111,4 +111,13 @@ function getlocations_fields_entity_key_map() {
       'description' => t('Getlocations Fields Field name field')
     ),
   );
+  if (getlocations_fields_column_check('data')) {
+    $keys['data'] = array(
+      'type' => 'text',
+      'label' => t('Data'),
+      'description' => t('Getlocations Fields serialized data field')
+    );
+  }
+  return $keys;
+
 }

@@ -1632,6 +1632,9 @@ function getlocations_fields_save_locations($locations, $criteria, $mode) {
       if (! isset($locations[$key]['marker'])) {
         $locations[$key]['marker'] = '';
       }
+      if (! isset($locations[$key]['data'])) {
+        $locations[$key]['data'] = '';
+      }
 
       if ($mode == 'insert') {
         if ( $locations[$key]['latitude'] && $locations[$key]['longitude']) {
@@ -1701,7 +1704,8 @@ function getlocations_fields_insert_record($location, $relations) {
     'latitude' => (float) $location['latitude'],
     'longitude' => (float) $location['longitude'],
     'marker' => ($location['marker'] ? $location['marker'] : ''),
-    'field_name' => $relations['field_name']
+    'field_name' => $relations['field_name'],
+    'data' => (! empty($location['data']) ? serialize($location['data']) : ''),
   ));
   $result = $query->execute();
   // $result should contain glid
@@ -1749,7 +1753,8 @@ function getlocations_fields_update_record($location, $relations) {
       'address' => getlocations_apoclean($location['address']),
       'latitude' => (float) $location['latitude'],
       'longitude' => (float) $location['longitude'],
-      'marker' => ($location['marker'] ? $location['marker'] : '')
+      'marker' => ($location['marker'] ? $location['marker'] : ''),
+      'data' => (! empty($location['data']) ? serialize($location['data']) : ''),
     ))
     ->condition('glid', $location['glid'])
     ->execute();
@@ -1846,10 +1851,10 @@ function getlocations_fields_load_locations($entity_id, $entity_type, $field_nam
             $locations[$ct]['province_name'] = $location['province_name'];
             $locations[$ct]['postal_code'] = $location['postal_code'];
             if ($getlocations_fields_defaults['country_full'] && drupal_strlen($location['country']) == 2) {
-              $location[$ct]['country_name'] = getlocations_get_country_name($location['country']);
+              $locations[$ct]['country_name'] = getlocations_get_country_name($location['country']);
             }
             else {
-              $location[$ct]['country_name'] = $location['country'];
+              $locations[$ct]['country_name'] = $location['country'];
             }
             $locations[$ct]['country'] = $location['country'];
             $locations[$ct]['address'] = $location['address'];
@@ -1860,6 +1865,8 @@ function getlocations_fields_load_locations($entity_id, $entity_type, $field_nam
             $locations[$ct]['entity_id'] = $entity_id;
             $locations[$ct]['entity_key'] = $entity_key;
             $locations[$ct]['language'] = $lang;
+            // data
+            $locations[$ct]['data'] = (isset($location['data']) && ! empty($location['data']) ? unserialize($location['data']) : '');
 
             $entity_info = getlocations_get_entity_info_from_glid($location['glid']);
             $bundle = $entity_info['bundle'];
@@ -1906,9 +1913,12 @@ function getlocations_fields_load_location($glid) {
     module_load_include('inc', 'getlocations_fields', 'getlocations_fields.functions');
     $getlocations_fields_defaults = getlocations_fields_defaults();
     $getlocations_defaults = getlocations_defaults();
-
+    $fields = array('glid', 'name', 'street', 'additional', 'city', 'province', 'postal_code', 'country', 'address', 'latitude', 'longitude', 'marker', 'field_name');
+    if (getlocations_fields_column_check('data')) {
+      $fields[] = 'data';
+    }
     $query = db_select('getlocations_fields', 'f');
-    $query->fields('f', array('glid', 'name', 'street', 'additional', 'city', 'province', 'postal_code', 'country', 'address', 'latitude', 'longitude', 'marker', 'field_name'));
+    $query->fields('f', $fields);
     $query->condition('f.glid', $glid);
     $row = $query->execute()->fetchObject();
     if ($row) {
@@ -1933,6 +1943,7 @@ function getlocations_fields_load_location($glid) {
       $location['longitude'] = $row->longitude;
       $location['marker'] = $row->marker;
       $location['field_name'] = $row->field_name;
+      $location['data'] = (isset($row->data) && ! empty($row->data) ? unserialize($row->data) : '');
 
       // need to find entity_type and entity_id and bundle
       $entity_info = getlocations_get_entity_info_from_glid($location['glid']);
@@ -2080,6 +2091,7 @@ function getlocations_fields_defaults() {
       'longitude'   => t('Longitude'),
       'marker'      => t('Marker'),
       'field_name'  => t('Field Name'),
+      'data'        => t('Data'),
     ),
     'polygons_enable'           => $getlocations_defaults['polygons_enable'],
     'polygons_strokecolor'      => $getlocations_defaults['polygons_strokecolor'],
