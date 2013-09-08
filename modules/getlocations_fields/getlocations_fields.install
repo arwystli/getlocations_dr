@@ -79,15 +79,17 @@ function getlocations_fields_schema() {
       ),
       'latitude' => array(
         'description' => 'Location latitude (decimal degrees).',
-        'type' => 'float',
-        'size' => 'normal',
+        'type' => 'numeric',
+        'precision' => 10,
+        'scale' => 6,
         'default' => 0.0,
         'not null' => TRUE,
       ),
       'longitude' => array(
         'description' => 'Location longitude (decimal degrees).',
-        'type' => 'float',
-        'size' => 'normal',
+        'type' => 'numeric',
+        'precision' => 10,
+        'scale' => 6,
         'default' => 0.0,
         'not null' => TRUE,
       ),
@@ -167,6 +169,9 @@ function getlocations_fields_enable() {
 
 }
 
+/**
+ * Add marker field.
+ */
 function getlocations_fields_update_7100() {
   $spec = array(
     'description' => 'Marker.',
@@ -178,6 +183,9 @@ function getlocations_fields_update_7100() {
   db_add_field('getlocations_fields', 'marker', $spec);
 }
 
+/**
+ * Add field_name field.
+ */
 function getlocations_fields_update_7101() {
   $spec = array(
     'description' => 'Field name.',
@@ -204,6 +212,9 @@ function getlocations_fields_update_7101() {
   }
 }
 
+/**
+ * Add data field.
+ */
 function getlocations_fields_update_7201() {
   $result = db_query("DESCRIBE {getlocations_fields}");
   foreach ($result as $record) {
@@ -223,3 +234,17 @@ function getlocations_fields_update_7201() {
 
 }
 
+/**
+ * Convert float to decimal.
+ */
+function getlocations_fields_update_7202() {
+  $spec = array(
+    'type' => 'numeric',
+    'precision' => 10,
+    'scale' => 6,
+    'default' => 0.0,
+    'not null' => TRUE,
+  );
+  db_change_field('getlocations_fields', 'latitude', 'latitude', $spec);
+  db_change_field('getlocations_fields', 'longitude', 'longitude', $spec);
+}
