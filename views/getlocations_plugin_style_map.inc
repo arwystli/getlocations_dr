@@ -365,6 +365,32 @@ class getlocations_plugin_style_map extends views_plugin_style {
       $form_state['values']['maptype'] = 'Map';
       $form_state['values']['baselayers']['Map'] = 1;
     }
+    // css check
+    if (isset($form_state['values']['style_options']['width'])) {
+      if ($check = getlocations_dim_check($form_state['values']['style_options']['width'])) {
+        $form_state['values']['style_options']['width'] = $check;
+      }
+      else {
+        form_set_error('style_options][width', t('Width must be valid css'));
+      }
+    }
+    if (isset($form_state['values']['style_options']['height'])) {
+      if ($check = getlocations_dim_check($form_state['values']['style_options']['height'])) {
+        $form_state['values']['style_options']['height'] = $check;
+      }
+      else {
+        form_set_error('style_options][height', t('Height must be valid css'));
+      }
+    }
+    if (isset($form_state['values']['style_options']['latlong'])) {
+      if ($latlon = getlocations_latlon_check($form_state['values']['style_options']['latlong'])) {
+        $form_state['values']['style_options']['latlong'] = $latlon;
+      }
+      else {
+        form_set_error('style_options][latlong', t('Map coordinates must be expressed as a decimal latitude and longitude, separated by a comma.'));
+      }
+    }
+
   }
 
   function even_empty() {
