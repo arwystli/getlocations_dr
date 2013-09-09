@@ -71,3 +71,19 @@
 .getlocations_fields_marker_wrapper {
 
 }
+
+.phones {
+  padding-top: 4px;
+}
+.phone {}
+.mobile {}
+.fax {}
+.phone_label {
+  padding-right: 8px;
+}
+.mobile_label {
+  padding-right: 8px;
+}
+.fax_label {
+  padding-right: 8px;
+}
