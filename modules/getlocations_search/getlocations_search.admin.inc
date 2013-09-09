@@ -445,6 +445,30 @@ function getlocations_search_settings_validate($form, &$form_state) {
       $form_state['values']['getlocations_search_defaults']['search_radshape_fillcolor'] = '#' . $form_state['values']['getlocations_search_defaults']['search_radshape_fillcolor'];
     }
 
+    if ($latlon = getlocations_latlon_check($form_state['values']['getlocations_search_defaults']['latlong'])) {
+      $form_state['values']['getlocations_search_defaults']['latlong'] = $latlon;
+    }
+    else {
+      form_set_error('getlocations_search_defaults][latlong', t('Map coordinates must be expressed as a decimal latitude and longitude, separated by a comma.'));
+    }
+    // css check
+    if (isset($form_state['values']['getlocations_search_defaults']['width'])) {
+      if ($check = getlocations_dim_check($form_state['values']['getlocations_search_defaults']['width'])) {
+        $form_state['values']['getlocations_search_defaults']['width'] = $check;
+      }
+      else {
+        form_set_error('getlocations_search_defaults][width', t('Width must be valid css'));
+      }
+    }
+    if (isset($form_state['values']['getlocations_search_defaults']['height'])) {
+      if ($check = getlocations_dim_check($form_state['values']['getlocations_search_defaults']['height'])) {
+        $form_state['values']['getlocations_search_defaults']['height'] = $check;
+      }
+      else {
+        form_set_error('getlocations_search_defaults][height', t('Height must be valid css'));
+      }
+    }
+
   }
   elseif (isset($form_state['values']['getlocations_search_block_defaults'])) {
     if (! preg_match("/^#/", $form_state['values']['getlocations_search_block_defaults']['search_radshape_strokecolor'])) {
@@ -454,7 +478,32 @@ function getlocations_search_settings_validate($form, &$form_state) {
       $form_state['values']['getlocations_search_block_defaults']['search_radshape_fillcolor'] = '#' . $form_state['values']['getlocations_search_block_defaults']['search_radshape_fillcolor'];
     }
 
+    if ($latlon = getlocations_latlon_check($form_state['values']['getlocations_search_block_defaults']['latlong'])) {
+      $form_state['values']['getlocations_search_block_defaults']['latlong'] = $latlon;
+    }
+    else {
+      form_set_error('getlocations_search_block_defaults][latlong', t('Map coordinates must be expressed as a decimal latitude and longitude, separated by a comma.'));
+    }
+    // css check
+    if (isset($form_state['values']['getlocations_search_block_defaults']['width'])) {
+      if ($check = getlocations_dim_check($form_state['values']['getlocations_search_block_defaults']['width'])) {
+        $form_state['values']['getlocations_search_block_defaults']['width'] = $check;
+      }
+      else {
+        form_set_error('getlocations_search_block_defaults][width', t('Width must be valid css'));
+      }
+    }
+    if (isset($form_state['values']['getlocations_search_block_defaults']['height'])) {
+      if ($check = getlocations_dim_check($form_state['values']['getlocations_search_block_defaults']['height'])) {
+        $form_state['values']['getlocations_search_block_defaults']['height'] = $check;
+      }
+      else {
+        form_set_error('getlocations_search_block_defaults][height', t('Height must be valid css'));
+      }
+    }
+
   }
+
   $reset = $form_state['values']['getlocations_search_paths']['reset'];
   unset($form_state['values']['getlocations_search_paths']['reset']);
   if ($reset) {

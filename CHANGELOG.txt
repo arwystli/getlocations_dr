@@ -1,9 +1,133 @@
-commit e7bafa4
+commit 80f6794
+Author: hutch <hutch@midwales.net>
+Date:   Mon Sep 9 22:34:03 2013 +0100
+
+    added css checks
+
+modules/getlocations_search/getlocations_search.admin.inc
+
+commit 7948258
+Author: hutch <hutch@midwales.net>
+Date:   Mon Sep 9 22:02:26 2013 +0100
+
+    added data fields
+
+modules/getlocations_fields/getlocations_fields.module
+
+commit d525d29
+Author: hutch <hutch@midwales.net>
+Date:   Mon Sep 9 22:02:13 2013 +0100
+
+    added css check
+
+modules/getlocations_fields/getlocations_fields.admin.inc
+
+commit 33c181b
+Author: hutch <hutch@midwales.net>
+Date:   Mon Sep 9 22:01:06 2013 +0100
+
+    added element validate
+
+modules/getlocations_map/getlocations_map.module
+
+commit e6d78d5
+Author: hutch <hutch@midwales.net>
+Date:   Mon Sep 9 22:00:31 2013 +0100
+
+    added css check
+
+views/getlocations_plugin_style_map.inc
+
+commit 3d4aa95
+Author: hutch <hutch@midwales.net>
+Date:   Mon Sep 9 21:59:21 2013 +0100
+
+    added css for data fields
+
+modules/getlocations_fields/getlocations_fields.css
+
+commit 3874418
+Author: hutch <hutch@midwales.net>
+Date:   Mon Sep 9 21:58:41 2013 +0100
+
+    added css check
+
+getlocations.admin.inc
+
+commit 06e649a
+Author: hutch <hutch@midwales.net>
+Date:   Mon Sep 9 21:58:11 2013 +0100
+
+    moved element validate functions
+
+getlocations.module
+
+commit 8b16377
+Author: hutch <hutch@midwales.net>
+Date:   Sun Sep 8 16:45:44 2013 +0100
+
+    more code relating to the new data field
+
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_fields_entity/getlocations_fields_entity.module
+modules/getlocations_search/getlocations_search.module
+
+commit 8843549
+Author: hutch <hutch@midwales.net>
+Date:   Sun Sep 8 13:43:13 2013 +0100
+
+    added user check to update warning, added normalize check to insert/update
+
+modules/getlocations_fields/getlocations_fields.module
+
+commit 01ea361
+Author: hutch <hutch@midwales.net>
+Date:   Sun Sep 8 13:42:11 2013 +0100
+
+    convert from float to decimal
+
+modules/getlocations_fields/getlocations_fields.install
+
+commit 5df9d93
+Author: hutch <hutch@midwales.net>
+Date:   Fri Sep 6 18:39:56 2013 +0100
+
+    added description
+
+modules/getlocations_search/getlocations_search.module
+
+commit 1a211e5
+Author: hutch <hutch@midwales.net>
+Date:   Fri Sep 6 18:39:36 2013 +0100
+
+    added link to update
+
+modules/getlocations_fields/getlocations_fields.module
+
+commit bb1e3b5
+Author: hutch <hutch@midwales.net>
+Date:   Wed Aug 28 11:12:06 2013 +0100
+
+    fixed map glitch in responsive themes
+
+getlocations.css
+
+commit 642e214
+Author: hutch <hutch@midwales.net>
+Date:   Tue Aug 27 15:54:33 2013 +0100
+
+    added data field
+
+modules/getlocations_fields/getlocations_fields.install
+modules/getlocations_fields/getlocations_fields.module
+
+commit 66f8356
 Author: hutch <hutch@midwales.net>
 Date:   Mon Aug 26 11:05:35 2013 +0100
 
     added google places check
 
+CHANGELOG.txt
 getlocations.module
 
 commit 23c84fc
