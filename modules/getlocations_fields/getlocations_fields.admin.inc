@@ -106,6 +106,42 @@ function getlocations_fields_settings_validate($form, &$form_state) {
   if (empty($form_state['values']['getlocations_fields_defaults']['input_longitude_width']) || ! is_numeric($form_state['values']['getlocations_fields_defaults']['input_longitude_width']) || $form_state['values']['getlocations_fields_defaults']['input_longitude_width'] < 1 ) {
     form_set_error('getlocations_fields_defaults][input_longitude_width', t('Longitude textbox must be a positive number'));
   }
+
+  // css check
+  if (isset($form_state['values']['getlocations_fields_defaults']['width'])) {
+    if ($check = getlocations_dim_check($form_state['values']['getlocations_fields_defaults']['width'])) {
+      $form_state['values']['getlocations_fields_defaults']['width'] = $check;
+    }
+    else {
+      form_set_error('getlocations_fields_defaults][width', t('Width must be valid css'));
+    }
+  }
+  if (isset($form_state['values']['getlocations_fields_defaults']['height'])) {
+    if ($check = getlocations_dim_check($form_state['values']['getlocations_fields_defaults']['height'])) {
+      $form_state['values']['getlocations_fields_defaults']['height'] = $check;
+    }
+    else {
+      form_set_error('getlocations_fields_defaults][height', t('Height must be valid css'));
+    }
+  }
+
+  if (isset($form_state['values']['getlocations_fields_defaults']['display_mapwidth'])) {
+    if ($check = getlocations_dim_check($form_state['values']['getlocations_fields_defaults']['display_mapwidth'])) {
+      $form_state['values']['getlocations_fields_defaults']['display_mapwidth'] = $check;
+    }
+    else {
+      form_set_error('getlocations_fields_defaults][display_mapwidth', t('Width must be valid css'));
+    }
+  }
+  if (isset($form_state['values']['getlocations_fields_defaults']['display_mapheight'])) {
+    if ($check = getlocations_dim_check($form_state['values']['getlocations_fields_defaults']['display_mapheight'])) {
+      $form_state['values']['getlocations_fields_defaults']['display_mapheight'] = $check;
+    }
+    else {
+      form_set_error('getlocations_fields_defaults][display_mapheight', t('Height must be valid css'));
+    }
+  }
+
   $reset = $form_state['values']['getlocations_fields_paths']['reset'];
   unset($form_state['values']['getlocations_fields_paths']['reset']);
   if ($reset) {
