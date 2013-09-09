@@ -571,6 +571,25 @@ function getlocations_settings_validate($form, &$form_state) {
     $form_state['values']['getlocations_default']['places'] = 1;
   }
 
+  // css check
+  if (isset($form_state['values']['getlocations_default']['width'])) {
+    if ($check = getlocations_dim_check($form_state['values']['getlocations_default']['width'])) {
+      $form_state['values']['getlocations_default']['width'] = $check;
+    }
+    else {
+      form_set_error('getlocations_default][width', t('Width must be valid css'));
+    }
+  }
+  if (isset($form_state['values']['getlocations_default']['height'])) {
+    if ($check = getlocations_dim_check($form_state['values']['getlocations_default']['height'])) {
+      $form_state['values']['getlocations_default']['height'] = $check;
+    }
+    else {
+      form_set_error('getlocations_default][height', t('Height must be valid css'));
+    }
+  }
+
+
   $reset = $form_state['values']['getlocations_paths']['reset'];
   unset($form_state['values']['getlocations_paths']['reset']);
   if ($reset) {
