@@ -469,6 +469,10 @@ function getlocations_map_field_formatter_settings_form($field, $instance, $view
         $settings = $getlocations_map_defaults;
       }
       $element += getlocations_map_display_basics_form($settings);
+      $element['width']['#element_validate'] = array('getlocations_element_validate_dim');
+      $element['height']['#element_validate'] = array('getlocations_element_validate_dim');
+      $element['latlong']['#element_validate'] = array('getlocations_element_validate_latlon');
+
       $element += getlocations_map_display_options_form($settings, FALSE, TRUE);
       break;
     case 'getlocations_map_link':
