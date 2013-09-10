@@ -115,6 +115,7 @@ function getlocations_search_form($form, &$form_state, $which, $mapid) {
   $form['which'] = array('#type' => 'value', '#value' => $which);
   $form['mapid'] = array('#type' => 'value', '#value' => $mapid);
   $form['display_latlon'] = array('#type' => 'value', '#value' => $getlocations_search_defaults['display_latlon']);
+  $form['display_accuracy'] = array('#type' => 'value', '#value' => $getlocations_search_defaults['display_accuracy']);
 
   if ($getlocations_search_defaults['method'] == 'vocab' && $getlocations_search_defaults['vocab_element'] == 'dropdown') {
     //
@@ -329,6 +330,7 @@ function getlocations_search_js_settings_do($defaults, $mapid) {
       'search_radshape_toggle_active'  => $defaults['search_radshape_toggle_active'],
       'search_distance_type'           => $defaults['search_distance_type'],
       'zoom_on_single_use'             => $defaults['zoom_on_single_use'],
+      'display_accuracy'               => $defaults['display_accuracy'],
     ),
   );
 
@@ -419,6 +421,8 @@ function theme_getlocations_search_form($variables) {
   unset($form['mapid']);
   $display_latlon = $form['display_latlon']['#value'];
   unset($form['display_latlon']['#value']);
+  $display_accuracy = $form['display_accuracy']['#value'];
+  unset($form['display_accuracy']['#value']);
   $output = '';
   $form['getlocations_search_' . $mapid]['#prefix'] = '<div id="getlocations_search_wrapper">';
   $form['getlocations_search_submit']['#suffix'] = '</div>';
@@ -454,6 +458,9 @@ function theme_getlocations_search_form($variables) {
   $output .= '<div id="getlocations_search_distance_' . $mapid . '"></div>';
   $output .= '<div id="getlocations_search_count_' . $mapid . '"></div>';
   $output .= '<div id="getlocations_search_type_' . $mapid . '"></div>';
+  if ($display_accuracy) {
+    $output .= '<div id="getlocations_search_accuracy_' . $mapid . '"></div>';
+  }
   $output .= '<div id="getlocations_search' . ($which == 'block' ? '_block' : '') . '_latlon_wrapper">';
   if ($display_latlon) {
     $output .= '<div id="getlocations_search_lat_' . $mapid . '" class="getlocations_search' . ($which == 'block' ? '_block' : '') . '_lat"></div>';
@@ -583,6 +590,7 @@ function getlocations_search_defaults() {
     'search_type'                   => 'all',
     'display_dms'                   => 0,
     'display_latlon'                => 0,
+    'display_accuracy'              => 0,
     'show_distance'                 => 0,
     'search_marker'                 => 'drupal',
     'do_search_marker'              => 0,

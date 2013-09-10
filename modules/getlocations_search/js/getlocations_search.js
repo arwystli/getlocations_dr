@@ -31,6 +31,7 @@
         gset.search_marker_toggle = searchsettings.search_marker_toggle;
         gset.search_info_path = searchsettings.search_info_path;
         gset.zoom_on_single_use = searchsettings.zoom_on_single_use;
+        gset.display_accuracy = searchsettings.display_accuracy;
         var autocomplete_bias = searchsettings.autocomplete_bias;
         var restrict_by_country = searchsettings.restrict_by_country;
         var country = searchsettings.country;
@@ -264,6 +265,23 @@
         var address = results[0].formatted_address;
         var slat = results[0].geometry.location.lat();
         var slon = results[0].geometry.location.lng();
+
+        var accuracy = '';
+        if (gs.display_accuracy) {
+          if (results[0].geometry.location_type == 'APPROXIMATE') {
+            accuracy =  Drupal.t('Approximate');
+          }
+          else if (results[0].geometry.location_type == 'GEOMETRIC_CENTER') {
+            accuracy = Drupal.t('Center');
+          }
+          else if (results[0].geometry.location_type == 'RANGE_INTERPOLATED') {
+            accuracy = Drupal.t('Interpolated');
+          }
+          else if (results[0].geometry.location_type == 'ROOFTOP') {
+            accuracy = Drupal.t('Exact');
+          }
+        }
+
         // go get the data
         $.get(gs.search_info_path, {
           'lat':slat,
@@ -324,6 +342,9 @@
           if (gs.do_lookup) {
             $("#getlocations_search_count_" + mkey).html('<span class="results-label">' + Drupal.t('Locations found') + ':</span><span class="results-value">' + locationct + '</span>');
             $("#getlocations_search_type_" + mkey).html('<span class="results-label">' + Drupal.t('Search Type') + ':</span><span class="results-value">' + typesdisplay[type] + '</span>');
+          }
+          if (accuracy) {
+            $("#getlocations_search_accuracy_" + mkey).html('<span class="results-label">' + Drupal.t('Accuracy') + ':</span><span class="results-value">' + accuracy + '</span>');
           }
           $("#getlocations_search_lat_" + mkey).html('<span class="results-label">' + Drupal.t('Latitude') + ':</span><span class="results-value">' + latout + '</span>');
           $("#getlocations_search_lon_" + mkey).html('<span class="results-label">' + Drupal.t('Longitude') + ':</span><span class="results-value">' + lonout + '</span>');

@@ -332,6 +332,11 @@ function _getlocations_search_settings_form($defaults, $which = 'admin') {
     $defaults['display_dms'],
     ''
   );
+  $form[$varname]['display_accuracy'] = getlocations_element_map_checkbox(
+    t('Show accuracy results'),
+    $defaults['display_accuracy'],
+    ''
+  );
   $form[$varname]['show_distance'] = getlocations_element_map_checkbox(
     t('Show Distance in InfoBubble/InfoWindow'),
     $defaults['show_distance'],

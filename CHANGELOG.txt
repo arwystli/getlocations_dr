@@ -1,9 +1,20 @@
-commit 80f6794
+commit 68ca6f5
+Author: hutch <hutch@midwales.net>
+Date:   Tue Sep 10 19:24:13 2013 +0100
+
+    added accuracy feature
+
+modules/getlocations_search/getlocations_search.admin.inc
+modules/getlocations_search/getlocations_search.module
+modules/getlocations_search/js/getlocations_search.js
+
+commit 814d5c6
 Author: hutch <hutch@midwales.net>
 Date:   Mon Sep 9 22:34:03 2013 +0100
 
     added css checks
 
+CHANGELOG.txt
 modules/getlocations_search/getlocations_search.admin.inc
 
 commit 7948258
