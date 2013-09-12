@@ -1443,6 +1443,10 @@ function getlocations_get_icondata($reset = FALSE) {
  * Regenerate the markerdata file.
  */
 function getlocations_regenerate_markers() {
+  // This often fails in cli mode, so bail.
+  if (drupal_is_cli()) {
+    return;
+  }
   $icons = getlocations_get_icondata(TRUE);
   if ($icons) {
     $contents = '';
@@ -5236,7 +5240,7 @@ function theme_getlocations_show($variables) {
       $sp .= '</div>';
     }
     if ($defaults['search_places_list']) {
-      $sp .= '<div class="sp_listing_wrapper"><p><b>' . t('Google Places search results') . '</b></p><div class="sp_listing"><ul class="sp_ul" id="search_places_results_' . $mapid . '"></ul></div></div>';
+      $sp .= '<div class="sp_listing_wrapper"><h4>' . t('Google Places search results') . '</h4><div class="sp_listing"><ul class="sp_ul" id="search_places_results_' . $mapid . '"></ul></div></div>';
     }
 
   }
