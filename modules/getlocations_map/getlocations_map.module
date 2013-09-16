@@ -170,6 +170,21 @@ function getlocations_map_field_formatter_view($entity_type, $entity, $field, $i
                 }
               }
             }
+
+            // smuggle these in from location data
+            if (isset($location['streetview_heading']) && is_numeric($location['streetview_heading'])) {
+              $default['streetview_heading'] = $location['streetview_heading'];
+            }
+            if (isset($location['streetview_zoom']) && is_numeric($location['streetview_zoom'])) {
+              $default['streetview_zoom'] = $location['streetview_zoom'];
+            }
+            if (isset($location['streetview_pitch']) && is_numeric($location['streetview_pitch'])) {
+              $default['streetview_pitch'] = $location['streetview_pitch'];
+            }
+            if (isset($location['mapzoom']) && is_numeric($location['mapzoom'])) {
+              $default['nodezoom'] = $location['mapzoom'];
+            }
+
           }
           elseif ($module == 'location_cck') {
             if (isset($entity->{$locative_field_name}[$lang][$delta])) {
@@ -346,6 +361,9 @@ function getlocations_map_field_formatter_settings_summary($field, $instance, $v
       }
       if ($settings['streetview_show']) {
         $summary[] = t('Show streetview button: Yes');
+      }
+      if ($settings['streetview_showfirst']) {
+        $summary[] = t('Show streetview first: Yes');
       }
       if ($settings['fullscreen']) {
         $summary[] = t('Show Fullscreen button: Yes');
@@ -661,6 +679,10 @@ function getlocations_map_defaults() {
     'show_bubble_on_one_marker'     => $getlocations_defaults['show_bubble_on_one_marker'],
     'fullscreen'                    => $getlocations_defaults['fullscreen'],
     'streetview_show'               => $getlocations_defaults['streetview_show'],
+    'streetview_showfirst'          => $getlocations_defaults['streetview_showfirst'],
+    'streetview_heading'            => $getlocations_defaults['streetview_heading'],
+    'streetview_zoom'               => $getlocations_defaults['streetview_zoom'],
+    'streetview_pitch'              => $getlocations_defaults['streetview_pitch'],
     'trafficinfo'                   => $getlocations_defaults['trafficinfo'],
     'trafficinfo_state'             => $getlocations_defaults['trafficinfo_state'],
     'bicycleinfo'                   => $getlocations_defaults['bicycleinfo'],

@@ -47,6 +47,10 @@ class getlocations_plugin_style_map extends views_plugin_style {
     $options['scrollwheel']           = array('default' => $getlocations_defaults['scrollwheel']);
     $options['show_maplinks']         = array('default' => $getlocations_defaults['show_maplinks']);
     $options['streetview_show']       = array('default' => $getlocations_defaults['streetview_show']);
+    $options['streetview_showfirst']  = array('default' => $getlocations_defaults['streetview_showfirst']);
+    $options['streetview_heading']    = array('default' => $getlocations_defaults['streetview_heading']);
+    $options['streetview_zoom']       = array('default' => $getlocations_defaults['streetview_zoom']);
+    $options['streetview_pitch']      = array('default' => $getlocations_defaults['streetview_pitch']);
     $options['fullscreen']            = array('default' => $getlocations_defaults['fullscreen']);
     $options['show_bubble_on_one_marker'] = array('default' => $getlocations_defaults['show_bubble_on_one_marker']);
     $options['trafficinfo']           = array('default' => $getlocations_defaults['trafficinfo']);

@@ -28,6 +28,8 @@
     var point = [];
     var is_mobile = 0;
     var street_num_pos = 1;
+    var streetview_setup = false;
+    var streetview_setup_buttondone = [];
 
     // each map has its own settings
     $.each(Drupal.settings.getlocations_fields, function (key, settings) {
@@ -45,6 +47,21 @@
         var search_country = settings.search_country;
         var smart_ip_path = settings.smart_ip_path;
         street_num_pos = settings.street_num_pos;
+        streetview_setup = settings.streetview_setup;
+        if (streetview_setup) {
+          $("#getlocations_streetview_setup_" + key).hide();
+        }
+
+        if ($("#getlocations_streetview_heading_" + key).val() == '') {
+          $("#getlocations_streetview_heading_" + key).val(settings.streetview_heading);
+        }
+        if ($("#getlocations_streetview_zoom_" + key).val() == '') {
+          $("#getlocations_streetview_zoom_" + key).val(settings.streetview_zoom);
+        }
+        if ($("#getlocations_streetview_pitch_" + key).val() == '') {
+          $("#getlocations_streetview_pitch_" + key).val(settings.streetview_pitch);
+        }
+        streetview_setup_buttondone[key] = false;
 
         // we need to see if this is an update
         lat = $("#" + latfield + key).val();
@@ -52,6 +69,7 @@
         if (lat && lng) {
           point[key] = new google.maps.LatLng(parseFloat(lat), parseFloat(lng));
           updateMap(getlocations_inputmap[key], point[key], key);
+          streetview_setup_button_do(key);
         }
 
         if (! mark[key]) {
@@ -142,6 +160,18 @@
             return true;
           });
         }
+
+        // monitor zoom
+        if ($("#getlocations_mapzoom_" + key).is('input')) {
+          if ( $("#getlocations_mapzoom_" + key).val() == '') {
+            $("#getlocations_mapzoom_" + key).val(getlocations_map[key].getZoom());
+          }
+          getlocations_map[key].setZoom(parseInt($("#getlocations_mapzoom_" + key).val()));
+          google.maps.event.addListener(getlocations_map[key], 'zoom_changed', function() {
+            $("#getlocations_mapzoom_" + key).val(getlocations_map[key].getZoom());
+          });
+        }
+
       }
     }); // end each
     $("body").addClass("getlocations-fields-maps-processed");
@@ -218,6 +248,7 @@
         point[k] = new google.maps.LatLng(parseFloat(lat), parseFloat(lng));
         doReverseGeocode(point[k], k);
         updateMap(getlocations_inputmap[k], point[k], k);
+        streetview_setup_button_do(k);
       }
       else {
         var msg = Drupal.t('You have not entered an address.');
@@ -356,6 +387,7 @@
         lng = p.lng();
         $("#" + latfield + mmkey).val(lat);
         $("#" + lonfield + mmkey).val(lng);
+        streetview_setup_button_do(mkey);
       });
       google.maps.event.addListener(mmap, "click", function (e) {
         p = e.latLng;
@@ -365,6 +397,7 @@
         lng = p.lng();
         $("#" + latfield + mmkey).val(lat);
         $("#" + lonfield + mmkey).val(lng);
+        streetview_setup_button_do(mkey);
       });
     }
 
@@ -372,6 +405,68 @@
       umap.panTo(pt);
       umap.setZoom(nodezoom);
       makeMoveMarker(umap, pt, ukey);
+    }
+
+    function streetview_setup_button_do(k) {
+      if (streetview_setup && ! streetview_setup_buttondone[k] ) {
+        // we only want it once
+        streetview_setup_buttondone[k] = true;
+        $("#getlocations_streetview_setup_" + k).show();
+        $("#getlocations_streetview_setupbutton_" + k).click( function() {
+          // fetch lat/lon from DOM
+          var lat = $("#" + latfield + k).val();
+          var lng = $("#" + lonfield + k).val();
+          var pos = new google.maps.LatLng(parseFloat(lat), parseFloat(lng));
+          var h = ($("#getlocations_streetview_heading_" + k).val() ? $("#getlocations_streetview_heading_" + k).val() : 0);
+          var z = ($("#getlocations_streetview_zoom_" + k).val() ? $("#getlocations_streetview_zoom_" + k).val() : 1);
+          var p = ($("#getlocations_streetview_pitch_" + k).val() ? $("#getlocations_streetview_pitch_" + k).val() : 1);
+          var popt = {
+            position: pos,
+            pov: {
+              heading: parseInt(h),
+              pitch: parseInt(p)
+            },
+            enableCloseButton: true,
+            zoom: parseInt(z)
+          };
+          getlocations_pano[k] = new google.maps.StreetViewPanorama(document.getElementById("getlocations_map_canvas_" + k), popt);
+          getlocations_pano[k].setVisible(true);
+          $("#getlocations_streetview_setup_" + k).hide();
+
+          // handler for closebutton
+          google.maps.event.addListener(getlocations_pano[k], "closeclick", function() {
+            getlocations_pano[k] = null;
+          $("#getlocations_streetview_setup_" + k).show();
+          });
+
+          // handler for heading
+          google.maps.event.addListener(getlocations_pano[k], "pov_changed", function() {
+            var ph = getlocations_pano[k].getPov().heading;
+            while (ph < 0) {
+              ph = ph + 360;
+            }
+            while (ph > 360) {
+              ph = ph - 360;
+            }
+            $("#getlocations_streetview_heading_" + k).val(parseInt(ph));
+            var pp = getlocations_pano[k].getPov().pitch;
+            if (pp < -90) {
+              pp = -90;
+            }
+            if (pp > 90) {
+              pp = 90;
+            }
+            $("#getlocations_streetview_pitch_" + k).val(parseInt(pp));
+          });
+
+          // handler for zoom
+          google.maps.event.addListener(getlocations_pano[k], "zoom_changed", function() {
+            var pz = getlocations_pano[k].getZoom();
+            $("#getlocations_streetview_zoom_" + k).val(parseInt(pz));
+          });
+
+        });
+      }
     }
 
     function manageSmartIpbutton(k, p) {
@@ -426,6 +521,7 @@
             }
             point[kk] = new google.maps.LatLng(parseFloat(lat), parseFloat(lng));
             updateMap(getlocations_inputmap[kk], point[kk], kk);
+            streetview_setup_button_do(kk);
           }
         }
       });
@@ -445,6 +541,7 @@
           $("#" + lonfield + k).val(lng);
           point[k] = new google.maps.LatLng(parseFloat(lat), parseFloat(lng));
           updateMap(getlocations_inputmap[k], point[k], k);
+          streetview_setup_button_do(k);
           doReverseGeocode(point[k], k);
           //statusmsg = Drupal.t('Browser OK');
           //$(statusdiv).html(statusmsg);
