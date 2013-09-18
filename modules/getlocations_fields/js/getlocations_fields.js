@@ -171,6 +171,24 @@
             $("#getlocations_mapzoom_" + key).val(getlocations_map[key].getZoom());
           });
         }
+        // monitor maptype
+        if ($("#getlocations_map_maptype_" + key).is('input')) {
+          if ( $("#getlocations_map_maptype_" + key).val() == '') {
+            var m = getlocations_map[key].getMapTypeId();
+            var maptype = getmaptype(m);
+            $("#getlocations_map_maptype_" + key).val(maptype);
+          }
+          else {
+            var maptype = $("#getlocations_map_maptype_" + key).val();
+            var m = gettypemap(maptype);
+            getlocations_map[key].setMapTypeId(m);
+          }
+          google.maps.event.addListener(getlocations_map[key], 'maptypeid_changed', function() {
+            var m = getlocations_map[key].getMapTypeId();
+            var maptype = getmaptype(m);
+            $("#getlocations_map_maptype_" + key).val(maptype);
+          });
+        }
 
       }
     }); // end each
@@ -574,6 +592,25 @@
           alert(msg);
         }
       });
+    }
+
+    function getmaptype(m) {
+      var maptype = 'Map';
+      if (m == google.maps.MapTypeId.ROADMAP)        { maptype = 'Map'; }
+      else if (m == google.maps.MapTypeId.SATELLITE) { maptype = 'Satellite'; }
+      else if (m == google.maps.MapTypeId.HYBRID)    { maptype = 'Hybrid'; }
+      else if (m == google.maps.MapTypeId.TERRAIN)   { maptype = 'Physical'; }
+      else if (m == "OSM")                           { maptype = 'OpenStreetMap'; }
+      return maptype;
+    }
+    function gettypemap(maptype) {
+      var m = google.maps.MapTypeId.ROADMAP;
+      if (maptype == 'Map')                { m = google.maps.MapTypeId.ROADMAP; }
+      else if (maptype == 'Satellite')     { m = google.maps.MapTypeId.SATELLITE; }
+      else if (maptype == 'Hybrid')        { m = google.maps.MapTypeId.HYBRID; }
+      else if (maptype == 'Physical')      { m = google.maps.MapTypeId.TERRAIN; }
+      else if (maptype == 'OpenStreetMap') { m = 'OSM'; }
+      return m;
     }
 
   } // end getlocations_fields_init

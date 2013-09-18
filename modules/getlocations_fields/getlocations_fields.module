@@ -1408,6 +1408,10 @@ function getlocations_fields_field_widget_form(&$form, &$form_state, $field, $in
         '#default_value' => (isset($items[$delta]['mapzoom']) ? $items[$delta]['mapzoom'] : (isset($instance['default_value'][$delta]['mapzoom']) ? $instance['default_value'][$delta]['mapzoom'] : '')),
         '#prefix' => '<div class="js-hide">',
       );
+      $element['map_maptype'] = array(
+        '#type' => 'textfield',
+        '#default_value' => (isset($items[$delta]['map_maptype']) ? $items[$delta]['map_maptype'] : (isset($instance['default_value'][$delta]['map_maptype']) ? $instance['default_value'][$delta]['map_maptype'] : 'Map')),
+      );
       $element['streetview_heading'] = array(
         '#type' => 'textfield',
         '#default_value' => (isset($items[$delta]['streetview_heading']) ? $items[$delta]['streetview_heading'] : (isset($instance['default_value'][$delta]['streetview_heading']) ? $instance['default_value'][$delta]['streetview_heading'] : '')),
@@ -1823,6 +1827,9 @@ function getlocations_fields_save_locations($locations, $criteria, $mode) {
         }
         $data['data']['mapzoom'] = intval($locations[$key]['mapzoom']);
       }
+      if (isset($locations[$key]['map_maptype'])) {
+        $data['data']['map_maptype'] = check_plain($locations[$key]['map_maptype']);
+      }
 
       if (count($data)) {
         $locations[$key]['data'] = $data;
@@ -2093,6 +2100,7 @@ function getlocations_fields_load_location($glid) {
       $location['streetview_zoom'] = '';
       $location['streetview_pitch'] = '';
       $location['mapzoom'] = '';
+      $location['map_maptype'] = '';
       if ($data) {
         if (isset($data['data']['phone'] )) {
           $location['phone'] = $data['data']['phone'];
@@ -2114,6 +2122,9 @@ function getlocations_fields_load_location($glid) {
         }
         if (isset($data['data']['mapzoom'] )) {
           $location['mapzoom'] = $data['data']['mapzoom'];
+        }
+        if (isset($data['data']['map_maptype'] )) {
+          $location['map_maptype'] = $data['data']['map_maptype'];
         }
       }
 
@@ -3444,6 +3455,9 @@ function theme_getlocations_fields_show($variables) {
     if (isset($location['mapzoom']) && is_numeric($location['mapzoom'])) {
       $settings['nodezoom'] = $location['mapzoom'];
     }
+    if (isset($location['map_maptype']) && $location['map_maptype']) {
+      $settings['maptype'] = $location['map_maptype'];
+    }
 
     if ($location['longitude'] && $location['latitude']) {
 
@@ -3732,7 +3746,10 @@ function theme_getlocations_fields_field_widget_form($variables) {
   list($map, $mapid) = getlocations_fields_getmap($settings, $active);
 
   // attributes
-  $fieldlist = array('name', 'street', 'additional', 'city', 'province', 'postal_code', 'country', 'latitude', 'longitude', 'mapzoom', 'streetview_heading', 'streetview_zoom', 'streetview_pitch');
+  $fieldlist = array(
+    'name', 'street', 'additional', 'city', 'province', 'postal_code', 'country', 'latitude', 'longitude',
+    'mapzoom', 'streetview_heading', 'streetview_zoom', 'streetview_pitch', 'map_maptype'
+  );
   foreach ($fieldlist AS $field) {
     if (isset($form[$field])) {
       $form[$field]['#attributes'] = array('id' => 'getlocations_' . $field . '_' . $mapid);
@@ -3786,7 +3803,7 @@ function theme_getlocations_fields_field_widget_form($variables) {
     $form['country']['#suffix'] = '</div>';
   }
 
-  $msg = t('To use the map to find a location, drag the marker or click on the map.');
+  $msg = t('To use the map to find a location, drag the marker or click on the map.') . '<br />' . t('You can also set the map type and zoom');
   if (! $active) {
     $msg =  t('A preview of the current map settings.') . '<br />' . t('You can adjust the Map center, Zoom and map type by changing the map.') . '<br />' . t('For all other changes use the form. Remember to Save when you are done.');
   }
