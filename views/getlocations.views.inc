@@ -18,11 +18,21 @@ function getlocations_views_plugins() {
     'style' => array(
       'getlocations' => array(
         'title' => t('GetLocations'),
-        'help' => t('Displays locations on a map.'),
+        'help' => t('Displays rows as a map.'),
         'handler' => 'getlocations_plugin_style_map',
         'theme' => 'getlocations_view_map',
         'theme path' => GETLOCATIONS_PATH . '/views',
-        'uses fields' => TRUE,
+        'uses row plugin' => TRUE,
+        'uses grouping' => FALSE,
+        'uses options' => TRUE,
+        'type' => 'normal',
+      ),
+      'getlocations_streetview' => array(
+        'title' => t('GetLocations Streetview'),
+        'help' => t('Displays a location in Streetview.'),
+        'handler' => 'getlocations_plugin_style_streetview',
+        'theme' => 'getlocations_view_streetview',
+        'theme path' => GETLOCATIONS_PATH . '/views',
         'uses row plugin' => TRUE,
         'uses grouping' => FALSE,
         'uses options' => TRUE,
@@ -226,5 +236,180 @@ function template_preprocess_getlocations_view_map(&$variables) {
   $mapid = getlocations_setup_map($newdefaults);
   getlocations_js_settings_do($newdefaults, $latlons, $minmaxes, $mapid);
   $variables['map']  = theme('getlocations_show', array('width' => $newdefaults['width'], 'height' => $newdefaults['height'], 'defaults' => $newdefaults, 'mapid' => $mapid, 'entity_info' => '', 'object' => ''));
+
+}
+/**
+ * Preprocess function for theme_getlocations_view_streetview().
+ */
+function template_preprocess_getlocations_view_streetview(&$variables) {
+  global $language;
+
+  $locations = $variables['view']->style_plugin->rendered_fields;
+  $options = $variables['view']->style_plugin->options;
+  $base_field = $variables['view']->style_plugin->view->base_field;
+
+  $latlons = array();
+  $entity_type = 'node';
+  if ($base_field == 'uid') {
+    $entity_type = 'user';
+  }
+  elseif ($base_field == 'tid') {
+    $entity_type = 'taxonomy_term';
+  }
+  elseif ($base_field == 'cid') {
+    $entity_type = 'comment';
+  }
+
+  if (count($locations) == 1) {
+    $location = $locations[0];
+
+    $lid = 0;
+    if (module_exists('getlocations_fields')) {
+      if (isset($location['glid']) && $location['glid'] > 0 && isset($location['latitude']) && isset($location['longitude'])) {
+        $lid = $location['glid'];
+      }
+    }
+    elseif (module_exists('location')) {
+      // TODO test this
+      if (isset($location['lid']) && $location['lid'] > 0 && isset($location['latitude']) && isset($location['longitude'])) {
+        $lid = $location['lid'];
+        if (isset($location['type'])) {
+          $location['field_name'] = getlocations_get_fieldname($location['type'], $entity_type);
+        }
+      }
+    }
+    elseif (module_exists('geofield')) {
+      // TODO test this
+      if (isset($location[$base_field]) && $location[$base_field] > 0 ) {
+        $lid = $location[$base_field];
+        $location['field_name'] = getlocations_get_fieldname($location['type'], $entity_type);
+        $location['latitude'] = $location[$location['field_name']];
+        $location['longitude'] = $location[$location['field_name'] . '_1'];
+      }
+    }
+    elseif (module_exists('geolocation')) {
+      // TODO test this
+      if (isset($location[$base_field]) && $location[$base_field] > 0) {
+        $lid = $location[$base_field];
+        $location['field_name'] = getlocations_get_fieldname($location['type'], $entity_type);
+        $location['latitude'] = $location[$location['field_name']];
+        $location['longitude'] = $location[$location['field_name'] . '_1'];
+      }
+    }
+
+    if ($lid > 0) {
+      // dump bummers with no lat/lon
+      if ($latlon = getlocations_latlon_check($location['latitude'] . ',' . $location['longitude'])) {
+        $ll = explode(',', $latlon);
+        $location['latitude'] = $ll[0];
+        $location['longitude'] = $ll[1];
+
+        $options['sv_heading'] = (isset($location['data']) && is_numeric($location['data']) ? $location['data'] : 0);
+        $options['sv_zoom']    = (isset($location['data_1']) && is_numeric($location['data_1']) ? $location['data_1'] : 1);
+        $options['sv_pitch']   = (isset($location['data_2']) && is_numeric($location['data_2']) ? $location['data_2'] : 0);
+        $options['sv_enable']  = (isset($location['data_3']) && is_numeric($location['data_3']) ? $location['data_3'] : 1);
+        // streetview killswitch
+        if (! getlocations_sv_global()) {
+          $options['sv_enable'] = 0;
+          $options['sv_showfirst'] = 0;
+          $options['sv_showfirst_enable'] = 0;
+        }
+
+        $getlocations_defaults = getlocations_defaults();
+        $newdefaults = getlocations_adjust_vars($getlocations_defaults, $options);
+        $mapid = getlocations_setup_map($newdefaults);
+        $options['latitude'] = $location['latitude'];
+        $options['longitude'] = $location['longitude'];
+
+        getlocations_streetview_js_settings_do($options, $mapid);
+        $canvas = '<div id="getlocations_streetview_wrapper_' . $mapid . '"  style="width: ' . $options['width'] . '; height: ' . $options['height'] . '" >';
+        $canvas .= '<div class="getlocations_streetview_canvas" id="getlocations_streetview_canvas_' . $mapid . '" style="width: 100%; height: 100%" ></div>';
+        $canvas .= '</div>';
+        $variables['streetview']  = $canvas;
+      }
+    }
+  }
+}
+
+function getlocations_streetview_js_settings_do($defaults, $mapid) {
+
+  $settings = array(
+    $mapid => array(
+      'width'                     => $defaults['width'],
+      'height'                    => $defaults['height'],
+      'sv_addresscontrol'         => $defaults['sv_addresscontrol'],
+      'sv_addresscontrolposition' => $defaults['sv_addresscontrolposition'],
+      'sv_pancontrol'             => $defaults['sv_pancontrol'],
+      'sv_pancontrolposition'     => $defaults['sv_pancontrolposition'],
+      'sv_zoomcontrol'            => $defaults['sv_zoomcontrol'],
+      'sv_zoomcontrolposition'    => $defaults['sv_zoomcontrolposition'],
+      'sv_linkscontrol'           => $defaults['sv_linkscontrol'],
+      'sv_imagedatecontrol'       => $defaults['sv_imagedatecontrol'],
+      'sv_scrollwheel'            => $defaults['sv_scrollwheel'],
+      'sv_clicktogo'              => $defaults['sv_clicktogo'],
+      'latitude'                  => $defaults['latitude'],
+      'longitude'                 => $defaults['longitude'],
+      'sv_heading'                => $defaults['sv_heading'],
+      'sv_zoom'                   => $defaults['sv_zoom'],
+      'sv_pitch'                  => $defaults['sv_pitch'],
+      'sv_enable'                 => $defaults['sv_enable'],
+      'js_path'                   => base_path() . GETLOCATIONS_PATH . '/js/',
+      'sv_fullscreen'             => $defaults['sv_fullscreen'],
+    ),
+  );
+
+  drupal_add_js(array('getlocations_streetview' => $settings), 'setting');
+
+}
+
+/**
+ * Implements hook_views_pre_render().
+ *
+ * This hook is called right before the render process. The query has been
+ * executed, and the pre_render() phase has already happened for handlers, so
+ * all data should be available.
+ *
+ * Adding output to the view can be accomplished by placing text on
+ * $view->attachment_before and $view->attachment_after. Altering the content
+ * can be achieved by editing the items of $view->result.
+ *
+ * This hook can be utilized by themes.
+ * @param $view
+ *   The view object about to be processed.
+ */
+function getlocations_views_pre_render(&$view) {
+
+  // look for the right view, machine name must end in getlocations_streetview
+  if (preg_match('/getlocations_streetview$/i', $view->name)) {
+
+    // streetview killswitch
+    if (getlocations_sv_global()) {
+      if (count($view->result) == 1) {
+        if (isset($view->result[0]->getlocations_fields_data)) {
+          // OK, now get the data, unserialize and get sv_enable
+          $value = unserialize($view->result[0]->getlocations_fields_data);
+          $enable = (isset($value['data']['sv_enable']) ? $value['data']['sv_enable'] : 1);
+          if (! $enable) {
+            // scrub the result
+            unset($view->result[0]);
+          }
+        }
+      }
+      else {
+        // scrub the result
+        $c = count($view->result);
+        for ($i = 0; $i < $c; $i++) {
+          unset($view->result[$i]);
+        }
+      }
+    }
+    else {
+      // scrub the result
+      $c = count($view->result);
+      for ($i = 0; $i < $c; $i++) {
+        unset($view->result[$i]);
+      }
+    }
+  }
 
 }

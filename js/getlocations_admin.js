@@ -408,6 +408,91 @@
         }
       });
 
+      if ($("#edit-getlocations-default-pancontrol").is('input')) {
+        if ($("#edit-getlocations-default-pancontrol").attr('checked')) {
+          $("#wrap-pancontrol").show();
+        }
+        else {
+          $("#wrap-pancontrol").hide();
+        }
+        $("#edit-getlocations-default-pancontrol").change(function() {
+          if ($(this).attr('checked')) {
+            $("#wrap-pancontrol").show();
+          }
+          else {
+            $("#wrap-pancontrol").hide();
+          }
+        });
+      }
+
+      if ($("#edit-getlocations-default-controltype").is('select')) {
+        if ($("#edit-getlocations-default-controltype").val() == 'none') {
+          $("#wrap-zoomcontrol").hide();
+        }
+        else {
+          $("#wrap-zoomcontrol").show();
+        }
+        $("#edit-getlocations-default-controltype").change(function() {
+          if ($(this).val() == 'none') {
+            $("#wrap-zoomcontrol").hide();
+          }
+          else {
+            $("#wrap-zoomcontrol").show();
+          }
+        });
+      }
+
+      if ($("#edit-getlocations-default-mtc").is('select')) {
+        if ($("#edit-getlocations-default-mtc").val() == 'none') {
+          $("#wrap-mapcontrol").hide();
+        }
+        else {
+          $("#wrap-mapcontrol").show();
+        }
+        $("#edit-getlocations-default-mtc").change(function() {
+          if ($(this).val() == 'none') {
+            $("#wrap-mapcontrol").hide();
+          }
+          else {
+            $("#wrap-mapcontrol").show();
+          }
+        });
+      }
+
+      if ($("#edit-getlocations-default-scale").is('input')) {
+        if ($("#edit-getlocations-default-scale").attr('checked')) {
+          $("#wrap-scale").show();
+        }
+        else {
+          $("#wrap-scale").hide();
+        }
+        $("#edit-getlocations-default-scale").change(function() {
+          if ($(this).attr('checked')) {
+            $("#wrap-scale").show();
+          }
+          else {
+            $("#wrap-scale").hide();
+          }
+        });
+      }
+
+      if ($("#edit-getlocations-default-sv-show").is('input')) {
+        if ($("#edit-getlocations-default-sv-show").attr('checked')) {
+          $("#wrap-sv-show").show();
+        }
+        else {
+          $("#wrap-sv-show").hide();
+        }
+        $("#edit-getlocations-default-sv-show").change(function() {
+          if ($(this).attr('checked')) {
+            $("#wrap-sv-show").show();
+          }
+          else {
+            $("#wrap-sv-show").hide();
+          }
+        });
+      }
+
 
     }
   };

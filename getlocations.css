@@ -18,6 +18,10 @@
   max-width: none !important;
 }
 
+.getlocations_streetview_canvas img {
+  max-width: none !important;
+}
+
 .getlocations_map_buttons {
 }
 .getlocations_returnlink {

@@ -16,6 +16,7 @@ files[] = handlers/getlocations_fields_handler_field_country.inc
 files[] = handlers/getlocations_fields_handler_field_distance.inc
 files[] = handlers/getlocations_fields_handler_field_latitude.inc
 files[] = handlers/getlocations_fields_handler_field_longitude.inc
+files[] = handlers/getlocations_fields_handler_field_data.inc
 
 files[] = handlers/getlocations_fields_handler_filter_country.inc
 files[] = handlers/getlocations_fields_handler_filter_distance.inc

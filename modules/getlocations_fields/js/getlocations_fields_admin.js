@@ -64,6 +64,91 @@
         });
       }
 
+      if ($("#edit-getlocations-fields-defaults-pancontrol,#edit-field-settings-pancontrol").is('input')) {
+        if ($("#edit-getlocations-fields-defaults-pancontrol,#edit-field-settings-pancontrol").attr('checked')) {
+          $("#wrap-pancontrol").show();
+        }
+        else {
+          $("#wrap-pancontrol").hide();
+        }
+        $("#edit-getlocations-fields-defaults-pancontrol,#edit-field-settings-pancontrol").change(function() {
+          if ($(this).attr('checked')) {
+            $("#wrap-pancontrol").show();
+          }
+          else {
+            $("#wrap-pancontrol").hide();
+          }
+        });
+      }
+
+      if ($("#edit-getlocations-fields-defaults-controltype,#edit-field-settings-controltype").is('select')) {
+        if ($("#edit-getlocations-fields-defaults-controltype,#edit-field-settings-controltype").val() == 'none') {
+          $("#wrap-zoomcontrol").hide();
+        }
+        else {
+          $("#wrap-zoomcontrol").show();
+        }
+        $("#edit-getlocations-fields-defaults-controltype,#edit-field-settings-controltype").change(function() {
+          if ($(this).val() == 'none') {
+            $("#wrap-zoomcontrol").hide();
+          }
+          else {
+            $("#wrap-zoomcontrol").show();
+          }
+        });
+      }
+
+      if ($("#edit-getlocations-fields-defaults-mtc,#edit-field-settings-mtc").is('select')) {
+        if ($("#edit-getlocations-fields-defaults-mtc,#edit-field-settings-mtc").val() == 'none') {
+          $("#wrap-mapcontrol").hide();
+        }
+        else {
+          $("#wrap-mapcontrol").show();
+        }
+        $("#edit-getlocations-fields-defaults-mtc,#edit-field-settings-mtc").change(function() {
+          if ($(this).val() == 'none') {
+            $("#wrap-mapcontrol").hide();
+          }
+          else {
+            $("#wrap-mapcontrol").show();
+          }
+        });
+      }
+
+      if ($("#edit-getlocations-fields-defaults-scale,#edit-field-settings-scale").is('input')) {
+        if ($("#edit-getlocations-fields-defaults-scale,#edit-field-settings-scale").attr('checked')) {
+          $("#wrap-scale").show();
+        }
+        else {
+          $("#wrap-scale").hide();
+        }
+        $("#edit-getlocations-fields-defaults-scale,#edit-field-settings-scale").change(function() {
+          if ($(this).attr('checked')) {
+            $("#wrap-scale").show();
+          }
+          else {
+            $("#wrap-scale").hide();
+          }
+        });
+      }
+
+      if ($("#edit-getlocations-fields-defaults-sv-show,#edit-field-settings-sv-show").is('input')) {
+        if ($("#edit-getlocations-fields-defaults-sv-show,#edit-field-settings-sv-show").attr('checked')) {
+          $("#wrap-sv-show").show();
+        }
+        else {
+          $("#wrap-sv-show").hide();
+        }
+        $("#edit-getlocations-fields-defaults-sv-show,#edit-field-settings-sv-show").change(function() {
+          if ($(this).attr('checked')) {
+            $("#wrap-sv-show").show();
+          }
+          else {
+            $("#wrap-sv-show").hide();
+          }
+        });
+      }
+
 
     }
   };

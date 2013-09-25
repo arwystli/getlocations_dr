@@ -171,7 +171,7 @@ var getlocations_pano = [];
         var scale = settings.scale;
         var overview = settings.overview;
         var overview_opened = settings.overview_opened;
-        var streetview_show = settings.streetview_show;
+        var sv_show = settings.sv_show;
         var scrollw = settings.scrollwheel;
         var maptype = (settings.maptype ? settings.maptype : '');
         var baselayers = (settings.baselayers ? settings.baselayers : '');
@@ -190,8 +190,13 @@ var getlocations_pano = [];
         var useOpenStreetMap = false;
         var nokeyboard = (settings.nokeyboard ? true : false);
         var nodoubleclickzoom = (settings.nodoubleclickzoom ? true : false);
+        var pancontrolposition = settings.pancontrolposition;
+        var mapcontrolposition = settings.mapcontrolposition;
+        var zoomcontrolposition = settings.zoomcontrolposition;
+        var scalecontrolposition = settings.scalecontrolposition;
+        var svcontrolposition = settings.svcontrolposition;
         // Enable the visual refresh
-        google.maps.visualRefresh = (settings.visual_refresh ?  true : false);
+        google.maps.visualRefresh = (settings.visual_refresh ? true : false);
 
         global_settings.info_path = settings.info_path;
         global_settings.lidinfo_path = settings.lidinfo_path;
@@ -225,11 +230,11 @@ var getlocations_pano = [];
         }
 
         global_settings.datanum = settings.datanum;
-        global_settings.streetview_show = settings.streetview_show;
-        global_settings.streetview_showfirst = settings.streetview_showfirst;
-        global_settings.streetview_heading = settings.streetview_heading;
-        global_settings.streetview_zoom = settings.streetview_zoom;
-        global_settings.streetview_pitch = settings.streetview_pitch;
+        global_settings.sv_show = settings.sv_show;
+        global_settings.sv_showfirst = settings.sv_showfirst;
+        global_settings.sv_heading = settings.sv_heading;
+        global_settings.sv_zoom = settings.sv_zoom;
+        global_settings.sv_pitch = settings.sv_pitch;
         global_settings.markermanagertype = settings.markermanagertype;
         global_settings.pansetting = settings.pansetting;
         // mobiles
@@ -303,16 +308,6 @@ var getlocations_pano = [];
           cenlat = ((minlat + maxlat)/2);
           cenlon = ((minlon + maxlon)/2);
         }
-        // menu type
-        var mtc = false;
-        if (settings.mtc == 'standard') { mtc = google.maps.MapTypeControlStyle.HORIZONTAL_BAR; }
-        else if (settings.mtc == 'menu' ) { mtc = google.maps.MapTypeControlStyle.DROPDOWN_MENU; }
-
-        // nav control type
-        if (controltype == 'default') { controltype = google.maps.ZoomControlStyle.DEFAULT; }
-        else if (controltype == 'small') { controltype = google.maps.ZoomControlStyle.SMALL; }
-        else if (controltype == 'large') { controltype = google.maps.ZoomControlStyle.LARGE; }
-        else { controltype = false; }
 
         // map type
         var maptypes = [];
@@ -369,20 +364,12 @@ var getlocations_pano = [];
           minZoom: global_settings.minzoom_map,
           maxZoom: global_settings.maxzoom_map,
           center: new google.maps.LatLng(lat, lng),
-          mapTypeControl: (mtc ? true : false),
-          mapTypeControlOptions: {style: mtc,  mapTypeIds: maptypes},
-          zoomControl: (controltype ? true : false),
-          zoomControlOptions: {style: controltype},
-          panControl: (pancontrol ? true : false),
           mapTypeId: maptype,
           scrollwheel: (scrollw ? true : false),
           draggable: (draggable ? true : false),
           styles: styles,
           overviewMapControl: (overview ? true : false),
           overviewMapControlOptions: {opened: (overview_opened ? true : false)},
-          streetViewControl: (streetview_show ? true : false),
-          scaleControl: (scale ? true : false),
-          scaleControlOptions: {style: google.maps.ScaleControlStyle.DEFAULT},
           keyboardShortcuts: (nokeyboard ? false : true),
           disableDoubleClickZoom: nodoubleclickzoom
         };
@@ -390,6 +377,95 @@ var getlocations_pano = [];
           mapOpts.backgroundColor = map_backgroundcolor;
         }
 
+        var controlpositions = [];
+        controlpositions['tl'] = google.maps.ControlPosition.TOP_LEFT;
+        controlpositions['tc'] = google.maps.ControlPosition.TOP_CENTER;
+        controlpositions['tr'] = google.maps.ControlPosition.TOP_RIGHT;
+        controlpositions['rt'] = google.maps.ControlPosition.RIGHT_TOP;
+        controlpositions['rc'] = google.maps.ControlPosition.RIGHT_CENTER;
+        controlpositions['rb'] = google.maps.ControlPosition.RIGHT_BOTTOM;
+        controlpositions['br'] = google.maps.ControlPosition.BOTTOM_RIGHT;
+        controlpositions['bc'] = google.maps.ControlPosition.BOTTOM_CENTER;
+        controlpositions['bl'] = google.maps.ControlPosition.BOTTOM_LEFT;
+        controlpositions['lb'] = google.maps.ControlPosition.LEFT_BOTTOM;
+        controlpositions['lc'] = google.maps.ControlPosition.LEFT_CENTER;
+        controlpositions['lt'] = google.maps.ControlPosition.LEFT_TOP;
+
+        // zoom control
+        if (controltype == 'none') {
+          mapOpts.zoomControl = false;
+        }
+        else {
+          mapOpts.zoomControl = true;
+          var zco = {};
+          if (zoomcontrolposition) {
+            zco.position = controlpositions[zoomcontrolposition];
+          }
+          if (controltype == 'small') {
+            zco.style = google.maps.ZoomControlStyle.SMALL;
+          }
+          else if (controltype == 'large') {
+            zco.style = google.maps.ZoomControlStyle.LARGE;
+          }
+          if (zco) {
+            mapOpts.zoomControlOptions = zco;
+          }
+        }
+
+        // pancontrol
+        if (pancontrol) {
+          mapOpts.panControl = true;
+          if (pancontrolposition) {
+            mapOpts.panControlOptions = {position: controlpositions[pancontrolposition]};
+          }
+        }
+        else {
+          mapOpts.panControl = false;
+        }
+
+        // map control
+        if (settings.mtc == 'none') {
+          mapOpts.mapTypeControl = false;
+        }
+        else {
+          mapOpts.mapTypeControl = true;
+          var mco = {};
+          mco.mapTypeIds = maptypes;
+          if (settings.mtc == 'standard') {
+            mco.style = google.maps.MapTypeControlStyle.HORIZONTAL_BAR;
+          }
+          else if (settings.mtc == 'menu') {
+            mco.style = google.maps.MapTypeControlStyle.DROPDOWN_MENU;
+          }
+          if (mapcontrolposition) {
+            mco.position = controlpositions[mapcontrolposition];
+          }
+          mapOpts.mapTypeControlOptions = mco;
+        }
+
+        // scale control
+        if (scale) {
+          mapOpts.scaleControl = true;
+          if (scalecontrolposition) {
+            mapOpts.ScaleControlOptions = {position: controlpositions[scalecontrolposition]};
+          }
+        }
+        else {
+          mapOpts.scaleControl = false;
+        }
+
+        // pegman
+        if (sv_show) {
+          mapOpts.streetViewControl = true;
+          if (svcontrolposition) {
+            mapOpts.StreetViewControlOptions = {position: controlpositions[svcontrolposition]};
+          }
+        }
+        else {
+          mapOpts.streetViewControl = false;
+        }
+
+        // make the map
         getlocations_map[key] = new google.maps.Map(document.getElementById("getlocations_map_canvas_" + key), mapOpts);
 
         // OpenStreetMap
@@ -861,15 +937,15 @@ var getlocations_pano = [];
         google.maps.event.trigger(m, 'click');
       }
       // streetview first feature
-      if (gs.streetview_showfirst) {
+      if (gs.sv_showfirst) {
         var popt = {
           position: p,
           pov: {
-            heading: parseInt(gs.streetview_heading),
-            pitch: parseInt(gs.streetview_pitch)
+            heading: parseInt(gs.sv_heading),
+            pitch: parseInt(gs.sv_pitch)
           },
           enableCloseButton: true,
-          zoom: parseInt(gs.streetview_zoom)
+          zoom: parseInt(gs.sv_zoom)
         };
         getlocations_pano[mkey] = new google.maps.StreetViewPanorama(document.getElementById("getlocations_map_canvas_" + mkey), popt);
         getlocations_pano[mkey].setVisible(true);

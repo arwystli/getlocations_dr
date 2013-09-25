@@ -310,6 +310,57 @@
         });
       }
 
+      // streetview plugin
+      if ($("#edit-style-options-sv-addresscontrol").is('input')) {
+        if ($("#edit-style-options-sv-addresscontrol").attr('checked')) {
+          $("#wrap-addresscontrol").show();
+        }
+        else {
+          $("#wrap-addresscontrol").hide();
+        }
+        $("#edit-style-options-sv-addresscontrol").change(function() {
+          if ($(this).attr('checked')) {
+            $("#wrap-addresscontrol").show();
+          }
+          else {
+            $("#wrap-addresscontrol").hide();
+          }
+        });
+      }
+      if ($("#edit-style-options-sv-pancontrol").is('input')) {
+        if ($("#edit-style-options-sv-pancontrol").attr('checked')) {
+          $("#wrap-pancontrol").show();
+        }
+        else {
+          $("#wrap-pancontrol").hide();
+        }
+        $("#edit-style-options-sv-pancontrol").change(function() {
+          if ($(this).attr('checked')) {
+            $("#wrap-pancontrol").show();
+          }
+          else {
+            $("#wrap-pancontrol").hide();
+          }
+        });
+      }
+      if ($("#edit-style-options-sv-zoomcontrol").is('select')) {
+        if ($("#edit-style-options-sv-zoomcontrol").val() == 'none') {
+          $("#wrap-zoomcontrol").hide();
+        }
+        else {
+          $("#wrap-zoomcontrol").show();
+        }
+        $("#edit-style-options-sv-zoomcontrol").change(function() {
+          if ($(this).val() == 'none') {
+            $("#wrap-zoomcontrol").hide();
+          }
+          else {
+            $("#wrap-zoomcontrol").show();
+          }
+        });
+      }
+
+
     }
   };
 

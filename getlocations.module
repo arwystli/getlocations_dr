@@ -316,7 +316,7 @@ function getlocations_entity_type_map($type, $entity_id) {
         elseif ($entity_title) {
           $name = htmlspecialchars_decode(strip_tags($entity_title), ENT_QUOTES);
         }
-        $latlons[] = array($location['latitude'], $location['longitude'], $location['entity_id'], $name, $marker, $location['entity_type']);
+        $latlons[] = array($location['latitude'], $location['longitude'], $location['entity_id'], $name, $marker, $location['entity_type'], '', '');
         $ct++;
       }
     }
@@ -379,7 +379,7 @@ function getlocations_usersmap() {
           }
           $ct++;
           $name = htmlspecialchars_decode($location['name'] ? strip_tags($location['name']) : strip_tags($row->name), ENT_QUOTES);
-          $latlons[] = array($location['latitude'], $location['longitude'], $location['lid'], $name, $marker, $location['key']);
+          $latlons[] = array($location['latitude'], $location['longitude'], $location['lid'], $name, $marker, $location['key'], '', '');
         }
       }
     }
@@ -426,7 +426,7 @@ function getlocations_lids($lidlist) {
         $location['key'] = '';
         $ct++;
         $name = htmlspecialchars_decode(strip_tags($location['name']), ENT_QUOTES);
-        $latlons[] = array($location['latitude'], $location['longitude'], $location['lid'], $name, $location['marker'], $location['key']);
+        $latlons[] = array($location['latitude'], $location['longitude'], $location['lid'], $name, $location['marker'], $location['key'], '', '');
       }
     }
   }
@@ -479,7 +479,7 @@ function getlocations_nids($nidlist) {
         }
         $ct++;
         $name = htmlspecialchars_decode(strip_tags($location['name']), ENT_QUOTES);
-        $latlons[] = array($location['latitude'], $location['longitude'], $location['lid'], $name, $location['marker'], $location['key']);
+        $latlons[] = array($location['latitude'], $location['longitude'], $location['lid'], $name, $location['marker'], $location['key'], '', '');
       }
     }
   }
@@ -813,6 +813,17 @@ function getlocations_setup_js($defaults, $googleonly = FALSE) {
     }
   }
 
+  // streetview
+  if (isset($defaults['sv_enable']) && $defaults['sv_enable']) {
+    if (!stristr($current_js, $getlocations_paths['getlocations_streetview_path'])) {
+      $js_opts = array();
+      $js_opts['weight'] = $getlocations_js_weight;
+      $js_opts['type'] = 'file';
+      drupal_add_js($getlocations_paths['getlocations_streetview_path'], $js_opts);
+      $getlocations_js_weight++;
+    }
+  }
+
 }
 
 /**
@@ -830,7 +841,10 @@ function getlocations_defaults($reset = FALSE) {
     'minzoom_map'                   => -1,
     'maxzoom_map'                   => -1,
     'controltype'                   => 'small',
+    'zoomcontrolposition'           => '',
     'pancontrol'                    => 1,
+    'pancontrolposition'            => '',
+    'mapcontrolposition'            => '',
     'latlong'                       => '40,0',
     'maptype'                       => 'Map',
     'mtc'                           => 'standard',
@@ -845,11 +859,15 @@ function getlocations_defaults($reset = FALSE) {
     'overview'                      => 0,
     'overview_opened'               => 0,
     'scrollwheel'                   => 0,
-    'streetview_show'               => 0,
-    'streetview_showfirst'          => 0,
-    'streetview_heading'            => 0,
-    'streetview_zoom'               => 1,
-    'streetview_pitch'              => 0,
+    'scalecontrolposition'          => '',
+    'sv_global'                     => 1, // global killswitch
+    'sv_show'                       => 0, // Pegman
+    'svcontrolposition'             => '',
+    'sv_showfirst'                  => 0, // Overlay
+    'sv_heading'                    => 0,
+    'sv_zoom'                       => 1,
+    'sv_pitch'                      => 0,
+    'sv_enable'                     => 0, // switch set in getlocations_fields
     'trafficinfo'                   => 0,
     'trafficinfo_state'             => 0,
     'bicycleinfo'                   => 0,
@@ -2044,11 +2062,11 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
       'bicycleinfo_state'         => $defaults['bicycleinfo_state'],
       'transitinfo'               => $defaults['transitinfo'],
       'transitinfo_state'         => $defaults['transitinfo_state'],
-      'streetview_show'           => $defaults['streetview_show'],
-      'streetview_showfirst'      => $defaults['streetview_showfirst'],
-      'streetview_heading'        => $defaults['streetview_heading'],
-      'streetview_zoom'           => $defaults['streetview_zoom'],
-      'streetview_pitch'          => $defaults['streetview_pitch'],
+      'sv_show'                   => $defaults['sv_show'],
+      'sv_showfirst'              => $defaults['sv_showfirst'],
+      'sv_heading'                => $defaults['sv_heading'],
+      'sv_zoom'                   => $defaults['sv_zoom'],
+      'sv_pitch'                  => $defaults['sv_pitch'],
       'pancontrol'                => $defaults['pancontrol'],
       'panoramio_use'             => $defaults['panoramio_use'],
       'panoramio_show'            => $defaults['panoramio_show'],
@@ -2100,6 +2118,11 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
       'geojson_enable'            => $defaults['geojson_enable'],
       'nokeyboard'                => $defaults['nokeyboard'],
       'nodoubleclickzoom'         => $defaults['nodoubleclickzoom'],
+      'zoomcontrolposition'       => $defaults['zoomcontrolposition'],
+      'mapcontrolposition'        => $defaults['mapcontrolposition'],
+      'pancontrolposition'        => $defaults['pancontrolposition'],
+      'scalecontrolposition'      => $defaults['scalecontrolposition'],
+      'svcontrolposition'         => $defaults['svcontrolposition'],
     ),
   );
   // only set these if wanted
@@ -2825,10 +2848,36 @@ function getlocations_map_display_basics_form($defaults, $labels = array()) {
 }
 
 function getlocations_map_display_options_form($defaults, $config = TRUE, $extras = TRUE, $source = '') {
+
+  $controlpositions = getlocations_controlpositions();
+
   $form = array();
   $form['controltype'] = getlocations_element_map_zoom_controltype($defaults['controltype']);
+  $form['controltype']['#suffix'] = '<div id="wrap-zoomcontrol">';
+  $form['zoomcontrolposition'] = getlocations_element_dd(
+    t('Position of Zoom Control'),
+    $defaults['zoomcontrolposition'],
+    $controlpositions
+  );
+  $form['zoomcontrolposition']['#suffix'] = '</div>';
+
   $form['pancontrol'] = getlocations_element_map_checkbox(t('Show Pan control'), $defaults['pancontrol']);
+  $form['pancontrol']['#suffix'] = '<div id="wrap-pancontrol">';
+  $form['pancontrolposition'] = getlocations_element_dd(
+    t('Position of Pan Control'),
+    $defaults['pancontrolposition'],
+    $controlpositions
+  );
+  $form['pancontrolposition']['#suffix'] = '</div>';
+
   $form['mtc'] = getlocations_element_map_mtc($defaults['mtc']);
+  $form['mtc']['#suffix'] = '<div id="wrap-mapcontrol">';
+  $form['mapcontrolposition'] = getlocations_element_dd(
+    t('Position of Map Control'),
+    $defaults['mapcontrolposition'],
+    $controlpositions
+  );
+  $form['mapcontrolposition']['#suffix'] = '</div>';
 
   // a hack to get this in
   if (! isset($defaults['baselayers']['OpenStreetMap'])) {
@@ -2869,6 +2918,14 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
     $defaults['scale'],
     t('Show scale.')
   );
+  $form['scale']['#suffix'] = '<div id="wrap-scale">';
+  $form['scalecontrolposition'] = getlocations_element_dd(
+    t('Position of Scale Control'),
+    $defaults['scalecontrolposition'],
+    $controlpositions
+  );
+  $form['scalecontrolposition']['#suffix'] = '</div>';
+
   $form['overview'] = getlocations_element_map_checkbox(
     t('Overview map'),
     $defaults['overview'],
@@ -2884,6 +2941,7 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
     $defaults['scrollwheel'],
     t('Enable scrollwheel zooming.')
   );
+
   $form['draggable'] = getlocations_element_map_checkbox(
     t('Draggable'),
     $defaults['draggable'],
@@ -2935,9 +2993,41 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
     else {
       $form['jquery_colorpicker_enabled'] = array('#type' => 'value', '#value' => 0);
     }
+
+    // global killswitch for streetview
+    $form['sv_global'] = getlocations_element_map_checkbox(
+      t('Enable Streetview globally'),
+      $defaults['sv_global'],
+      t('Enables Streetview globally, disabling will prevent streetview from appearing anywhere, except Pegman.')
+    );
+
   }
 
   if ($extras) {
+
+    $form['sv_show'] = getlocations_element_map_checkbox(
+      t('Show streetview Pegman'),
+      $defaults['sv_show']
+    );
+    $form['sv_show']['#suffix'] = '<div id="wrap-sv-show">';
+    $form['svcontrolposition'] = getlocations_element_dd(
+      t('Position of Pegman'),
+      $defaults['svcontrolposition'],
+      $controlpositions
+    );
+    $form['svcontrolposition']['#suffix'] = '</div>';
+
+    // streetview killswitch
+    if (getlocations_sv_global()) {
+      $form['sv_showfirst'] = getlocations_element_map_checkbox(
+        t('Show streetview Overlay'),
+        $defaults['sv_showfirst'],
+        t('Show streetview overlay on initial view of the map. This only occurs if there is one location.')
+      );
+    }
+    else {
+      $form['sv_showfirst'] = array('#type' => 'value', '#value' => 0);
+    }
 
     $form['show_maplinks'] = getlocations_element_map_checkbox(
       t('Show map links'),
@@ -2954,17 +3044,6 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
     $form['fullscreen'] = getlocations_element_map_checkbox(
       t('Show Fullscreen button'),
       $defaults['fullscreen']
-    );
-
-    $form['streetview_show'] = getlocations_element_map_checkbox(
-      t('Show streetview pegman'),
-      $defaults['streetview_show']
-    );
-
-    $form['streetview_showfirst'] = getlocations_element_map_checkbox(
-      t('Show streetview'),
-      $defaults['streetview_showfirst'],
-      t('Show streetview on initial view of the map. This only occurs if there is one location.')
     );
 
     $form['trafficinfo'] = getlocations_element_map_checkbox(
@@ -3332,7 +3411,7 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
         t("The distance from the center of the rectangle to the edge in meters on the Earth's surface. This will only be used if Apply a rectangle is enabled."),
         10,
         10,
-        TRUE
+        FALSE
       );
     }
 
@@ -3655,6 +3734,8 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
       );
     }
 
+
+
   }
 
   return $form;
@@ -3680,6 +3761,7 @@ function getlocations_paths_get($reset = FALSE) {
     'getlocations_geo_path'           => GETLOCATIONS_PATH . '/js/getlocations_geo.js',
     'getlocations_preview_path'       => GETLOCATIONS_PATH . '/js/getlocations_preview.js',
     'getlocations_geojson_path'       => GETLOCATIONS_PATH . '/js/getlocations_geojson.js',
+    'getlocations_streetview_path'    => GETLOCATIONS_PATH . '/js/getlocations_streetview.js',
   );
   if ($reset) {
     $getlocations_paths = $defaults;
@@ -4827,6 +4909,38 @@ function getlocations_get_current_supported_module() {
   return FALSE;
 }
 
+function getlocations_controlpositions($dd = TRUE) {
+    if ($dd) {
+      $controlpositions = array(
+        ''   => t('Default'),
+        'tl' => t('Top Left'),
+        'tc' => t('Top Center'),
+        'tr' => t('Top Right'),
+        'rt' => t('Right Top'),
+        'rc' => t('Right Center'),
+        'rb' => t('Right Bottom'),
+        'br' => t('Bottom Right'),
+        'bc' => t('Bottom Center'),
+        'bl' => t('Bottom Left'),
+        'lb' => t('Left Bottom'),
+        'lc' => t('Left Center'),
+        'lt' => t('Left Top'),
+      );
+    }
+    else {
+      $controlpositions = array('tl', 'tc', 'tr', 'rt', 'rc', 'rb', 'br', 'bc', 'bl', 'lb', 'lc', 'lt');
+    }
+    return $controlpositions;
+}
+
+function getlocations_sv_global() {
+  $getlocations_defaults = getlocations_defaults();
+  if ($getlocations_defaults['sv_global']) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////
 
 function getlocations_get_all_entity_types() {
@@ -5035,6 +5149,9 @@ function getlocations_theme() {
       'render element' => 'form',
     ),
     'getlocations_plugin_style_map_options_form' => array(
+      'render element' => 'form',
+    ),
+    'getlocations_plugin_style_streetview_options_form' => array(
       'render element' => 'form',
     ),
     'getlocations_latitude_dms' => array(
@@ -5533,6 +5650,13 @@ function template_preprocess_getlocations_marker_box(&$variables) {
 
 }
 
+/**
+ * @param array $variables
+ *
+ * @return
+ *   Returns $output
+ *
+ */
 function theme_getlocations_settings_form($variables) {
 
   $form = $variables['form'];
@@ -5695,6 +5819,13 @@ function theme_getlocations_settings_form($variables) {
   return $output;
 }
 
+/**
+ * @param array $variables
+ *
+ * @return
+ *   Returns $output
+ *
+ */
 function theme_getlocations_plugin_style_map_options_form($variables) {
   $form = $variables['form'];
 
@@ -5785,6 +5916,23 @@ function theme_getlocations_plugin_style_map_options_form($variables) {
 }
 
 /**
+ * Function
+ *
+ * @param array $variables
+ *
+ * @return
+ *   Returns $output
+ *
+ */
+function theme_getlocations_plugin_style_streetview_options_form($variables) {
+  $form = $variables['form'];
+
+
+  $output = drupal_render_children($form);
+  return $output;
+}
+
+/**
  * Display a coordinate.
  * from location module
  */
@@ -5830,6 +5978,13 @@ function theme_getlocations_longitude_dms($variables) {
   return $output;
 }
 
+/**
+ * @param array $variables
+ *
+ * @return
+ *   Returns $output
+ *
+ */
 function theme_getlocations_addressfield_convert($variables) {
   $address = $variables['address'];
   $location = array();
@@ -5887,6 +6042,13 @@ function theme_getlocations_addressfield_convert($variables) {
 
 }
 
+/**
+ * @param array $variables
+ *
+ * @return
+ *   Returns $output
+ *
+ */
 // TODO review this, needs entity_get_info
 function theme_getlocations_lidinfo($variables) {
   $lid = $variables['lid'];
