@@ -3376,6 +3376,20 @@ function getlocations_fields_data_keys($type = 'dd') {
   return $keys;
 }
 
+function getlocations_fields_svinfo($location) {
+
+  $sv_defaults = getlocations_fields_data_keys('d');
+  $sv_info = array(
+    'sv_heading'          => (isset($location['sv_heading']) ? $location['sv_heading'] : $sv_defaults['sv_heading']),
+    'sv_zoom'             => (isset($location['sv_zoom']) ? $location['sv_zoom'] : $sv_defaults['sv_zoom']),
+    'sv_pitch'            => (isset($location['sv_pitch']) ? $location['sv_pitch'] : $sv_defaults['sv_pitch']),
+    'sv_showfirst_enable' => (isset($location['sv_showfirst_enable']) ? $location['sv_showfirst_enable'] : $sv_defaults['sv_showfirst_enable']),
+    'mapzoom'             => (isset($location['mapzoom']) ? $location['mapzoom'] : $sv_defaults['mapzoom']),
+    'map_maptype'         => (isset($location['map_maptype']) ? $location['map_maptype'] : $sv_defaults['map_maptype']) ,
+  );
+  return $sv_info;
+}
+
 // Theming functions
 
 /**
