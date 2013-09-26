@@ -30,7 +30,6 @@
     var street_num_pos = 1;
     var streetview_setup = false;
     var streetview_setup_buttondone = [];
-    var sv_showfirst_enable = [];
 
     // each map has its own settings
     $.each(Drupal.settings.getlocations_fields, function (key, settings) {
@@ -49,7 +48,6 @@
         var smart_ip_path = settings.smart_ip_path;
         street_num_pos = settings.street_num_pos;
         streetview_setup = settings.streetview_setup;
-        sv_showfirst_enable[key] = (settings.sv_enable ? settings.sv_showfirst_enable : 0);
         if (streetview_setup) {
           $("#getlocations_streetview_setup_" + key).hide();
         }
@@ -71,7 +69,7 @@
         if (lat && lng) {
           point[key] = new google.maps.LatLng(parseFloat(lat), parseFloat(lng));
           updateMap(getlocations_inputmap[key], point[key], key);
-          streetview_setup_button_do(key);
+          streetviewSetupButtonDo(key);
         }
 
         if (! mark[key]) {
@@ -268,7 +266,7 @@
         point[k] = new google.maps.LatLng(parseFloat(lat), parseFloat(lng));
         doReverseGeocode(point[k], k);
         updateMap(getlocations_inputmap[k], point[k], k);
-        streetview_setup_button_do(k);
+        streetviewSetupButtonDo(k);
       }
       else {
         var msg = Drupal.t('You have not entered an address.');
@@ -407,7 +405,7 @@
         lng = p.lng();
         $("#" + latfield + mmkey).val(lat);
         $("#" + lonfield + mmkey).val(lng);
-        streetview_setup_button_do(mkey);
+        streetviewSetupButtonDo(mkey);
       });
       google.maps.event.addListener(mmap, "click", function (e) {
         p = e.latLng;
@@ -417,7 +415,7 @@
         lng = p.lng();
         $("#" + latfield + mmkey).val(lat);
         $("#" + lonfield + mmkey).val(lng);
-        streetview_setup_button_do(mkey);
+        streetviewSetupButtonDo(mkey);
       });
     }
 
@@ -427,20 +425,10 @@
       makeMoveMarker(umap, pt, ukey);
     }
 
-    function streetview_setup_button_do(k) {
-      if (streetview_setup && ! streetview_setup_buttondone[k] && sv_showfirst_enable[k] ) {
-        if ( $("#getlocations_sv_showfirst_enable_" + k).attr('checked') ) {
-          $("#getlocations_streetview_setup_" + k).show();
-        }
-        $("#getlocations_sv_showfirst_enable_" + k).change( function() {
-          if ($(this).attr('checked')) {
-            $("#getlocations_streetview_setup_" + k).show();
-          }
-          else {
-            $("#getlocations_streetview_setup_" + k).hide();
-          }
-        });
+    function streetviewSetupButtonDo(k) {
 
+      if (streetview_setup && ! streetview_setup_buttondone[k]) {
+        $("#getlocations_streetview_setup_" + k).show();
         // we only want it once
         streetview_setup_buttondone[k] = true;
         $("#getlocations_streetview_setupbutton_" + k).click( function() {
@@ -551,7 +539,7 @@
             }
             point[kk] = new google.maps.LatLng(parseFloat(lat), parseFloat(lng));
             updateMap(getlocations_inputmap[kk], point[kk], kk);
-            streetview_setup_button_do(kk);
+            streetviewSetupButtonDo(kk);
           }
 
         }
@@ -572,7 +560,7 @@
           $("#" + lonfield + k).val(lng);
           point[k] = new google.maps.LatLng(parseFloat(lat), parseFloat(lng));
           updateMap(getlocations_inputmap[k], point[k], k);
-          streetview_setup_button_do(k);
+          streetviewSetupButtonDo(k);
           doReverseGeocode(point[k], k);
           //statusmsg = Drupal.t('Browser OK');
           //$(statusdiv).html(statusmsg);

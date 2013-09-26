@@ -317,6 +317,19 @@ function getlocations_entity_type_map($type, $entity_id) {
           $name = htmlspecialchars_decode(strip_tags($entity_title), ENT_QUOTES);
         }
         $latlons[] = array($location['latitude'], $location['longitude'], $location['entity_id'], $name, $marker, $location['entity_type'], '', '');
+
+        $sv_info = '';
+        if (getlocations_sv_global()) {
+          $sv_info = array(
+            'sv_heading' => $location['sv_heading'],
+            'sv_zoom' => $location['sv_zoom'],
+            'sv_pitch' => $location['sv_pitch'],
+            'sv_showfirst_enable' => $location['sv_showfirst_enable'],
+            'mapzoom' => $location['mapzoom'],
+            'map_maptype' => $location['map_maptype'],
+          );
+        }
+
         $ct++;
       }
     }
@@ -334,6 +347,9 @@ function getlocations_entity_type_map($type, $entity_id) {
     'entity_title' => $entity_title,
     'entity_link' => $entity_link,
   );
+  if ($sv_info) {
+    $entity_info['sv_info'] = $sv_info;
+  }
   return getlocations_setlocations($latlons, $minmaxes, $entity_info, $object);
 
 }
@@ -499,6 +515,23 @@ function getlocations_setlocations($latlons, $minmaxes='', $entity_info = '', $o
   }
 
   $getlocations_defaults = getlocations_defaults();
+
+  // sv
+  if (getlocations_sv_global()) {
+    if ($entity_info && isset($entity_info['sv_info'])) {
+      $sv_info = $entity_info['sv_info'];
+      unset($entity_info['sv_info']);
+      $getlocations_defaults['sv_heading'] = $sv_info['sv_heading'];
+      $getlocations_defaults['sv_zoom'] = $sv_info['sv_zoom'];
+      $getlocations_defaults['sv_pitch'] = $sv_info['sv_pitch'];
+      $getlocations_defaults['sv_showfirst'] = $sv_info['sv_showfirst_enable'];
+      $getlocations_defaults['nodezoom'] = $sv_info['mapzoom'];
+      $getlocations_defaults['maptype'] = $sv_info['map_maptype'];
+      // update baselayers
+      $getlocations_defaults['baselayers'][$sv_info['map_maptype']] = 1;
+    }
+  }
+
   $mapid = getlocations_setup_map($getlocations_defaults);
   getlocations_js_settings_do($getlocations_defaults, $latlons, $minmaxes, $mapid);
 
@@ -541,6 +574,11 @@ function getlocations_setup_js($defaults, $googleonly = FALSE) {
 
   $current_js = drupal_get_js();
   $current_css = drupal_get_css();
+
+  $sv = FALSE;
+  if (isset($defaults['sv_enable']) && $defaults['sv_enable']) {
+    $sv = TRUE;
+  }
 
   static $getlocations_js_weight = 0;
   $getlocations_js_weight++;
@@ -716,12 +754,14 @@ function getlocations_setup_js($defaults, $googleonly = FALSE) {
     $getlocations_js_weight++;
   }
 
-  if (!stristr($current_js, $getlocations_paths['getlocations_path'])) {
-    $js_opts = array();
-    $js_opts['weight'] = $getlocations_js_weight;
-    $js_opts['type'] = 'file';
-    drupal_add_js($getlocations_paths['getlocations_path'], $js_opts);
-    $getlocations_js_weight++;
+  if (! $sv) {
+    if (!stristr($current_js, $getlocations_paths['getlocations_path'])) {
+      $js_opts = array();
+      $js_opts['weight'] = $getlocations_js_weight;
+      $js_opts['type'] = 'file';
+      drupal_add_js($getlocations_paths['getlocations_path'], $js_opts);
+      $getlocations_js_weight++;
+    }
   }
 
   if ($defaults['polygons_enable']) {

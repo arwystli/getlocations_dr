@@ -801,7 +801,7 @@ function getlocations_fields_field_formatter_settings_summary($field, $instance,
     if ($settings['sv_show']) {
       $summary[] = t('Show streetview pegman: Yes');
     }
-    if ($settings['sv_showfirst']) {
+    if ($settings['sv_showfirst_enable']) {
       $summary[] = t('Show streetview first: Yes');
     }
     if ($settings['fullscreen']) {
@@ -1553,7 +1553,6 @@ function getlocations_fields_getmap($settings, $active) {
   $getlocations_defaults['transitinfo']               = 0;
   $getlocations_defaults['markeraction']              = 0;
   $getlocations_defaults['sv_show']                   = 0;
-  $getlocations_defaults['sv_showfirst']              = 0;
   $getlocations_defaults['weather_use']               = 0;
   $getlocations_defaults['weather_show']              = 0;
   $getlocations_defaults['show_maplinks']             = 0;
@@ -2192,7 +2191,7 @@ function getlocations_fields_js_settings_do($defaults, $mapid) {
       'search_country'      => $defaults['search_country'],
       'smart_ip_path'       => url("getlocations_fields/smart_ip"),
       'street_num_pos'      => $defaults['street_num_pos'],
-      'streetview_setup'    => $defaults['streetview_setup'],
+      'streetview_setup'    => (getlocations_sv_global() ? 1 : 0),
       'sv_heading'  => $defaults['sv_heading'],
       'sv_zoom'     => $defaults['sv_zoom'],
       'sv_pitch'    => $defaults['sv_pitch'],
@@ -2290,7 +2289,7 @@ function getlocations_fields_defaults() {
     'per_item_marker'                 => 0,
     'street_num_pos'                  => 1,
     'latlon_warning'                  => 0,
-    'streetview_setup'                => 0,
+    'streetview_setup'                => (getlocations_sv_global() ? 1 : 0),
     'sv_heading'                      => $dvals['sv_heading'],
     'sv_zoom'                         => $dvals['sv_zoom'],
     'sv_pitch'                        => $dvals['sv_pitch'],
@@ -2473,7 +2472,7 @@ function getlocations_fields_field_info_defaults() {
         'per_item_marker'                 => $getlocations_fields_defaults['per_item_marker'],
         'street_num_pos'                  => $getlocations_fields_defaults['street_num_pos'],
         'latlon_warning'                  => $getlocations_fields_defaults['latlon_warning'],
-        'streetview_setup'                => $getlocations_fields_defaults['streetview_setup'],
+        'streetview_setup'                => (getlocations_sv_global() ? 1 : 0),
         'sv_heading'                      => $getlocations_fields_defaults['sv_heading'],
         'sv_zoom'                         => $getlocations_fields_defaults['sv_zoom'],
         'sv_pitch'                        => $getlocations_fields_defaults['sv_pitch'],
@@ -2587,6 +2586,7 @@ function getlocations_fields_field_formatter_info_defaults() {
     'draggable'                 => $getlocations_defaults['draggable'],
     'sv_show'                   => $getlocations_defaults['sv_show'],
     'sv_showfirst'              => $getlocations_defaults['sv_showfirst'],
+    'sv_showfirst_enable'       => $getlocations_fields_defaults['sv_showfirst_enable'],
     'sv_heading'                => $getlocations_defaults['sv_heading'],
     'sv_zoom'                   => $getlocations_defaults['sv_zoom'],
     'sv_pitch'                  => $getlocations_defaults['sv_pitch'],
@@ -3086,11 +3086,12 @@ function getlocations_fields_input_settings_form($defaults) {
   // streetview killswitch
   if (getlocations_sv_global()) {
     // enable streetview setup feature
-    $form['streetview_setup'] = getlocations_element_map_checkbox(
-      t('Enable Streetview Setup'),
-      $defaults['streetview_setup'],
-      t('Enables streetview configuration when set up to appear on top of the initial map in display settings.')
-    );
+    $form['streetview_setup'] = array('#type' => 'value', '#value' => 1);
+#    $form['streetview_setup'] = getlocations_element_map_checkbox(
+#      t('Enable Streetview Setup'),
+#      $defaults['streetview_setup'],
+#      t('Enables streetview configuration when set up to appear on top of the initial map in display settings.')
+#    );
   }
   else {
     $form['streetview_setup'] = array('#type' => 'value', '#value' => 0);
