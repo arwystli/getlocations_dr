@@ -11,6 +11,11 @@
     attach: function() {
       var getlocations_pano = [];
 
+      // bail out
+      if (typeof Drupal.settings.getlocations_streetview === 'undefined') {
+        return;
+      }
+
       $.each(Drupal.settings.getlocations_streetview, function (key, settings) {
 
         // functions

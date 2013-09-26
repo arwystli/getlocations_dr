@@ -11,6 +11,11 @@
   Drupal.behaviors.getlocations_circles = {
     attach: function() {
 
+      // bail out
+      if (typeof Drupal.settings.getlocations_circles === 'undefined') {
+        return;
+      }
+
       var default_circle_settings = {
         strokeColor: '#FF0000',
         strokeOpacity: 0.8,

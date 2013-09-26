@@ -11,6 +11,11 @@
   Drupal.behaviors.getlocations_polygons = {
     attach: function() {
 
+      // bail out
+      if (typeof Drupal.settings.getlocations_polygons === 'undefined') {
+        return;
+      }
+
       var default_polygon_settings = {
         strokeColor: '#FF0000',
         strokeOpacity: 0.8,

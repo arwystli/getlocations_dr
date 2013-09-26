@@ -11,7 +11,7 @@
   Drupal.behaviors.getlocations_colorbox = {
     attach: function() {
       // check that colorbox is loaded
-      if ((typeof($("a[rel='getlocationsbox']").colorbox) == 'function') && Drupal.settings.getlocations_colorbox.enable == 1) {
+      if ((typeof($("a[rel='getlocationsbox']").colorbox) == 'function') && typeof Drupal.settings.getlocations_colorbox !== 'undefined' && Drupal.settings.getlocations_colorbox.enable == 1) {
         $("a[rel='getlocationsbox']").colorbox({
           iframe: true,
           innerWidth: Drupal.settings.getlocations_colorbox.width,

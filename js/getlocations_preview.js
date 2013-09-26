@@ -13,6 +13,11 @@
   Drupal.behaviors.getlocations_preview = {
     attach: function () {
 
+      // bail out
+      if (typeof Drupal.settings.getlocations === 'undefined') {
+        return;
+      }
+
       // first find the right map
       $.each(Drupal.settings.getlocations, function (key, settings) {
         // this is the one we want

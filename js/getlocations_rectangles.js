@@ -11,6 +11,11 @@
   Drupal.behaviors.getlocations_rectangles = {
     attach: function() {
 
+      // bail out
+      if (typeof Drupal.settings.getlocations_rectangles === 'undefined') {
+        return;
+      }
+
       var default_rectangle_settings = {
         strokeColor: '#FF0000',
         strokeOpacity: 0.8,

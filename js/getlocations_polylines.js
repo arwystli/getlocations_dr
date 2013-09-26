@@ -11,6 +11,11 @@
   Drupal.behaviors.getlocations_polylines = {
     attach: function() {
 
+      // bail out
+      if (typeof Drupal.settings.getlocations_polylines === 'undefined') {
+        return;
+      }
+
       var default_polyline_settings = {
         strokeColor: '#FF0000',
         strokeOpacity: 0.8,

@@ -18,6 +18,11 @@ var getlocations_pano = [];
 
   function getlocations_init() {
 
+    // bail out
+    if (typeof Drupal.settings.getlocations === 'undefined') {
+      return;
+    }
+
     // in icons.js
     Drupal.getlocations.iconSetup();
 
