@@ -546,10 +546,10 @@ function getlocations_setlocations($latlons, $minmaxes='', $entity_info = '', $o
  *   Required. the current settings.
  * Sets up the call to googlemaps, css and the relevant getlocations js in html head
  */
-function getlocations_setup_map($defaults) {
+function getlocations_setup_map($defaults, $googleonly = FALSE, $sv = FALSE) {
   static $getlocations_mapid = 0;
   $getlocations_mapid++;
-  getlocations_setup_js($defaults);
+  getlocations_setup_js($defaults, $googleonly, $sv);
   // Generate unique Map ID.
   $mapid = 'key_' . $getlocations_mapid;
   return $mapid;
@@ -562,16 +562,11 @@ function getlocations_setup_map($defaults) {
  *   Required. the current settings.
  * Sets up the call to googlemaps, css and the relevant getlocations js in html head
  */
-function getlocations_setup_js($defaults, $googleonly = FALSE) {
+function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
   global $language;
 
   $current_js = drupal_get_js();
   $current_css = drupal_get_css();
-
-  $sv = FALSE;
-  if (isset($defaults['sv_enable']) && $defaults['sv_enable']) {
-    $sv = TRUE;
-  }
 
   static $getlocations_js_weight = 0;
   $getlocations_js_weight++;
@@ -663,8 +658,22 @@ function getlocations_setup_js($defaults, $googleonly = FALSE) {
     return;
   }
 
+  $getlocations_paths = getlocations_paths_get();
+
   if (!stristr($current_css, GETLOCATIONS_PATH . '/getlocations.css')) {
     drupal_add_css(GETLOCATIONS_PATH . '/getlocations.css');
+  }
+
+  // streetview only
+  if ($sv) {
+    if (!stristr($current_js, $getlocations_paths['getlocations_streetview_path'])) {
+      $js_opts = array();
+      $js_opts['weight'] = $getlocations_js_weight;
+      $js_opts['type'] = 'file';
+      drupal_add_js($getlocations_paths['getlocations_streetview_path'], $js_opts);
+      $getlocations_js_weight++;
+    }
+    return;
   }
 
   if (!stristr($current_js, GETLOCATIONS_PATH . '/js/icons.js')) {
@@ -684,7 +693,6 @@ function getlocations_setup_js($defaults, $googleonly = FALSE) {
     $getlocations_js_weight++;
   }
 
-  $getlocations_paths = getlocations_paths_get();
 
   if ($defaults['geo_enable'] && !stristr($current_js, $getlocations_paths['getlocations_geo_path'])) {
     $js_opts = array();
@@ -750,14 +758,13 @@ function getlocations_setup_js($defaults, $googleonly = FALSE) {
     $getlocations_js_weight++;
   }
 
-  if (! $sv) {
-    if (!stristr($current_js, $getlocations_paths['getlocations_path'])) {
-      $js_opts = array();
-      $js_opts['weight'] = $getlocations_js_weight;
-      $js_opts['type'] = 'file';
-      drupal_add_js($getlocations_paths['getlocations_path'], $js_opts);
-      $getlocations_js_weight++;
-    }
+  // load main getlocations.js
+  if (!stristr($current_js, $getlocations_paths['getlocations_path'])) {
+    $js_opts = array();
+    $js_opts['weight'] = $getlocations_js_weight;
+    $js_opts['type'] = 'file';
+    drupal_add_js($getlocations_paths['getlocations_path'], $js_opts);
+    $getlocations_js_weight++;
   }
 
   if ($defaults['polygons_enable']) {
@@ -849,16 +856,6 @@ function getlocations_setup_js($defaults, $googleonly = FALSE) {
     }
   }
 
-  // streetview
-  if ($sv) {
-    if (!stristr($current_js, $getlocations_paths['getlocations_streetview_path'])) {
-      $js_opts = array();
-      $js_opts['weight'] = $getlocations_js_weight;
-      $js_opts['type'] = 'file';
-      drupal_add_js($getlocations_paths['getlocations_streetview_path'], $js_opts);
-      $getlocations_js_weight++;
-    }
-  }
 
 }
 

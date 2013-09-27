@@ -10,11 +10,15 @@
  * @ingroup views_templates
  */
 ?>
+<?php if ($mapid): ?>
 <!-- getlocations-view-streetview.tpl -->
-<?php if (! empty($streetview)): ?>
   <?php if (!empty($title)): ?>
   <h3><?php print $title; ?></h3>
   <?php endif; ?>
-  <div class="getlocations_streetview_wrapper"><?php print $streetview; ?></div>
-<?php endif; ?>
+  <div class="getlocations_streetview_wrapper">
+    <div id="getlocations_streetview_wrapper_<?php print $mapid; ?>" style="width: <?php print $width .';'; ?> height: <?php print $height; ?>">
+      <div class="getlocations_streetview_canvas" id="getlocations_streetview_canvas_<?php print $mapid; ?>" style="width: 100%; height: 100%"></div>
+    </div>
+  </div>
 <!-- /getlocations-view-streetview.tpl -->
+<?php endif; ?>

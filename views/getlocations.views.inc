@@ -43,7 +43,7 @@ function getlocations_views_plugins() {
 }
 
 /**
- * Preprocess function for theme_getlocations_view_map().
+ * Preprocess function for getlocations_view_map.tpl.
  */
 function template_preprocess_getlocations_view_map(&$variables) {
   global $language;
@@ -239,10 +239,16 @@ function template_preprocess_getlocations_view_map(&$variables) {
 
 }
 /**
- * Preprocess function for theme_getlocations_view_streetview().
+ * Preprocess function for getlocations_view_streetview.tpl.
  */
 function template_preprocess_getlocations_view_streetview(&$variables) {
   global $language;
+
+  // just in case
+  if (! getlocations_sv_global()) {
+    $variables['mapid'] = FALSE;
+    return;
+  }
 
   $locations = $variables['view']->style_plugin->rendered_fields;
   $options = $variables['view']->style_plugin->options;
@@ -308,24 +314,17 @@ function template_preprocess_getlocations_view_streetview(&$variables) {
         $options['sv_zoom']    = (isset($location['data_1']) && is_numeric($location['data_1']) ? $location['data_1'] : 1);
         $options['sv_pitch']   = (isset($location['data_2']) && is_numeric($location['data_2']) ? $location['data_2'] : 0);
         $options['sv_enable']  = (isset($location['data_3']) && is_numeric($location['data_3']) ? $location['data_3'] : 1);
-        // streetview killswitch
-        if (! getlocations_sv_global()) {
-          $options['sv_enable'] = 0;
-          $options['sv_showfirst'] = 0;
-          $options['sv_showfirst_enable'] = 0;
-        }
 
         $getlocations_defaults = getlocations_defaults();
         $newdefaults = getlocations_adjust_vars($getlocations_defaults, $options);
-        $mapid = getlocations_setup_map($newdefaults);
+        $mapid = getlocations_setup_map($newdefaults, FALSE, TRUE);
         $options['latitude'] = $location['latitude'];
         $options['longitude'] = $location['longitude'];
 
         getlocations_streetview_js_settings_do($options, $mapid);
-        $canvas = '<div id="getlocations_streetview_wrapper_' . $mapid . '"  style="width: ' . $options['width'] . '; height: ' . $options['height'] . '" >';
-        $canvas .= '<div class="getlocations_streetview_canvas" id="getlocations_streetview_canvas_' . $mapid . '" style="width: 100%; height: 100%" ></div>';
-        $canvas .= '</div>';
-        $variables['streetview']  = $canvas;
+        $variables['mapid'] = $mapid;
+        $variables['width'] = $options['width'];
+        $variables['height'] = $options['height'];
       }
     }
   }
