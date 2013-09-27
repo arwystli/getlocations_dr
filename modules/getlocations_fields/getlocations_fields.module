@@ -1868,6 +1868,9 @@ function getlocations_fields_save_locations($locations, $criteria, $mode) {
       if (isset($locations[$key]['sv_showfirst_enable'])  && is_numeric($locations[$key]['sv_showfirst_enable'])) {
         $data['data']['sv_showfirst_enable'] = intval($locations[$key]['sv_showfirst_enable']);
       }
+      if (isset($locations[$key]['sv_enable'])  && is_numeric($locations[$key]['sv_enable'])) {
+        $data['data']['sv_enable'] = intval($locations[$key]['sv_enable']);
+      }
 
       if (count($data)) {
         $locations[$key]['data'] = $data;
@@ -3369,8 +3372,8 @@ function getlocations_fields_data_keys($type = 'dd') {
       'sv_pitch'            => 0,
       'mapzoom'             => 12,
       'map_maptype'         => 'Map',
-      'sv_enable'           => 1,
-      'sv_showfirst_enable' => 1,
+      'sv_enable'           => 0,
+      'sv_showfirst_enable' => 0,
     );
   }
   return $keys;
