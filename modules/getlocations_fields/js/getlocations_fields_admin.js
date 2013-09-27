@@ -66,85 +66,85 @@
 
       if ($("#edit-getlocations-fields-defaults-pancontrol,#edit-field-settings-pancontrol").is('input')) {
         if ($("#edit-getlocations-fields-defaults-pancontrol,#edit-field-settings-pancontrol").attr('checked')) {
-          $("#wrap-pancontrol").show();
+          $("#wrap-getlocations-pancontrol").show();
         }
         else {
-          $("#wrap-pancontrol").hide();
+          $("#wrap-getlocations-pancontrol").hide();
         }
         $("#edit-getlocations-fields-defaults-pancontrol,#edit-field-settings-pancontrol").change(function() {
           if ($(this).attr('checked')) {
-            $("#wrap-pancontrol").show();
+            $("#wrap-getlocations-pancontrol").show();
           }
           else {
-            $("#wrap-pancontrol").hide();
+            $("#wrap-getlocations-pancontrol").hide();
           }
         });
       }
 
       if ($("#edit-getlocations-fields-defaults-controltype,#edit-field-settings-controltype").is('select')) {
         if ($("#edit-getlocations-fields-defaults-controltype,#edit-field-settings-controltype").val() == 'none') {
-          $("#wrap-zoomcontrol").hide();
+          $("#wrap-getlocations-zoomcontrol").hide();
         }
         else {
-          $("#wrap-zoomcontrol").show();
+          $("#wrap-getlocations-zoomcontrol").show();
         }
         $("#edit-getlocations-fields-defaults-controltype,#edit-field-settings-controltype").change(function() {
           if ($(this).val() == 'none') {
-            $("#wrap-zoomcontrol").hide();
+            $("#wrap-getlocations-zoomcontrol").hide();
           }
           else {
-            $("#wrap-zoomcontrol").show();
+            $("#wrap-getlocations-zoomcontrol").show();
           }
         });
       }
 
       if ($("#edit-getlocations-fields-defaults-mtc,#edit-field-settings-mtc").is('select')) {
         if ($("#edit-getlocations-fields-defaults-mtc,#edit-field-settings-mtc").val() == 'none') {
-          $("#wrap-mapcontrol").hide();
+          $("#wrap-getlocations-mapcontrol").hide();
         }
         else {
-          $("#wrap-mapcontrol").show();
+          $("#wrap-getlocations-mapcontrol").show();
         }
         $("#edit-getlocations-fields-defaults-mtc,#edit-field-settings-mtc").change(function() {
           if ($(this).val() == 'none') {
-            $("#wrap-mapcontrol").hide();
+            $("#wrap-getlocations-mapcontrol").hide();
           }
           else {
-            $("#wrap-mapcontrol").show();
+            $("#wrap-getlocations-mapcontrol").show();
           }
         });
       }
 
       if ($("#edit-getlocations-fields-defaults-scale,#edit-field-settings-scale").is('input')) {
         if ($("#edit-getlocations-fields-defaults-scale,#edit-field-settings-scale").attr('checked')) {
-          $("#wrap-scale").show();
+          $("#wrap-getlocations-scale").show();
         }
         else {
-          $("#wrap-scale").hide();
+          $("#wrap-getlocations-scale").hide();
         }
         $("#edit-getlocations-fields-defaults-scale,#edit-field-settings-scale").change(function() {
           if ($(this).attr('checked')) {
-            $("#wrap-scale").show();
+            $("#wrap-getlocations-scale").show();
           }
           else {
-            $("#wrap-scale").hide();
+            $("#wrap-getlocations-scale").hide();
           }
         });
       }
 
       if ($("#edit-getlocations-fields-defaults-sv-show,#edit-field-settings-sv-show").is('input')) {
         if ($("#edit-getlocations-fields-defaults-sv-show,#edit-field-settings-sv-show").attr('checked')) {
-          $("#wrap-sv-show").show();
+          $("#wrap-getlocations-sv-show").show();
         }
         else {
-          $("#wrap-sv-show").hide();
+          $("#wrap-getlocations-sv-show").hide();
         }
         $("#edit-getlocations-fields-defaults-sv-show,#edit-field-settings-sv-show").change(function() {
           if ($(this).attr('checked')) {
-            $("#wrap-sv-show").show();
+            $("#wrap-getlocations-sv-show").show();
           }
           else {
-            $("#wrap-sv-show").hide();
+            $("#wrap-getlocations-sv-show").hide();
           }
         });
       }

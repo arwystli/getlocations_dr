@@ -89,7 +89,7 @@ class getlocations_plugin_style_streetview extends views_plugin_style {
       t('Show address'),
       $this->options['sv_addresscontrol']
     );
-    $form['sv_addresscontrol']['#suffix'] = '<div id="wrap-addresscontrol">';
+    $form['sv_addresscontrol']['#suffix'] = '<div id="wrap-getlocations-addresscontrol">';
     $form['sv_addresscontrolposition'] = getlocations_element_dd(
       t('Position of address display'),
       $this->options['sv_addresscontrolposition'],
@@ -101,7 +101,7 @@ class getlocations_plugin_style_streetview extends views_plugin_style {
       t('Show Pan Control'),
       $this->options['sv_pancontrol']
     );
-    $form['sv_pancontrol']['#suffix'] = '<div id="wrap-pancontrol">';
+    $form['sv_pancontrol']['#suffix'] = '<div id="wrap-getlocations-pancontrol">';
     $form['sv_pancontrolposition'] = getlocations_element_dd(
       t('Position of Pan Control'),
       $this->options['sv_pancontrolposition'],
@@ -110,7 +110,7 @@ class getlocations_plugin_style_streetview extends views_plugin_style {
     $form['sv_pancontrolposition']['#suffix'] = '</div>';
 
     $form['sv_zoomcontrol'] = getlocations_element_map_zoom_controltype($this->options['sv_zoomcontrol']);
-    $form['sv_zoomcontrol']['#suffix'] = '<div id="wrap-zoomcontrol">';
+    $form['sv_zoomcontrol']['#suffix'] = '<div id="wrap-getlocations-zoomcontrol">';
 
     $form['sv_zoomcontrolposition'] = getlocations_element_dd(
       t('Position of Zoom Control'),

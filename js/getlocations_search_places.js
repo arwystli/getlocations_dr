@@ -8,11 +8,6 @@
 */
 (function ($) {
 
-  // bail out
-  if (typeof Drupal.settings.getlocations === 'undefined') {
-    return;
-  }
-
   var getlocations_sp_markers = [];
   var getlocations_places_service;
 

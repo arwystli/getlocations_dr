@@ -587,7 +587,10 @@ function getlocations_setup_js($defaults, $googleonly = FALSE) {
     $query['key'] = $key;
   }
   $query['sensor'] = (getlocations_is_mobile() ? 'true' : 'false');
-  $query['language'] = (isset($language->language) ? $language->language : 'und');
+
+  if (isset($language->language)) {
+    $query['language'] = $language->language;
+  }
 
   if ($defaults['region_bias']) {
     $query['region'] = $defaults['region_bias'];
@@ -847,7 +850,7 @@ function getlocations_setup_js($defaults, $googleonly = FALSE) {
   }
 
   // streetview
-  if (isset($defaults['sv_enable']) && $defaults['sv_enable']) {
+  if ($sv) {
     if (!stristr($current_js, $getlocations_paths['getlocations_streetview_path'])) {
       $js_opts = array();
       $js_opts['weight'] = $getlocations_js_weight;
@@ -2886,7 +2889,7 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
 
   $form = array();
   $form['controltype'] = getlocations_element_map_zoom_controltype($defaults['controltype']);
-  $form['controltype']['#suffix'] = '<div id="wrap-zoomcontrol">';
+  $form['controltype']['#suffix'] = '<div id="wrap-getlocations-zoomcontrol">';
   $form['zoomcontrolposition'] = getlocations_element_dd(
     t('Position of Zoom Control'),
     $defaults['zoomcontrolposition'],
@@ -2895,7 +2898,7 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
   $form['zoomcontrolposition']['#suffix'] = '</div>';
 
   $form['pancontrol'] = getlocations_element_map_checkbox(t('Show Pan control'), $defaults['pancontrol']);
-  $form['pancontrol']['#suffix'] = '<div id="wrap-pancontrol">';
+  $form['pancontrol']['#suffix'] = '<div id="wrap-getlocations-pancontrol">';
   $form['pancontrolposition'] = getlocations_element_dd(
     t('Position of Pan Control'),
     $defaults['pancontrolposition'],
@@ -2904,7 +2907,7 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
   $form['pancontrolposition']['#suffix'] = '</div>';
 
   $form['mtc'] = getlocations_element_map_mtc($defaults['mtc']);
-  $form['mtc']['#suffix'] = '<div id="wrap-mapcontrol">';
+  $form['mtc']['#suffix'] = '<div id="wrap-getlocations-mapcontrol">';
   $form['mapcontrolposition'] = getlocations_element_dd(
     t('Position of Map Control'),
     $defaults['mapcontrolposition'],
@@ -2951,7 +2954,7 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
     $defaults['scale'],
     t('Show scale.')
   );
-  $form['scale']['#suffix'] = '<div id="wrap-scale">';
+  $form['scale']['#suffix'] = '<div id="wrap-getlocations-scale">';
   $form['scalecontrolposition'] = getlocations_element_dd(
     t('Position of Scale Control'),
     $defaults['scalecontrolposition'],
@@ -3042,7 +3045,7 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
       t('Show streetview Pegman'),
       $defaults['sv_show']
     );
-    $form['sv_show']['#suffix'] = '<div id="wrap-sv-show">';
+    $form['sv_show']['#suffix'] = '<div id="wrap-getlocations-sv-show">';
     $form['svcontrolposition'] = getlocations_element_dd(
       t('Position of Pegman'),
       $defaults['svcontrolposition'],

@@ -11,6 +11,13 @@
 
   function getlocations_fields_init() {
 
+  if (typeof Drupal.settings.getlocations_fields === 'undefined') {
+    return;
+  }
+  if (typeof Drupal.settings.getlocations === 'undefined') {
+    return;
+  }
+
     var gsettings = Drupal.settings.getlocations;
     var nodezoom = '';
     var mark = [];

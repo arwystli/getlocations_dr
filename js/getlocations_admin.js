@@ -410,85 +410,85 @@
 
       if ($("#edit-getlocations-default-pancontrol").is('input')) {
         if ($("#edit-getlocations-default-pancontrol").attr('checked')) {
-          $("#wrap-pancontrol").show();
+          $("#wrap-getlocations-pancontrol").show();
         }
         else {
-          $("#wrap-pancontrol").hide();
+          $("#wrap-getlocations-pancontrol").hide();
         }
         $("#edit-getlocations-default-pancontrol").change(function() {
           if ($(this).attr('checked')) {
-            $("#wrap-pancontrol").show();
+            $("#wrap-getlocations-pancontrol").show();
           }
           else {
-            $("#wrap-pancontrol").hide();
+            $("#wrap-getlocations-pancontrol").hide();
           }
         });
       }
 
       if ($("#edit-getlocations-default-controltype").is('select')) {
         if ($("#edit-getlocations-default-controltype").val() == 'none') {
-          $("#wrap-zoomcontrol").hide();
+          $("#wrap-getlocations-zoomcontrol").hide();
         }
         else {
-          $("#wrap-zoomcontrol").show();
+          $("#wrap-getlocations-zoomcontrol").show();
         }
         $("#edit-getlocations-default-controltype").change(function() {
           if ($(this).val() == 'none') {
-            $("#wrap-zoomcontrol").hide();
+            $("#wrap-getlocations-zoomcontrol").hide();
           }
           else {
-            $("#wrap-zoomcontrol").show();
+            $("#wrap-getlocations-zoomcontrol").show();
           }
         });
       }
 
       if ($("#edit-getlocations-default-mtc").is('select')) {
         if ($("#edit-getlocations-default-mtc").val() == 'none') {
-          $("#wrap-mapcontrol").hide();
+          $("#wrap-getlocations-mapcontrol").hide();
         }
         else {
-          $("#wrap-mapcontrol").show();
+          $("#wrap-getlocations-mapcontrol").show();
         }
         $("#edit-getlocations-default-mtc").change(function() {
           if ($(this).val() == 'none') {
-            $("#wrap-mapcontrol").hide();
+            $("#wrap-getlocations-mapcontrol").hide();
           }
           else {
-            $("#wrap-mapcontrol").show();
+            $("#wrap-getlocations-mapcontrol").show();
           }
         });
       }
 
       if ($("#edit-getlocations-default-scale").is('input')) {
         if ($("#edit-getlocations-default-scale").attr('checked')) {
-          $("#wrap-scale").show();
+          $("#wrap-getlocations-scale").show();
         }
         else {
-          $("#wrap-scale").hide();
+          $("#wrap-getlocations-scale").hide();
         }
         $("#edit-getlocations-default-scale").change(function() {
           if ($(this).attr('checked')) {
-            $("#wrap-scale").show();
+            $("#wrap-getlocations-scale").show();
           }
           else {
-            $("#wrap-scale").hide();
+            $("#wrap-getlocations-scale").hide();
           }
         });
       }
 
       if ($("#edit-getlocations-default-sv-show").is('input')) {
         if ($("#edit-getlocations-default-sv-show").attr('checked')) {
-          $("#wrap-sv-show").show();
+          $("#wrap-getlocations-sv-show").show();
         }
         else {
-          $("#wrap-sv-show").hide();
+          $("#wrap-getlocations-sv-show").hide();
         }
         $("#edit-getlocations-default-sv-show").change(function() {
           if ($(this).attr('checked')) {
-            $("#wrap-sv-show").show();
+            $("#wrap-getlocations-sv-show").show();
           }
           else {
-            $("#wrap-sv-show").hide();
+            $("#wrap-getlocations-sv-show").hide();
           }
         });
       }
