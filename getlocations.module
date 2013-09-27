@@ -420,6 +420,7 @@ function getlocations_lids($lidlist) {
   $minmaxes = array('minlat' => 0, 'minlon' => 0, 'maxlat' => 0, 'maxlon' => 0);
   $marker = '';
   $ct = 0;
+  $sv_info = FALSE;
 
   foreach ($lidarr AS $lid) {
     $locations[] = getlocations_load_location($lid);
@@ -433,9 +434,14 @@ function getlocations_lids($lidlist) {
         $location['longitude'] = $ll[1];
         $minmaxes = getlocations_do_minmaxes($ct, $location, $minmaxes);
         $location['key'] = '';
-        $ct++;
+
         $name = htmlspecialchars_decode(strip_tags($location['name']), ENT_QUOTES);
         $latlons[] = array($location['latitude'], $location['longitude'], $location['lid'], $name, $location['marker'], $location['key'], '', '');
+        $sv_info = FALSE;
+        if (module_exists('getlocations_fields') && getlocations_sv_global() && count($locations) == 1) {
+          $sv_info = getlocations_fields_svinfo($location);
+        }
+        $ct++;
       }
     }
   }
@@ -443,7 +449,7 @@ function getlocations_lids($lidlist) {
     unset($minmaxes);
     $minmaxes = '';
   }
-  return getlocations_setlocations($latlons, $minmaxes);
+  return getlocations_setlocations($latlons, $minmaxes, array('sv_info' => $sv_info));
 
 }
 
@@ -465,6 +471,7 @@ function getlocations_nids($nidlist) {
   $minmaxes = array('minlat' => 0, 'minlon' => 0, 'maxlat' => 0, 'maxlon' => 0);
   #$typemarkers = getlocations_get_markertypes('node');
   $ct = 0;
+  $sv_info = FALSE;
 
   foreach ($nidarr AS $nid) {
     $vid = getlocations_get_vid($nid);
@@ -486,9 +493,13 @@ function getlocations_nids($nidlist) {
         if (! isset($location['key'])) {
           $location['key'] = '';
         }
-        $ct++;
         $name = htmlspecialchars_decode(strip_tags($location['name']), ENT_QUOTES);
         $latlons[] = array($location['latitude'], $location['longitude'], $location['lid'], $name, $location['marker'], $location['key'], '', '');
+        $sv_info = FALSE;
+        if (module_exists('getlocations_fields') && getlocations_sv_global() && count($locations) == 1) {
+          $sv_info = getlocations_fields_svinfo($location);
+        }
+        $ct++;
       }
     }
   }
@@ -496,7 +507,7 @@ function getlocations_nids($nidlist) {
     unset($minmaxes);
     $minmaxes = '';
   }
-  return getlocations_setlocations($latlons, $minmaxes);
+  return getlocations_setlocations($latlons, $minmaxes, array('sv_info' => $sv_info));
 }
 
 /**
