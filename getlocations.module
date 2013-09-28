@@ -292,6 +292,10 @@ function getlocations_entity_type_map($type, $entity_id) {
   $latlons = array();
   $minmaxes = array('minlat' => 0, 'minlon' => 0, 'maxlat' => 0, 'maxlon' => 0);
   $ct = 0;
+  $extra_info = array();
+  $sv_info = FALSE;
+  $map_info = FALSE;
+
   if (count($locations)) {
     // we should loop over them and dump bummers with no lat/lon
     foreach ($locations AS $key => $location) {
@@ -319,8 +323,11 @@ function getlocations_entity_type_map($type, $entity_id) {
         $latlons[] = array($location['latitude'], $location['longitude'], $location['entity_id'], $name, $marker, $location['entity_type'], '', '');
 
         $sv_info = FALSE;
-        if (module_exists('getlocations_fields') && getlocations_sv_global()) {
-          $sv_info = getlocations_fields_svinfo($location);
+        if (module_exists('getlocations_fields') && count($locations) == 1) {
+          if (getlocations_sv_global()) {
+            $sv_info = getlocations_fields_svinfo($location);
+          }
+          // TODO map_info
         }
 
         $ct++;
@@ -340,10 +347,12 @@ function getlocations_entity_type_map($type, $entity_id) {
     'entity_title' => $entity_title,
     'entity_link' => $entity_link,
   );
+
   if ($sv_info) {
-    $entity_info['sv_info'] = $sv_info;
+    $extra_info = array_merge($extra_info, $sv_info);
   }
-  return getlocations_setlocations($latlons, $minmaxes, $entity_info, $object);
+
+  return getlocations_setlocations($latlons, $minmaxes, $entity_info, $object, $extra_info);
 
 }
 
@@ -420,7 +429,9 @@ function getlocations_lids($lidlist) {
   $minmaxes = array('minlat' => 0, 'minlon' => 0, 'maxlat' => 0, 'maxlon' => 0);
   $marker = '';
   $ct = 0;
+  $extra_info = array();
   $sv_info = FALSE;
+  $map_info = FALSE;
 
   foreach ($lidarr AS $lid) {
     $locations[] = getlocations_load_location($lid);
@@ -437,10 +448,15 @@ function getlocations_lids($lidlist) {
 
         $name = htmlspecialchars_decode(strip_tags($location['name']), ENT_QUOTES);
         $latlons[] = array($location['latitude'], $location['longitude'], $location['lid'], $name, $location['marker'], $location['key'], '', '');
+
         $sv_info = FALSE;
-        if (module_exists('getlocations_fields') && getlocations_sv_global() && count($locations) == 1) {
-          $sv_info = getlocations_fields_svinfo($location);
+        if (module_exists('getlocations_fields') && count($locations) == 1) {
+          if (getlocations_sv_global()) {
+            $sv_info = getlocations_fields_svinfo($location);
+          }
+          // TODO map_info
         }
+
         $ct++;
       }
     }
@@ -449,7 +465,12 @@ function getlocations_lids($lidlist) {
     unset($minmaxes);
     $minmaxes = '';
   }
-  return getlocations_setlocations($latlons, $minmaxes, array('sv_info' => $sv_info));
+
+  if ($sv_info) {
+    $extra_info = array_merge($extra_info, $sv_info);
+  }
+
+  return getlocations_setlocations($latlons, $minmaxes, '', '', $extra_info);
 
 }
 
@@ -471,7 +492,9 @@ function getlocations_nids($nidlist) {
   $minmaxes = array('minlat' => 0, 'minlon' => 0, 'maxlat' => 0, 'maxlon' => 0);
   #$typemarkers = getlocations_get_markertypes('node');
   $ct = 0;
+  $extra_info = array();
   $sv_info = FALSE;
+  $map_info = FALSE;
 
   foreach ($nidarr AS $nid) {
     $vid = getlocations_get_vid($nid);
@@ -495,10 +518,15 @@ function getlocations_nids($nidlist) {
         }
         $name = htmlspecialchars_decode(strip_tags($location['name']), ENT_QUOTES);
         $latlons[] = array($location['latitude'], $location['longitude'], $location['lid'], $name, $location['marker'], $location['key'], '', '');
+
         $sv_info = FALSE;
-        if (module_exists('getlocations_fields') && getlocations_sv_global() && count($locations) == 1) {
-          $sv_info = getlocations_fields_svinfo($location);
+        if (module_exists('getlocations_fields') && count($locations) == 1) {
+          if (getlocations_sv_global()) {
+            $sv_info = getlocations_fields_svinfo($location);
+          }
+          // TODO map_info
         }
+
         $ct++;
       }
     }
@@ -507,13 +535,19 @@ function getlocations_nids($nidlist) {
     unset($minmaxes);
     $minmaxes = '';
   }
-  return getlocations_setlocations($latlons, $minmaxes, array('sv_info' => $sv_info));
+
+  if ($sv_info) {
+    $extra_info = array_merge($extra_info, $sv_info);
+  }
+
+  return getlocations_setlocations($latlons, $minmaxes, '', '', $extra_info);
+
 }
 
 /**
  * Set up javascript settings and map
  */
-function getlocations_setlocations($latlons, $minmaxes='', $entity_info = '', $object = '', $width='', $height='') {
+function getlocations_setlocations($latlons, $minmaxes='', $entity_info = '', $object = '', $extras = '', $width='', $height='') {
   if (! getlocations_defaults_check()) {
     return t('You need to !c first.', array('!c' => l('Configure Getlocations', 'admin/config/services/getlocations')));
   }
@@ -521,18 +555,16 @@ function getlocations_setlocations($latlons, $minmaxes='', $entity_info = '', $o
   $getlocations_defaults = getlocations_defaults();
 
   // sv
-  if (getlocations_sv_global()) {
-    if ($entity_info && isset($entity_info['sv_info'])) {
-      $sv_info = $entity_info['sv_info'];
-      unset($entity_info['sv_info']);
-      $getlocations_defaults['sv_heading']   = $sv_info['sv_heading'];
-      $getlocations_defaults['sv_zoom']      = $sv_info['sv_zoom'];
-      $getlocations_defaults['sv_pitch']     = $sv_info['sv_pitch'];
-      $getlocations_defaults['sv_showfirst'] = $sv_info['sv_showfirst_enable'];
-      $getlocations_defaults['nodezoom']     = $sv_info['mapzoom'];
-      $getlocations_defaults['maptype']      = $sv_info['map_maptype'];
+  if ($extras) {
+    if (getlocations_sv_global()) {
+      $getlocations_defaults['sv_heading']   = $extras['sv_heading'];
+      $getlocations_defaults['sv_zoom']      = $extras['sv_zoom'];
+      $getlocations_defaults['sv_pitch']     = $extras['sv_pitch'];
+      $getlocations_defaults['sv_showfirst'] = $extras['sv_showfirst_enable'];
+      $getlocations_defaults['nodezoom']     = $extras['mapzoom'];
+      $getlocations_defaults['maptype']      = $extras['map_maptype'];
       // update baselayers
-      $getlocations_defaults['baselayers'][$sv_info['map_maptype']] = 1;
+      $getlocations_defaults['baselayers'][$extras['map_maptype']] = 1;
     }
   }
 
