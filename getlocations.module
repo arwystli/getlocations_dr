@@ -5184,16 +5184,6 @@ function getlocations_get_exact_distance_sql($latitude, $longitude, $tbl_alias =
  */
 function getlocations_theme() {
   return array(
-#    'getlocations_show' => array(
-#      'variables' => array(
-#        'width' => '',
-#        'height' => '',
-#        'defaults' => '',
-#        'mapid' => '',
-#        'type' => '',
-#        'node' => '',
-#      ),
-#    ),
     'getlocations_show' => array(
       'variables' => array(
         'width' => '',
@@ -5255,15 +5245,24 @@ function getlocations_theme() {
 }
 
 /**
+ * Returns HTML for a map.
+ *
  * All the map displays pass through here.
  *
  * @param array $variables
+ *   An associative array containing:
+ *   - width: The width of the map.
+ *   - height: The height of the map.
+ *   - defaults: The settings to be applied to the map, links, buttons and form elements.
+ *   - mapid: The unique identifier for the map.
+ *   - entity_info: The entity information.
+ *   - object: The entity object.
  *
- * @return
- *   Returns $output
+ * @return string $output
+ *
+ * @ingroup themeable
  *
  */
-// DONE
 function theme_getlocations_show($variables) {
   $output = '';
   $returnlink = FALSE;
@@ -5286,7 +5285,7 @@ function theme_getlocations_show($variables) {
     $entity_type = $entity_info['entity_type'];
   }
 
-  // was set in getlocations_entity_type_map, test it here
+  // was set in getlocations_entity_type_map, set it here now.
   if ($entity_title) {
     drupal_set_title(t('View !t locations', array('!t' => $entity_title)));
   }
@@ -5534,12 +5533,15 @@ function theme_getlocations_show($variables) {
 }
 
 /**
- * returns a location's vcard, requested by ajax
+ * Returns HTML of a location's vcard, requested by ajax.
  *
  * @param array $variables
+ *   An associative array containing:
+ *   - location: The information pertaining to the address to be formatted.
  *
- * @return
- *   Returns $output
+ * @return string $output
+ *
+ * @ingroup themeable
  *
  */
 function theme_getlocations_adinfo($variables) {
@@ -5639,10 +5641,11 @@ function theme_getlocations_adinfo($variables) {
 }
 
 /**
- * @param array $variables
+ * Prepares variables for getlocations_box.tpl.php
  *
- * @return
- *   Modifies $variables in situ
+ * @param array $variables
+ *   An associative array containing all the elements to construct an HTML document
+ *   suitable for use in a colorbox.
  *
  */
 function template_preprocess_getlocations_box(&$variables) {
@@ -5687,10 +5690,11 @@ function template_preprocess_getlocations_box(&$variables) {
 }
 
 /**
- * @param array $variables
+ * Prepares variables for getlocations_marker_box.tpl.php
  *
- * @return
- *   Modifies $variables in situ
+ * @param array $variables
+ *   An associative array containing all the elements to construct an HTML document
+ *   suitable for use in a colorbox.
  *
  */
 function template_preprocess_getlocations_marker_box(&$variables) {
@@ -5727,10 +5731,15 @@ function template_preprocess_getlocations_marker_box(&$variables) {
 }
 
 /**
- * @param array $variables
+ * Returns HTML of the getlocations settings form.
  *
- * @return
- *   Returns $output
+ * @param array $variables
+ *   An associative array containing:
+ *   - form: The form array.
+ *
+ * @return string The rendered form
+ *
+ * @ingroup themeable
  *
  */
 function theme_getlocations_settings_form($variables) {
@@ -5896,10 +5905,15 @@ function theme_getlocations_settings_form($variables) {
 }
 
 /**
- * @param array $variables
+ * Returns HTML of the getlocations plugin_style_map_options form.
  *
- * @return
- *   Returns $output
+ * @param array $variables
+ *   An associative array containing:
+ *   - form: The form array.
+ *
+ * @return string The rendered form
+ *
+ * @ingroup themeable
  *
  */
 function theme_getlocations_plugin_style_map_options_form($variables) {
@@ -5992,12 +6006,15 @@ function theme_getlocations_plugin_style_map_options_form($variables) {
 }
 
 /**
- * Function
+ * Returns HTML of the getlocations plugin_style_streetview_options form.
  *
  * @param array $variables
+ *   An associative array containing:
+ *   - form: The form array.
  *
- * @return
- *   Returns $output
+ * @return string The rendered form
+ *
+ * @ingroup themeable
  *
  */
 function theme_getlocations_plugin_style_streetview_options_form($variables) {
@@ -6009,14 +6026,15 @@ function theme_getlocations_plugin_style_streetview_options_form($variables) {
 }
 
 /**
- * Display a coordinate.
- * from location module
- */
-/**
- * @param array $variables
+ * Returns HTML of a latitude in decimal degress expressed in degrees, minutes and seconds.
  *
- * @return
- *   Returns $output
+ * from location module
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - latitude: A latitude in decimal degrees.
+ *
+ * @ingroup themeable
  *
  */
 function theme_getlocations_latitude_dms($variables) {
@@ -6034,10 +6052,15 @@ function theme_getlocations_latitude_dms($variables) {
 }
 
 /**
- * @param array $variables
+ * Returns HTML of a longitude in decimal degress expressed in degrees, minutes and seconds.
  *
- * @return
- *   Returns $output
+ * from location module
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - longitude: A longitude in decimal degrees.
+ *
+ * @ingroup themeable
  *
  */
 function theme_getlocations_longitude_dms($variables) {
@@ -6055,10 +6078,15 @@ function theme_getlocations_longitude_dms($variables) {
 }
 
 /**
- * @param array $variables
+ * Returns an array of an address from the addressfield module converted for use in getlocations.
  *
- * @return
- *   Returns $output
+ * from location module
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - address: an array of address components.
+ *
+ * @ingroup themeable
  *
  */
 function theme_getlocations_addressfield_convert($variables) {
@@ -6119,23 +6147,29 @@ function theme_getlocations_addressfield_convert($variables) {
 }
 
 /**
- * @param array $variables
+ * Returns HTML of a url, requested by ajax.
  *
- * @return
- *   Returns $output
+ * @param array $variables
+ *   An associative array containing:
+ *   - lid: The location identifier or glid.
+ *   - lidkey: The entity identifier type
+ *
+ * @return string $output
+ *
+ * @ingroup themeable
  *
  */
-// TODO review this, needs entity_get_info
 function theme_getlocations_lidinfo($variables) {
+  // TODO review this, needs entity_get_info
   $lid = $variables['lid'];
   $lidkey = $variables['lidkey'];
 
-  $content = FALSE;
+  $output = FALSE;
   if ($lid > 0) {
     if (module_exists('getlocations_fields') || module_exists('location')) {
       $path = getlocations_get_path_from_lid($lid);
       if ($path) {
-        $content = $path;
+        $output = $path;
       }
     }
     elseif (module_exists('geofield') || module_exists('geolocation') ) {
@@ -6156,10 +6190,10 @@ function theme_getlocations_lidinfo($variables) {
         $path = url('comment/' . $lid);
       }
       if ($path) {
-        $content = $path;
+        $output = $path;
       }
     }
   }
-  return $content;
+  return $output;
 
 }
