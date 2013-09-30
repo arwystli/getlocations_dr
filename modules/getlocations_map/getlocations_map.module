@@ -508,6 +508,12 @@ function getlocations_map_field_formatter_settings_form($field, $instance, $view
       $element['height']['#element_validate'] = array('getlocations_element_validate_dim');
       $element['latlong']['#element_validate'] = array('getlocations_element_validate_latlon');
 
+      $element['nodezoom'] = getlocations_element_map_zoom(
+        t('Default Zoom for Single location'),
+        $settings['nodezoom'],
+        t('The Default zoom level for a single marker.')
+      );
+
       $element += getlocations_map_display_options_form($settings, FALSE, TRUE);
       break;
     case 'getlocations_map_link':
