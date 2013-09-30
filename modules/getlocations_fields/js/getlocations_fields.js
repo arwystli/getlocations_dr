@@ -168,33 +168,35 @@
           });
         }
 
-        // monitor zoom
-        if ($("#getlocations_mapzoom_" + key).is('input')) {
-          if ( $("#getlocations_mapzoom_" + key).val() == '') {
-            $("#getlocations_mapzoom_" + key).val(getlocations_map[key].getZoom());
+        if (settings.map_settings_allow) {
+          // monitor zoom
+          if ($("#getlocations_mapzoom_" + key).is('input')) {
+            if ( $("#getlocations_mapzoom_" + key).val() == '') {
+              $("#getlocations_mapzoom_" + key).val(getlocations_map[key].getZoom());
+            }
+            getlocations_map[key].setZoom(parseInt($("#getlocations_mapzoom_" + key).val()));
+            google.maps.event.addListener(getlocations_map[key], 'zoom_changed', function() {
+              $("#getlocations_mapzoom_" + key).val(getlocations_map[key].getZoom());
+            });
           }
-          getlocations_map[key].setZoom(parseInt($("#getlocations_mapzoom_" + key).val()));
-          google.maps.event.addListener(getlocations_map[key], 'zoom_changed', function() {
-            $("#getlocations_mapzoom_" + key).val(getlocations_map[key].getZoom());
-          });
-        }
-        // monitor maptype
-        if ($("#getlocations_map_maptype_" + key).is('input')) {
-          if ( $("#getlocations_map_maptype_" + key).val() == '') {
-            var m = getlocations_map[key].getMapTypeId();
-            var maptype = getmaptype(m);
-            $("#getlocations_map_maptype_" + key).val(maptype);
+          // monitor maptype
+          if ($("#getlocations_map_maptype_" + key).is('input')) {
+            if ( $("#getlocations_map_maptype_" + key).val() == '') {
+              var m = getlocations_map[key].getMapTypeId();
+              var maptype = getmaptype(m);
+              $("#getlocations_map_maptype_" + key).val(maptype);
+            }
+            else {
+              var maptype = $("#getlocations_map_maptype_" + key).val();
+              var m = gettypemap(maptype);
+              getlocations_map[key].setMapTypeId(m);
+            }
+            google.maps.event.addListener(getlocations_map[key], 'maptypeid_changed', function() {
+              var m = getlocations_map[key].getMapTypeId();
+              var maptype = getmaptype(m);
+              $("#getlocations_map_maptype_" + key).val(maptype);
+            });
           }
-          else {
-            var maptype = $("#getlocations_map_maptype_" + key).val();
-            var m = gettypemap(maptype);
-            getlocations_map[key].setMapTypeId(m);
-          }
-          google.maps.event.addListener(getlocations_map[key], 'maptypeid_changed', function() {
-            var m = getlocations_map[key].getMapTypeId();
-            var maptype = getmaptype(m);
-            $("#getlocations_map_maptype_" + key).val(maptype);
-          });
         }
 
       }

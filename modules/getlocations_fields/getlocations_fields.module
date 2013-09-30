@@ -1604,6 +1604,7 @@ function getlocations_fields_getmap($settings, $active) {
   if ($active) {
     drupal_add_js($getlocations_fields_paths['getlocations_fields_path'], $js_opts);
     $settings['nodezoom'] = $getlocations_defaults['nodezoom'];
+    $settings['map_settings_allow'] = $getlocations_defaults['map_settings_allow'];
     getlocations_fields_js_settings_do($settings, $mapid);
   }
   else {
@@ -1851,19 +1852,21 @@ function getlocations_fields_save_locations($locations, $criteria, $mode) {
         $locations[$key]['sv_pitch'] = getlocations_normalizelat($locations[$key]['sv_pitch']);
         $data['data']['sv_pitch'] = intval($locations[$key]['sv_pitch']);
       }
-      if (isset($locations[$key]['mapzoom'])  && is_numeric($locations[$key]['mapzoom'])) {
-        $locations[$key]['mapzoom'] = trim($locations[$key]['mapzoom']);
-        // sanity check
-        if ($locations[$key]['mapzoom'] > 21) {
-          $locations[$key]['mapzoom'] = 21;
+      if (getlocations_map_settings_allow()) {
+        if (isset($locations[$key]['mapzoom'])  && is_numeric($locations[$key]['mapzoom'])) {
+          $locations[$key]['mapzoom'] = trim($locations[$key]['mapzoom']);
+          // sanity check
+          if ($locations[$key]['mapzoom'] > 21) {
+            $locations[$key]['mapzoom'] = 21;
+          }
+          if ($locations[$key]['mapzoom'] < 0) {
+            $locations[$key]['mapzoom'] = 0;
+          }
+          $data['data']['mapzoom'] = intval($locations[$key]['mapzoom']);
         }
-        if ($locations[$key]['mapzoom'] < 0) {
-          $locations[$key]['mapzoom'] = 0;
+        if (isset($locations[$key]['map_maptype'])) {
+          $data['data']['map_maptype'] = check_plain($locations[$key]['map_maptype']);
         }
-        $data['data']['mapzoom'] = intval($locations[$key]['mapzoom']);
-      }
-      if (isset($locations[$key]['map_maptype'])) {
-        $data['data']['map_maptype'] = check_plain($locations[$key]['map_maptype']);
       }
       if (isset($locations[$key]['sv_showfirst_enable'])  && is_numeric($locations[$key]['sv_showfirst_enable'])) {
         $data['data']['sv_showfirst_enable'] = intval($locations[$key]['sv_showfirst_enable']);
@@ -2139,7 +2142,13 @@ function getlocations_fields_load_location($glid) {
       foreach ($keys AS $key => $dval) {
         $location[$key] = $dval;
         if (is_array($data) && isset($data['data'][$key])) {
-          $location[$key] = $data['data'][$key];
+          $do = TRUE;
+          if (! getlocations_map_settings_allow() && ($key == 'mapzoom' || $key == 'map_maptype')) {
+            $do = FALSE;
+          }
+          if ($do) {
+            $location[$key] = $data['data'][$key];
+          }
         }
       }
 
@@ -2200,6 +2209,7 @@ function getlocations_fields_js_settings_do($defaults, $mapid) {
       'sv_pitch'    => $defaults['sv_pitch'],
       'sv_enable'   => $defaults['sv_enable'],
       'sv_showfirst_enable' => $defaults['sv_showfirst_enable'],
+      'map_settings_allow'  => $defaults['map_settings_allow'],
     ),
   );
 
@@ -3387,10 +3397,19 @@ function getlocations_fields_svinfo($location) {
     'sv_zoom'             => (isset($location['sv_zoom']) ? $location['sv_zoom'] : $sv_defaults['sv_zoom']),
     'sv_pitch'            => (isset($location['sv_pitch']) ? $location['sv_pitch'] : $sv_defaults['sv_pitch']),
     'sv_showfirst_enable' => (isset($location['sv_showfirst_enable']) ? $location['sv_showfirst_enable'] : $sv_defaults['sv_showfirst_enable']),
-    'mapzoom'             => (isset($location['mapzoom']) ? $location['mapzoom'] : $sv_defaults['mapzoom']),
-    'map_maptype'         => (isset($location['map_maptype']) ? $location['map_maptype'] : $sv_defaults['map_maptype']) ,
   );
   return $sv_info;
+}
+
+function getlocations_fields_mapinfo($location) {
+
+  $defaults = getlocations_fields_data_keys('d');
+  $info = array(
+    'mapzoom'             => (isset($location['mapzoom']) ? $location['mapzoom'] : $defaults['mapzoom']),
+    'map_maptype'         => (isset($location['map_maptype']) ? $location['map_maptype'] : $defaults['map_maptype']) ,
+  );
+  return $info;
+
 }
 
 // Theming functions
@@ -3551,11 +3570,13 @@ function theme_getlocations_fields_show($variables) {
     if (isset($location['sv_pitch']) && is_numeric($location['sv_pitch'])) {
       $settings['sv_pitch'] = $location['sv_pitch'];
     }
-    if (isset($location['mapzoom']) && is_numeric($location['mapzoom'])) {
-      $settings['nodezoom'] = $location['mapzoom'];
-    }
-    if (isset($location['map_maptype']) && $location['map_maptype']) {
-      $settings['maptype'] = $location['map_maptype'];
+    if (getlocations_map_settings_allow()) {
+      if (isset($location['mapzoom']) && is_numeric($location['mapzoom'])) {
+        $settings['nodezoom'] = $location['mapzoom'];
+      }
+      if (isset($location['map_maptype']) && $location['map_maptype']) {
+        $settings['maptype'] = $location['map_maptype'];
+      }
     }
     if (isset($location['sv_enable'])) {
       $settings['sv_enable'] = ($location['sv_enable'] == 1 ? 1 : 0);
@@ -3914,7 +3935,10 @@ function theme_getlocations_fields_field_widget_form($variables) {
     $form['country']['#suffix'] = '</div>';
   }
 
-  $msg = t('To use the map to find a location, drag the marker or click on the map.') . '<br />' . t('You can also set the map type and zoom');
+  $msg = t('To use the map to find a location, drag the marker or click on the map.');
+  if (getlocations_map_settings_allow()) {
+    $msg .= '<br />' . t('You can also set the map type and zoom');
+  }
   if (! $active) {
     $msg =  t('A preview of the current map settings.') . '<br />' . t('You can adjust the Map center, Zoom and map type by changing the map.') . '<br />' . t('For all other changes use the form. Remember to Save when you are done.');
   }

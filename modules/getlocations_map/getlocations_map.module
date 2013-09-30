@@ -187,14 +187,15 @@ function getlocations_map_field_formatter_view($entity_type, $entity, $field, $i
              if (isset($location['sv_showfirst_enable']) && is_numeric($location['sv_showfirst_enable'])) {
               $default['sv_showfirst'] = $location['sv_showfirst_enable'];
               $default['sv_showfirst_enable'] = $location['sv_showfirst_enable'];
-           }
-           if (isset($location['mapzoom']) && is_numeric($location['mapzoom'])) {
-              $default['nodezoom'] = $location['mapzoom'];
             }
-            if (isset($location['map_maptype']) && $location['map_maptype']) {
-              $default['maptype'] = $location['map_maptype'];
+            if (getlocations_map_settings_allow()) {
+              if (isset($location['mapzoom']) && is_numeric($location['mapzoom'])) {
+                $default['nodezoom'] = $location['mapzoom'];
+              }
+              if (isset($location['map_maptype']) && $location['map_maptype']) {
+                $default['maptype'] = $location['map_maptype'];
+              }
             }
-
           }
           elseif ($module == 'location_cck') {
             if (isset($entity->{$locative_field_name}[$lang][$delta])) {
