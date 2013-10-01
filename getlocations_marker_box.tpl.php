@@ -6,6 +6,7 @@
  * @copyright GNU GPL
  *
  * Template file for colorbox implementation
+ * @ingroup themeable
  */
 
 ?>
@@ -38,6 +39,7 @@
   }
 </style>
 <?php
+  $title = t('Getlocations marker');
   if (isset($content['cat'])) {
     if ($content['cat'] == 'n') {
       $title = t('Getlocations Node marker');
@@ -55,7 +57,6 @@
       $title = t('Getlocations Input marker');
     }
   }
-
 ?>
 </head>
 

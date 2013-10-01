@@ -6,6 +6,7 @@
  * @copyright GNU GPL
  *
  * Template file for colorbox implementation
+ * @ingroup themeable
  */
 
 ?>
