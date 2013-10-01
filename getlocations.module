@@ -920,6 +920,7 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
  *   Returns the current settings
  */
 function getlocations_defaults($reset = FALSE) {
+  $module = getlocations_get_current_supported_module();
   $defaults = array(
     'api_version'                   => 3,
     'width'                         => '300px',
@@ -947,7 +948,7 @@ function getlocations_defaults($reset = FALSE) {
     'overview_opened'               => 0,
     'scrollwheel'                   => 0,
     'scalecontrolposition'          => '',
-    'map_settings_allow'            => 1,
+    'map_settings_allow'            => ($module == 'getlocations_fields' ? 1 : 0),
     'sv_global'                     => 1, // global killswitch
     'sv_show'                       => 0, // Pegman
     'svcontrolposition'             => '',
@@ -3058,11 +3059,16 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
   if ($config) {
 
     // per location map settings
-    $form['map_settings_allow'] = getlocations_element_map_checkbox(
-      t('Per location map settings'),
-      $defaults['map_settings_allow'],
-      t('Allow zoom and map type set per location. Disabling this will use the defaults instead.')
-    );
+    if (getlocations_get_current_supported_module() == 'getlocations_fields') {
+      $form['map_settings_allow'] = getlocations_element_map_checkbox(
+        t('Per location map settings'),
+        $defaults['map_settings_allow'],
+        t('Allow zoom and map type set per location. Disabling this will use the defaults instead.')
+      );
+    }
+    else {
+      $form['map_settings_allow'] = array('#type' => 'value', '#value' => 0);
+    }
 
     // Enable the visual refresh feature
     $form['visual_refresh'] = getlocations_element_map_checkbox(
@@ -3115,10 +3121,14 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
 
     // streetview killswitch
     if (getlocations_sv_global()) {
+      $msg = t('Enable streetview overlay on initial view of the map. This only occurs if there is one location.');
+      if ($config) {
+        $msg .= '<br />' . t('Enabling this here will make it available per content type or per location.');
+      }
       $form['sv_showfirst'] = getlocations_element_map_checkbox(
-        t('Show streetview Overlay'),
+        t('Enable streetview Overlay'),
         $defaults['sv_showfirst'],
-        t('Show streetview overlay on initial view of the map. This only occurs if there is one location.')
+        $msg
       );
     }
     else {
