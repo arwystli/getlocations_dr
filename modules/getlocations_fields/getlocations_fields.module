@@ -206,6 +206,10 @@ function getlocations_fields_field_validate($entity_type, $entity, $field, $inst
  *   $entity->{$field['field_name']}[$langcode], or an empty array if unset.
  */
 function getlocations_fields_field_insert($entity_type, $entity, $field, $instance, $langcode, &$items) {
+  $settings = FALSE;
+  if (isset($field['settings'])) {
+    $settings = $field['settings'];
+  }
 
   if (!empty($items)) {
     foreach ($items AS $key => $item) {
@@ -220,7 +224,7 @@ function getlocations_fields_field_insert($entity_type, $entity, $field, $instan
     }
 
     if (! empty($criteria)) {
-      $items = getlocations_fields_save_locations($items, $criteria, 'insert');
+      $items = getlocations_fields_save_locations($items, $criteria, $settings, 'insert');
     }
   }
 }
@@ -243,6 +247,10 @@ function getlocations_fields_field_insert($entity_type, $entity, $field, $instan
  *   $entity->{$field['field_name']}[$langcode], or an empty array if unset.
  */
 function getlocations_fields_field_update($entity_type, $entity, $field, $instance, $langcode, &$items) {
+  $settings = FALSE;
+  if (isset($field['settings'])) {
+    $settings = $field['settings'];
+  }
 
   if (!empty($items)) {
 
@@ -261,7 +269,7 @@ function getlocations_fields_field_update($entity_type, $entity, $field, $instan
           }
         }
       }
-      $items = getlocations_fields_save_locations($items, $criteria, 'update');
+      $items = getlocations_fields_save_locations($items, $criteria, $settings, 'update');
     }
   }
 
@@ -293,7 +301,7 @@ function getlocations_fields_field_delete($entity_type, $entity, $field, $instan
     }
 
     if (! empty($criteria)) {
-      $items = getlocations_fields_save_locations($items, $criteria, 'delete');
+      $items = getlocations_fields_save_locations($items, $criteria, FALSE, 'delete');
     }
   }
 }
@@ -323,7 +331,7 @@ function getlocations_fields_field_delete_revision($entity_type, $entity, $field
       $criteria = array('field_name' => $field['field_name']);
     }
     if (! empty($criteria)) {
-      $items = getlocations_fields_save_locations($items, $criteria, 'delete_revision');
+      $items = getlocations_fields_save_locations($items, $criteria, FALSE, 'delete_revision');
     }
   }
 }
@@ -397,7 +405,7 @@ function getlocations_fields_field_load($entity_type, $entities, $field, $instan
 function getlocations_fields_field_settings_form($field, $instance, $has_data) {
   $settings = $field['settings'];
   if (empty($settings)) {
-    $settings = getlocations_fields_field_info_defaults();
+    $settings = getlocations_fields_field_info();
   }
 
   $form = array();
@@ -1604,7 +1612,7 @@ function getlocations_fields_getmap($settings, $active) {
   if ($active) {
     drupal_add_js($getlocations_fields_paths['getlocations_fields_path'], $js_opts);
     $settings['nodezoom'] = $getlocations_defaults['nodezoom'];
-    $settings['map_settings_allow'] = $getlocations_defaults['map_settings_allow'];
+#    $settings['map_settings_allow'] = $getlocations_defaults['map_settings_allow'];
     getlocations_fields_js_settings_do($settings, $mapid);
   }
   else {
@@ -1760,9 +1768,16 @@ function getlocations_fields_getmap_show($settings, $lls = '', $minmaxes = '') {
  * @return array $locations
  *
  */
-function getlocations_fields_save_locations($locations, $criteria, $mode) {
+function getlocations_fields_save_locations($locations, $criteria, $settings, $mode) {
 
   if (isset($locations) && is_array($locations) && !empty($criteria) && is_array($criteria)) {
+    // deal with $settings
+    if ($settings && isset($settings['map_settings_allow'])) {
+      $map_settings_allow = $settings['map_settings_allow'];
+    }
+    else {
+      $map_settings_allow = getlocations_fields_map_settings_allow();
+    }
 
     foreach (array_keys($locations) as $key) {
       // remove empties
@@ -1852,7 +1867,8 @@ function getlocations_fields_save_locations($locations, $criteria, $mode) {
         $locations[$key]['sv_pitch'] = getlocations_normalizelat($locations[$key]['sv_pitch']);
         $data['data']['sv_pitch'] = intval($locations[$key]['sv_pitch']);
       }
-      if (getlocations_map_settings_allow()) {
+      $data['data'][$key]['map_settings_allow'] = $map_settings_allow;
+      if ($map_settings_allow) {
         if (isset($locations[$key]['mapzoom'])  && is_numeric($locations[$key]['mapzoom'])) {
           $locations[$key]['mapzoom'] = trim($locations[$key]['mapzoom']);
           // sanity check
@@ -2139,11 +2155,18 @@ function getlocations_fields_load_location($glid) {
       $data = (isset($row->data) && ! empty($row->data) ? unserialize($row->data) : '');
 
       $keys = getlocations_fields_data_keys('d');
+      if (isset($data['data']['map_settings_allow'])) {
+        $map_settings_allow = $data['data']['map_settings_allow'];
+      }
+      else {
+        $map_settings_allow = getlocations_fields_map_settings_allow();
+      }
+
       foreach ($keys AS $key => $dval) {
         $location[$key] = $dval;
         if (is_array($data) && isset($data['data'][$key])) {
           $do = TRUE;
-          if (! getlocations_map_settings_allow() && ($key == 'mapzoom' || $key == 'map_maptype')) {
+          if (! $map_settings_allow && ($key == 'mapzoom' || $key == 'map_maptype')) {
             $do = FALSE;
           }
           if ($do) {
@@ -2302,6 +2325,7 @@ function getlocations_fields_defaults() {
     'per_item_marker'                 => 0,
     'street_num_pos'                  => 1,
     'latlon_warning'                  => 0,
+    'map_settings_allow'              => 0,
     'streetview_setup'                => (getlocations_sv_global() ? 1 : 0),
     'sv_heading'                      => $dvals['sv_heading'],
     'sv_zoom'                         => $dvals['sv_zoom'],
@@ -2485,6 +2509,7 @@ function getlocations_fields_field_info_defaults() {
         'per_item_marker'                 => $getlocations_fields_defaults['per_item_marker'],
         'street_num_pos'                  => $getlocations_fields_defaults['street_num_pos'],
         'latlon_warning'                  => $getlocations_fields_defaults['latlon_warning'],
+        'map_settings_allow'              => $getlocations_fields_defaults['map_settings_allow'],
         'streetview_setup'                => (getlocations_sv_global() ? 1 : 0),
         'sv_heading'                      => $getlocations_fields_defaults['sv_heading'],
         'sv_zoom'                         => $getlocations_fields_defaults['sv_zoom'],
@@ -3071,9 +3096,9 @@ function getlocations_fields_input_settings_form($defaults) {
 
   // per_item_marker
   $form['per_item_marker'] = getlocations_element_map_checkbox(
-    t('Allow per item markers'),
+    t('Allow per location markers'),
     $defaults['per_item_marker'],
-    t('Allow each item to have a marker selected.')
+    t('Allow each location to have a marker selected.')
   );
   $form['input_marker_weight'] = getlocations_fields_element_weight(
     t('Marker select position'),
@@ -3100,15 +3125,16 @@ function getlocations_fields_input_settings_form($defaults) {
   if (getlocations_sv_global()) {
     // enable streetview setup feature
     $form['streetview_setup'] = array('#type' => 'value', '#value' => 1);
-#    $form['streetview_setup'] = getlocations_element_map_checkbox(
-#      t('Enable Streetview Setup'),
-#      $defaults['streetview_setup'],
-#      t('Enables streetview configuration when set up to appear on top of the initial map in display settings.')
-#    );
   }
   else {
     $form['streetview_setup'] = array('#type' => 'value', '#value' => 0);
   }
+
+  $form['map_settings_allow'] = getlocations_element_map_checkbox(
+    t('Per location map settings'),
+    $defaults['map_settings_allow'],
+    t('Allow zoom and map type set per location. Disabling this will use the defaults instead.')
+  );
 
   return $form;
 
@@ -3412,6 +3438,14 @@ function getlocations_fields_mapinfo($location) {
 
 }
 
+function getlocations_fields_map_settings_allow() {
+  $getlocations_fields_defaults = getlocations_fields_defaults();
+  if ($getlocations_fields_defaults['map_settings_allow']) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
 // Theming functions
 
 /**
@@ -3570,7 +3604,13 @@ function theme_getlocations_fields_show($variables) {
     if (isset($location['sv_pitch']) && is_numeric($location['sv_pitch'])) {
       $settings['sv_pitch'] = $location['sv_pitch'];
     }
-    if (getlocations_map_settings_allow()) {
+    if (isset($location['map_settings_allow'])) {
+      $map_settings_allow = $location['map_settings_allow'];
+    }
+    else {
+      $map_settings_allow = getlocations_fields_map_settings_allow();
+    }
+    if ($map_settings_allow) {
       if (isset($location['mapzoom']) && is_numeric($location['mapzoom'])) {
         $settings['nodezoom'] = $location['mapzoom'];
       }
@@ -3936,7 +3976,13 @@ function theme_getlocations_fields_field_widget_form($variables) {
   }
 
   $msg = t('To use the map to find a location, drag the marker or click on the map.');
-  if (getlocations_map_settings_allow()) {
+  if (isset($settings['map_settings_allow'])) {
+    $map_settings_allow = $settings['map_settings_allow'];
+  }
+  else {
+    $map_settings_allow = getlocations_fields_map_settings_allow();
+  }
+  if ($map_settings_allow) {
     $msg .= '<br />' . t('You can also set the map type and zoom');
   }
   if (! $active) {

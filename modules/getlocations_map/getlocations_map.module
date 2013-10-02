@@ -188,7 +188,13 @@ function getlocations_map_field_formatter_view($entity_type, $entity, $field, $i
               $default['sv_showfirst'] = $location['sv_showfirst_enable'];
               $default['sv_showfirst_enable'] = $location['sv_showfirst_enable'];
             }
-            if (getlocations_map_settings_allow()) {
+            if (isset($location['map_settings_allow'])) {
+              $map_settings_allow = $location['map_settings_allow'];
+            }
+            else {
+              $map_settings_allow = getlocations_fields_map_settings_allow();
+            }
+            if ($map_settings_allow) {
               if (isset($location['mapzoom']) && is_numeric($location['mapzoom'])) {
                 $default['nodezoom'] = $location['mapzoom'];
               }
@@ -507,12 +513,6 @@ function getlocations_map_field_formatter_settings_form($field, $instance, $view
       $element['width']['#element_validate'] = array('getlocations_element_validate_dim');
       $element['height']['#element_validate'] = array('getlocations_element_validate_dim');
       $element['latlong']['#element_validate'] = array('getlocations_element_validate_latlon');
-
-      $element['nodezoom'] = getlocations_element_map_zoom(
-        t('Default Zoom for Single location'),
-        $settings['nodezoom'],
-        t('The Default zoom level for a single marker.')
-      );
 
       $element += getlocations_map_display_options_form($settings, FALSE, TRUE);
       break;

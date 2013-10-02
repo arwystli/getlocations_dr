@@ -295,6 +295,7 @@ function getlocations_entity_type_map($type, $entity_id) {
   $extra_info = array();
   $sv_info = FALSE;
   $map_info = FALSE;
+  $module = getlocations_get_current_supported_module();
 
   if (count($locations)) {
     // we should loop over them and dump bummers with no lat/lon
@@ -323,11 +324,13 @@ function getlocations_entity_type_map($type, $entity_id) {
         $latlons[] = array($location['latitude'], $location['longitude'], $location['entity_id'], $name, $marker, $location['entity_type'], '', '');
 
         $sv_info = FALSE;
-        if (module_exists('getlocations_fields') && count($locations) == 1) {
+        if ($module == 'getlocations_fields' && count($locations) == 1) {
           if (getlocations_sv_global()) {
             $sv_info = getlocations_fields_svinfo($location);
           }
-          $map_info = getlocations_fields_mapinfo($location);
+          if (getlocations_fields_map_settings_allow()) {
+            $map_info = getlocations_fields_mapinfo($location);
+          }
         }
 
         $ct++;
@@ -435,6 +438,7 @@ function getlocations_lids($lidlist) {
   $extra_info = array();
   $sv_info = FALSE;
   $map_info = FALSE;
+  $module = getlocations_get_current_supported_module();
 
   foreach ($lidarr AS $lid) {
     $locations[] = getlocations_load_location($lid);
@@ -453,11 +457,13 @@ function getlocations_lids($lidlist) {
         $latlons[] = array($location['latitude'], $location['longitude'], $location['lid'], $name, $location['marker'], $location['key'], '', '');
 
         $sv_info = FALSE;
-        if (module_exists('getlocations_fields') && count($locations) == 1) {
+        if ($module == 'getlocations_fields' && count($locations) == 1) {
           if (getlocations_sv_global()) {
             $sv_info = getlocations_fields_svinfo($location);
           }
-          $map_info = getlocations_fields_mapinfo($location);
+          if (getlocations_fields_map_settings_allow()) {
+            $map_info = getlocations_fields_mapinfo($location);
+          }
         }
 
         $ct++;
@@ -501,6 +507,7 @@ function getlocations_nids($nidlist) {
   $extra_info = array();
   $sv_info = FALSE;
   $map_info = FALSE;
+  $module = getlocations_get_current_supported_module();
 
   foreach ($nidarr AS $nid) {
     $vid = getlocations_get_vid($nid);
@@ -526,11 +533,13 @@ function getlocations_nids($nidlist) {
         $latlons[] = array($location['latitude'], $location['longitude'], $location['lid'], $name, $location['marker'], $location['key'], '', '');
 
         $sv_info = FALSE;
-        if (module_exists('getlocations_fields') && count($locations) == 1) {
+        if ($module == 'getlocations_fields' && count($locations) == 1) {
           if (getlocations_sv_global()) {
             $sv_info = getlocations_fields_svinfo($location);
           }
-          $map_info = getlocations_fields_mapinfo($location);
+          if (getlocations_fields_map_settings_allow()) {
+            $map_info = getlocations_fields_mapinfo($location);
+          }
         }
 
         $ct++;
@@ -562,6 +571,7 @@ function getlocations_setlocations($latlons, $minmaxes='', $entity_info = '', $o
   }
 
   $getlocations_defaults = getlocations_defaults();
+  $module = getlocations_get_current_supported_module();
 
   // sv
   if ($extras) {
@@ -571,7 +581,7 @@ function getlocations_setlocations($latlons, $minmaxes='', $entity_info = '', $o
       $getlocations_defaults['sv_pitch']     = $extras['sv_pitch'];
       $getlocations_defaults['sv_showfirst'] = $extras['sv_showfirst_enable'];
     }
-    if (getlocations_map_settings_allow()) {
+    if ($module == 'getlocations_fields' && getlocations_fields_map_settings_allow()) {
       $getlocations_defaults['nodezoom']     = $extras['mapzoom'];
       $getlocations_defaults['maptype']      = $extras['map_maptype'];
       // update baselayers
@@ -948,7 +958,6 @@ function getlocations_defaults($reset = FALSE) {
     'overview_opened'               => 0,
     'scrollwheel'                   => 0,
     'scalecontrolposition'          => '',
-    'map_settings_allow'            => ($module == 'getlocations_fields' ? 1 : 0),
     'sv_global'                     => 1, // global killswitch
     'sv_show'                       => 0, // Pegman
     'svcontrolposition'             => '',
@@ -2212,7 +2221,6 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
       'pancontrolposition'        => $defaults['pancontrolposition'],
       'scalecontrolposition'      => $defaults['scalecontrolposition'],
       'svcontrolposition'         => $defaults['svcontrolposition'],
-      'map_settings_allow'        => $defaults['map_settings_allow'],
     ),
   );
   // only set these if wanted
@@ -3057,18 +3065,6 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
   );
 
   if ($config) {
-
-    // per location map settings
-    if (getlocations_get_current_supported_module() == 'getlocations_fields') {
-      $form['map_settings_allow'] = getlocations_element_map_checkbox(
-        t('Per location map settings'),
-        $defaults['map_settings_allow'],
-        t('Allow zoom and map type set per location. Disabling this will use the defaults instead.')
-      );
-    }
-    else {
-      $form['map_settings_allow'] = array('#type' => 'value', '#value' => 0);
-    }
 
     // Enable the visual refresh feature
     $form['visual_refresh'] = getlocations_element_map_checkbox(
@@ -5083,22 +5079,6 @@ function getlocations_sv_global() {
   return FALSE;
 }
 
-/**
- * Function
- *
- * @param
- *
- * @return
- *   Returns
- *
- */
-function getlocations_map_settings_allow() {
-  $getlocations_defaults = getlocations_defaults();
-  if ($getlocations_defaults['map_settings_allow']) {
-    return TRUE;
-  }
-  return FALSE;
-}
 
 
 ////////////////////////////////////////////////////////////////////////////////////////
