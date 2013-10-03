@@ -245,7 +245,11 @@ function template_preprocess_getlocations_view_streetview(&$variables) {
   global $language;
 
   // just in case
-  if (! getlocations_sv_global()) {
+  if (! module_exists('getlocations_fields')) {
+    $variables['mapid'] = FALSE;
+    return;
+  }
+  if (! getlocations_fields_streetview_settings_allow()) {
     $variables['mapid'] = FALSE;
     return;
   }
@@ -379,10 +383,9 @@ function getlocations_streetview_js_settings_do($defaults, $mapid) {
 function getlocations_views_pre_render(&$view) {
 
   // look for the right view, machine name must end in getlocations_streetview
-  if (preg_match('/getlocations_streetview$/i', $view->name)) {
-
+  if (module_exists('getlocations_fields') && preg_match('/getlocations_streetview$/i', $view->name)) {
     // streetview killswitch
-    if (getlocations_sv_global()) {
+    if (getlocations_fields_streetview_settings_allow()) {
       if (count($view->result) == 1) {
         if (isset($view->result[0]->getlocations_fields_data)) {
           // OK, now get the data, unserialize and get sv_enable
@@ -410,5 +413,4 @@ function getlocations_views_pre_render(&$view) {
       }
     }
   }
-
 }

@@ -49,6 +49,9 @@ class getlocations_plugin_style_streetview extends views_plugin_style {
   function options_form(&$form, &$form_state) {
     parent::options_form($form, $form_state);
 
+    if (! module_exists('getlocations_fields')) {
+      return;
+    }
     $form['#theme'] = 'getlocations_plugin_style_streetview_options_form';
 
     $handlers = $this->display->handler->get_handlers('field');
@@ -59,7 +62,7 @@ class getlocations_plugin_style_streetview extends views_plugin_style {
     }
 
     // streetview killswitch
-    if (! getlocations_sv_global()) {
+    if (! getlocations_fields_streetview_settings_allow()) {
       $form['message'] = array(
         '#markup' => '<p><b>' . t('Streetview has been disabled globally, this plugin is inactive.') . '</b></p>',
       );

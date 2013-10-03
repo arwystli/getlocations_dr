@@ -171,23 +171,29 @@ function getlocations_map_field_formatter_view($entity_type, $entity, $field, $i
               }
             }
             // smuggle these in from location data
-            if (isset($location['sv_heading']) && is_numeric($location['sv_heading'])) {
-              $default['sv_heading'] = $location['sv_heading'];
+            // streetview_ settings
+            if (isset($location['streetview_settings_allow'])) {
+              $streetview_settings_allow = $location['streetview_settings_allow'];
             }
-            if (isset($location['sv_zoom']) && is_numeric($location['sv_zoom'])) {
-              $default['sv_zoom'] = $location['sv_zoom'];
+            else {
+              $streetview_settings_allow = getlocations_fields_streetview_settings_allow();
             }
-            if (isset($location['sv_pitch']) && is_numeric($location['sv_pitch'])) {
-              $default['sv_pitch'] = $location['sv_pitch'];
+            if ($streetview_settings_allow) {
+              if (isset($location['sv_heading']) && is_numeric($location['sv_heading'])) {
+                $default['sv_heading'] = $location['sv_heading'];
+              }
+              if (isset($location['sv_zoom']) && is_numeric($location['sv_zoom'])) {
+                $default['sv_zoom'] = $location['sv_zoom'];
+              }
+              if (isset($location['sv_pitch']) && is_numeric($location['sv_pitch'])) {
+                $default['sv_pitch'] = $location['sv_pitch'];
+              }
+              if (isset($location['sv_showfirst']) && is_numeric($location['sv_showfirst'])) {
+                $default['sv_showfirst'] = $location['sv_showfirst'];
+              }
             }
-            #if (isset($location['sv_enable']) && is_numeric($location['sv_enable'])) {
-            #  $default['sv_enable'] = $location['sv_enable'];
-            #}
-            $default['sv_enable'] = 0;
-             if (isset($location['sv_showfirst_enable']) && is_numeric($location['sv_showfirst_enable'])) {
-              $default['sv_showfirst'] = $location['sv_showfirst_enable'];
-              $default['sv_showfirst_enable'] = $location['sv_showfirst_enable'];
-            }
+
+            // map_settings
             if (isset($location['map_settings_allow'])) {
               $map_settings_allow = $location['map_settings_allow'];
             }
@@ -227,13 +233,6 @@ function getlocations_map_field_formatter_view($entity_type, $entity, $field, $i
             }
           }
           # elseif other modules here
-
-          // streetview killswitch
-          if (! getlocations_sv_global()) {
-            $default['sv_enable'] = 0;
-            $default['sv_showfirst'] = 0;
-            $default['sv_showfirst_enable'] = 0;
-          }
 
           if (isset($lat) && ! empty($lat) && isset($lon) && ! empty($lon)  && $latlon = getlocations_latlon_check($lat . ',' . $lon)) {
             $ll = explode(',', $latlon);
@@ -701,7 +700,6 @@ function getlocations_map_defaults() {
     'show_maplinks'                 => $getlocations_defaults['show_maplinks'],
     'show_bubble_on_one_marker'     => $getlocations_defaults['show_bubble_on_one_marker'],
     'fullscreen'                    => $getlocations_defaults['fullscreen'],
-    'sv_global'                     => $getlocations_defaults['sv_global'],
     'sv_show'                       => $getlocations_defaults['sv_show'],
     'sv_showfirst'                  => $getlocations_defaults['sv_showfirst'],
     'sv_heading'                    => $getlocations_defaults['sv_heading'],

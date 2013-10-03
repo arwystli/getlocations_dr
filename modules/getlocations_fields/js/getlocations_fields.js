@@ -54,7 +54,7 @@
         var search_country = settings.search_country;
         var smart_ip_path = settings.smart_ip_path;
         street_num_pos = settings.street_num_pos;
-        streetview_setup = settings.streetview_setup;
+        streetview_setup = settings.streetview_settings_allow;
         if (streetview_setup) {
           $("#getlocations_streetview_setup_" + key).hide();
         }
