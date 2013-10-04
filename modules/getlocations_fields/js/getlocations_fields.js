@@ -255,6 +255,7 @@
             $("#" + latfield + kk).val(lat);
             $("#" + lonfield + kk).val(lng);
             updateMap(mmap, point[kk], kk);
+            streetviewSetupButtonDo(kk);
             if (use_adrs > 0) {
               set_address_components(kk, adrs.address_components);
               // Get name property and fill name field
