@@ -1591,11 +1591,15 @@ function getlocations_fields_getmap($settings, $active) {
   }
   $getlocations_defaults['zoom']                = $settings['zoom'];
   $getlocations_defaults['controltype']         = $settings['controltype'];
+  $getlocations_defaults['zoomcontrolposition'] = $settings['zoomcontrolposition'];
   $getlocations_defaults['pancontrol']          = $settings['pancontrol'];
+  $getlocations_defaults['pancontrolposition']  = $settings['pancontrolposition'];
   $getlocations_defaults['mtc']                 = $settings['mtc'];
   $getlocations_defaults['maptype']             = $settings['maptype'];
+  $getlocations_defaults['mapcontrolposition']  = $settings['mapcontrolposition'];
   $getlocations_defaults['baselayers']          = $settings['baselayers'];
   $getlocations_defaults['scale']               = $settings['scale'];
+  $getlocations_defaults['scalecontrolposition'] = $settings['scalecontrolposition'];
   $getlocations_defaults['overview']            = $settings['overview'];
   $getlocations_defaults['overview_opened']     = $settings['overview_opened'];
   $getlocations_defaults['scrollwheel']         = $settings['scrollwheel'];
