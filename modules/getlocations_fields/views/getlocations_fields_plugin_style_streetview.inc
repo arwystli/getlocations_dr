@@ -5,7 +5,7 @@
  * @author Bob Hutchinson http://drupal.org/user/52366
  * @copyright GNU GPL
  *
- * Contains the getlocations_streetview style plugin.
+ * Contains the getlocations_fields_streetview style plugin.
  */
 
 /**
@@ -13,7 +13,7 @@
  *
  * @ingroup views_style_plugins
  */
-class getlocations_plugin_style_streetview extends views_plugin_style {
+class getlocations_fields_plugin_style_streetview extends views_plugin_style {
   /**
    * Set default options
    */
@@ -23,7 +23,7 @@ class getlocations_plugin_style_streetview extends views_plugin_style {
   }
 
   function option_definition() {
-    drupal_add_js(GETLOCATIONS_PATH . '/js/getlocations_views.js');
+    drupal_add_js(GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields_views.js');
     $options = parent::option_definition();
 
     $getlocations_defaults = getlocations_defaults();
@@ -179,7 +179,7 @@ class getlocations_plugin_style_streetview extends views_plugin_style {
 
   function render() {
     if (isset($this->view->live_preview) && $this->view->live_preview) {
-      return t('Getlocations Map views are not compatible with live preview.');
+      return t('Getlocations Streetview views are not compatible with live preview.');
     }
     return parent::render();
   }

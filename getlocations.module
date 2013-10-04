@@ -731,12 +731,13 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
   }
 
   // streetview only
-  if ($sv) {
-    if (!stristr($current_js, $getlocations_paths['getlocations_streetview_path'])) {
+  if ($sv && module_exists('getlocations_fields')) {
+    $getlocations_fields_paths = getlocations_fields_paths_get();
+    if (!stristr($current_js, $getlocations_fields_paths['getlocations_fields_streetview_path'])) {
       $js_opts = array();
       $js_opts['weight'] = $getlocations_js_weight;
       $js_opts['type'] = 'file';
-      drupal_add_js($getlocations_paths['getlocations_streetview_path'], $js_opts);
+      drupal_add_js($getlocations_fields_paths['getlocations_fields_streetview_path'], $js_opts);
       $getlocations_js_weight++;
     }
     return;

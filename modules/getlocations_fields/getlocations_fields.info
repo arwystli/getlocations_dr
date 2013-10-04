@@ -22,3 +22,5 @@ files[] = handlers/getlocations_fields_handler_filter_country.inc
 files[] = handlers/getlocations_fields_handler_filter_distance.inc
 
 files[] = handlers/getlocations_fields_handler_sort_distance.inc
+
+files[] = views/getlocations_fields_plugin_style_streetview.inc

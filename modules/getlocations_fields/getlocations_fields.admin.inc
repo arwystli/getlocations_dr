@@ -56,6 +56,16 @@ function getlocations_fields_settings_form() {
     128,
     t('Where the getlocations_fields preview javascript file is located.')
   );
+
+  // streetview
+  $form['getlocations_fields_paths']['getlocations_fields_streetview_path'] = getlocations_element_path(
+    t('Path to getlocations fields Streetview javascript file'),
+    $getlocations_fields_paths['getlocations_fields_streetview_path'],
+    80,
+    128,
+    t('Where the getlocations fields streetview javascript file is located.')
+  );
+
   $form['getlocations_fields_paths']['reset'] = getlocations_element_map_checkbox(
     t('Reset'),
     0,

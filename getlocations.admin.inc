@@ -456,14 +456,6 @@ function getlocations_settings_form() {
     128,
     t('Where the getlocations geojson javascript file is located.')
   );
-  // streetview
-  $form['getlocations_paths']['getlocations_streetview_path'] = getlocations_element_path(
-    t('Path to getlocations Streetview javascript file'),
-    $getlocations_paths['getlocations_streetview_path'],
-    60,
-    128,
-    t('Where the getlocations streetview javascript file is located.')
-  );
 
   $form['getlocations_paths']['getlocations_path'] = getlocations_element_path(
     t('Path to getlocations javascript file'),

@@ -7,16 +7,16 @@
  * jquery stuff
 */
 (function ($) {
-  Drupal.behaviors.getlocations_streetview = {
+  Drupal.behaviors.getlocations_fields_streetview = {
     attach: function() {
       var getlocations_pano = [];
 
       // bail out
-      if (typeof Drupal.settings.getlocations_streetview === 'undefined') {
+      if (typeof Drupal.settings.getlocations_fields_streetview === 'undefined') {
         return;
       }
 
-      $.each(Drupal.settings.getlocations_streetview, function (key, settings) {
+      $.each(Drupal.settings.getlocations_fields_streetview, function (key, settings) {
 
         // functions
         function FullScreenControl(fsd) {

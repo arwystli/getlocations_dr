@@ -3359,6 +3359,7 @@ function getlocations_fields_paths_get($reset = FALSE) {
   $defaults = array(
     'getlocations_fields_path' => GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields.js',
     'getlocations_fields_preview_path' => GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields_preview.js',
+    'getlocations_fields_streetview_path' => GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields_streetview.js',
   );
   if ($reset) {
     $getlocations_fields_paths = $defaults;

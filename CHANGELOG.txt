@@ -1,73 +1,9 @@
-commit 981ebc5
-Author: hutch <hutch@midwales.net>
-Date:   Wed Sep 25 01:19:27 2013 +0100
-
-    more streetview
-
-getlocations.admin.inc
-getlocations.css
-getlocations.info
-getlocations.module
-js/getlocations.js
-js/getlocations_admin.js
-js/getlocations_streetview.js
-js/getlocations_views.js
-modules/getlocations_fields/getlocations_fields.info
-modules/getlocations_fields/getlocations_fields.module
-modules/getlocations_fields/handlers/getlocations_fields_handler_field_data.inc
-modules/getlocations_fields/handlers/getlocations_fields_handler_relationship_entity_reverse.inc
-modules/getlocations_fields/js/getlocations_fields.js
-modules/getlocations_fields/js/getlocations_fields_admin.js
-modules/getlocations_fields/js/getlocations_fields_formatter.js
-modules/getlocations_fields/views/getlocations_fields.views.inc
-modules/getlocations_map/getlocations_map.module
-modules/getlocations_map/js/getlocations_map_formatter.js
-modules/getlocations_search/getlocations_search.module
-views/getlocations-view-streetview.tpl.php
-views/getlocations.views.inc
-views/getlocations_plugin_style_map.inc
-views/getlocations_plugin_style_streetview.inc
-
-commit 537c279
-Author: hutch <hutch@midwales.net>
-Date:   Wed Sep 18 11:32:26 2013 +0100
-
-    added maptype to data
-
-modules/getlocations_fields/getlocations_fields.module
-modules/getlocations_fields/js/getlocations_fields.js
-
-commit aa56b6b
-Author: hutch <hutch@midwales.net>
-Date:   Mon Sep 16 16:59:27 2013 +0100
-
-    more streetview_first
-
-getlocations.module
-js/getlocations.js
-js/getlocations_views.js
-modules/getlocations_fields/getlocations_fields.module
-modules/getlocations_fields/js/getlocations_fields.js
-modules/getlocations_fields/js/getlocations_fields_formatter.js
-modules/getlocations_map/getlocations_map.module
-modules/getlocations_search/getlocations_search.module
-views/getlocations_plugin_style_map.inc
-
-commit 766c7a3
-Author: hutch <hutch@midwales.net>
-Date:   Thu Sep 12 09:33:10 2013 +0100
-
-    prevent regenerate_markers in cli
-
-getlocations.module
-
-commit 804b0e1
+commit 68ca6f5
 Author: hutch <hutch@midwales.net>
 Date:   Tue Sep 10 19:24:13 2013 +0100
 
     added accuracy feature
 
-CHANGELOG.txt
 modules/getlocations_search/getlocations_search.admin.inc
 modules/getlocations_search/getlocations_search.module
 modules/getlocations_search/js/getlocations_search.js
