@@ -1,9 +1,274 @@
-commit 68ca6f5
+commit 5bc908f
+Author: hutch <hutch@midwales.net>
+Date:   Sat Oct 5 03:59:52 2013 +0100
+
+    removed unwanted handler
+
+modules/getlocations_fields/handlers/getlocations_fields_handler_relationship_entity_reverse.inc
+
+commit 71ed296
+Author: hutch <hutch@midwales.net>
+Date:   Fri Oct 4 21:08:25 2013 +0100
+
+    fixed streetview setup button
+
+modules/getlocations_fields/js/getlocations_fields.js
+
+commit f92d850
+Author: hutch <hutch@midwales.net>
+Date:   Fri Oct 4 21:07:13 2013 +0100
+
+    added missing controlpositions
+
+modules/getlocations_fields/getlocations_fields.module
+
+commit 137cea8
+Author: hutch <hutch@midwales.net>
+Date:   Fri Oct 4 13:34:02 2013 +0100
+
+    moved streetview style plugin into getlocations_fields
+
+CHANGELOG.txt
+getlocations.admin.inc
+getlocations.info
+getlocations.module
+js/getlocations_streetview.js
+modules/getlocations_fields/getlocations_fields.admin.inc
+modules/getlocations_fields/getlocations_fields.info
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_fields/js/getlocations_fields_streetview.js
+modules/getlocations_fields/js/getlocations_fields_views.js
+modules/getlocations_fields/views/getlocations-fields-view-streetview.tpl.php
+modules/getlocations_fields/views/getlocations_fields.views.inc
+modules/getlocations_fields/views/getlocations_fields_plugin_style_streetview.inc
+views/getlocations-view-streetview.tpl.php
+views/getlocations.views.inc
+views/getlocations_plugin_style_streetview.inc
+
+commit 9efab6a
+Author: hutch <hutch@midwales.net>
+Date:   Thu Oct 3 19:19:12 2013 +0100
+
+    moved streetview into getlocations_fields
+
+getlocations.module
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_fields/js/getlocations_fields.js
+modules/getlocations_map/getlocations_map.module
+views/getlocations.views.inc
+views/getlocations_plugin_style_streetview.inc
+
+commit f2b503a
+Author: hutch <hutch@midwales.net>
+Date:   Wed Oct 2 11:41:17 2013 +0100
+
+    map_settings_allow fixed permissions
+
+getlocations.module
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_map/getlocations_map.module
+
+commit 1eb136b
+Author: hutch <hutch@midwales.net>
+Date:   Tue Oct 1 08:56:57 2013 +0100
+
+    Improved docblocks
+
+getlocations_box.tpl.php
+getlocations_marker_box.tpl.php
+
+commit 394ae42
+Author: hutch <hutch@midwales.net>
+Date:   Tue Oct 1 08:51:36 2013 +0100
+
+    map_settings_allow set to appear for getlocations_fields only
+
+getlocations.module
+
+commit 95ebf82
+Author: hutch <hutch@midwales.net>
+Date:   Mon Sep 30 20:37:09 2013 +0100
+
+    added nodezoom to map module
+
+modules/getlocations_map/getlocations_map.module
+
+commit 080b415
+Author: hutch <hutch@midwales.net>
+Date:   Mon Sep 30 18:25:32 2013 +0100
+
+    added map_settings_allow
+
+getlocations.module
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_fields/js/getlocations_fields.js
+modules/getlocations_map/getlocations_map.module
+
+commit 4677e2d
+Author: hutch <hutch@midwales.net>
+Date:   Sun Sep 29 11:15:16 2013 +0100
+
+    Improved docblocks
+
+getlocations.module
+
+commit d001df7
+Author: hutch <hutch@midwales.net>
+Date:   Sat Sep 28 15:34:51 2013 +0100
+
+    better getlocations_setlocations
+
+getlocations.module
+
+commit 6cb0d6b
+Author: hutch <hutch@midwales.net>
+Date:   Fri Sep 27 23:29:03 2013 +0100
+
+    added sv to nids and lids
+
+getlocations.module
+
+commit 52581ee
+Author: hutch <hutch@midwales.net>
+Date:   Fri Sep 27 21:28:14 2013 +0100
+
+    more sv_enable fixes
+
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_map/getlocations_map.module
+
+commit b2f673e
+Author: hutch <hutch@midwales.net>
+Date:   Fri Sep 27 20:40:11 2013 +0100
+
+    better streetview views theming and loading
+
+getlocations.module
+views/getlocations-view-streetview.tpl.php
+views/getlocations.views.inc
+
+commit 85fcb7d
+Author: hutch <hutch@midwales.net>
+Date:   Fri Sep 27 10:30:22 2013 +0100
+
+    better jquery show/hide
+
+getlocations.module
+js/getlocations_admin.js
+js/getlocations_search_places.js
+js/getlocations_views.js
+modules/getlocations_fields/js/getlocations_fields.js
+modules/getlocations_fields/js/getlocations_fields_admin.js
+modules/getlocations_fields/js/getlocations_fields_formatter.js
+modules/getlocations_map/js/getlocations_map_formatter.js
+views/getlocations_plugin_style_streetview.inc
+
+commit 37f2566
+Author: hutch <hutch@midwales.net>
+Date:   Thu Sep 26 18:28:01 2013 +0100
+
+    added check for settings
+
+js/getlocations.js
+js/getlocations_circles.js
+js/getlocations_colorbox.js
+js/getlocations_polygons.js
+js/getlocations_polylines.js
+js/getlocations_preview.js
+js/getlocations_rectangles.js
+js/getlocations_search_places.js
+js/getlocations_streetview.js
+
+commit 1d4b65a
+Author: hutch <hutch@midwales.net>
+Date:   Thu Sep 26 18:27:20 2013 +0100
+
+    added function getlocations_fields_svinfo
+
+getlocations.module
+modules/getlocations_fields/getlocations_fields.module
+
+commit f00442e
+Author: hutch <hutch@midwales.net>
+Date:   Thu Sep 26 11:57:18 2013 +0100
+
+    more sv bugfixes
+
+getlocations.module
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_fields/js/getlocations_fields.js
+
+commit 9eb3a81
+Author: hutch <hutch@midwales.net>
+Date:   Wed Sep 25 01:19:27 2013 +0100
+
+    more streetview
+
+CHANGELOG.txt
+getlocations.admin.inc
+getlocations.css
+getlocations.info
+getlocations.module
+js/getlocations.js
+js/getlocations_admin.js
+js/getlocations_streetview.js
+js/getlocations_views.js
+modules/getlocations_fields/getlocations_fields.info
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_fields/handlers/getlocations_fields_handler_field_data.inc
+modules/getlocations_fields/handlers/getlocations_fields_handler_relationship_entity_reverse.inc
+modules/getlocations_fields/js/getlocations_fields.js
+modules/getlocations_fields/js/getlocations_fields_admin.js
+modules/getlocations_fields/js/getlocations_fields_formatter.js
+modules/getlocations_fields/views/getlocations_fields.views.inc
+modules/getlocations_map/getlocations_map.module
+modules/getlocations_map/js/getlocations_map_formatter.js
+modules/getlocations_search/getlocations_search.module
+views/getlocations-view-streetview.tpl.php
+views/getlocations.views.inc
+views/getlocations_plugin_style_map.inc
+views/getlocations_plugin_style_streetview.inc
+
+commit 537c279
+Author: hutch <hutch@midwales.net>
+Date:   Wed Sep 18 11:32:26 2013 +0100
+
+    added maptype to data
+
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_fields/js/getlocations_fields.js
+
+commit aa56b6b
+Author: hutch <hutch@midwales.net>
+Date:   Mon Sep 16 16:59:27 2013 +0100
+
+    more streetview_first
+
+getlocations.module
+js/getlocations.js
+js/getlocations_views.js
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_fields/js/getlocations_fields.js
+modules/getlocations_fields/js/getlocations_fields_formatter.js
+modules/getlocations_map/getlocations_map.module
+modules/getlocations_search/getlocations_search.module
+views/getlocations_plugin_style_map.inc
+
+commit 766c7a3
+Author: hutch <hutch@midwales.net>
+Date:   Thu Sep 12 09:33:10 2013 +0100
+
+    prevent regenerate_markers in cli
+
+getlocations.module
+
+commit 804b0e1
 Author: hutch <hutch@midwales.net>
 Date:   Tue Sep 10 19:24:13 2013 +0100
 
     added accuracy feature
 
+CHANGELOG.txt
 modules/getlocations_search/getlocations_search.admin.inc
 modules/getlocations_search/getlocations_search.module
 modules/getlocations_search/js/getlocations_search.js
