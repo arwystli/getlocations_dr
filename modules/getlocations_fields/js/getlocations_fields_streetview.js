@@ -3,7 +3,7 @@
  * @author Bob Hutchinson http://drupal.org/user/52366
  * @copyright GNU GPL
  *
- * Javascript functions for getlocations module in views using custom-content in infobubble/infowindow
+ * Javascript functions for getlocations_fields module
  * jquery stuff
 */
 (function ($) {
@@ -59,34 +59,29 @@
 
         if ($("#getlocations_streetview_canvas_" + key).is('div')) {
 
-
-          //var width                  = settings.width;
-          //var height                 = settings.height;
           var addresscontrol         = (settings.sv_addresscontrol ? true : false);
           var addresscontrolposition = settings.sv_addresscontrolposition;
           var pancontrol             = (settings.sv_pancontrol ? true : false);
           var pancontrolposition     = settings.sv_pancontrolposition;
-          var zoomcontrol            = (settings.sv_zoomcontrol ? true : false);
+          var zoomcontrol            = settings.sv_zoomcontrol;
           var zoomcontrolposition    = settings.sv_zoomcontrolposition;
-          //var zoomcontrolstyle       = settings.sv_zoomcontrolstyle;
           var linkscontrol           = (settings.sv_linkscontrol ? true : false);
           var imagedatecontrol       = (settings.sv_imagedatecontrol ? true : false);
           var scrollwheel            = (settings.sv_scrollwheel ? true : false);
           var clicktogo              = (settings.sv_clicktogo ? true : false);
           var js_path                = settings.js_path;
           var fullscreen             = (settings.sv_fullscreen ? true : false);
-          //var latitude               = settings.latitude;
-          //var longitude              = settings.longitude;
           var pos = new google.maps.LatLng(parseFloat(settings.latitude), parseFloat(settings.longitude));
-          var sv_heading     = settings.sv_heading;
+
+          var sv_heading = settings.sv_heading;
           if (sv_heading == '') {
             sv_heading = 0;
           }
-          var sv_zoom        = settings.sv_zoom;
+          var sv_zoom = settings.sv_zoom;
           if (sv_zoom == '') {
             sv_zoom = 1;
           }
-          var sv_pitch       = settings.sv_pitch;
+          var sv_pitch = settings.sv_pitch;
           if (sv_pitch == '') {
             sv_pitch = 0;
           }
@@ -105,6 +100,7 @@
           controlpositions['lc'] = google.maps.ControlPosition.LEFT_CENTER;
           controlpositions['lt'] = google.maps.ControlPosition.LEFT_TOP;
 
+          // streetview options
           var popt = {
             position: pos,
             pov: {

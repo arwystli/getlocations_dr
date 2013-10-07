@@ -211,6 +211,8 @@ function getlocations_fields_field_insert($entity_type, $entity, $field, $instan
     $settings = $field['settings'];
   }
 
+  $settings['display_settings'] = getlocations_fields_get_display_settings($instance['display']['default']['settings']);
+
   if (!empty($items)) {
     foreach ($items AS $key => $item) {
       if ( empty($item['latitude']) || empty($item['longitude']) ) {
@@ -251,6 +253,8 @@ function getlocations_fields_field_update($entity_type, $entity, $field, $instan
   if (isset($field['settings'])) {
     $settings = $field['settings'];
   }
+
+  $settings['display_settings'] = getlocations_fields_get_display_settings($instance['display']['default']['settings']);
 
   if (!empty($items)) {
 
@@ -646,7 +650,6 @@ function getlocations_fields_field_formatter_settings_form($field, $instance, $v
   drupal_add_js(GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields_formatter.js');
   $display = $instance['display'][$view_mode];
   $settings = $display['settings'];
-  $getlocations_defaults = getlocations_defaults();
   $getlocations_fields_defaults = getlocations_fields_defaults();
   if (empty($settings)) {
     $settings = $getlocations_fields_defaults;
@@ -663,8 +666,10 @@ function getlocations_fields_field_formatter_settings_form($field, $instance, $v
   $element['display_mapwidth']['#element_validate'] = array('getlocations_element_validate_dim');
   $element['display_mapheight']['#element_validate'] = array('getlocations_element_validate_dim');
 
+  // map display options
   $element += getlocations_map_display_options_form($settings, FALSE);
 
+  // markers
   $getlocations_markers = variable_get('getlocations_markers', array());
   if (isset($getlocations_markers[$entity_type]['enable']) && $getlocations_markers[$entity_type]['enable']) {
     $type_markers = getlocations_get_type_markers();
@@ -700,6 +705,9 @@ function getlocations_fields_field_formatter_settings_form($field, $instance, $v
   $element['markeraction'] = getlocations_element_map_markeraction(
     $settings['markeraction']
   );
+
+  // streetview overlay settings
+  $element += getlocations_fields_sv_control_form($settings);
 
   unset($element['#theme']);
   $element['#theme'] = 'getlocations_fields_field_formatter_settings_form';
@@ -1739,6 +1747,16 @@ function getlocations_fields_getmap_show($settings, $lls = '', $minmaxes = '') {
   $getlocations_defaults['pancontrolposition']        = $settings['pancontrolposition'];
   $getlocations_defaults['scalecontrolposition']      = $settings['scalecontrolposition'];
   $getlocations_defaults['svcontrolposition']         = $settings['svcontrolposition'];
+  $getlocations_defaults['sv_addresscontrol']         = $settings['sv_addresscontrol']; // sv overlay controls
+  $getlocations_defaults['sv_addresscontrolposition'] = $settings['sv_addresscontrolposition'];
+  $getlocations_defaults['sv_pancontrol']             = $settings['sv_pancontrol'];
+  $getlocations_defaults['sv_pancontrolposition']     = $settings['sv_pancontrolposition'];
+  $getlocations_defaults['sv_zoomcontrol']            = $settings['sv_zoomcontrol'];
+  $getlocations_defaults['sv_zoomcontrolposition']    = $settings['sv_zoomcontrolposition'];
+  $getlocations_defaults['sv_linkscontrol']           = $settings['sv_linkscontrol'];
+  $getlocations_defaults['sv_imagedatecontrol']       = $settings['sv_imagedatecontrol'];
+  $getlocations_defaults['sv_scrollwheel']            = $settings['sv_scrollwheel'];
+  $getlocations_defaults['sv_clicktogo']              = $settings['sv_clicktogo'];
 
   $fieldables = getlocations_get_fieldable_entity_types();
   foreach ($fieldables AS $entity_type) {
@@ -1854,7 +1872,7 @@ function getlocations_fields_save_locations($locations, $criteria, $settings, $m
       }
 
       // streetview_settings
-      $data['data'][$key]['streetview_settings_allow'] = $streetview_settings_allow;
+      $data['data']['streetview_settings_allow'] = $streetview_settings_allow;
       if ($streetview_settings_allow) {
         if (isset($locations[$key]['sv_heading']) && is_numeric($locations[$key]['sv_heading'])) {
           $ph = trim($locations[$key]['sv_heading']);
@@ -1891,9 +1909,15 @@ function getlocations_fields_save_locations($locations, $criteria, $settings, $m
           $data['data']['sv_enable'] = intval($locations[$key]['sv_enable']);
         }
 
+        // display_settings
+        if (isset($settings['display_settings'])) {
+          foreach ($settings['display_settings'] AS $k => $v) {
+            $data['data'][$k] = $v;
+          }
+        }
       }
       // map_settings
-      $data['data'][$key]['map_settings_allow'] = $map_settings_allow;
+      $data['data']['map_settings_allow'] = $map_settings_allow;
       if ($map_settings_allow) {
         if (isset($locations[$key]['mapzoom'])  && is_numeric($locations[$key]['mapzoom'])) {
           $locations[$key]['mapzoom'] = trim($locations[$key]['mapzoom']);
@@ -2185,13 +2209,10 @@ function getlocations_fields_load_location($glid) {
       foreach ($keys AS $key => $dval) {
         $location[$key] = $dval;
         if (is_array($data) && isset($data['data'][$key])) {
-          $do = TRUE;
           if (! $map_settings_allow && ($key == 'mapzoom' || $key == 'map_maptype')) {
-            $do = FALSE;
+            continue;
           }
-          if ($do) {
-            $location[$key] = $data['data'][$key];
-          }
+          $location[$key] = $data['data'][$key];
         }
       }
 
@@ -2428,6 +2449,16 @@ function getlocations_fields_defaults() {
     'pancontrolposition'        => $getlocations_defaults['pancontrolposition'],
     'scalecontrolposition'      => $getlocations_defaults['scalecontrolposition'],
     'svcontrolposition'         => $getlocations_defaults['svcontrolposition'],
+    'sv_addresscontrol'         => $getlocations_defaults['sv_addresscontrol'], // sv overlay controls
+    'sv_addresscontrolposition' => $getlocations_defaults['sv_addresscontrolposition'],
+    'sv_pancontrol'             => $getlocations_defaults['sv_pancontrol'],
+    'sv_pancontrolposition'     => $getlocations_defaults['sv_pancontrolposition'],
+    'sv_zoomcontrol'            => $getlocations_defaults['sv_zoomcontrol'],
+    'sv_zoomcontrolposition'    => $getlocations_defaults['sv_zoomcontrolposition'],
+    'sv_linkscontrol'           => $getlocations_defaults['sv_linkscontrol'],
+    'sv_imagedatecontrol'       => $getlocations_defaults['sv_imagedatecontrol'],
+    'sv_scrollwheel'            => $getlocations_defaults['sv_scrollwheel'],
+    'sv_clicktogo'              => $getlocations_defaults['sv_clicktogo'],
   );
   foreach ($getlocations_defaults['kml_group'] AS $key => $layer) {
     $defaults['kml_group'][$key] = $layer;
@@ -2594,6 +2625,16 @@ function getlocations_fields_field_info_defaults() {
         'pancontrolposition'              => $getlocations_fields_defaults['pancontrolposition'],
         'scalecontrolposition'            => $getlocations_fields_defaults['scalecontrolposition'],
         'svcontrolposition'               => $getlocations_fields_defaults['svcontrolposition'],
+        'sv_addresscontrol'               => $getlocations_fields_defaults['sv_addresscontrol'], // sv overlay controls
+        'sv_addresscontrolposition'       => $getlocations_fields_defaults['sv_addresscontrolposition'],
+        'sv_pancontrol'                   => $getlocations_fields_defaults['sv_pancontrol'],
+        'sv_pancontrolposition'           => $getlocations_fields_defaults['sv_pancontrolposition'],
+        'sv_zoomcontrol'                  => $getlocations_fields_defaults['sv_zoomcontrol'],
+        'sv_zoomcontrolposition'          => $getlocations_fields_defaults['sv_zoomcontrolposition'],
+        'sv_linkscontrol'                 => $getlocations_fields_defaults['sv_linkscontrol'],
+        'sv_imagedatecontrol'             => $getlocations_fields_defaults['sv_imagedatecontrol'],
+        'sv_scrollwheel'                  => $getlocations_fields_defaults['sv_scrollwheel'],
+        'sv_clicktogo'                    => $getlocations_fields_defaults['sv_clicktogo'],
       ),
     ),
   );
@@ -2734,6 +2775,16 @@ function getlocations_fields_field_formatter_info_defaults() {
     'pancontrolposition'        => $getlocations_defaults['pancontrolposition'],
     'scalecontrolposition'      => $getlocations_defaults['scalecontrolposition'],
     'svcontrolposition'         => $getlocations_defaults['svcontrolposition'],
+    'sv_addresscontrol'         => $getlocations_fields_defaults['sv_addresscontrol'], // sv overlay controls
+    'sv_addresscontrolposition' => $getlocations_fields_defaults['sv_addresscontrolposition'],
+    'sv_pancontrol'             => $getlocations_fields_defaults['sv_pancontrol'],
+    'sv_pancontrolposition'     => $getlocations_fields_defaults['sv_pancontrolposition'],
+    'sv_zoomcontrol'            => $getlocations_fields_defaults['sv_zoomcontrol'],
+    'sv_zoomcontrolposition'    => $getlocations_fields_defaults['sv_zoomcontrolposition'],
+    'sv_linkscontrol'           => $getlocations_fields_defaults['sv_linkscontrol'],
+    'sv_imagedatecontrol'       => $getlocations_fields_defaults['sv_imagedatecontrol'],
+    'sv_scrollwheel'            => $getlocations_fields_defaults['sv_scrollwheel'],
+    'sv_clicktogo'              => $getlocations_fields_defaults['sv_clicktogo'],
   );
 
   $fieldables = getlocations_get_fieldable_entity_types();
@@ -3419,6 +3470,7 @@ function getlocations_fields_data_keys($type = 'dd') {
       'sv_enable'           => 0,
       'sv_showfirst' => 0,
     );
+    $keys += getlocations_fields_get_display_settings_defaults();
   }
   return $keys;
 }
@@ -3427,10 +3479,20 @@ function getlocations_fields_svinfo($location) {
 
   $sv_defaults = getlocations_fields_data_keys('d');
   $sv_info = array(
-    'sv_heading'          => (isset($location['sv_heading']) ? $location['sv_heading'] : $sv_defaults['sv_heading']),
-    'sv_zoom'             => (isset($location['sv_zoom']) ? $location['sv_zoom'] : $sv_defaults['sv_zoom']),
-    'sv_pitch'            => (isset($location['sv_pitch']) ? $location['sv_pitch'] : $sv_defaults['sv_pitch']),
-    'sv_showfirst' => (isset($location['sv_showfirst']) ? $location['sv_showfirst'] : $sv_defaults['sv_showfirst']),
+    'sv_heading'                => (isset($location['sv_heading']) ? $location['sv_heading'] : $sv_defaults['sv_heading']),
+    'sv_zoom'                   => (isset($location['sv_zoom']) ? $location['sv_zoom'] : $sv_defaults['sv_zoom']),
+    'sv_pitch'                  => (isset($location['sv_pitch']) ? $location['sv_pitch'] : $sv_defaults['sv_pitch']),
+    'sv_showfirst'              => (isset($location['sv_showfirst']) ? $location['sv_showfirst'] : $sv_defaults['sv_showfirst']),
+    'sv_addresscontrol'         => (isset($location['sv_addresscontrol']) ? $location['sv_addresscontrol'] : $sv_defaults['sv_addresscontrol']),
+    'sv_addresscontrolposition' => (isset($location['sv_addresscontrolposition']) ? $location['sv_addresscontrolposition'] : $sv_defaults['sv_addresscontrolposition']),
+    'sv_pancontrol'             => (isset($location['sv_pancontrol']) ? $location['sv_pancontrol'] : $sv_defaults['sv_pancontrol']),
+    'sv_pancontrolposition'     => (isset($location['sv_pancontrolposition']) ? $location['sv_pancontrolposition'] : $sv_defaults['sv_pancontrolposition']),
+    'sv_zoomcontrol'            => (isset($location['sv_zoomcontrol']) ? $location['sv_zoomcontrol'] : $sv_defaults['sv_zoomcontrol']),
+    'sv_zoomcontrolposition'    => (isset($location['sv_zoomcontrolposition']) ? $location['sv_zoomcontrolposition'] : $sv_defaults['sv_zoomcontrolposition']),
+    'sv_linkscontrol'           => (isset($location['sv_linkscontrol']) ? $location['sv_linkscontrol'] : $sv_defaults['sv_linkscontrol']),
+    'sv_imagedatecontrol'       => (isset($location['sv_imagedatecontrol']) ? $location['sv_imagedatecontrol'] : $sv_defaults['sv_imagedatecontrol']),
+    'sv_scrollwheel'            => (isset($location['sv_scrollwheel']) ? $location['sv_scrollwheel'] : $sv_defaults['sv_scrollwheel']),
+    'sv_clicktogo'              => (isset($location['sv_clicktogo']) ? $location['sv_clicktogo'] : $sv_defaults['sv_clicktogo']),
   );
   return $sv_info;
 }
@@ -3460,6 +3522,91 @@ function getlocations_fields_streetview_settings_allow() {
     return TRUE;
   }
   return FALSE;
+}
+
+function getlocations_fields_sv_control_form($settings) {
+  $controlpositions = getlocations_controlpositions();
+
+  $form = array();
+  $form['sv_addresscontrol'] = getlocations_element_map_checkbox(
+    t('Show Streetview address'),
+    $settings['sv_addresscontrol']
+  );
+  $form['sv_addresscontrol']['#suffix'] = '<div id="wrap-getlocations-sv-addresscontrol">';
+  $form['sv_addresscontrolposition'] = getlocations_element_dd(
+    t('Position of Streetview address display'),
+    $settings['sv_addresscontrolposition'],
+    $controlpositions
+  );
+  $form['sv_addresscontrolposition']['#suffix'] = '</div>';
+
+  $form['sv_pancontrol'] = getlocations_element_map_checkbox(
+    t('Show Streetview Pan Control'),
+    $settings['sv_pancontrol']
+  );
+  $form['sv_pancontrol']['#suffix'] = '<div id="wrap-getlocations-sv-pancontrol">';
+  $form['sv_pancontrolposition'] = getlocations_element_dd(
+    t('Position of Streetview Pan Control'),
+    $settings['sv_pancontrolposition'],
+    $controlpositions
+  );
+  $form['sv_pancontrolposition']['#suffix'] = '</div>';
+
+  $form['sv_zoomcontrol'] = getlocations_element_map_zoom_controltype($settings['sv_zoomcontrol'], t('Streetview Zoom Control type'));
+  $form['sv_zoomcontrol']['#suffix'] = '<div id="wrap-getlocations-sv-zoomcontrol">';
+
+  $form['sv_zoomcontrolposition'] = getlocations_element_dd(
+    t('Position of Streetview Zoom Control'),
+    $settings['sv_zoomcontrolposition'],
+    $controlpositions
+  );
+  $form['sv_zoomcontrolposition']['#suffix'] = '</div>';
+
+  $form['sv_linkscontrol'] = getlocations_element_map_checkbox(
+    t('Enable Streetview links'),
+    $settings['sv_linkscontrol']
+  );
+  $form['sv_imagedatecontrol'] = getlocations_element_map_checkbox(
+    t('Show Streetview image date'),
+    $settings['sv_imagedatecontrol']
+  );
+  $form['sv_scrollwheel'] = getlocations_element_map_checkbox(
+    t('Enable Streetview scrollwheel'),
+    $settings['sv_scrollwheel']
+  );
+  $form['sv_clicktogo'] = getlocations_element_map_checkbox(
+    t('Enable Streetview clickToGo'),
+    $settings['sv_clicktogo'],
+    t('Enable navigating Streetview by clicking on it.')
+  );
+  return $form;
+
+}
+
+function getlocations_fields_get_display_settings($settings) {
+  $display_settings_keys = getlocations_fields_get_display_settings_defaults();
+  $display_settings = array();
+  foreach ($display_settings_keys AS $key => $dval) {
+    $display_settings[$key] = (isset($settings[$key]) ? $settings[$key] : $dval);
+  }
+  return $display_settings;
+
+}
+
+function getlocations_fields_get_display_settings_defaults() {
+  $settings = array(
+    'sv_addresscontrol'         => 1,
+    'sv_addresscontrolposition' => '',
+    'sv_pancontrol'             => 1,
+    'sv_pancontrolposition'     => '',
+    'sv_zoomcontrol'            => 'default',
+    'sv_zoomcontrolposition'    => '',
+    'sv_linkscontrol'           => 1,
+    'sv_imagedatecontrol'       => 0,
+    'sv_scrollwheel'            => 1,
+    'sv_clicktogo'              => 1,
+  );
+  return $settings;
 }
 
 // Theming functions
@@ -3650,6 +3797,7 @@ function theme_getlocations_fields_show($variables) {
       if (isset($location['sv_pitch']) && is_numeric($location['sv_pitch'])) {
         $settings['sv_pitch'] = $location['sv_pitch'];
       }
+      $settings += getlocations_fields_get_display_settings($location);
     }
 
     if ($location['longitude'] && $location['latitude']) {
@@ -3913,6 +4061,10 @@ function theme_getlocations_fields_field_formatter_settings_form($variables) {
   $output = '';
   $form['display_showmap']['#prefix'] = '<fieldset class="getlocations_fieldset form-wrapper"><legend><span class="fieldset-legend">' . t('Address display settings') . '</span></legend><div class="fieldset-wrapper">';
   $form['display_fax']['#suffix'] = '</div></fieldset>';
+
+  $form['sv_addresscontrol']['#prefix'] = '<fieldset class="getlocations_fieldset collapsible ' . (getlocations_fields_streetview_settings_allow() ? '' : 'collapsed') . ' form-wrapper"><legend><span class="fieldset-legend">' . t('Streetview overlay settings') . '</span></legend><div class="fieldset-wrapper">';
+  $form['sv_clicktogo']['#suffix'] = '</div></fieldset>';
+
   $output .= drupal_render_children($form);
   return $output;
 }

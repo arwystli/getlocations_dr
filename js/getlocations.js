@@ -246,6 +246,18 @@ var getlocations_pano = [];
         global_settings.is_mobile = settings.is_mobile;
         global_settings.show_maplinks = settings.show_maplinks;
 
+        // streetview overlay settings
+        global_settings.sv_addresscontrol         = (settings.sv_addresscontrol ? true : false);
+        global_settings.sv_addresscontrolposition = settings.sv_addresscontrolposition;
+        global_settings.sv_pancontrol             = (settings.sv_pancontrol ? true : false);
+        global_settings.sv_pancontrolposition     = settings.sv_pancontrolposition;
+        global_settings.sv_zoomcontrol            = settings.sv_zoomcontrol;
+        global_settings.sv_zoomcontrolposition    = settings.sv_zoomcontrolposition;
+        global_settings.sv_linkscontrol           = (settings.sv_linkscontrol ? true : false);
+        global_settings.sv_imagedatecontrol       = (settings.sv_imagedatecontrol ? true : false);
+        global_settings.sv_scrollwheel            = (settings.sv_scrollwheel ? true : false);
+        global_settings.sv_clicktogo              = (settings.sv_clicktogo ? true : false);
+
         // prevent old msie from running markermanager
         var ver = Drupal.getlocations.msiedetect();
         var pushit = false;
@@ -943,6 +955,21 @@ var getlocations_pano = [];
       }
       // streetview first feature
       if (gs.sv_showfirst) {
+
+        var controlpositions = [];
+        controlpositions['tl'] = google.maps.ControlPosition.TOP_LEFT;
+        controlpositions['tc'] = google.maps.ControlPosition.TOP_CENTER;
+        controlpositions['tr'] = google.maps.ControlPosition.TOP_RIGHT;
+        controlpositions['rt'] = google.maps.ControlPosition.RIGHT_TOP;
+        controlpositions['rc'] = google.maps.ControlPosition.RIGHT_CENTER;
+        controlpositions['rb'] = google.maps.ControlPosition.RIGHT_BOTTOM;
+        controlpositions['br'] = google.maps.ControlPosition.BOTTOM_RIGHT;
+        controlpositions['bc'] = google.maps.ControlPosition.BOTTOM_CENTER;
+        controlpositions['bl'] = google.maps.ControlPosition.BOTTOM_LEFT;
+        controlpositions['lb'] = google.maps.ControlPosition.LEFT_BOTTOM;
+        controlpositions['lc'] = google.maps.ControlPosition.LEFT_CENTER;
+        controlpositions['lt'] = google.maps.ControlPosition.LEFT_TOP;
+
         var popt = {
           position: p,
           pov: {
@@ -952,6 +979,60 @@ var getlocations_pano = [];
           enableCloseButton: true,
           zoom: parseInt(gs.sv_zoom)
         };
+
+        if (gs.sv_addresscontrol) {
+          popt.addressControl = true;
+          if (gs.sv_addresscontrolposition) {
+            popt.addressControlOptions = {position: controlpositions[gs.sv_addresscontrolposition]};
+          }
+        }
+        else {
+          popt.addressControl = false;
+        }
+        if (gs.sv_pancontrol) {
+          popt.panControl = true;
+          if (gs.sv_pancontrolposition) {
+            popt.panControlOptions = {position: controlpositions[gs.sv_pancontrolposition]};
+          }
+        }
+        else {
+          popt.panControl = false;
+        }
+        if (gs.sv_zoomcontrol == 'none') {
+          popt.zoomControl = false;
+        }
+        else {
+          popt.zoomControl = true;
+          var zco = {};
+          if (gs.sv_zoomcontrolposition) {
+            zco.position = controlpositions[gs.sv_zoomcontrolposition];
+          }
+          if (gs.sv_zoomcontrol == 'small') {
+            zco.style = google.maps.ZoomControlStyle.SMALL;
+          }
+          else if (gs.sv_zoomcontrol == 'large') {
+            zco.style = google.maps.ZoomControlStyle.LARGE;
+          }
+          if (zco) {
+            popt.zoomControlOptions = zco;
+          }
+        }
+        if (! gs.sv_linkscontrol) {
+          popt.linksControl = false;
+        }
+        if (gs.sv_imagedatecontrol) {
+          popt.imageDateControl = true;
+        }
+        else {
+          popt.imageDateControl = false;
+        }
+        if (! gs.sv_scrollwheel) {
+          popt.scrollwheel = false;
+        }
+        if (! gs.sv_clicktogo) {
+          popt.clickToGo = false;
+        }
+
         getlocations_pano[mkey] = new google.maps.StreetViewPanorama(document.getElementById("getlocations_map_canvas_" + mkey), popt);
         getlocations_pano[mkey].setVisible(true);
       }

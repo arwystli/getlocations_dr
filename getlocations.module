@@ -581,6 +581,16 @@ function getlocations_setlocations($latlons, $minmaxes='', $entity_info = '', $o
         $getlocations_defaults['sv_zoom']      = $extras['sv_zoom'];
         $getlocations_defaults['sv_pitch']     = $extras['sv_pitch'];
         $getlocations_defaults['sv_showfirst'] = $extras['sv_showfirst'];
+        $getlocations_defaults['sv_addresscontrol']         = $extras['sv_addresscontrol'];
+        $getlocations_defaults['sv_addresscontrolposition'] = $extras['sv_addresscontrolposition'];
+        $getlocations_defaults['sv_pancontrol']             = $extras['sv_pancontrol'];
+        $getlocations_defaults['sv_pancontrolposition']     = $extras['sv_pancontrolposition'];
+        $getlocations_defaults['sv_zoomcontrol']            = $extras['sv_zoomcontrol'];
+        $getlocations_defaults['sv_zoomcontrolposition']    = $extras['sv_zoomcontrolposition'];
+        $getlocations_defaults['sv_linkscontrol']           = $extras['sv_linkscontrol'];
+        $getlocations_defaults['sv_imagedatecontrol']       = $extras['sv_imagedatecontrol'];
+        $getlocations_defaults['sv_scrollwheel']            = $extras['sv_scrollwheel'];
+        $getlocations_defaults['sv_clicktogo']              = $extras['sv_clicktogo'];
       }
       if (getlocations_fields_map_settings_allow()) {
         $getlocations_defaults['nodezoom']     = $extras['mapzoom'];
@@ -968,6 +978,16 @@ function getlocations_defaults($reset = FALSE) {
     'sv_zoom'                       => 1,
     'sv_pitch'                      => 0,
     'sv_enable'                     => 0, // switch set in getlocations_fields, applies to Views
+    'sv_addresscontrol'             => 1, // sv overlay controls
+    'sv_addresscontrolposition'     => '',
+    'sv_pancontrol'                 => 1,
+    'sv_pancontrolposition'         => '',
+    'sv_zoomcontrol'                => 'default',
+    'sv_zoomcontrolposition'        => '',
+    'sv_linkscontrol'               => 1,
+    'sv_imagedatecontrol'           => 0,
+    'sv_scrollwheel'                => 1,
+    'sv_clicktogo'                  => 1,
     'trafficinfo'                   => 0,
     'trafficinfo_state'             => 0,
     'bicycleinfo'                   => 0,
@@ -2223,6 +2243,16 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
       'pancontrolposition'        => $defaults['pancontrolposition'],
       'scalecontrolposition'      => $defaults['scalecontrolposition'],
       'svcontrolposition'         => $defaults['svcontrolposition'],
+      'sv_addresscontrol'         => $defaults['sv_addresscontrol'], // sv overlay controls
+      'sv_addresscontrolposition' => $defaults['sv_addresscontrolposition'],
+      'sv_pancontrol'             => $defaults['sv_pancontrol'],
+      'sv_pancontrolposition'     => $defaults['sv_pancontrolposition'],
+      'sv_zoomcontrol'            => $defaults['sv_zoomcontrol'],
+      'sv_zoomcontrolposition'    => $defaults['sv_zoomcontrolposition'],
+      'sv_linkscontrol'           => $defaults['sv_linkscontrol'],
+      'sv_imagedatecontrol'       => $defaults['sv_imagedatecontrol'],
+      'sv_scrollwheel'            => $defaults['sv_scrollwheel'],
+      'sv_clicktogo'              => $defaults['sv_clicktogo'],
     ),
   );
   // only set these if wanted
@@ -2559,6 +2589,15 @@ function getlocations_other_get_fieldname($type, $module, $entity_type = '') {
  * Some form helper functions
  * for admin and views plugin style
  */
+/**
+ * Function
+ *
+ * @param
+ *
+ * @return
+ *   Returns
+ *
+ */
 function getlocations_element_map_marker($title, $options, $default, $description='') {
 
   $element = array(
@@ -2573,6 +2612,15 @@ function getlocations_element_map_marker($title, $options, $default, $descriptio
   return $element;
 }
 
+/**
+ * Function
+ *
+ * @param
+ *
+ * @return
+ *   Returns
+ *
+ */
 function getlocations_element_map_tf($title, $default, $description='', $size=60, $maxlength=255, $required=FALSE, $weight='') {
 
   $element = array(
@@ -2595,6 +2643,15 @@ function getlocations_element_map_tf($title, $default, $description='', $size=60
   return $element;
 }
 
+/**
+ * Function
+ *
+ * @param
+ *
+ * @return
+ *   Returns
+ *
+ */
 function getlocations_element_map_zoom($title, $default, $description='') {
 
   $element = array(
@@ -2609,6 +2666,15 @@ function getlocations_element_map_zoom($title, $default, $description='') {
   return $element;
 }
 
+/**
+ * Function
+ *
+ * @param
+ *
+ * @return
+ *   Returns
+ *
+ */
 function getlocations_element_map_zoom_map($title, $default, $description='') {
 
   $opts = array('-1' => t('Use map type settings')) + drupal_map_assoc(range(0, 21));
@@ -2624,11 +2690,23 @@ function getlocations_element_map_zoom_map($title, $default, $description='') {
   return $element;
 }
 
-function getlocations_element_map_zoom_controltype($default) {
+/**
+ * Function
+ *
+ * @param
+ *
+ * @return
+ *   Returns
+ *
+ */
+function getlocations_element_map_zoom_controltype($default, $title = '') {
 
+  if (empty($title)) {
+    $title = t('Zoom Control type');
+  }
   $element = array(
     '#type' => 'select',
-    '#title' => t('Zoom Control type'),
+    '#title' => $title,
     '#options' => array(
       'none' => t('None'),
       'default' => t('Default'),
@@ -2640,6 +2718,15 @@ function getlocations_element_map_zoom_controltype($default) {
   return $element;
 }
 
+/**
+ * Function
+ *
+ * @param
+ *
+ * @return
+ *   Returns
+ *
+ */
 function getlocations_element_map_checkbox($title, $default, $description='') {
 
   $element = array(
@@ -2654,6 +2741,15 @@ function getlocations_element_map_checkbox($title, $default, $description='') {
   return $element;
 }
 
+/**
+ * Function
+ *
+ * @param
+ *
+ * @return
+ *   Returns
+ *
+ */
 function getlocations_element_map_mtc($default) {
 
   $element = array(
@@ -2669,6 +2765,15 @@ function getlocations_element_map_mtc($default) {
   return $element;
 }
 
+/**
+ * Function
+ *
+ * @param
+ *
+ * @return
+ *   Returns
+ *
+ */
 function getlocations_element_map_maptype($default, $baselayers) {
   $options = array();
   $layers = array(
@@ -2692,6 +2797,15 @@ function getlocations_element_map_maptype($default, $baselayers) {
   return $element;
 }
 
+/**
+ * Function
+ *
+ * @param
+ *
+ * @return
+ *   Returns
+ *
+ */
 function getlocations_element_map_baselayers($view, $default) {
   // Map Satellite Hybrid Physical
   $title = FALSE;
@@ -2722,6 +2836,15 @@ function getlocations_element_map_baselayers($view, $default) {
   return FALSE;
 }
 
+/**
+ * Function
+ *
+ * @param
+ *
+ * @return
+ *   Returns
+ *
+ */
 function getlocations_element_map_pansetting($default) {
 
   $element = array(
@@ -2734,6 +2857,15 @@ function getlocations_element_map_pansetting($default) {
   return $element;
 }
 
+/**
+ * Function
+ *
+ * @param
+ *
+ * @return
+ *   Returns
+ *
+ */
 function getlocations_element_map_markeraction($default) {
 
   $element = array(
@@ -2750,6 +2882,15 @@ function getlocations_element_map_markeraction($default) {
   return $element;
 }
 
+/**
+ * Function
+ *
+ * @param
+ *
+ * @return
+ *   Returns
+ *
+ */
 function getlocations_element_map_markeractiontype($default) {
 
   $element = array(
@@ -2764,6 +2905,15 @@ function getlocations_element_map_markeractiontype($default) {
   return $element;
 }
 
+/**
+ * Function
+ *
+ * @param
+ *
+ * @return
+ *   Returns
+ *
+ */
 function getlocations_element_markermanagertype($default) {
 
   $element = array(
@@ -2781,6 +2931,15 @@ function getlocations_element_markermanagertype($default) {
 }
 
 
+/**
+ * Function
+ *
+ * @param
+ *
+ * @return
+ *   Returns
+ *
+ */
 function getlocations_element_path($title, $default, $size, $maxlength, $description) {
   $element = getlocations_element_map_tf(
     $title,
@@ -2793,6 +2952,15 @@ function getlocations_element_path($title, $default, $size, $maxlength, $descrip
   return $element;
 }
 
+/**
+ * Function
+ *
+ * @param
+ *
+ * @return
+ *   Returns
+ *
+ */
 function getlocations_element_map_limits($default, $title = '', $description = '') {
 
   if (empty($title)) {

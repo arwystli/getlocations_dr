@@ -14,49 +14,49 @@
       // streetview plugin
       if ($("#edit-style-options-sv-addresscontrol").is('input')) {
         if ($("#edit-style-options-sv-addresscontrol").attr('checked')) {
-          $("#wrap-getlocations-addresscontrol").show();
+          $("#wrap-getlocations-sv-addresscontrol").show();
         }
         else {
-          $("#wrap-getlocations-addresscontrol").hide();
+          $("#wrap-getlocations-sv-addresscontrol").hide();
         }
         $("#edit-style-options-sv-addresscontrol").change(function() {
           if ($(this).attr('checked')) {
-            $("#wrap-getlocations-addresscontrol").show();
+            $("#wrap-getlocations-sv-addresscontrol").show();
           }
           else {
-            $("#wrap-getlocations-addresscontrol").hide();
+            $("#wrap-getlocations-sv-addresscontrol").hide();
           }
         });
       }
       if ($("#edit-style-options-sv-pancontrol").is('input')) {
         if ($("#edit-style-options-sv-pancontrol").attr('checked')) {
-          $("#wrap-getlocations-pancontrol").show();
+          $("#wrap-getlocations-sv-pancontrol").show();
         }
         else {
-          $("#wrap-getlocations-pancontrol").hide();
+          $("#wrap-getlocations-sv-pancontrol").hide();
         }
         $("#edit-style-options-sv-pancontrol").change(function() {
           if ($(this).attr('checked')) {
-            $("#wrap-getlocations-pancontrol").show();
+            $("#wrap-getlocations-sv-pancontrol").show();
           }
           else {
-            $("#wrap-getlocations-pancontrol").hide();
+            $("#wrap-getlocations-sv-pancontrol").hide();
           }
         });
       }
       if ($("#edit-style-options-sv-zoomcontrol").is('select')) {
         if ($("#edit-style-options-sv-zoomcontrol").val() == 'none') {
-          $("#wrap-getlocations-zoomcontrol").hide();
+          $("#wrap-getlocations-sv-zoomcontrol").hide();
         }
         else {
-          $("#wrap-getlocations-zoomcontrol").show();
+          $("#wrap-getlocations-sv-zoomcontrol").show();
         }
         $("#edit-style-options-sv-zoomcontrol").change(function() {
           if ($(this).val() == 'none') {
-            $("#wrap-getlocations-zoomcontrol").hide();
+            $("#wrap-getlocations-sv-zoomcontrol").hide();
           }
           else {
-            $("#wrap-getlocations-zoomcontrol").show();
+            $("#wrap-getlocations-sv-zoomcontrol").show();
           }
         });
       }

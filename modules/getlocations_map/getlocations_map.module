@@ -191,6 +191,16 @@ function getlocations_map_field_formatter_view($entity_type, $entity, $field, $i
               if (isset($location['sv_showfirst']) && is_numeric($location['sv_showfirst'])) {
                 $default['sv_showfirst'] = $location['sv_showfirst'];
               }
+              // streetview display settings
+              $display_settings_defaults = getlocations_fields_get_display_settings_defaults();
+              foreach ($display_settings_defaults AS $dkey => $dval) {
+                if (isset($location[$dkey])) {
+                  $default[$dkey] = $location[$dkey];
+                }
+                else {
+                  $default[$dkey] = $dval;
+                }
+              }
             }
 
             // map_settings
@@ -207,6 +217,8 @@ function getlocations_map_field_formatter_view($entity_type, $entity, $field, $i
               if (isset($location['map_maptype']) && $location['map_maptype']) {
                 $default['maptype'] = $location['map_maptype'];
               }
+              // update baselayers
+              $default['baselayers'][$location['map_maptype']] = 1;
             }
           }
           elseif ($module == 'location_cck') {

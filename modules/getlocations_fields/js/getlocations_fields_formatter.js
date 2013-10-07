@@ -267,6 +267,50 @@
         }
       });
 
+      // streetview overlay settings
+      if ($("input[id$=sv-addresscontrol]").attr('checked')) {
+        $("#wrap-getlocations-sv-addresscontrol").show();
+      }
+      else {
+        $("#wrap-getlocations-sv-addresscontrol").hide();
+      }
+      $("input[id$=sv-addresscontrol]").change(function() {
+        if ($(this).attr('checked')) {
+          $("#wrap-getlocations-sv-addresscontrol").show();
+        }
+        else {
+          $("#wrap-getlocations-sv-addresscontrol").hide();
+        }
+      });
+      if ($("input[id$=sv-pancontrol]").attr('checked')) {
+        $("#wrap-getlocations-sv-pancontrol").show();
+      }
+      else {
+        $("#wrap-getlocations-sv-pancontrol").hide();
+      }
+      $("input[id$=sv-pancontrol]").change(function() {
+        if ($(this).attr('checked')) {
+          $("#wrap-getlocations-sv-pancontrol").show();
+        }
+        else {
+          $("#wrap-getlocations-sv-pancontrol").hide();
+        }
+      });
+      if ($("select[id$=sv-zoomcontrol]").val() == 'none') {
+        $("#wrap-getlocations-sv-zoomcontrol").hide();
+      }
+      else {
+        $("#wrap-getlocations-sv-zoomcontrol").show();
+      }
+      $("select[id$=sv-zoomcontrol]").change(function() {
+        if ($(this).val() == 'none') {
+          $("#wrap-getlocations-sv-zoomcontrol").hide();
+        }
+        else {
+          $("#wrap-getlocations-sv-zoomcontrol").show();
+        }
+      });
+
 
     }
   };

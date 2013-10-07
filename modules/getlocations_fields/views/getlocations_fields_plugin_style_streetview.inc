@@ -86,59 +86,8 @@ class getlocations_fields_plugin_style_streetview extends views_plugin_style {
       TRUE
     );
 
-    $controlpositions = getlocations_controlpositions();
+    $form += getlocations_fields_sv_control_form($this->options);
 
-    $form['sv_addresscontrol'] = getlocations_element_map_checkbox(
-      t('Show address'),
-      $this->options['sv_addresscontrol']
-    );
-    $form['sv_addresscontrol']['#suffix'] = '<div id="wrap-getlocations-addresscontrol">';
-    $form['sv_addresscontrolposition'] = getlocations_element_dd(
-      t('Position of address display'),
-      $this->options['sv_addresscontrolposition'],
-      $controlpositions
-    );
-    $form['sv_addresscontrolposition']['#suffix'] = '</div>';
-
-    $form['sv_pancontrol'] = getlocations_element_map_checkbox(
-      t('Show Pan Control'),
-      $this->options['sv_pancontrol']
-    );
-    $form['sv_pancontrol']['#suffix'] = '<div id="wrap-getlocations-pancontrol">';
-    $form['sv_pancontrolposition'] = getlocations_element_dd(
-      t('Position of Pan Control'),
-      $this->options['sv_pancontrolposition'],
-      $controlpositions
-    );
-    $form['sv_pancontrolposition']['#suffix'] = '</div>';
-
-    $form['sv_zoomcontrol'] = getlocations_element_map_zoom_controltype($this->options['sv_zoomcontrol']);
-    $form['sv_zoomcontrol']['#suffix'] = '<div id="wrap-getlocations-zoomcontrol">';
-
-    $form['sv_zoomcontrolposition'] = getlocations_element_dd(
-      t('Position of Zoom Control'),
-      $this->options['sv_zoomcontrolposition'],
-      $controlpositions
-    );
-    $form['sv_zoomcontrolposition']['#suffix'] = '</div>';
-
-    $form['sv_linkscontrol'] = getlocations_element_map_checkbox(
-      t('Enable links'),
-      $this->options['sv_linkscontrol']
-    );
-    $form['sv_imagedatecontrol'] = getlocations_element_map_checkbox(
-      t('Show image date'),
-      $this->options['sv_imagedatecontrol']
-    );
-    $form['sv_scrollwheel'] = getlocations_element_map_checkbox(
-      t('Enable scrollwheel'),
-      $this->options['sv_scrollwheel']
-    );
-    $form['sv_clicktogo'] = getlocations_element_map_checkbox(
-      t('Enable clickToGo'),
-      $this->options['sv_clicktogo'],
-      t('Enable navigating Streetview by clicking on it.')
-    );
     $form['sv_fullscreen'] = getlocations_element_map_checkbox(
       t('Show Fullscreen button'),
        $this->options['sv_fullscreen']
