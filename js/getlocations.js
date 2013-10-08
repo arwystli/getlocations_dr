@@ -235,11 +235,6 @@ var getlocations_pano = [];
         }
 
         global_settings.datanum = settings.datanum;
-        global_settings.sv_show = settings.sv_show;
-        global_settings.sv_showfirst = settings.sv_showfirst;
-        global_settings.sv_heading = settings.sv_heading;
-        global_settings.sv_zoom = settings.sv_zoom;
-        global_settings.sv_pitch = settings.sv_pitch;
         global_settings.markermanagertype = settings.markermanagertype;
         global_settings.pansetting = settings.pansetting;
         // mobiles
@@ -247,6 +242,10 @@ var getlocations_pano = [];
         global_settings.show_maplinks = settings.show_maplinks;
 
         // streetview overlay settings
+        global_settings.sv_showfirst              = (settings.sv_showfirst ? true : false);
+        global_settings.sv_heading                = settings.sv_heading;
+        global_settings.sv_zoom                   = settings.sv_zoom;
+        global_settings.sv_pitch                  = settings.sv_pitch;
         global_settings.sv_addresscontrol         = (settings.sv_addresscontrol ? true : false);
         global_settings.sv_addresscontrolposition = settings.sv_addresscontrolposition;
         global_settings.sv_pancontrol             = (settings.sv_pancontrol ? true : false);

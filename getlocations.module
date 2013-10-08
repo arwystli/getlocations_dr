@@ -125,19 +125,6 @@ function getlocations_menu() {
     'type' => MENU_CALLBACK,
   );
 
-  $items['getlocations_box'] = array(
-    'title' => 'Get locations',
-    'access arguments' => array('access getlocations'),
-    'page callback' => 'getlocations_box',
-    'type' => MENU_CALLBACK,
-  );
-
-  $items['getlocations/markerinfo'] = array(
-    'access callback' => TRUE,
-    'page callback' => 'getlocations_markerinfo',
-    'type' => MENU_CALLBACK,
-  );
-
   $items['getlocations/%getlocations_entity_type/%getlocations_id'] = array(
     'title' => 'Get locations',
     'access callback' => 'getlocations_access_location',
@@ -160,12 +147,29 @@ function getlocations_menu() {
     'type' => MENU_CALLBACK,
   );
 
+  $items['getlocations_box'] = array(
+    'title' => 'Get locations',
+    'access arguments' => array('access getlocations'),
+    'page callback' => 'getlocations_box',
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['getlocations/markerinfo'] = array(
+    'access callback' => TRUE,
+    'page callback' => 'getlocations_markerinfo',
+    'type' => MENU_CALLBACK,
+  );
+
 
   return $items;
 }
 
 /**
- * menu placeholder functions
+ * check that the argument is numeric
+ *
+ * @param int $arg
+ *
+ * @return argument or FALSE
  */
 function getlocations_id_load($arg) {
   return (is_numeric($arg) && $arg > 0 ? $arg : FALSE);
@@ -173,6 +177,10 @@ function getlocations_id_load($arg) {
 
 /**
  * Check that the node type exists
+ *
+ * @param string $arg Node type.
+ *
+ * @return argument or FALSE
  *
  */
 function getlocations_type_load($arg) {
@@ -183,6 +191,10 @@ function getlocations_type_load($arg) {
 
 /**
  * sanity check on list of nids
+ *
+ * @param int $arg
+ *
+ * @return argument or FALSE
  *
  */
 function getlocations_cdints_load($arg) {
@@ -198,6 +210,10 @@ function getlocations_cdints_load($arg) {
 /**
  * sanity check on entity type
  *
+ * @param string $arg Entity type.
+ *
+ * @return argument or FALSE
+ *
  */
 function getlocations_entity_type_load($arg) {
   if (getlocations_check_entity_type($arg)) {
@@ -207,7 +223,10 @@ function getlocations_entity_type_load($arg) {
 }
 
 /**
- * menu access functions
+ * Access callback: Checks for access permission and if there is a supported locative module installed
+ *
+ * @return bool
+ *
  */
 function getlocations_access_location() {
   if (user_access('access getlocations')) {
@@ -221,6 +240,12 @@ function getlocations_access_location() {
   return FALSE;
 }
 
+/**
+ * Access callback: Checks for access permission and if there is a supported locative module installed
+ *
+ * @return bool
+ *
+ */
 function getlocations_access_user_location() {
   if (user_access('access user getlocations') && user_access('access user profiles')) {
     $modules = getlocations_supported_modules();
@@ -234,7 +259,7 @@ function getlocations_access_user_location() {
 }
 
 /**
- * Menu callback
+ * Page callback: displays a map.
  *
  * @param string $type
  * @param int $entity_id
@@ -364,7 +389,7 @@ function getlocations_entity_type_map($type, $entity_id) {
 
 
 /**
- * Menu callback
+ * Page callback: displays a map.
  *
  *
  * @return
@@ -419,7 +444,7 @@ function getlocations_usersmap() {
 
 
 /**
- * Menu callback
+ * Page callback: displays a map.
  *
  * @param string $lidlist
  * A comma-delimited list of location ids
@@ -487,7 +512,7 @@ function getlocations_lids($lidlist) {
 }
 
 /**
- * Menu callback
+ * Page callback: displays a map.
  *
  * @param string $nidlist
  * A comma-delimited list of node ids
@@ -564,6 +589,17 @@ function getlocations_nids($nidlist) {
 
 /**
  * Set up javascript settings and map
+ *
+ * @param array $latlons
+ * @param array $minmaxes
+ * @param array $entity_info
+ * @param object $object
+ * @param array $extras
+ * @param string $width
+ * @param string $height
+ *
+ * @return string themed map html
+ *
  */
 function getlocations_setlocations($latlons, $minmaxes='', $entity_info = '', $object = '', $extras = '', $width='', $height='') {
   if (! getlocations_defaults_check()) {
@@ -1183,6 +1219,8 @@ function getlocations_latlon_check($latlon) {
 /**
  * Function to check wether the google places library should be enabled.
  *
+ * @return bool
+ *
  */
 function getlocations_places_check() {
   $found = FALSE;
@@ -1390,7 +1428,12 @@ function getlocations_get_path_from_lid($lid) {
   return FALSE;
 }
 
-// ajax callback to fill infobubble
+/**
+ * Ajax callback
+ * Fetches bubble content
+ *
+ * @see theme_getlocations_adinfo().
+ */
 function getlocations_adinfo() {
 
   $lid = $_GET['lid'];
@@ -1460,15 +1503,20 @@ function getlocations_getinfo($lid, $lidkey, $extra=FALSE) {
 
 }
 
-// ajax callback to provide a link
+/**
+ * Ajax callback
+ * Provides a link
+ *
+ * @see theme_getlocations_lidinfo()
+ *
+ */
 function getlocations_lidinfo() {
-
   $lid = $_GET['lid'];
   $lidkey = $_GET['key'];
   $content = getlocations_getlidinfo($lid, $lidkey);
   drupal_json_output(array('content' => $content));
-
 }
+
 /**
  * @param int $lid location id
  * @param string entity id
@@ -1480,7 +1528,13 @@ function getlocations_getlidinfo($lid, $lidkey) {
   return $content;
 }
 
-// provides data for marker colorbox
+/**
+ * Ajax callback
+ * provides data for marker colorbox
+ *
+ * @see template_preprocess_getlocations_marker_box()
+ * @see getlocations_marker_box.tpl.php
+ */
 function getlocations_markerinfo() {
   $linktype = $_GET['lt'];
   $cat =  $_GET['cat'];
@@ -1559,6 +1613,7 @@ function getlocations_get_marker_titles($reset = FALSE) {
 
 /**
  * Get the JSON icon data for all the default markers.
+ * adapted from gmap
  */
 function getlocations_get_icondata($reset = FALSE) {
   static $icons;
@@ -1583,6 +1638,7 @@ function getlocations_get_icondata($reset = FALSE) {
 
 /**
  * Regenerate the markerdata file.
+ * adapted from gmap
  */
 function getlocations_regenerate_markers() {
   // This often fails in cli mode, so bail.
@@ -1620,6 +1676,10 @@ function getlocations_regenerate_markers() {
   return TRUE;
 }
 
+/**
+ * Function to find and return the filesystem path and filename of the markers definition javascript file
+ *
+ */
 function getlocations_get_markerfile($dir=FALSE, $check=TRUE) {
 
   if (file_default_scheme() != 'public') {
@@ -1661,8 +1721,10 @@ function getlocations_get_markerfile($dir=FALSE, $check=TRUE) {
 }
 
 /**
- * hook_getlocations_markerdir
+ * hook_getlocations_markerdir().
  * from jhm http://drupal.org/user/15946
+ *
+ * This hook allows modules or themes to add their own markers
  */
 function getlocations_getlocations_markerdir() {
   $markerdir = libraries_get_path('getlocations') . '/markers';
@@ -2096,14 +2158,19 @@ function getlocations_get_term_reference_fields() {
 #
 #}
 #/////////////////////////////////////////////////////
-
+// NOT IN USE
 function getlocations_get_nodetype($nid) {
   $query = db_select('node', 'n')->fields('n', array('type'))->condition('n.nid', $nid);
   $row = $query->execute()->fetchAssoc();
   return (isset($row['type']) && $row['type'] ? $row['type'] : FALSE);
 }
-
 /////////////////////////////////////////////////////
+
+/**
+ * Get an array of fieldanle entity types
+ *
+ * @return array
+ */
 function getlocations_get_fieldable_entity_types() {
   $entity_get_info = entity_get_info();
   $fieldables = array();
@@ -2114,9 +2181,11 @@ function getlocations_get_fieldable_entity_types() {
   }
   return $fieldables;
 }
-/////////////////////////////////////////////////////
 
-/////////////////////////////////////////////////////
+/**
+ * Allows for aliases in entity types
+ *
+ */
 function getlocations_get_entity_type_from_path($path) {
   $entity_type = $path;
   // getlocations path => entity_type
@@ -2130,6 +2199,8 @@ function getlocations_get_entity_type_from_path($path) {
   return $entity_type;
 }
 
+/////////////////////////////////////////////////////
+// NOT IN USE
 function getlocations_get_path_from_entity_type($entity_type) {
   $path = $entity_type;
   // entity_type => getlocations path
@@ -2156,7 +2227,6 @@ function getlocations_get_path_from_entity_type($entity_type) {
  */
 function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $inputmap = FALSE, $extcontrol = '') {
   global $language, $is_https;
-
   $lla = explode(',', $defaults['latlong']);
   $lat = $lla[0];
   $lng = $lla[1];
@@ -2391,6 +2461,15 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
 
 }
 
+/**
+ * Function to fetch locations
+ *
+ * @param int $entity_id The entity identifier
+ * @param string $entity_type The entity type
+ *
+ * @return array $locations
+ *
+ */
 function getlocations_load_locations($entity_id, $entity_type) {
   $locations = '';
 
@@ -2412,6 +2491,14 @@ function getlocations_load_locations($entity_id, $entity_type) {
 
 }
 
+/**
+ * Function to fetch a location
+ *
+ * @param int $lid Location Identifier
+ *
+ * @return array $location
+ *
+ */
 function getlocations_load_location($lid) {
 
   $getlocations_defaults = getlocations_defaults();
@@ -2427,6 +2514,16 @@ function getlocations_load_location($lid) {
   return $location;
 }
 
+/**
+ * Function to fetch locations. Supports Geofield and Geolocation modules
+ *
+ * @param int $entity_id Entity identifier
+ * @param string $entity_type Entity type
+ * @param string $module Module name
+ *
+ * @return array $locations
+ *
+ */
 function getlocations_other_load_locations($entity_id, $entity_type, $module = '') {
   global $language;
 
@@ -2562,10 +2659,20 @@ function getlocations_other_load_locations($entity_id, $entity_type, $module = '
   return $locations;
 }
 
+/**
+ * Function to collect field names
+ *
+ * @param string $type
+ * @param string $module
+ * @param string $entity_type
+ *
+ * @return
+ *   Returns array of field names
+ *
+ */
 function getlocations_other_get_fieldname($type, $module, $entity_type = '') {
 
   $query = db_select('field_config', 'fc');
-  #$query->fields('fc', array('field_name'))->distinct();
   $query->fields('fc', array('field_name'));
   $query->join('field_config_instance', 'i', 'fc.id = i.field_id');
   $query->condition('fc.module', $module);
@@ -2578,11 +2685,9 @@ function getlocations_other_get_fieldname($type, $module, $entity_type = '') {
   $rows = $query->execute();
   $field_names = array();
   foreach ($rows AS $row) {
-    #$field_names[] = $row->field_name;
     $field_names[$row->field_name] = $row->field_name;
   }
   return $field_names;
-
 }
 
 /**
@@ -2595,7 +2700,7 @@ function getlocations_other_get_fieldname($type, $module, $entity_type = '') {
  * @param
  *
  * @return
- *   Returns
+ *   Returns form element
  *
  */
 function getlocations_element_map_marker($title, $options, $default, $description='') {
@@ -2618,7 +2723,7 @@ function getlocations_element_map_marker($title, $options, $default, $descriptio
  * @param
  *
  * @return
- *   Returns
+ *   Returns form element
  *
  */
 function getlocations_element_map_tf($title, $default, $description='', $size=60, $maxlength=255, $required=FALSE, $weight='') {
@@ -2649,7 +2754,7 @@ function getlocations_element_map_tf($title, $default, $description='', $size=60
  * @param
  *
  * @return
- *   Returns
+ *   Returns form element
  *
  */
 function getlocations_element_map_zoom($title, $default, $description='') {
@@ -2672,7 +2777,7 @@ function getlocations_element_map_zoom($title, $default, $description='') {
  * @param
  *
  * @return
- *   Returns
+ *   Returns form element
  *
  */
 function getlocations_element_map_zoom_map($title, $default, $description='') {
@@ -2696,7 +2801,7 @@ function getlocations_element_map_zoom_map($title, $default, $description='') {
  * @param
  *
  * @return
- *   Returns
+ *   Returns form element
  *
  */
 function getlocations_element_map_zoom_controltype($default, $title = '') {
@@ -2724,7 +2829,7 @@ function getlocations_element_map_zoom_controltype($default, $title = '') {
  * @param
  *
  * @return
- *   Returns
+ *   Returns form element
  *
  */
 function getlocations_element_map_checkbox($title, $default, $description='') {
@@ -2747,7 +2852,7 @@ function getlocations_element_map_checkbox($title, $default, $description='') {
  * @param
  *
  * @return
- *   Returns
+ *   Returns form element
  *
  */
 function getlocations_element_map_mtc($default) {
@@ -2771,7 +2876,7 @@ function getlocations_element_map_mtc($default) {
  * @param
  *
  * @return
- *   Returns
+ *   Returns form element
  *
  */
 function getlocations_element_map_maptype($default, $baselayers) {
@@ -2803,7 +2908,7 @@ function getlocations_element_map_maptype($default, $baselayers) {
  * @param
  *
  * @return
- *   Returns
+ *   Returns form element
  *
  */
 function getlocations_element_map_baselayers($view, $default) {
@@ -2842,7 +2947,7 @@ function getlocations_element_map_baselayers($view, $default) {
  * @param
  *
  * @return
- *   Returns
+ *   Returns form element
  *
  */
 function getlocations_element_map_pansetting($default) {
@@ -2863,7 +2968,7 @@ function getlocations_element_map_pansetting($default) {
  * @param
  *
  * @return
- *   Returns
+ *   Returns form element
  *
  */
 function getlocations_element_map_markeraction($default) {
@@ -2888,7 +2993,7 @@ function getlocations_element_map_markeraction($default) {
  * @param
  *
  * @return
- *   Returns
+ *   Returns form element
  *
  */
 function getlocations_element_map_markeractiontype($default) {
@@ -2911,7 +3016,7 @@ function getlocations_element_map_markeractiontype($default) {
  * @param
  *
  * @return
- *   Returns
+ *   Returns form element
  *
  */
 function getlocations_element_markermanagertype($default) {
@@ -2937,7 +3042,7 @@ function getlocations_element_markermanagertype($default) {
  * @param
  *
  * @return
- *   Returns
+ *   Returns form element
  *
  */
 function getlocations_element_path($title, $default, $size, $maxlength, $description) {
@@ -2958,7 +3063,7 @@ function getlocations_element_path($title, $default, $size, $maxlength, $descrip
  * @param
  *
  * @return
- *   Returns
+ *   Returns form element
  *
  */
 function getlocations_element_map_limits($default, $title = '', $description = '') {
@@ -3016,6 +3121,15 @@ function getlocations_element_dd($title, $default, $options, $description = '', 
   return $element;
 }
 
+/**
+ * Function
+ *
+ * @param
+ *
+ * @return
+ *   Returns form
+ *
+ */
 function getlocations_map_display_basics_form($defaults, $labels = array()) {
   $label = array(
     'width' => t('Default width'),
@@ -3115,6 +3229,15 @@ function getlocations_map_display_basics_form($defaults, $labels = array()) {
   return $form;
 }
 
+/**
+ * Function
+ *
+ * @param
+ *
+ * @return
+ *   Returns form
+ *
+ */
 function getlocations_map_display_options_form($defaults, $config = TRUE, $extras = TRUE, $source = '') {
 
   $controlpositions = getlocations_controlpositions();
@@ -3991,6 +4114,15 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
 
 }
 
+/**
+ * Function
+ *
+ * @param
+ *
+ * @return
+ *   Returns array of javascript paths
+ *
+ */
 function getlocations_paths_get($reset = FALSE) {
 
   $defaults = array(
@@ -4010,7 +4142,6 @@ function getlocations_paths_get($reset = FALSE) {
     'getlocations_geo_path'           => GETLOCATIONS_PATH . '/js/getlocations_geo.js',
     'getlocations_preview_path'       => GETLOCATIONS_PATH . '/js/getlocations_preview.js',
     'getlocations_geojson_path'       => GETLOCATIONS_PATH . '/js/getlocations_geojson.js',
-    'getlocations_streetview_path'    => GETLOCATIONS_PATH . '/js/getlocations_streetview.js',
   );
   if ($reset) {
     $getlocations_paths = $defaults;
@@ -4023,6 +4154,15 @@ function getlocations_paths_get($reset = FALSE) {
   return $getlocations_paths;
 }
 
+/**
+ * Function
+ *
+ * @param
+ *
+ * @return
+ *   Returns
+ *
+ */
 function getlocations_markerpicker_link($id, $cat, $infoimg='') {
   if (module_exists('colorbox')) {
     $getlocations_colorbox = getlocations_colorbox_settings();
@@ -4045,6 +4185,15 @@ function getlocations_markerpicker_link($id, $cat, $infoimg='') {
   }
 }
 
+/**
+ * Function
+ *
+ * @param
+ *
+ * @return
+ *   Returns
+ *
+ */
 function getlocations_colorbox_settings() {
   $colorbox_defaults = array(
     'enable' => 0,
@@ -4059,6 +4208,15 @@ function getlocations_colorbox_settings() {
   return $getlocations_colorbox;
 }
 
+/**
+ * Function
+ *
+ * @param
+ *
+ * @return
+ *   Returns
+ *
+ */
 function getlocations_get_polygon_settings($defaults) {
   $coords = preg_replace("/\r/", '', $defaults['polygons_coords']);
   $coords_arr = preg_split("/\n/", $coords);
@@ -4627,6 +4785,15 @@ function getlocations_dms_to_dd($dms) {
   return $dd;
 }
 
+/**
+ * Function
+ *
+ * @param
+ *
+ * @return
+ *   Returns
+ *
+ */
 function getlocations_addressfield_convert($address) {
   $location = theme('getlocations_addressfield_convert', array('address' => $address));
   return $location;
@@ -4634,6 +4801,15 @@ function getlocations_addressfield_convert($address) {
 
 /**
  * Make sure a string is a valid css dimension.
+ */
+/**
+ * Function
+ *
+ * @param
+ *
+ * @return
+ *   Returns
+ *
  */
 function getlocations_dim_check($string) {
   if (!is_string($string) || empty($string)) {
@@ -4649,6 +4825,15 @@ function getlocations_dim_check($string) {
   }
 }
 
+/**
+ * Function
+ *
+ * @param
+ *
+ * @return
+ *   Returns
+ *
+ */
 function getlocations_element_validate_dim($element, &$form_state) {
 
   $value = FALSE;
@@ -4675,6 +4860,15 @@ function getlocations_element_validate_dim($element, &$form_state) {
   }
 }
 
+/**
+ * Function
+ *
+ * @param
+ *
+ * @return
+ *   Returns
+ *
+ */
 function getlocations_element_validate_latlon($element, &$form_state) {
 
   $value = FALSE;
@@ -4883,6 +5077,15 @@ function getlocations_earth_latitude_range($latitude, $longitude, $distance) {
 #  return asin(max(-1, min($x, 1)));
 #}
 
+/**
+ * Function
+ *
+ * @param
+ *
+ * @return
+ *   Returns
+ *
+ */
 function getlocations_get_search_distance_sql($latitude, $longitude, $searchdistance, $tbl_alias = '') {
   $radius = getlocations_earth_radius($latitude);
   $tbl_alias = empty($tbl_alias) ? $tbl_alias : ($tbl_alias . '.');
@@ -4967,6 +5170,15 @@ function getlocations_convert_meters_to_distance($meters, $distance_unit = 'km')
   return $retval;
 }
 
+/**
+ * Function
+ *
+ * @param
+ *
+ * @return
+ *   Returns
+ *
+ */
 function getlocations_get_unit_names($unit = '', $type = 'plural') {
   $units_plural = array(
     'km'  => t('Kilometers'),
@@ -5105,6 +5317,15 @@ function getlocations_normalizelng($lng) {
     return $lng;
 }
 
+/**
+ * Function
+ *
+ * @param
+ *
+ * @return
+ *   Returns
+ *
+ */
 function getlocations_is_mobile() {
   $getlocations_ua = getlocations_ua_get();
   $str = "/" . $getlocations_ua['ua_string'] . "/i";
@@ -5116,12 +5337,30 @@ function getlocations_is_mobile() {
   return $is_mobile;
 }
 
+/**
+ * Function
+ *
+ * @param
+ *
+ * @return
+ *   Returns
+ *
+ */
 function getlocations_ua_get() {
   $default = array('ua_string' => "iphone|ipad|android|blackberry|blazer|bolt|symbian|mobile safari|fennec|gobrowser|iemobile|maemo browser|profile midp|minimo|kindle|opera mini|opera mobi|skyfire|teashark|uzardweb");
   $getlocations_ua = variable_get('getlocations_ua', $default);
   return $getlocations_ua;
 }
 
+/**
+ * Function
+ *
+ * @param
+ *
+ * @return
+ *   Returns
+ *
+ */
 function getlocations_get_term_marker($nid, $marker) {
   $getlocations_defaults = getlocations_defaults();
   // term markers
@@ -5209,6 +5448,15 @@ function getlocations_controlpositions($dd = TRUE) {
     return $controlpositions;
 }
 
+/**
+ * Function
+ *
+ * @param
+ *
+ * @return
+ *   Returns
+ *
+ */
 function getlocations_get_all_entity_types() {
   // use entity_get_info to find all the fieldable types available
   $entity_allinfo = entity_get_info();
@@ -5221,6 +5469,15 @@ function getlocations_get_all_entity_types() {
   return $typarr;
 }
 
+/**
+ * Function
+ *
+ * @param
+ *
+ * @return
+ *   Returns
+ *
+ */
 function getlocations_get_entity_types_by_module($module) {
   $entity_types = array();
   $query = db_select('field_config', 'f');
@@ -5236,6 +5493,15 @@ function getlocations_get_entity_types_by_module($module) {
 }
 
 
+/**
+ * Function
+ *
+ * @param
+ *
+ * @return
+ *   Returns
+ *
+ */
 function getlocations_get_locative_entity_types() {
   $all_supported_modules = getlocations_supported_modules();
   foreach ($all_supported_modules AS $supported_module) {
@@ -5254,6 +5520,15 @@ function getlocations_get_locative_entity_types() {
   return array_keys($entity_types);
 }
 
+/**
+ * Function
+ *
+ * @param
+ *
+ * @return
+ *   Returns
+ *
+ */
 function getlocations_get_type_markers($all_entity_types = '') {
 
   $getlocations_markers = variable_get('getlocations_markers', array());
@@ -5935,7 +6210,7 @@ function theme_getlocations_settings_form($variables) {
   $fieldables = getlocations_get_fieldable_entity_types();
 
   $output = '';
-/////////////
+
   // return links
   foreach ($fieldables AS $entity_type) {
     if (isset($form['getlocations_default']['returnlink_' . $entity_type . '_link'])) {
@@ -5943,21 +6218,6 @@ function theme_getlocations_settings_form($variables) {
       $form['getlocations_default']['returnlink_' . $entity_type . '_link']['#suffix'] = '</div>';
     }
   }
-/////////////
-#  $form['getlocations_default']['returnlink_page_link']['#prefix'] = '<div id="wrap-page-link">';
-#  $form['getlocations_default']['returnlink_page_link']['#suffix'] = '</div>';
-#  if (isset($form['getlocations_default']['returnlink_user_link'])) {
-#    $form['getlocations_default']['returnlink_user_link']['#prefix'] = '<div id="wrap-user-link">';
-#    $form['getlocations_default']['returnlink_user_link']['#suffix'] = '</div>';
-#  }
-#  if (isset($form['getlocations_default']['returnlink_term_link'])) {
-#    $form['getlocations_default']['returnlink_term_link']['#prefix'] = '<div id="wrap-term-link">';
-#    $form['getlocations_default']['returnlink_term_link']['#suffix'] = '</div>';
-#  }
-#  if (isset($form['getlocations_default']['returnlink_comment_link'])) {
-#    $form['getlocations_default']['returnlink_comment_link']['#prefix'] = '<div id="wrap-comment-link">';
-#    $form['getlocations_default']['returnlink_comment_link']['#suffix'] = '</div>';
-#  }
 
   if (isset($form['getlocations_colorbox']['width']) && isset($form['getlocations_colorbox']['height'])) {
     $form['getlocations_colorbox']['width']['#prefix'] = '<div id="wrap-getlocations-colorbox">';
