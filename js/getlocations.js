@@ -376,6 +376,21 @@ var getlocations_pano = [];
           { featureType: "transit", elementType: "labels", stylers: [{ visibility: (transit_show ? 'on' : 'off') }] }
         ]);
 
+        var controlpositions = [];
+        controlpositions['tl'] = google.maps.ControlPosition.TOP_LEFT;
+        controlpositions['tc'] = google.maps.ControlPosition.TOP_CENTER;
+        controlpositions['tr'] = google.maps.ControlPosition.TOP_RIGHT;
+        controlpositions['rt'] = google.maps.ControlPosition.RIGHT_TOP;
+        controlpositions['rc'] = google.maps.ControlPosition.RIGHT_CENTER;
+        controlpositions['rb'] = google.maps.ControlPosition.RIGHT_BOTTOM;
+        controlpositions['br'] = google.maps.ControlPosition.BOTTOM_RIGHT;
+        controlpositions['bc'] = google.maps.ControlPosition.BOTTOM_CENTER;
+        controlpositions['bl'] = google.maps.ControlPosition.BOTTOM_LEFT;
+        controlpositions['lb'] = google.maps.ControlPosition.LEFT_BOTTOM;
+        controlpositions['lc'] = google.maps.ControlPosition.LEFT_CENTER;
+        controlpositions['lt'] = google.maps.ControlPosition.LEFT_TOP;
+        global_settings.controlpositions = controlpositions;
+
         var mapOpts = {
           zoom: selzoom,
           minZoom: global_settings.minzoom_map,
@@ -393,21 +408,6 @@ var getlocations_pano = [];
         if (map_backgroundcolor) {
           mapOpts.backgroundColor = map_backgroundcolor;
         }
-
-        var controlpositions = [];
-        controlpositions['tl'] = google.maps.ControlPosition.TOP_LEFT;
-        controlpositions['tc'] = google.maps.ControlPosition.TOP_CENTER;
-        controlpositions['tr'] = google.maps.ControlPosition.TOP_RIGHT;
-        controlpositions['rt'] = google.maps.ControlPosition.RIGHT_TOP;
-        controlpositions['rc'] = google.maps.ControlPosition.RIGHT_CENTER;
-        controlpositions['rb'] = google.maps.ControlPosition.RIGHT_BOTTOM;
-        controlpositions['br'] = google.maps.ControlPosition.BOTTOM_RIGHT;
-        controlpositions['bc'] = google.maps.ControlPosition.BOTTOM_CENTER;
-        controlpositions['bl'] = google.maps.ControlPosition.BOTTOM_LEFT;
-        controlpositions['lb'] = google.maps.ControlPosition.LEFT_BOTTOM;
-        controlpositions['lc'] = google.maps.ControlPosition.LEFT_CENTER;
-        controlpositions['lt'] = google.maps.ControlPosition.LEFT_TOP;
-
         // zoom control
         if (controltype == 'none') {
           mapOpts.zoomControl = false;
@@ -955,21 +955,6 @@ var getlocations_pano = [];
       }
       // streetview first feature
       if (gs.sv_showfirst) {
-
-        var controlpositions = [];
-        controlpositions['tl'] = google.maps.ControlPosition.TOP_LEFT;
-        controlpositions['tc'] = google.maps.ControlPosition.TOP_CENTER;
-        controlpositions['tr'] = google.maps.ControlPosition.TOP_RIGHT;
-        controlpositions['rt'] = google.maps.ControlPosition.RIGHT_TOP;
-        controlpositions['rc'] = google.maps.ControlPosition.RIGHT_CENTER;
-        controlpositions['rb'] = google.maps.ControlPosition.RIGHT_BOTTOM;
-        controlpositions['br'] = google.maps.ControlPosition.BOTTOM_RIGHT;
-        controlpositions['bc'] = google.maps.ControlPosition.BOTTOM_CENTER;
-        controlpositions['bl'] = google.maps.ControlPosition.BOTTOM_LEFT;
-        controlpositions['lb'] = google.maps.ControlPosition.LEFT_BOTTOM;
-        controlpositions['lc'] = google.maps.ControlPosition.LEFT_CENTER;
-        controlpositions['lt'] = google.maps.ControlPosition.LEFT_TOP;
-
         var popt = {
           position: p,
           pov: {
@@ -983,7 +968,7 @@ var getlocations_pano = [];
         if (gs.sv_addresscontrol) {
           popt.addressControl = true;
           if (gs.sv_addresscontrolposition) {
-            popt.addressControlOptions = {position: controlpositions[gs.sv_addresscontrolposition]};
+            popt.addressControlOptions = {position: gs.controlpositions[gs.sv_addresscontrolposition]};
           }
         }
         else {
@@ -992,7 +977,7 @@ var getlocations_pano = [];
         if (gs.sv_pancontrol) {
           popt.panControl = true;
           if (gs.sv_pancontrolposition) {
-            popt.panControlOptions = {position: controlpositions[gs.sv_pancontrolposition]};
+            popt.panControlOptions = {position: gs.controlpositions[gs.sv_pancontrolposition]};
           }
         }
         else {
@@ -1005,7 +990,7 @@ var getlocations_pano = [];
           popt.zoomControl = true;
           var zco = {};
           if (gs.sv_zoomcontrolposition) {
-            zco.position = controlpositions[gs.sv_zoomcontrolposition];
+            zco.position = gs.controlpositions[gs.sv_zoomcontrolposition];
           }
           if (gs.sv_zoomcontrol == 'small') {
             zco.style = google.maps.ZoomControlStyle.SMALL;
