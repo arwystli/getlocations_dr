@@ -627,13 +627,21 @@ function getlocations_map_field_widget_form(&$form, &$form_state, $field, $insta
 
       if (! empty($fieldnames)) {
         $element['#delta'] = $delta;
-        $element['locative_field_name'] = array(
-          '#type' => 'select',
-          '#title' => t('Location Field'),
-          '#options' => $fieldnames,
-          '#description' => t('Field to take locative data from'),
-          '#default_value' => (isset($items[$delta]['locative_field_name']) ? $items[$delta]['locative_field_name'] : (isset($instance['default_value'][$delta]['locative_field_name']) ? $instance['default_value'][$delta]['locative_field_name'] : '')),
-        );
+        $dval = (isset($items[$delta]['locative_field_name']) ? $items[$delta]['locative_field_name'] : (isset($instance['default_value'][$delta]['locative_field_name']) ? $instance['default_value'][$delta]['locative_field_name'] : ''));
+        // items only see which field, no choice
+        if ($active && $dval) {
+          $element['locative_field_name'] = array('#type' => 'value', '#value' => $dval);
+          $element['locative_field_name_markup'] = array('#markup' => '<p>' . t('Locative data taken from !f', array('!f' => $fieldnames[$dval])) . '</p>');
+         }
+        else {
+          $element['locative_field_name'] = array(
+            '#type' => 'select',
+            '#title' => t('Location Field'),
+            '#options' => $fieldnames,
+            '#description' => t('Field to take locative data from'),
+            '#default_value' => $dval,
+          );
+        }
       }
       else {
         if (! $active) {

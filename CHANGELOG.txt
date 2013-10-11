@@ -1,9 +1,50 @@
-commit 5bc908f
+commit 0e0879e
+Author: hutch <hutch@midwales.net>
+Date:   Fri Oct 11 19:09:51 2013 +0100
+
+    improved widget
+
+modules/getlocations_map/getlocations_map.module
+
+commit 511393b
+Author: hutch <hutch@midwales.net>
+Date:   Tue Oct 8 11:50:00 2013 +0100
+
+    cleaned up
+
+getlocations.module
+js/getlocations.js
+
+commit a6a2628
+Author: hutch <hutch@midwales.net>
+Date:   Tue Oct 8 11:49:19 2013 +0100
+
+    controlpositions rationalized
+
+js/getlocations.js
+
+commit 933f132
+Author: hutch <hutch@midwales.net>
+Date:   Mon Oct 7 15:25:09 2013 +0100
+
+    better settings for streetview overlay
+
+getlocations.module
+js/getlocations.js
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_fields/js/getlocations_fields_formatter.js
+modules/getlocations_fields/js/getlocations_fields_streetview.js
+modules/getlocations_fields/js/getlocations_fields_views.js
+modules/getlocations_fields/views/getlocations_fields_plugin_style_streetview.inc
+modules/getlocations_map/getlocations_map.module
+
+commit 3480723
 Author: hutch <hutch@midwales.net>
 Date:   Sat Oct 5 03:59:52 2013 +0100
 
     removed unwanted handler
 
+CHANGELOG.txt
 modules/getlocations_fields/handlers/getlocations_fields_handler_relationship_entity_reverse.inc
 
 commit 71ed296
