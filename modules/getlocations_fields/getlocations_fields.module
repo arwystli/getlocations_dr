@@ -762,12 +762,6 @@ function getlocations_fields_field_formatter_settings_summary($field, $instance,
     if ($settings['display_mapwidth'] && $settings['display_mapheight']) {
       $summary[] = t('Width: @w | Height: @h', array('@w' => $settings['display_mapwidth'], '@h' => $settings['display_mapheight']));
     }
-    if ($settings['display_latlong']) {
-      $summary[] = t('Show Latitude/Longitude: Yes');
-    }
-    if ($settings['display_dms']) {
-      $summary[] = t('Show Latitude/Longitude in Degrees, minutes, seconds');
-    }
     if ($settings['display_onemap']) {
       $summary[] = t('Show all locations on one map');
     }
@@ -937,6 +931,18 @@ function getlocations_fields_field_formatter_settings_summary($field, $instance,
       $summary[] = t('Show map link: Yes');
     }
   }
+
+  // lat/long
+  if ($settings['display_latlong']) {
+    $summary[] = t('Show Latitude/Longitude: Yes');
+  }
+  if ($settings['display_dms']) {
+    $summary[] = t('Show Latitude/Longitude in Degrees, minutes, seconds');
+  }
+  if ($settings['display_geo_microformat']) {
+    $summary[] = t('Show Latitude/Longitude in accordance with Geo Microformat markup');
+  }
+
   // address summary
   $address_display = array();
   if ($settings['display_name']) {
@@ -2303,6 +2309,7 @@ function getlocations_fields_defaults() {
     'display_maplink'                 => 1,
     'display_latlong'                 => 1,
     'display_dms'                     => 0,
+    'display_geo_microformat'         => 0,
     'display_onemap'                  => 0,
     'display_name'                    => 1,
     'display_street'                  => 1,
@@ -2663,6 +2670,7 @@ function getlocations_fields_field_formatter_info_defaults() {
     'display_maplink'           => $getlocations_fields_defaults['display_maplink'],
     'display_latlong'           => $getlocations_fields_defaults['display_latlong'],
     'display_dms'               => $getlocations_fields_defaults['display_dms'],
+    'display_geo_microformat'   => $getlocations_fields_defaults['display_geo_microformat'],
     'display_onemap'            => $getlocations_fields_defaults['display_onemap'],
     'controltype'               => $getlocations_defaults['controltype'],
     'pancontrol'                => $getlocations_defaults['pancontrol'],
@@ -3249,6 +3257,12 @@ function getlocations_fields_display_settings_form($defaults) {
     ''
   );
 
+  $form['display_geo_microformat'] = getlocations_element_map_checkbox(
+    t('Show Latitude/Longitude in accordance with Geo Microformat markup'),
+    $defaults['display_geo_microformat'],
+    t('See the <a href="@a" target="_blank">Microformats wiki</a> for more information', array('@a' => url('http://microformats.org/wiki/geo')))
+  );
+
   $form['display_onemap'] = getlocations_element_map_checkbox(
     t('Show all markers on one map'),
     $defaults['display_onemap'],
@@ -3676,7 +3690,7 @@ function theme_getlocations_fields_show($variables) {
     if (! empty($location['street']) && $settings['display_street'] ) {
       $output .= '<div class="street-address">' . $location['street'];
       if (! empty($location['additional']) && $settings['display_additional']) {
-        $output .= ' ' . $location['additional'];
+        $output .= ' ' . '<span class="extended-address">' . $location['additional'] . '</span>';
       }
       $output .= '</div>';
     }
@@ -3733,27 +3747,31 @@ function theme_getlocations_fields_show($variables) {
     if ($settings['display_latlong']) {
       $lat = $location['latitude'];
       $lng = $location['longitude'];
-      if ($settings['display_dms']) {
-        $lat = theme('getlocations_latitude_dms', array('latitude' => $lat));
-        $lng = theme('getlocations_longitude_dms', array('longitude' => $lng));
+      if ($settings['display_geo_microformat']) {
+        $lat_dms = theme('getlocations_latitude_dms', array('latitude' => $lat));
+        $lng_dms = theme('getlocations_longitude_dms', array('longitude' => $lng));
+        $output .= '<div class="geo">';
+        $output .= '<abbr class="latitude" title="' . $lat . '">' . $lat_dms . '</abbr> ';
+        $output .= '<abbr class="longitude" title="' . $lng . '">' . $lng_dms . '</abbr>';
+        $output .= '</div>';
       }
-      if ($settings['display_showmap']) {
-        $output .= '<div class="getlocations_fields_latlon_wrapper_themed">';
-        $output .= '<div class="getlocations_fields_lat_wrapper_themed">';
+      else {
+        if ($settings['display_dms']) {
+          $lat = theme('getlocations_latitude_dms', array('latitude' => $lat));
+          $lng = theme('getlocations_longitude_dms', array('longitude' => $lng));
+        }
+        $nomap = '';
+        if (! $settings['display_showmap']) {
+          $nomap = '_nomap';
+        }
+        $output .= '<div class="getlocations_fields_latlon_wrapper_themed' . $nomap . '">';
+        $output .= '<div class="getlocations_fields_lat_wrapper_themed' . $nomap . '">';
         $output .= t('Latitude') . ': ' . $lat . '</div>';
-        $output .= '<div class="getlocations_fields_lon_wrapper_themed">';
+        $output .= '<div class="getlocations_fields_lon_wrapper_themed' . $nomap . '">';
         $output .= t('Longitude') . ': ' . $lng . '</div>';
         $output .= '</div>';
         $output .= '<br />';
-      }
-      else {
-      $output .= '<div class="getlocations_fields_latlon_wrapper_themed_nomap">';
-      $output .= '<div class="getlocations_fields_lat_wrapper_themed_nomap">';
-      $output .= t('Latitude') . ': ' . $lat . '</div>';
-      $output .= '<div class="getlocations_fields_lon_wrapper_themed_nomap">';
-      $output .= t('Longitude') . ': ' . $lng . '</div>';
-      $output .= '</div>';
-      $output .= '<br />';
+
       }
     }
 
