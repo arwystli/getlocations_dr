@@ -109,6 +109,26 @@ if (isset($_SESSION['smart_ip']['location'])) {
   return array('latitude' => $_SESSION['smart_ip']['location']['latitude'], 'longitude' => $_SESSION['smart_ip']['location']['longitude']);
 }
 
+If you want to modify the dropdown of distance units in the Views Distance filter exposed form you will need to use hook_form_FORM_ID_alter()
+in a helper module. In this example the helper module is called "myhelper" and it limits the distance units to Kilometers and Miles only:
+
+function myhelper_form_views_exposed_form_alter(&$form, &$form_state, $form_id) {
+
+  // limit the search units to Miles and Kilometers
+  if (isset($form['distance']['search_units']['#options'])) {
+    $form['distance']['search_units']['#options'] = array('mi' => t('Miles'), 'km' => t('Kilometers'));
+  }
+
+  // change the search distance textfield into a dropdown
+  if (isset($form['distance']['search_distance'])) {
+    $form['distance']['search_distance']['#type'] = 'select';
+    $form['distance']['search_distance']['#options'] = array(5 => '5', 10 => '10', 20 => '20');
+    unset($form['distance']['search_distance']['#size']);
+    unset($form['distance']['search_distance']['#required']);
+  }
+
+}
+
 Theming.
 Getlocations Fields pages can be themed by copying the relevant function to your theme's template.php,
 renaming it in the usual manner.
