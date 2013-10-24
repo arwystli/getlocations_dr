@@ -4,20 +4,20 @@
  * @author Bob Hutchinson http://drupal.org/user/52366
  * @copyright GNU GPL
  *
- * Javascript functions for getlocations_fields module admin
+ * Javascript functions for getlocations_map module admin
  * jquery gee whizzery
 */
 (function ($) {
   Drupal.behaviors.getlocations_map_formatter = {
     attach: function() {
 
-      if ($("input[id$=settings-trafficinfo], input[id$=options-trafficinfo]").attr('checked')) {
+      if ($("input[id$=settings-trafficinfo]").attr('checked')) {
         $("#wrap-getlocations-trafficinfo").show();
       }
       else {
         $("#wrap-getlocations-trafficinfo").hide();
       }
-      $("input[id$=settings-trafficinfo], input[id$=options-trafficinfo]").change(function() {
+      $("input[id$=settings-trafficinfo]").change(function() {
         if ($(this).attr('checked')) {
           $("#wrap-getlocations-trafficinfo").show();
         }
@@ -26,13 +26,13 @@
         }
       });
 
-      if ($("input[id$=settings-bicycleinfo], input[id$=options-bicycleinfo]").attr('checked')) {
+      if ($("input[id$=settings-bicycleinfo]").attr('checked')) {
         $("#wrap-getlocations-bicycleinfo").show();
       }
       else {
         $("#wrap-getlocations-bicycleinfo").hide();
       }
-      $("input[id$=settings-bicycleinfo], input[id$=options-bicycleinfo]").change(function() {
+      $("input[id$=settings-bicycleinfo]").change(function() {
         if ($(this).attr('checked')) {
           $("#wrap-getlocations-bicycleinfo").show();
         }
@@ -41,13 +41,13 @@
         }
       });
 
-      if ($("input[id$=settings-transitinfo], input[id$=options-transitinfo]").attr('checked')) {
+      if ($("input[id$=settings-transitinfo]").attr('checked')) {
         $("#wrap-getlocations-transitinfo").show();
       }
       else {
         $("#wrap-getlocations-transitinfo").hide();
       }
-      $("input[id$=settings-transitinfo], input[id$=options-transitinfo]").change(function() {
+      $("input[id$=settings-transitinfo]").change(function() {
         if ($(this).attr('checked')) {
           $("#wrap-getlocations-transitinfo").show();
         }
@@ -56,13 +56,13 @@
         }
       });
 
-      if ($("input[id$=settings-panoramio-show], input[id$=options-panoramio-show]").attr('checked')) {
+      if ($("input[id$=settings-panoramio-show]").attr('checked')) {
         $("#wrap-getlocations-panoramio").show();
       }
       else {
         $("#wrap-getlocations-panoramio").hide();
       }
-      $("input[id$=settings-panoramio-show], input[id$=options-panoramio-show]").change(function() {
+      $("input[id$=settings-panoramio-show]").change(function() {
         if ($(this).attr('checked')) {
           $("#wrap-getlocations-panoramio").show();
         }
@@ -71,13 +71,13 @@
         }
       });
 
-      if ($("input[id$=settings-weather-show], input[id$=options-weather-show]").attr('checked')) {
+      if ($("input[id$=settings-weather-show]").attr('checked')) {
         $("#wrap-getlocations-weather").show();
       }
       else {
         $("#wrap-getlocations-weather").hide();
       }
-      $("input[id$=settings-weather-show], input[id$=options-weather-show]").change(function() {
+      $("input[id$=settings-weather-show]").change(function() {
         if ($(this).attr('checked')) {
           $("#wrap-getlocations-weather").show();
         }
@@ -86,13 +86,13 @@
         }
       });
 
-      if ($("input[id$=settings-weather-cloud], input[id$=options-weather-cloud]").attr('checked')) {
+      if ($("input[id$=settings-weather-cloud]").attr('checked')) {
         $("#wrap-getlocations-weather-cloud").show();
       }
       else {
         $("#wrap-getlocations-weather-cloud").hide();
       }
-      $("input[id$=settings-weather-cloud], input[id$=options-weather-cloud]").change(function() {
+      $("input[id$=settings-weather-cloud]").change(function() {
         if ($(this).attr('checked')) {
           $("#wrap-getlocations-weather-cloud").show();
         }
@@ -269,4 +269,3 @@
     }
   };
 }(jQuery));
-
