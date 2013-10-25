@@ -3754,6 +3754,7 @@ function theme_getlocations_fields_show($variables) {
         $output .= '<abbr class="latitude" title="' . $lat . '">' . $lat_dms . '</abbr> ';
         $output .= '<abbr class="longitude" title="' . $lng . '">' . $lng_dms . '</abbr>';
         $output .= '</div>';
+        $output .= '<br />';
       }
       else {
         if ($settings['display_dms']) {
@@ -3766,9 +3767,9 @@ function theme_getlocations_fields_show($variables) {
         }
         $output .= '<div class="getlocations_fields_latlon_wrapper_themed' . $nomap . '">';
         $output .= '<div class="getlocations_fields_lat_wrapper_themed' . $nomap . '">';
-        $output .= t('Latitude') . ': ' . $lat . '</div>';
+        $output .= t('Latitude') . ":&nbsp;" . $lat . '</div>';
         $output .= '<div class="getlocations_fields_lon_wrapper_themed' . $nomap . '">';
-        $output .= t('Longitude') . ': ' . $lng . '</div>';
+        $output .= t('Longitude') . ":&nbsp;" . $lng . '</div>';
         $output .= '</div>';
         $output .= '<br />';
 
