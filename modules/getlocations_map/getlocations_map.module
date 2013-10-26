@@ -716,7 +716,6 @@ function getlocations_map_defaults() {
     'scrollwheel'                   => $getlocations_defaults['scrollwheel'],
     'draggable'                     => $getlocations_defaults['draggable'],
     'map_backgroundcolor'           => $getlocations_defaults['map_backgroundcolor'],
-    'visual_refresh'                => $getlocations_defaults['visual_refresh'],
     'show_maplinks'                 => $getlocations_defaults['show_maplinks'],
     'show_bubble_on_one_marker'     => $getlocations_defaults['show_bubble_on_one_marker'],
     'fullscreen'                    => $getlocations_defaults['fullscreen'],

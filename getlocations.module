@@ -1127,7 +1127,6 @@ function getlocations_defaults($reset = FALSE) {
       'kml_url_button_label'        => 'Kml Layer',
       'kml_url_button_state'        => 0,
     ),
-    'visual_refresh'                => 0,
     'map_resize'                    => 0,
     'region_bias'                   => variable_get('site_default_country', ''),
     'fullscreen_disable'            => 0,
@@ -2299,7 +2298,6 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
       'fullscreen'                => $defaults['fullscreen'],
       'show_bubble_on_one_marker' => $defaults['show_bubble_on_one_marker'],
       'kml_url'                   => $defaults['kml_group']['kml_url'],
-      'visual_refresh'            => $defaults['visual_refresh'],
       'fullscreen_disable'        => $defaults['fullscreen_disable'],
       'places'                    => $defaults['places'],
       'search_places'             => $defaults['search_places'],
@@ -3358,13 +3356,6 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
   );
 
   if ($config) {
-
-    // Enable the visual refresh feature
-    $form['visual_refresh'] = getlocations_element_map_checkbox(
-      t('Google Visual Refresh'),
-      $defaults['visual_refresh'],
-      t('Enable the Visual Refresh feature.')
-    );
 
     $form['region_bias'] = getlocations_element_dd(
       t('Regional bias'),

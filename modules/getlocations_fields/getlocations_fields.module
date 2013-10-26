@@ -1741,7 +1741,6 @@ function getlocations_fields_getmap_show($settings, $lls = '', $minmaxes = '') {
   $getlocations_defaults['search_places_placeholder'] = $settings['search_places_placeholder'];
   $getlocations_defaults['search_places_dd']          = $settings['search_places_dd'];
   $getlocations_defaults['search_places_list']        = $settings['search_places_list'];
-  $getlocations_defaults['visual_refresh']            = $settings['visual_refresh'];
   $getlocations_defaults['kml_group']                 = $settings['kml_group'];
   $getlocations_defaults['geojson_enable']            = $settings['geojson_enable'];
   $getlocations_defaults['geojson_data']              = $settings['geojson_data'];
@@ -2444,7 +2443,6 @@ function getlocations_fields_defaults() {
     'search_places_placeholder' => $getlocations_defaults['search_places_placeholder'],
     'search_places_dd'          => $getlocations_defaults['search_places_dd'],
     'search_places_list'        => $getlocations_defaults['search_places_list'],
-    'visual_refresh'            => $getlocations_defaults['visual_refresh'],
     'jquery_colorpicker_enabled' => $getlocations_defaults['jquery_colorpicker_enabled'],
     'geojson_enable'            => $getlocations_defaults['geojson_enable'],
     'geojson_data'              => $getlocations_defaults['geojson_data'],
@@ -2619,7 +2617,6 @@ function getlocations_fields_field_info_defaults() {
         'search_places_placeholder'       => $getlocations_fields_defaults['search_places_placeholder'],
         'search_places_dd'                => $getlocations_fields_defaults['search_places_dd'],
         'search_places_list'              => $getlocations_fields_defaults['search_places_list'],
-        'visual_refresh'                  => $getlocations_fields_defaults['visual_refresh'],
         'kml_group'                       => $getlocations_fields_defaults['kml_group'],
         'jquery_colorpicker_enabled'      => $getlocations_fields_defaults['jquery_colorpicker_enabled'],
         'geojson_enable'                  => $getlocations_fields_defaults['geojson_enable'],
@@ -2770,7 +2767,6 @@ function getlocations_fields_field_formatter_info_defaults() {
     'search_places_placeholder' => $getlocations_defaults['search_places_placeholder'],
     'search_places_dd'          => $getlocations_defaults['search_places_dd'],
     'search_places_list'        => $getlocations_defaults['search_places_list'],
-    'visual_refresh'            => $getlocations_defaults['visual_refresh'],
     'kml_group'                 => $getlocations_defaults['kml_group'],
     'jquery_colorpicker_enabled' => $getlocations_defaults['jquery_colorpicker_enabled'],
     'geojson_enable'            => $getlocations_defaults['geojson_enable'],

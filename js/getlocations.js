@@ -200,8 +200,6 @@ var getlocations_pano = [];
         var zoomcontrolposition = settings.zoomcontrolposition;
         var scalecontrolposition = settings.scalecontrolposition;
         var svcontrolposition = settings.svcontrolposition;
-        // Enable the visual refresh
-        google.maps.visualRefresh = (settings.visual_refresh ? true : false);
 
         global_settings.info_path = settings.info_path;
         global_settings.lidinfo_path = settings.lidinfo_path;
