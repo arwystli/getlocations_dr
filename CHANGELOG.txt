@@ -1,9 +1,90 @@
-commit 0e0879e
+commit 2545069
+Author: hutch <hutch@midwales.net>
+Date:   Sat Oct 26 12:47:25 2013 +0100
+
+    fixed controlpositions in getlocations_plugin_style
+
+views/getlocations_plugin_style_map.inc
+
+commit 391476c
+Author: hutch <hutch@midwales.net>
+Date:   Sat Oct 26 12:14:25 2013 +0100
+
+    fixed controlpositions in getlocations_map
+
+modules/getlocations_map/getlocations_map.module
+
+commit f29df81
+Author: hutch <hutch@midwales.net>
+Date:   Sat Oct 26 10:31:32 2013 +0100
+
+    fixed controlpositions in getlocations_search
+
+modules/getlocations_search/getlocations_search.module
+modules/getlocations_search/js/getlocations_search_admin.js
+
+commit 7b2877c
+Author: hutch <hutch@midwales.net>
+Date:   Sat Oct 26 08:53:47 2013 +0100
+
+    removed visual_refresh
+
+getlocations.module
+js/getlocations.js
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_map/getlocations_map.module
+modules/getlocations_search/getlocations_search.module
+views/getlocations_plugin_style_map.inc
+
+commit f4d47ba
+Author: hutch <hutch@midwales.net>
+Date:   Fri Oct 25 10:07:29 2013 +0100
+
+    improved address output in themes
+
+getlocations.module
+modules/getlocations_fields/getlocations_fields.module
+
+commit 49d315f
+Author: hutch <hutch@midwales.net>
+Date:   Thu Oct 24 12:16:02 2013 +0100
+
+    added views_exposed_form_alter example
+
+modules/getlocations_fields/README.txt
+
+commit 0cde0c0
+Author: hutch <hutch@midwales.net>
+Date:   Thu Oct 24 12:12:41 2013 +0100
+
+    added geo microformat
+
+modules/getlocations_fields/getlocations_fields.css
+modules/getlocations_fields/getlocations_fields.module
+
+commit ed2c5d0
+Author: hutch <hutch@midwales.net>
+Date:   Thu Oct 24 12:12:09 2013 +0100
+
+    cleaned up
+
+modules/getlocations_map/js/getlocations_map_formatter.js
+
+commit a688b97
+Author: hutch <hutch@midwales.net>
+Date:   Thu Oct 24 12:11:52 2013 +0100
+
+    fixed missing t()
+
+getlocations.module
+
+commit aa8d565
 Author: hutch <hutch@midwales.net>
 Date:   Fri Oct 11 19:09:51 2013 +0100
 
     improved widget
 
+CHANGELOG.txt
 modules/getlocations_map/getlocations_map.module
 
 commit 511393b
