@@ -792,6 +792,11 @@ function getlocations_map_defaults() {
     'geojson_options'               => $getlocations_defaults['geojson_options'],
     'nokeyboard'                    => $getlocations_defaults['nokeyboard'],
     'nodoubleclickzoom'             => $getlocations_defaults['nodoubleclickzoom'],
+    'zoomcontrolposition'           => $getlocations_defaults['zoomcontrolposition'],
+    'pancontrolposition'            => $getlocations_defaults['pancontrolposition'],
+    'mapcontrolposition'            => $getlocations_defaults['mapcontrolposition'],
+    'scalecontrolposition'          => $getlocations_defaults['scalecontrolposition'],
+    'svcontrolposition'             => $getlocations_defaults['svcontrolposition'],
     #'markeraction' => 0,
   );
 
