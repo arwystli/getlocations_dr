@@ -132,6 +132,23 @@
         });
       }
 
+      if ($("#edit-getlocations-fields-defaults-overview,#edit-field-settings-overview").is('input')) {
+        if ($("#edit-getlocations-fields-defaults-overview,#edit-field-settings-overview").attr('checked')) {
+          $("#wrap-getlocations-overview").show();
+        }
+        else {
+          $("#wrap-getlocations-overview").hide();
+        }
+        $("#edit-getlocations-fields-defaults-overview,#edit-field-settings-overview").change(function() {
+          if ($(this).attr('checked')) {
+            $("#wrap-getlocations-overview").show();
+          }
+          else {
+            $("#wrap-getlocations-overview").hide();
+          }
+        });
+      }
+
       if ($("#edit-getlocations-fields-defaults-sv-show,#edit-field-settings-sv-show").is('input')) {
         if ($("#edit-getlocations-fields-defaults-sv-show,#edit-field-settings-sv-show").attr('checked')) {
           $("#wrap-getlocations-sv-show").show();

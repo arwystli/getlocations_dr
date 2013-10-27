@@ -61,23 +61,6 @@
         });
       }
 
-      if ($("#edit-style-options-sv-show").is('input')) {
-        if ($("#edit-style-options-sv-show").attr('checked')) {
-          $("#wrap-getlocations-sv-show").show();
-        }
-        else {
-          $("#wrap-getlocations-sv-show").hide();
-        }
-        $("#edit-style-options-sv-show").change(function() {
-          if ($(this).attr('checked')) {
-            $("#wrap-getlocations-sv-show").show();
-          }
-          else {
-            $("#wrap-getlocations-sv-show").hide();
-          }
-        });
-      }
-
     }
   };
 

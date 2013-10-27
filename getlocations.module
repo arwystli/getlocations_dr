@@ -3320,11 +3320,14 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
     $defaults['overview'],
     t('Show overview map.')
   );
+  $form['overview']['#suffix'] = '<div id="wrap-getlocations-overview">';
   $form['overview_opened'] = getlocations_element_map_checkbox(
     t('Overview map state'),
     $defaults['overview_opened'],
     t('Show overview map as open by default.')
   );
+  $form['overview_opened']['#suffix'] = '</div>';
+
   $form['scrollwheel'] = getlocations_element_map_checkbox(
     t('Scrollwheel'),
     $defaults['scrollwheel'],

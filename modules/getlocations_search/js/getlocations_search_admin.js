@@ -396,6 +396,23 @@
         });
       }
 
+      if ($("#edit-getlocations-search-defaults-overview, #edit-getlocations-search-block-defaults-overview").is('input')) {
+        if ($("#edit-getlocations-search-defaults-overview, #edit-getlocations-search-block-defaults-overview").attr('checked')) {
+          $("#wrap-getlocations-overview").show();
+        }
+        else {
+          $("#wrap-getlocations-overview").hide();
+        }
+        $("#edit-getlocations-search-defaults-overview, #edit-getlocations-search-block-defaults-overview").change(function() {
+          if ($(this).attr('checked')) {
+            $("#wrap-getlocations-overview").show();
+          }
+          else {
+            $("#wrap-getlocations-overview").hide();
+          }
+        });
+      }
+
       if ($("#edit-getlocations-search-defaults-sv-show, #edit-getlocations-search-block-defaults-sv-show").is('input')) {
         if ($("#edit-getlocations-search-defaults-sv-show, #edit-getlocations-search-block-defaults-sv-show").attr('checked')) {
           $("#wrap-getlocations-sv-show").show();

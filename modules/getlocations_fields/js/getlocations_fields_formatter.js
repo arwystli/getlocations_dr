@@ -252,6 +252,21 @@
         }
       });
 
+      if ($("input[id$=overview]").attr('checked')) {
+        $("#wrap-getlocations-overview").show();
+      }
+      else {
+        $("#wrap-getlocations-overview").hide();
+      }
+      $("input[id$=overview]").change(function() {
+        if ($(this).attr('checked')) {
+          $("#wrap-getlocations-overview").show();
+        }
+        else {
+          $("#wrap-getlocations-overview").hide();
+        }
+      });
+
       if ($("input[id$=sv-show]").attr('checked')) {
         $("#wrap-getlocations-sv-show").show();
       }
@@ -315,4 +330,3 @@
     }
   };
 }(jQuery));
-

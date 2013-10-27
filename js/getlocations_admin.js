@@ -476,6 +476,23 @@
         });
       }
 
+      if ($("#edit-getlocations-default-overview").is('input')) {
+        if ($("#edit-getlocations-default-overview").attr('checked')) {
+          $("#wrap-getlocations-overview").show();
+        }
+        else {
+          $("#wrap-getlocations-overview").hide();
+        }
+        $("#edit-getlocations-default-overview").change(function() {
+          if ($(this).attr('checked')) {
+            $("#wrap-getlocations-overview").show();
+          }
+          else {
+            $("#wrap-getlocations-overview").hide();
+          }
+        });
+      }
+
       if ($("#edit-getlocations-default-sv-show").is('input')) {
         if ($("#edit-getlocations-default-sv-show").attr('checked')) {
           $("#wrap-getlocations-sv-show").show();
