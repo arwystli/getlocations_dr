@@ -31,7 +31,7 @@
           fsdiv.style.cursor = "pointer";
           fsdiv.style.textAlign = "center";
           fsdiv.title = Drupal.t('Full screen');
-          fsdiv.innerHTML = '<img id="btnFullScreen" src="' + js_path + '/images/fs-map-full.png"/>';
+          fsdiv.innerHTML = '<img id="svbtnFullScreen" src="' + js_path + 'images/fs-map-full.png"/>';
           fsd.appendChild(fsdiv);
           google.maps.event.addDomListener(fsdiv, "click", function() {
             toggleFullScreen();
@@ -40,16 +40,16 @@
 
         function toggleFullScreen() {
           $("#getlocations_streetview_wrapper_" + key).toggleClass("fullscreen");
-          $("html,body").toggleClass("fullscreen-body");
+          $("html,body").toggleClass("svfullscreen-body-" + key);
           $(document).scrollTop(0);
           google.maps.event.trigger(getlocations_pano[key], "resize");
           setTimeout( function() {
             if($("#getlocations_streetview_wrapper_" + key).hasClass("fullscreen")) {
-              $("#btnFullScreen").attr("src", js_path + '/images/fs-map-normal.png');
+              $("#svbtnFullScreen").attr("src", js_path + 'images/fs-map-normal.png');
               fsdiv.title = Drupal.t('Normal screen');
             }
             else {
-              $("#btnFullScreen").attr("src", js_path + '/images/fs-map-full.png');
+              $("#svbtnFullScreen").attr("src", js_path + 'images/fs-map-full.png');
               fsdiv.title = Drupal.t('Full screen');
             }
           },200);
@@ -178,7 +178,7 @@
             $(document).keydown( function(kc) {
               var cd = (kc.keyCode ? kc.keyCode : kc.which);
               if(cd == 27){
-                if($("body").hasClass("fullscreen-body")){
+                if($("body").hasClass("svfullscreen-body-" + key)){
                   toggleFullScreen();
                 }
               }
@@ -197,4 +197,3 @@
     }
   };
 }(jQuery));
-

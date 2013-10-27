@@ -42,7 +42,7 @@ var getlocations_pano = [];
         fsdiv.style.cursor = "pointer";
         fsdiv.style.textAlign = "center";
         fsdiv.title = Drupal.t('Full screen');
-        fsdiv.innerHTML = '<img id="btnFullScreen" src="' + js_path + '/images/fs-map-full.png"/>';
+        fsdiv.innerHTML = '<img id="btnFullScreen" src="' + js_path + 'images/fs-map-full.png"/>';
         fsd.appendChild(fsdiv);
         google.maps.event.addDomListener(fsdiv, "click", function() {
           toggleFullScreen();
@@ -52,17 +52,17 @@ var getlocations_pano = [];
       function toggleFullScreen() {
         var cnt = getlocations_map[key].getCenter();
         $("#getlocations_map_wrapper_" + key).toggleClass("fullscreen");
-        $("html,body").toggleClass("fullscreen-body");
+        $("html,body").toggleClass("fullscreen-body-" + key);
         $(document).scrollTop(0);
         google.maps.event.trigger(getlocations_map[key], "resize");
         getlocations_map[key].setCenter(cnt);
         setTimeout( function() {
           if($("#getlocations_map_wrapper_" + key).hasClass("fullscreen")) {
-            $("#btnFullScreen").attr("src", js_path + '/images/fs-map-normal.png');
+            $("#btnFullScreen").attr("src", js_path + 'images/fs-map-normal.png');
             fsdiv.title = Drupal.t('Normal screen');
           }
           else {
-            $("#btnFullScreen").attr("src", js_path + '/images/fs-map-full.png');
+            $("#btnFullScreen").attr("src", js_path + 'images/fs-map-full.png');
             fsdiv.title = Drupal.t('Full screen');
           }
         },200);
@@ -787,7 +787,7 @@ var getlocations_pano = [];
           $(document).keydown( function(kc) {
             var cd = (kc.keyCode ? kc.keyCode : kc.which);
             if(cd == 27){
-              if($("body").hasClass("fullscreen-body")){
+              if($("body").hasClass("fullscreen-body-" + key)){
                 toggleFullScreen();
               }
             }
