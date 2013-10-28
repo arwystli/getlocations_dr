@@ -710,13 +710,24 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
   if ($defaults['places'] || module_exists('getlocations_search')) {
     $libraries['places'] = 'places';
   }
-  // not active yet
-  if ($defaults['geometry']) {
-    $libraries['geometry'] = 'geometry';
-  }
   if ($defaults['weather_use']) {
     $libraries['weather'] = 'weather';
   }
+
+  // not active but can be used by other modules
+  if ($defaults['geometry']) {
+    $libraries['geometry'] = 'geometry';
+  }
+  if ($defaults['visualization']) {
+    $libraries['visualization'] = 'visualization';
+  }
+  if ($defaults['drawing']) {
+    $libraries['drawing'] = 'drawing';
+  }
+  if ($defaults['adsense']) {
+    $libraries['adsense'] = 'adsense';
+  }
+
   // more libraries here
 
   // compat with getdirections
@@ -742,11 +753,7 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
 
   global $is_https;
   $scheme = ($is_https ? 'https' : 'http');
-  $gmapdomain = "maps.google.com/maps/api/js";
-  if (! empty($key)) {
-    $gmapdomain = "maps.googleapis.com/maps/api/js";
-  }
-
+  $gmapdomain = "maps.googleapis.com/maps/api/js";
   $gmaplink = url($scheme . '://' . $gmapdomain, array('query' => $query));
   if (!stristr($current_js, $scheme . '://' . $gmapdomain)) {
     $js_opts = array();
@@ -1062,6 +1069,9 @@ function getlocations_defaults($reset = FALSE) {
     'preload_data'                  => 0,
     'is_mobile'                     => (getlocations_is_mobile() ? 1 : 0),
     'geometry'                      => 0,
+    'visualization'                 => 0,
+    'drawing'                       => 0,
+    'adsense'                       => 0,
     'weather_use'                   => 0,
     'weather_show'                  => 0,
     'weather_state'                 => 0,
