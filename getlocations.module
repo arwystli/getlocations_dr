@@ -11,6 +11,7 @@
  */
 
 define('GETLOCATIONS_PATH', drupal_get_path('module', 'getlocations'));
+define('GETLOCATIONS_VERSION', '7.x-2.x');
 
 /**
  * Implements hook_help().
