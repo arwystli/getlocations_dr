@@ -1,9 +1,75 @@
-commit 2545069
+commit 6afd9d8
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sat Nov 16 16:04:27 2013 +0000
+
+    use #attach instead of add js
+
+modules/getlocations_fields/views/getlocations_fields_plugin_style_streetview.inc
+views/getlocations_plugin_style_map.inc
+
+commit a6aa7b7
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sat Nov 16 16:03:25 2013 +0000
+
+    moved shapes form elements to their own function
+
+getlocations.module
+
+commit e24ba1a
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sun Nov 3 11:35:05 2013 +0000
+
+    added version constant
+
+getlocations.module
+
+commit cfd808c
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Fri Nov 1 16:48:22 2013 +0000
+
+    added $keyonly param to function getlocations_setup_map()
+
+getlocations.module
+
+commit 12b69db
+Author: hutch <hutch@midwales.net>
+Date:   Mon Oct 28 19:16:42 2013 +0000
+
+    added more google libraries to defaults
+
+getlocations.module
+
+commit e09965c
+Author: hutch <hutch@midwales.net>
+Date:   Sun Oct 27 18:20:54 2013 +0000
+
+    better js preview
+
+getlocations.module
+js/getlocations_admin.js
+js/getlocations_views.js
+modules/getlocations_fields/js/getlocations_fields_admin.js
+modules/getlocations_fields/js/getlocations_fields_formatter.js
+modules/getlocations_fields/js/getlocations_fields_views.js
+modules/getlocations_map/js/getlocations_map_formatter.js
+modules/getlocations_search/js/getlocations_search_admin.js
+
+commit cf83cd9
+Author: hutch <hutch@midwales.net>
+Date:   Sun Oct 27 18:19:40 2013 +0000
+
+    fixed bugs in fullscreen feature
+
+js/getlocations.js
+modules/getlocations_fields/js/getlocations_fields_streetview.js
+
+commit 62a24a5
 Author: hutch <hutch@midwales.net>
 Date:   Sat Oct 26 12:47:25 2013 +0100
 
     fixed controlpositions in getlocations_plugin_style
 
+CHANGELOG.txt
 views/getlocations_plugin_style_map.inc
 
 commit 391476c

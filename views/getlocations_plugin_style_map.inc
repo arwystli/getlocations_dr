@@ -14,6 +14,22 @@
  * @ingroup views_style_plugins
  */
 class getlocations_plugin_style_map extends views_plugin_style {
+
+  /**
+   * If this view is displaying an entity, save the entity type and info.
+   */
+  function init(&$view, &$display, $options = NULL) {
+    parent::init($view, $display, $options);
+
+    foreach (entity_get_info() as $key => $info) {
+      if ($view->base_table == $info['base table']) {
+        $this->entity_type = $key;
+        $this->entity_info = $info;
+        break;
+      }
+    }
+  }
+
   /**
    * Set default options
    */
@@ -23,7 +39,7 @@ class getlocations_plugin_style_map extends views_plugin_style {
   }
 
   function option_definition() {
-    drupal_add_js(GETLOCATIONS_PATH . '/js/getlocations_views.js');
+
     $options = parent::option_definition();
 
     $getlocations_defaults = getlocations_defaults();
@@ -178,6 +194,8 @@ class getlocations_plugin_style_map extends views_plugin_style {
     parent::options_form($form, $form_state);
 
     $form['#theme'] = 'getlocations_plugin_style_map_options_form';
+
+    $form['#attached']['js'] = array(GETLOCATIONS_PATH . '/js/getlocations_views.js' => array('type' => 'file'));
 
     $handlers = $this->display->handler->get_handlers('field');
     $source_options = array('' => t('None'));
