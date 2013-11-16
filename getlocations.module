@@ -3598,383 +3598,7 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
       t('Show Google transit points icons.')
     );
 
-    $form['polygons_enable'] = getlocations_element_map_checkbox(
-      t('Enable polygons'),
-      $defaults['polygons_enable'],
-      t('Show polygons if defined.')
-    );
-    $form['polygons_enable']['#suffix'] = '<div id="wrap-getlocations-polygons">';
-
-    // jquery_colorpicker
-    if (module_exists('jquery_colorpicker') && $defaults['jquery_colorpicker_enabled']) {
-      $form['polygons_strokecolor'] = array(
-        '#type' => 'jquery_colorpicker',
-        '#title' => t('Polygon line color'),
-        '#default_value' => preg_replace("/^#/", '', $defaults['polygons_strokecolor']),
-        '#description' => t('Click on the Colorpicker icon to select a color'),
-      );
-    }
-    else {
-      $form['polygons_strokecolor'] = getlocations_element_map_tf(
-        t('Polygon line color'),
-        $defaults['polygons_strokecolor'],
-        t('HTML hex, eg #FF0000.'),
-        10,
-        10,
-        TRUE
-      );
-    }
-
-    $form['polygons_strokeopacity'] = getlocations_element_map_tf(
-      t('Polygon line opacity'),
-      $defaults['polygons_strokeopacity'],
-      t('Must be between 0 and 1.'),
-      10,
-      10,
-      TRUE
-    );
-    $form['polygons_strokeweight'] = getlocations_element_map_tf(
-      t('Polygon line thickness'),
-      $defaults['polygons_strokeweight'],
-      t('Must be an integer.'),
-      10,
-      10,
-      TRUE
-    );
-
-    // jquery_colorpicker
-    if (module_exists('jquery_colorpicker') && $defaults['jquery_colorpicker_enabled']) {
-      $form['polygons_fillcolor'] = array(
-        '#type' => 'jquery_colorpicker',
-        '#title' => t('Polygon fill color'),
-        '#default_value' => preg_replace("/^#/", '', $defaults['polygons_fillcolor']),
-        '#description' => t('Click on the Colorpicker icon to select a color'),
-      );
-    }
-    else {
-      $form['polygons_fillcolor'] = getlocations_element_map_tf(
-        t('Polygon fill color'),
-        $defaults['polygons_fillcolor'],
-        t('HTML hex, eg #FF0000.'),
-        10,
-        10,
-        TRUE
-      );
-    }
-
-    $form['polygons_fillopacity'] = getlocations_element_map_tf(
-      t('Polygon fill opacity'),
-      $defaults['polygons_fillopacity'],
-      t('Must be between 0 and 1.'),
-      10,
-      10,
-      TRUE
-    );
-    $form['polygons_clickable'] = getlocations_element_map_checkbox(
-      t('Clickable'),
-      $defaults['polygons_clickable'],
-      t('Show Popup on clicking on the polygon.')
-    );
-    $form['polygons_message'] = array(
-      '#type' => 'textarea',
-      '#title' => t('Popup message'),
-      '#default_value' => $defaults['polygons_message'],
-      '#description' => t('The content of the popup.'),
-    );
-
-    $form['polygons_coords'] = array(
-      '#type' => 'textarea',
-      '#title' => t('Polygon Coordinates'),
-      '#default_value' => $defaults['polygons_coords'],
-      '#description' => t('A pipe delimited list of latitude,longitude pairs, one polygon per line. You must have at least 3 pairs for each polygon.'),
-    );
-    $form['polygons_coords']['#suffix'] = '</div>';
-
-    $form['rectangles_enable'] = getlocations_element_map_checkbox(
-      t('Enable rectangles'),
-      $defaults['rectangles_enable'],
-      t('Show rectangles if defined.')
-    );
-    $form['rectangles_enable']['#suffix'] = '<div id="wrap-getlocations-rectangles">';
-
-    // jquery_colorpicker
-    if (module_exists('jquery_colorpicker') && $defaults['jquery_colorpicker_enabled']) {
-      $form['rectangles_strokecolor'] = array(
-        '#type' => 'jquery_colorpicker',
-        '#title' => t('Rectangle line color'),
-        '#default_value' => preg_replace("/^#/", '', $defaults['rectangles_strokecolor']),
-        '#description' => t('Click on the Colorpicker icon to select a color'),
-      );
-    }
-    else {
-      $form['rectangles_strokecolor'] = getlocations_element_map_tf(
-        t('Rectangle line color'),
-        $defaults['rectangles_strokecolor'],
-        t('HTML hex, eg #FF0000.'),
-        10,
-        10,
-        TRUE
-      );
-    }
-
-    $form['rectangles_strokeopacity'] = getlocations_element_map_tf(
-      t('Rectangle line opacity'),
-      $defaults['rectangles_strokeopacity'],
-      t('Must be between 0 and 1.'),
-      10,
-      10,
-      TRUE
-    );
-    $form['rectangles_strokeweight'] = getlocations_element_map_tf(
-      t('Rectangle line thickness'),
-      $defaults['rectangles_strokeweight'],
-      t('Must be an integer.'),
-      10,
-      10,
-      TRUE
-    );
-
-    // jquery_colorpicker
-    if (module_exists('jquery_colorpicker') && $defaults['jquery_colorpicker_enabled']) {
-      $form['rectangles_fillcolor'] = array(
-        '#type' => 'jquery_colorpicker',
-        '#title' => t('Rectangle fill color'),
-        '#default_value' => preg_replace("/^#/", '', $defaults['rectangles_fillcolor']),
-        '#description' => t('Click on the Colorpicker icon to select a color'),
-      );
-    }
-    else {
-      $form['rectangles_fillcolor'] = getlocations_element_map_tf(
-        t('Rectangle fill color'),
-        $defaults['rectangles_fillcolor'],
-        t('HTML hex, eg #FF0000.'),
-        10,
-        10,
-        TRUE
-      );
-    }
-
-    $form['rectangles_fillopacity'] = getlocations_element_map_tf(
-      t('Rectangle fill opacity'),
-      $defaults['rectangles_fillopacity'],
-      t('Must be between 0 and 1.'),
-      10,
-      10,
-      TRUE
-    );
-    $form['rectangles_clickable'] = getlocations_element_map_checkbox(
-      t('Clickable'),
-      $defaults['rectangles_clickable'],
-      t('Show Popup on clicking on the rectangle.')
-    );
-    $form['rectangles_message'] = array(
-      '#type' => 'textarea',
-      '#title' => t('Popup message'),
-      '#default_value' => $defaults['rectangles_message'],
-      '#description' => t('The content of the popup.'),
-    );
-
-    if ($source == 'getlocations_search') {
-      $form['rectangles_apply'] = array('#type' => 'value', '#value' => 0);
-      $form['rectangles_dist'] = array('#type' => 'value', '#value' => 0);
-    }
-    else {
-      $form['rectangles_apply'] = getlocations_element_map_checkbox(
-        t('Apply a rectangle to all locations'),
-        $defaults['rectangles_apply'],
-        t('Draw a rectangle centered on all locations being displayed. These coordinates will be used instead of the ones below.')
-      );
-      $form['rectangles_dist'] = getlocations_element_map_tf(
-        t('Rectangle distance'),
-        $defaults['rectangles_dist'],
-        t("The distance from the center of the rectangle to the edge in meters on the Earth's surface. This will only be used if Apply a rectangle is enabled."),
-        10,
-        10,
-        FALSE
-      );
-    }
-
-    $form['rectangles_coords'] = array(
-      '#type' => 'textarea',
-      '#title' => t('Rectangle Coordinates'),
-      '#default_value' => $defaults['rectangles_coords'],
-      '#description' => t('A pipe delimited list of latitude,longitude pairs, one rectangle per line. You must have exactly 2 pairs for each rectangle, south-west and north-east corners.'),
-    );
-    $form['rectangles_coords']['#suffix'] = '</div>';
-
-    $form['circles_enable'] = getlocations_element_map_checkbox(
-      t('Enable circles'),
-      $defaults['circles_enable'],
-      t('Show circles if defined.')
-    );
-    $form['circles_enable']['#suffix'] = '<div id="wrap-getlocations-circles">';
-
-    // jquery_colorpicker
-    if (module_exists('jquery_colorpicker') && $defaults['jquery_colorpicker_enabled']) {
-      $form['circles_strokecolor'] = array(
-        '#type' => 'jquery_colorpicker',
-        '#title' => t('Circle line color'),
-        '#default_value' => preg_replace("/^#/", '', $defaults['circles_strokecolor']),
-        '#description' => t('Click on the Colorpicker icon to select a color'),
-      );
-    }
-    else {
-      $form['circles_strokecolor'] = getlocations_element_map_tf(
-        t('Circle line color'),
-        $defaults['circles_strokecolor'],
-        t('HTML hex, eg #FF0000.'),
-        10,
-        10,
-        TRUE
-      );
-    }
-
-    $form['circles_strokeopacity'] = getlocations_element_map_tf(
-      t('Circle line opacity'),
-      $defaults['circles_strokeopacity'],
-      t('Must be between 0 and 1.'),
-      10,
-      10,
-      TRUE
-    );
-    $form['circles_strokeweight'] = getlocations_element_map_tf(
-      t('Circle line thickness'),
-      $defaults['circles_strokeweight'],
-      t('Must be an integer.'),
-      10,
-      10,
-      TRUE
-    );
-
-    // jquery_colorpicker
-    if (module_exists('jquery_colorpicker') && $defaults['jquery_colorpicker_enabled']) {
-      $form['circles_fillcolor'] = array(
-        '#type' => 'jquery_colorpicker',
-        '#title' => t('Circle fill color'),
-        '#default_value' => preg_replace("/^#/", '', $defaults['circles_fillcolor']),
-        '#description' => t('Click on the Colorpicker icon to select a color'),
-      );
-    }
-    else {
-      $form['circles_fillcolor'] = getlocations_element_map_tf(
-        t('Circle fill color'),
-        $defaults['circles_fillcolor'],
-        t('HTML hex, eg #FF0000.'),
-        10,
-        10,
-        TRUE
-      );
-    }
-
-    $form['circles_fillopacity'] = getlocations_element_map_tf(
-      t('Circle fill opacity'),
-      $defaults['circles_fillopacity'],
-      t('Must be between 0 and 1.'),
-      10,
-      10,
-      TRUE
-    );
-    $form['circles_radius'] = getlocations_element_map_tf(
-      t('Circle radius'),
-      $defaults['circles_radius'],
-      t("The radius in meters on the Earth's surface."),
-      10,
-      10,
-      TRUE
-    );
-    $form['circles_clickable'] = getlocations_element_map_checkbox(
-      t('Clickable'),
-      $defaults['circles_clickable'],
-      t('Show Popup on clicking on the circle.')
-    );
-    $form['circles_message'] = array(
-      '#type' => 'textarea',
-      '#title' => t('Popup message'),
-      '#default_value' => $defaults['circles_message'],
-      '#description' => t('The content of the popup.'),
-    );
-
-    if ($source == 'getlocations_search') {
-      $form['circles_apply'] = array('#type' => 'value', '#value' => 0);
-    }
-    else {
-      $form['circles_apply'] = getlocations_element_map_checkbox(
-        t('Apply a circle to all locations'),
-        $defaults['circles_apply'],
-        t('Draw a circle centered on all locations being displayed. These coordinates will be used instead of the ones below.')
-      );
-    }
-
-    $form['circles_coords'] = array(
-      '#type' => 'textarea',
-      '#title' => t('Circle Center'),
-      '#default_value' => $defaults['circles_coords'],
-      '#description' => t('A latitude,longitude pair, one circle per line.'),
-    );
-    $form['circles_coords']['#suffix'] = '</div>';
-
-    $form['polylines_enable'] = getlocations_element_map_checkbox(
-      t('Enable polylines'),
-      $defaults['polylines_enable'],
-      t('Show polylines if defined.')
-    );
-    $form['polylines_enable']['#suffix'] = '<div id="wrap-getlocations-polylines">';
-
-    // jquery_colorpicker
-    if (module_exists('jquery_colorpicker') && $defaults['jquery_colorpicker_enabled']) {
-      $form['polylines_strokecolor'] = array(
-        '#type' => 'jquery_colorpicker',
-        '#title' => t('Polyline line color'),
-        '#default_value' => preg_replace("/^#/", '', $defaults['polylines_strokecolor']),
-        '#description' => t('Click on the Colorpicker icon to select a color'),
-      );
-    }
-    else {
-      $form['polylines_strokecolor'] = getlocations_element_map_tf(
-        t('Polyline line color'),
-        $defaults['polylines_strokecolor'],
-        t('HTML hex, eg #FF0000.'),
-        10,
-        10,
-        TRUE
-      );
-    }
-
-    $form['polylines_strokeopacity'] = getlocations_element_map_tf(
-      t('Polyline line opacity'),
-      $defaults['polylines_strokeopacity'],
-      t('Must be between 0 and 1.'),
-      10,
-      10,
-      TRUE
-    );
-    $form['polylines_strokeweight'] = getlocations_element_map_tf(
-      t('Polyline line thickness'),
-      $defaults['polylines_strokeweight'],
-      t('Must be an integer.'),
-      10,
-      10,
-      TRUE
-    );
-    $form['polylines_clickable'] = getlocations_element_map_checkbox(
-      t('Clickable'),
-      $defaults['polylines_clickable'],
-      t('Show Popup on clicking on the polyline.')
-    );
-    $form['polylines_message'] = array(
-      '#type' => 'textarea',
-      '#title' => t('Popup message'),
-      '#default_value' => $defaults['polylines_message'],
-      '#description' => t('The content of the popup.'),
-    );
-
-    $form['polylines_coords'] = array(
-      '#type' => 'textarea',
-      '#title' => t('Polyline Coordinates'),
-      '#default_value' => $defaults['polylines_coords'],
-      '#description' => t('A pipe delimited list of latitude,longitude pairs, one set of polylines per line. You must have at least 2 pairs for each set.'),
-    );
-    $form['polylines_coords']['#suffix'] = '</div>';
+    $form += getlocations_shapes_form($defaults, $source);
 
     // KML
     $form['kml_group'] = array(
@@ -4120,6 +3744,390 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
   return $form;
 
 }
+
+function getlocations_shapes_form($defaults, $source) {
+  $form = array();
+  $form['polygons_enable'] = getlocations_element_map_checkbox(
+    t('Enable polygons'),
+    $defaults['polygons_enable'],
+    t('Show polygons if defined.')
+  );
+  $form['polygons_enable']['#suffix'] = '<div id="wrap-getlocations-polygons">';
+
+  // jquery_colorpicker
+  if (module_exists('jquery_colorpicker') && $defaults['jquery_colorpicker_enabled']) {
+    $form['polygons_strokecolor'] = array(
+      '#type' => 'jquery_colorpicker',
+      '#title' => t('Polygon line color'),
+      '#default_value' => preg_replace("/^#/", '', $defaults['polygons_strokecolor']),
+      '#description' => t('Click on the Colorpicker icon to select a color'),
+    );
+  }
+  else {
+    $form['polygons_strokecolor'] = getlocations_element_map_tf(
+      t('Polygon line color'),
+      $defaults['polygons_strokecolor'],
+      t('HTML hex, eg #FF0000.'),
+      10,
+      10,
+      TRUE
+    );
+  }
+
+  $form['polygons_strokeopacity'] = getlocations_element_map_tf(
+    t('Polygon line opacity'),
+    $defaults['polygons_strokeopacity'],
+    t('Must be between 0 and 1.'),
+    10,
+    10,
+    TRUE
+  );
+  $form['polygons_strokeweight'] = getlocations_element_map_tf(
+    t('Polygon line thickness'),
+    $defaults['polygons_strokeweight'],
+    t('Must be an integer.'),
+    10,
+    10,
+    TRUE
+  );
+
+  // jquery_colorpicker
+  if (module_exists('jquery_colorpicker') && $defaults['jquery_colorpicker_enabled']) {
+    $form['polygons_fillcolor'] = array(
+      '#type' => 'jquery_colorpicker',
+      '#title' => t('Polygon fill color'),
+      '#default_value' => preg_replace("/^#/", '', $defaults['polygons_fillcolor']),
+      '#description' => t('Click on the Colorpicker icon to select a color'),
+    );
+  }
+  else {
+    $form['polygons_fillcolor'] = getlocations_element_map_tf(
+      t('Polygon fill color'),
+      $defaults['polygons_fillcolor'],
+      t('HTML hex, eg #FF0000.'),
+      10,
+      10,
+      TRUE
+    );
+  }
+
+  $form['polygons_fillopacity'] = getlocations_element_map_tf(
+    t('Polygon fill opacity'),
+    $defaults['polygons_fillopacity'],
+    t('Must be between 0 and 1.'),
+    10,
+    10,
+    TRUE
+  );
+  $form['polygons_clickable'] = getlocations_element_map_checkbox(
+    t('Clickable'),
+    $defaults['polygons_clickable'],
+    t('Show Popup on clicking on the polygon.')
+  );
+  $form['polygons_message'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Popup message'),
+    '#default_value' => $defaults['polygons_message'],
+    '#description' => t('The content of the popup.'),
+  );
+
+  $form['polygons_coords'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Polygon Coordinates'),
+    '#default_value' => $defaults['polygons_coords'],
+    '#description' => t('A pipe delimited list of latitude,longitude pairs, one polygon per line. You must have at least 3 pairs for each polygon.'),
+  );
+  $form['polygons_coords']['#suffix'] = '</div>';
+
+  $form['rectangles_enable'] = getlocations_element_map_checkbox(
+    t('Enable rectangles'),
+    $defaults['rectangles_enable'],
+    t('Show rectangles if defined.')
+  );
+  $form['rectangles_enable']['#suffix'] = '<div id="wrap-getlocations-rectangles">';
+
+  // jquery_colorpicker
+  if (module_exists('jquery_colorpicker') && $defaults['jquery_colorpicker_enabled']) {
+    $form['rectangles_strokecolor'] = array(
+      '#type' => 'jquery_colorpicker',
+      '#title' => t('Rectangle line color'),
+      '#default_value' => preg_replace("/^#/", '', $defaults['rectangles_strokecolor']),
+      '#description' => t('Click on the Colorpicker icon to select a color'),
+    );
+  }
+  else {
+    $form['rectangles_strokecolor'] = getlocations_element_map_tf(
+      t('Rectangle line color'),
+      $defaults['rectangles_strokecolor'],
+      t('HTML hex, eg #FF0000.'),
+      10,
+      10,
+      TRUE
+    );
+  }
+
+  $form['rectangles_strokeopacity'] = getlocations_element_map_tf(
+    t('Rectangle line opacity'),
+    $defaults['rectangles_strokeopacity'],
+    t('Must be between 0 and 1.'),
+    10,
+    10,
+    TRUE
+  );
+  $form['rectangles_strokeweight'] = getlocations_element_map_tf(
+    t('Rectangle line thickness'),
+    $defaults['rectangles_strokeweight'],
+    t('Must be an integer.'),
+    10,
+    10,
+    TRUE
+  );
+
+  // jquery_colorpicker
+  if (module_exists('jquery_colorpicker') && $defaults['jquery_colorpicker_enabled']) {
+    $form['rectangles_fillcolor'] = array(
+      '#type' => 'jquery_colorpicker',
+      '#title' => t('Rectangle fill color'),
+      '#default_value' => preg_replace("/^#/", '', $defaults['rectangles_fillcolor']),
+      '#description' => t('Click on the Colorpicker icon to select a color'),
+    );
+  }
+  else {
+    $form['rectangles_fillcolor'] = getlocations_element_map_tf(
+      t('Rectangle fill color'),
+      $defaults['rectangles_fillcolor'],
+      t('HTML hex, eg #FF0000.'),
+      10,
+      10,
+      TRUE
+    );
+  }
+
+  $form['rectangles_fillopacity'] = getlocations_element_map_tf(
+    t('Rectangle fill opacity'),
+    $defaults['rectangles_fillopacity'],
+    t('Must be between 0 and 1.'),
+    10,
+    10,
+    TRUE
+  );
+  $form['rectangles_clickable'] = getlocations_element_map_checkbox(
+    t('Clickable'),
+    $defaults['rectangles_clickable'],
+    t('Show Popup on clicking on the rectangle.')
+  );
+  $form['rectangles_message'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Popup message'),
+    '#default_value' => $defaults['rectangles_message'],
+    '#description' => t('The content of the popup.'),
+  );
+
+  if ($source == 'getlocations_search') {
+    $form['rectangles_apply'] = array('#type' => 'value', '#value' => 0);
+    $form['rectangles_dist'] = array('#type' => 'value', '#value' => 0);
+  }
+  else {
+    $form['rectangles_apply'] = getlocations_element_map_checkbox(
+      t('Apply a rectangle to all locations'),
+      $defaults['rectangles_apply'],
+      t('Draw a rectangle centered on all locations being displayed. These coordinates will be used instead of the ones below.')
+    );
+    $form['rectangles_dist'] = getlocations_element_map_tf(
+      t('Rectangle distance'),
+      $defaults['rectangles_dist'],
+      t("The distance from the center of the rectangle to the edge in meters on the Earth's surface. This will only be used if Apply a rectangle is enabled."),
+      10,
+      10,
+      FALSE
+    );
+  }
+
+  $form['rectangles_coords'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Rectangle Coordinates'),
+    '#default_value' => $defaults['rectangles_coords'],
+    '#description' => t('A pipe delimited list of latitude,longitude pairs, one rectangle per line. You must have exactly 2 pairs for each rectangle, south-west and north-east corners.'),
+  );
+  $form['rectangles_coords']['#suffix'] = '</div>';
+
+  $form['circles_enable'] = getlocations_element_map_checkbox(
+    t('Enable circles'),
+    $defaults['circles_enable'],
+    t('Show circles if defined.')
+  );
+  $form['circles_enable']['#suffix'] = '<div id="wrap-getlocations-circles">';
+
+  // jquery_colorpicker
+  if (module_exists('jquery_colorpicker') && $defaults['jquery_colorpicker_enabled']) {
+    $form['circles_strokecolor'] = array(
+      '#type' => 'jquery_colorpicker',
+      '#title' => t('Circle line color'),
+      '#default_value' => preg_replace("/^#/", '', $defaults['circles_strokecolor']),
+      '#description' => t('Click on the Colorpicker icon to select a color'),
+    );
+  }
+  else {
+    $form['circles_strokecolor'] = getlocations_element_map_tf(
+      t('Circle line color'),
+      $defaults['circles_strokecolor'],
+      t('HTML hex, eg #FF0000.'),
+      10,
+      10,
+      TRUE
+    );
+  }
+
+  $form['circles_strokeopacity'] = getlocations_element_map_tf(
+    t('Circle line opacity'),
+    $defaults['circles_strokeopacity'],
+    t('Must be between 0 and 1.'),
+    10,
+    10,
+    TRUE
+  );
+  $form['circles_strokeweight'] = getlocations_element_map_tf(
+    t('Circle line thickness'),
+    $defaults['circles_strokeweight'],
+    t('Must be an integer.'),
+    10,
+    10,
+    TRUE
+  );
+
+  // jquery_colorpicker
+  if (module_exists('jquery_colorpicker') && $defaults['jquery_colorpicker_enabled']) {
+    $form['circles_fillcolor'] = array(
+      '#type' => 'jquery_colorpicker',
+      '#title' => t('Circle fill color'),
+      '#default_value' => preg_replace("/^#/", '', $defaults['circles_fillcolor']),
+      '#description' => t('Click on the Colorpicker icon to select a color'),
+    );
+  }
+  else {
+    $form['circles_fillcolor'] = getlocations_element_map_tf(
+      t('Circle fill color'),
+      $defaults['circles_fillcolor'],
+      t('HTML hex, eg #FF0000.'),
+      10,
+      10,
+      TRUE
+    );
+  }
+
+  $form['circles_fillopacity'] = getlocations_element_map_tf(
+    t('Circle fill opacity'),
+    $defaults['circles_fillopacity'],
+    t('Must be between 0 and 1.'),
+    10,
+    10,
+    TRUE
+  );
+  $form['circles_radius'] = getlocations_element_map_tf(
+    t('Circle radius'),
+    $defaults['circles_radius'],
+    t("The radius in meters on the Earth's surface."),
+    10,
+    10,
+    TRUE
+  );
+  $form['circles_clickable'] = getlocations_element_map_checkbox(
+    t('Clickable'),
+    $defaults['circles_clickable'],
+    t('Show Popup on clicking on the circle.')
+  );
+  $form['circles_message'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Popup message'),
+    '#default_value' => $defaults['circles_message'],
+    '#description' => t('The content of the popup.'),
+  );
+
+  if ($source == 'getlocations_search') {
+    $form['circles_apply'] = array('#type' => 'value', '#value' => 0);
+  }
+  else {
+    $form['circles_apply'] = getlocations_element_map_checkbox(
+      t('Apply a circle to all locations'),
+      $defaults['circles_apply'],
+      t('Draw a circle centered on all locations being displayed. These coordinates will be used instead of the ones below.')
+    );
+  }
+
+  $form['circles_coords'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Circle Center'),
+    '#default_value' => $defaults['circles_coords'],
+    '#description' => t('A latitude,longitude pair, one circle per line.'),
+  );
+  $form['circles_coords']['#suffix'] = '</div>';
+
+  $form['polylines_enable'] = getlocations_element_map_checkbox(
+    t('Enable polylines'),
+    $defaults['polylines_enable'],
+    t('Show polylines if defined.')
+  );
+  $form['polylines_enable']['#suffix'] = '<div id="wrap-getlocations-polylines">';
+
+  // jquery_colorpicker
+  if (module_exists('jquery_colorpicker') && $defaults['jquery_colorpicker_enabled']) {
+    $form['polylines_strokecolor'] = array(
+      '#type' => 'jquery_colorpicker',
+      '#title' => t('Polyline line color'),
+      '#default_value' => preg_replace("/^#/", '', $defaults['polylines_strokecolor']),
+      '#description' => t('Click on the Colorpicker icon to select a color'),
+    );
+  }
+  else {
+    $form['polylines_strokecolor'] = getlocations_element_map_tf(
+      t('Polyline line color'),
+      $defaults['polylines_strokecolor'],
+      t('HTML hex, eg #FF0000.'),
+      10,
+      10,
+      TRUE
+    );
+  }
+
+  $form['polylines_strokeopacity'] = getlocations_element_map_tf(
+    t('Polyline line opacity'),
+    $defaults['polylines_strokeopacity'],
+    t('Must be between 0 and 1.'),
+    10,
+    10,
+    TRUE
+  );
+  $form['polylines_strokeweight'] = getlocations_element_map_tf(
+    t('Polyline line thickness'),
+    $defaults['polylines_strokeweight'],
+    t('Must be an integer.'),
+    10,
+    10,
+    TRUE
+  );
+  $form['polylines_clickable'] = getlocations_element_map_checkbox(
+    t('Clickable'),
+    $defaults['polylines_clickable'],
+    t('Show Popup on clicking on the polyline.')
+  );
+  $form['polylines_message'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Popup message'),
+    '#default_value' => $defaults['polylines_message'],
+    '#description' => t('The content of the popup.'),
+  );
+
+  $form['polylines_coords'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Polyline Coordinates'),
+    '#default_value' => $defaults['polylines_coords'],
+    '#description' => t('A pipe delimited list of latitude,longitude pairs, one set of polylines per line. You must have at least 2 pairs for each set.'),
+  );
+  $form['polylines_coords']['#suffix'] = '</div>';
+
+  return $form;
+}
+
 
 /**
  * Function
