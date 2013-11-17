@@ -578,6 +578,9 @@ function getlocations_fields_field_formatter_view($entity_type, $entity, $field,
   if (isset($field['field_name'])) {
     $field_name = $field['field_name'];
   }
+  if (empty($field_name) || ! isset($entity->{$field_name}) || empty($entity->{$field_name})) {
+    return;
+  }
 
   $locations = array();
   $element = array();

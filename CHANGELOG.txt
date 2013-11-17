@@ -1,9 +1,18 @@
-commit 6afd9d8
+commit 3de732f
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sun Nov 17 17:45:27 2013 +0000
+
+    prevent notices #2137427
+
+modules/getlocations_fields/getlocations_fields.module
+
+commit 74384b4
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Sat Nov 16 16:04:27 2013 +0000
 
     use #attach instead of add js
 
+CHANGELOG.txt
 modules/getlocations_fields/views/getlocations_fields_plugin_style_streetview.inc
 views/getlocations_plugin_style_map.inc
 
