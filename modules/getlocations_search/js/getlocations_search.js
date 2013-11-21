@@ -36,6 +36,7 @@
         var restrict_by_country = searchsettings.restrict_by_country;
         var country = searchsettings.country;
         var maxzoom = searchsettings.maxzoom;
+        gset.showall = searchsettings.showall;
 
         var mapid = key;
         var mapid2 = key.replace("_", "-");
@@ -206,15 +207,17 @@
 
   // cleans out any existing markers, sets up a new geocoder and runs it, filling in the results.
   function do_Geocode(map, gs, adrs, mkey) {
-    // are there any markers already?
-    if (search_markersArray.length) {
-      getlocations_search_deleteOverlays();
-      // clear out manager
-      if (gs.usemarkermanager) {
-        gs.mgr.clearMarkers();
-      }
-      else if (gs.useclustermanager) {
-        gs.cmgr.clearMarkers();
+    if (! gs.showall) {
+      // are there any markers already?
+      if (search_markersArray.length) {
+        getlocations_search_deleteOverlays();
+        // clear out manager
+        if (gs.usemarkermanager) {
+          gs.mgr.clearMarkers();
+        }
+        else if (gs.useclustermanager) {
+          gs.cmgr.clearMarkers();
+        }
       }
     }
     // clear out search marker
@@ -323,17 +326,20 @@
             if (locations[i].glid > 0) {
               lid = locations[i].glid;
             }
-            // just in case
-            if (locations[i].marker === '') {
-              gs.markdone = gs.defaultIcon;
+
+            if (! gs.showall) {
+              // just in case
+              if (locations[i].marker === '') {
+                gs.markdone = gs.defaultIcon;
+              }
+              else {
+                gs.markdone = Drupal.getlocations.getIcon(locations[i].marker);
+              }
+              title = (locations[i].title ? locations[i].title : (locations[i].name ? locations[i].name : ''));
+              // make a marker
+              marker = Drupal.getlocations.makeMarker(map, gs, locations[i].latitude, locations[i].longitude, lid, title, lidkey, '', '', mkey);
+              search_markersArray.push(marker);
             }
-            else {
-              gs.markdone = Drupal.getlocations.getIcon(locations[i].marker);
-            }
-            title = (locations[i].title ? locations[i].title : (locations[i].name ? locations[i].name : ''));
-            // make a marker
-            marker = Drupal.getlocations.makeMarker(map, gs, locations[i].latitude, locations[i].longitude, lid, title, lidkey, '', '', mkey);
-            search_markersArray.push(marker);
             locationct++;
           }
           // display results
@@ -353,12 +359,14 @@
           $("#getlocations_search_slon_" + mkey).html(slon);
           $("#getlocations_search_sunit_" + mkey).html(units);
 
-          // markermanagers add batchr
-          if (gs.usemarkermanager) {
-            gs.mgr.addMarkers(search_markersArray, gs.minzoom, gs.maxzoom);
-          }
-          else if (gs.useclustermanager) {
-            gs.cmgr.addMarkers(search_markersArray, 0);
+          if (! gs.showall) {
+            // markermanagers add batchr
+            if (gs.usemarkermanager) {
+              gs.mgr.addMarkers(search_markersArray, gs.minzoom, gs.maxzoom);
+            }
+            else if (gs.useclustermanager) {
+              gs.cmgr.addMarkers(search_markersArray, 0);
+            }
           }
           if (minlat !== '' && minlon !== '' && maxlat !== '' && maxlon !== '') {
             if (gs.pansetting == 1) {
@@ -374,11 +382,14 @@
               }
             }
           }
-          if (gs.usemarkermanager) {
-            gs.mgr.refresh();
-          }
-          else if (gs.useclustermanager) {
-             gs.cmgr.repaint();
+
+          if (! gs.showall) {
+            if (gs.usemarkermanager) {
+              gs.mgr.refresh();
+            }
+            else if (gs.useclustermanager) {
+              gs.cmgr.repaint();
+            }
           }
           // search marker
           if (gs.do_search_marker) {
@@ -389,9 +400,12 @@
             if (gs.zoom_on_single_use) {
               map.setZoom(gs.nodezoom);
             }
-            // show_bubble_on_one_marker
-            if (gs.show_bubble_on_one_marker && (gs.useInfoWindow || gs.useInfoBubble)) {
-              google.maps.event.trigger(marker, 'click');
+
+            if (! gs.showall) {
+              // show_bubble_on_one_marker
+              if (gs.show_bubble_on_one_marker && (gs.useInfoWindow || gs.useInfoBubble)) {
+                google.maps.event.trigger(marker, 'click');
+              }
             }
           }
 
@@ -437,7 +451,8 @@
       shape: smarkdone.shape,
       map: map,
       position: p,
-      title: Drupal.t('Search center'),
+      //title: Drupal.t('Search center'),
+      clickable: false,
       optimized: false
     });
     if (markertoggleState[k]) {
