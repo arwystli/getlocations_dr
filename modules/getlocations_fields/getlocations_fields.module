@@ -3443,9 +3443,9 @@ function getlocations_fields_paths_get($reset = FALSE) {
 function getlocations_fields_column_check($field) {
   $found = FALSE;
   if ($field) {
-    $result = db_query("DESCRIBE {getlocations_fields}");
+    $result = db_query("SELECT column_name FROM INFORMATION_SCHEMA.COLUMNS where table_name='{getlocations_fields}'");
     foreach ($result as $record) {
-      if ($record->Field == $field) {
+      if ($record->column_name == $field) {
         $found = TRUE;
       }
     }
