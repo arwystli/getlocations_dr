@@ -3,5 +3,4 @@ description = Provide information about Getlocations Fields to Entity module.
 core = 7.x
 package = Fields
 
-dependencies[] = entity
 dependencies[] = getlocations_fields

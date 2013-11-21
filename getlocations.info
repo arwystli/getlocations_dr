@@ -5,4 +5,5 @@ package = "Location"
 core = 7.x
 php = 5
 dependencies[] = libraries
+dependencies[] = entity
 files[] = "views/getlocations_plugin_style_map.inc"
