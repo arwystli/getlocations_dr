@@ -37,6 +37,10 @@
           $("#edit-field-settings-maptype").val(maptype);
         });
 
+        if (settings.input_map_show != 1) {
+          $("div.getlocations_fields_map_wrapper").addClass('js-hide');
+        }
+
       });
     }
   };

@@ -430,6 +430,11 @@ function getlocations_fields_field_settings_form($field, $instance, $has_data) {
   $form['input_mobile_width']['#element_validate']      = array('element_validate_integer_positive');
   $form['input_fax_width']['#element_validate']         = array('element_validate_integer_positive');
 
+  $form['input_map_show'] = getlocations_element_map_checkbox(
+    t('Show map on input form'),
+    $settings['input_map_show']
+  );
+
   $form['mapwidth'] = getlocations_element_map_tf(
     t('Input form Map width'),
     $settings['mapwidth'],
@@ -1624,6 +1629,7 @@ function getlocations_fields_getmap($settings, $active) {
   $getlocations_defaults['input_map_marker']    = $settings['input_map_marker'];
   $getlocations_defaults['use_address']         = $settings['use_address'];
   $getlocations_defaults['map_backgroundcolor'] = $settings['map_backgroundcolor'];
+  $getlocations_defaults['input_map_show']      = $settings['input_map_show'];
   #$getlocations_defaults['use_jsapi']       = $settings['use_geolocation_button'];
 
   $mapid = getlocations_setup_map($getlocations_defaults);
@@ -2467,6 +2473,7 @@ function getlocations_fields_defaults() {
     'sv_imagedatecontrol'       => $getlocations_defaults['sv_imagedatecontrol'],
     'sv_scrollwheel'            => $getlocations_defaults['sv_scrollwheel'],
     'sv_clicktogo'              => $getlocations_defaults['sv_clicktogo'],
+    'input_map_show'            => 1,
   );
   foreach ($getlocations_defaults['kml_group'] AS $key => $layer) {
     $defaults['kml_group'][$key] = $layer;
@@ -2642,6 +2649,7 @@ function getlocations_fields_field_info_defaults() {
         'sv_imagedatecontrol'             => $getlocations_fields_defaults['sv_imagedatecontrol'],
         'sv_scrollwheel'                  => $getlocations_fields_defaults['sv_scrollwheel'],
         'sv_clicktogo'                    => $getlocations_fields_defaults['sv_clicktogo'],
+        'input_map_show'                  => $getlocations_fields_defaults['input_map_show'],
       ),
     ),
   );
@@ -4052,7 +4060,7 @@ function theme_getlocations_fields_field_settings_form($variables) {
   $prefix .= '<legend><span class="fieldset-legend">' . t('Input map settings') . '</span></legend>';
   $prefix .= '<div class="fieldset-wrapper">';
   $prefix .= '<div class="fieldset-description">' . t('Configure the input map.') . '</div>';
-  $form['mapwidth']['#prefix'] = $prefix;
+  $form['input_map_show']['#prefix'] = $prefix;
   $form['draggable']['#suffix'] = '</div></fieldset>';
 
   if (isset($form['input_map_marker'])) {

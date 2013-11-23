@@ -44,6 +44,10 @@
       if ($("#getlocations_map_canvas_" + key).is('div')) {
 
         var gset = gsettings[key];
+        if (gset.input_map_show != 1) {
+          $("div.getlocations_fields_map_wrapper").addClass('js-hide');
+        }
+
         is_mobile = gset.is_mobile;
         var use_address = settings.use_address;
         var gkey = key;
