@@ -1,0 +1,8 @@
+name = GetLocations Leaflet
+description = "Provides Leaflet Maps integration for Getlocations."
+core = 7.x
+php = 5
+package = Fields
+dependencies[] = getlocations
+
+files[] = views/getlocations_leaflet_plugin_style.inc

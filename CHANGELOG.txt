@@ -1,9 +1,40 @@
-commit 392c8ff
+commit 91cbb6d
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sun Nov 24 16:08:15 2013 +0000
+
+    added leaflet support
+
+modules/getlocations_leaflet/README.txt
+modules/getlocations_leaflet/getlocations_leaflet.css
+modules/getlocations_leaflet/getlocations_leaflet.info
+modules/getlocations_leaflet/getlocations_leaflet.install
+modules/getlocations_leaflet/getlocations_leaflet.markerinfo.inc
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/js/getlocations_leaflet.js
+modules/getlocations_leaflet/js/getlocations_leaflet_categories.js
+modules/getlocations_leaflet/js/getlocations_leaflet_circles.js
+modules/getlocations_leaflet/js/getlocations_leaflet_formatter.js
+modules/getlocations_leaflet/js/getlocations_leaflet_polygons.js
+modules/getlocations_leaflet/js/getlocations_leaflet_polylines.js
+modules/getlocations_leaflet/js/getlocations_leaflet_rectangles.js
+modules/getlocations_leaflet/markercluster/MarkerCluster.Default.css
+modules/getlocations_leaflet/markercluster/MarkerCluster.Default.ie.css
+modules/getlocations_leaflet/markercluster/MarkerCluster.css
+modules/getlocations_leaflet/markercluster/leaflet.markercluster-src.js
+modules/getlocations_leaflet/markercluster/leaflet.markercluster.js
+modules/getlocations_leaflet/markercluster/markerclusteroptions.inc.txt
+modules/getlocations_leaflet/views/getlocations-leaflet-view-map.tpl.php
+modules/getlocations_leaflet/views/getlocations_leaflet.views.inc
+modules/getlocations_leaflet/views/getlocations_leaflet.views_default.inc
+modules/getlocations_leaflet/views/getlocations_leaflet_plugin_style.inc
+
+commit 7370396
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Sat Nov 23 23:22:46 2013 +0000
 
     added show input map switch
 
+CHANGELOG.txt
 getlocations.module
 modules/getlocations_fields/getlocations_fields.module
 modules/getlocations_fields/js/getlocations_fields.js

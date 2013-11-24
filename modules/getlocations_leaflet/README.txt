@@ -1,0 +1,57 @@
+getlocations_leaflet module for Drupal 7.x
+
+If you have any questions or suggestions please contact me at
+http://drupal.org/user/52366 or use the Getlocations issue queue.
+
+Leaflet from
+http://leaflet-cdn.s3.amazonaws.com/build/leaflet-0.6.4.zip
+Extract it to your drupal root /sites/all/libraries/leaflet.
+The file 'leaflet.js' must be found at /sites/all/libraries/leaflet/leaflet.js.
+All other files and folder(s) that come with the library are also needed there.
+
+markercluster comes from
+https://github.com/Leaflet/Leaflet.markercluster
+It is already installed but if you want to configure it in detail you might want to look at the examples.
+See markercluster/markerclusteroptions.inc.txt for how to add options.
+
+You can add maps from http://cloudmade.com/ on the form at admin/config/services/getlocations_leaflet
+You can also add maps using a bespoke module, it should contain a function similar to this:
+
+/**
+ * Implements hook_TYPE_alter().
+ *
+ */
+function mymodule_getlocations_leaflet_map_info_alter(&$map_info) {
+
+  $cloudmade_apikey = 'YOUR_CLOUDMADE_API_KEY';
+  $styleID_1 = '111479';
+  $name_1 = "Cloudmade " . $styleID_1;
+  $urlTemplate_1 = 'http://{s}.tile.cloudmade.com/' . $cloudmade_apikey . '/' . $styleID_1 . '/256/{z}/{x}/{y}.png';
+  $attribution_1 = '© <a target="_blank" href="http://cloudmade.com">CloudMade</a> ' . $styleID_1;
+
+  $styleID_2 = '69038';
+  $name_2 = "Cloudmade " . $styleID_2;
+  $urlTemplate_2 = 'http://{s}.tile.cloudmade.com/' . $cloudmade_apikey . '/' . $styleID_2 . '/256/{z}/{x}/{y}.png';
+  $attribution_2 = '© <a target="_blank" href="http://cloudmade.com">CloudMade</a> ' . $styleID_2;
+
+  $add = array(
+    "$name_1" => array(
+      'urlTemplate' => $urlTemplate_1,
+      'options' => array(
+        'attribution' => $attribution_1
+      ),
+      'description' => t('mymodule style 1'),
+    ),
+    "$name_2" => array(
+      'urlTemplate' => $urlTemplate_2,
+      'options' => array(
+        'attribution' => $attribution_2
+      ),
+      'description' => t('mymodule style 2'),
+    ),
+  );
+  $map_info['Getlocations OSM']['map_layers'] += $add;
+}
+
+Replace "mymodule" with the name of your module. This will also work in your theme's template.php.
+
