@@ -68,13 +68,8 @@ function getlocations_leaflet_library() {
   $libraries['leaflet'] = array(
     'title' => 'Leaflet',
     'website' => 'http://leafletjs.com',
-    'version' => '0.6',
+    'version' => '0.7',
     'js' => array(
-      'L_ROOT_URL = "' . base_path() . libraries_get_path('leaflet') . '/";' => array(
-        'type' => 'inline',
-        'group' => JS_LIBRARY,
-        'preprocess' => FALSE
-      ),
       libraries_get_path('leaflet') . '/leaflet.js' => array(
         'type' => 'file',
         'group' => JS_LIBRARY,
@@ -85,12 +80,6 @@ function getlocations_leaflet_library() {
       libraries_get_path('leaflet') . '/leaflet.css' => array(
         'type' => 'file',
         'media' => 'all',
-      ),
-      libraries_get_path('leaflet') . '/leaflet.ie.css' => array(
-        'browsers' => array(
-          'IE' => 'lte IE 8',
-          '!IE' => FALSE,
-        ),
       ),
     ),
   );
@@ -884,6 +873,7 @@ function getlocations_leaflet_map_settings_do($map_settings, $defaults, $latlons
     $map_settings['map_opts']['maxZoom'] = $defaults['maxzoom_map'];
   }
 
+  $getlocations_leaflet_paths = getlocations_leaflet_paths_get();
   // shapes
   // polygons
   if ($defaults['polygons_enable'] && ! empty($defaults['polygons_coords'])) {
@@ -893,7 +883,7 @@ function getlocations_leaflet_map_settings_do($map_settings, $defaults, $latlons
         $mapid => $polygons,
       );
       drupal_add_js(array('getlocations_leaflet_polygons' => $polygon_settings), 'setting');
-      drupal_add_js(GETLOCATIONS_LEAFLET_PATH . '/js/getlocations_leaflet_polygons.js');
+      drupal_add_js($getlocations_leaflet_paths['getlocations_leaflet_polygons_path']);
     }
   }
 
@@ -917,7 +907,7 @@ function getlocations_leaflet_map_settings_do($map_settings, $defaults, $latlons
         $mapid => $rectangles,
       );
       drupal_add_js(array('getlocations_leaflet_rectangles' => $rectangle_settings), 'setting');
-      drupal_add_js(GETLOCATIONS_LEAFLET_PATH . '/js/getlocations_leaflet_rectangles.js');
+      drupal_add_js($getlocations_leaflet_paths['getlocations_leaflet_rectangles_path']);
     }
   }
 
@@ -939,7 +929,7 @@ function getlocations_leaflet_map_settings_do($map_settings, $defaults, $latlons
         $mapid => $circles,
       );
       drupal_add_js(array('getlocations_leaflet_circles' => $circle_settings), 'setting');
-      drupal_add_js(GETLOCATIONS_LEAFLET_PATH . '/js/getlocations_leaflet_circles.js');
+      drupal_add_js($getlocations_leaflet_paths['getlocations_leaflet_circles_path']);
     }
   }
 
@@ -951,8 +941,21 @@ function getlocations_leaflet_map_settings_do($map_settings, $defaults, $latlons
         $mapid => $polylines,
       );
       drupal_add_js(array('getlocations_leaflet_polylines' => $polyline_settings), 'setting');
-      drupal_add_js(GETLOCATIONS_LEAFLET_PATH . '/js/getlocations_leaflet_polylines.js');
+      drupal_add_js($getlocations_leaflet_paths['getlocations_leaflet_polylines_path']);
     }
+  }
+
+  // geojson
+  if ($defaults['geojson_enable'] && !empty($defaults['geojson_data']) && $geojson_path = getlocations_get_geojson_path() ) {
+    drupal_add_js($geojson_path);
+    $geojson_settings = array(
+      $mapid => array(
+        'geojson_data' => $defaults['geojson_data'],
+        'geojson_options' => $defaults['geojson_options'],
+      )
+    );
+    drupal_add_js(array('getlocations_leaflet_geojson' => $geojson_settings), 'setting');
+    drupal_add_js($getlocations_leaflet_paths['getlocations_leaflet_geojson_path']);
   }
 
   return $map_settings;
@@ -1178,6 +1181,9 @@ function getlocations_leaflet_defaults() {
     'category_term_reference_field' => $getlocations_defaults['category_term_reference_field'],
     'category_showhide_buttons'  => $getlocations_defaults['category_showhide_buttons'],
     'categories'                 => $getlocations_defaults['categories'],
+    'geojson_enable'             => $getlocations_defaults['geojson_enable'],
+    'geojson_data'               => $getlocations_defaults['geojson_data'],
+    'geojson_options'            => $getlocations_defaults['geojson_options'],
   );
 
   $fieldables = getlocations_get_fieldable_entity_types();
@@ -1505,6 +1511,9 @@ function getlocations_leaflet_display_options_form($defaults) {
   // shapes
   $form += getlocations_shapes_form($defaults, '');
 
+  // geojson
+  $form += getlocations_geojson_form($defaults);
+  $form['geojson_options']['#type'] = 'hidden';
 
   return $form;
 }
@@ -1520,6 +1529,7 @@ function getlocations_leaflet_paths_get($reset = FALSE) {
     'getlocations_leaflet_polygons_path'   => GETLOCATIONS_LEAFLET_PATH . '/js/getlocations_leaflet_polygons.js',
     'getlocations_leaflet_polylines_path'  => GETLOCATIONS_LEAFLET_PATH . '/js/getlocations_leaflet_polylines.js',
     'getlocations_leaflet_rectangles_path' => GETLOCATIONS_LEAFLET_PATH . '/js/getlocations_leaflet_rectangles.js',
+    'getlocations_leaflet_geojson_path'    => GETLOCATIONS_LEAFLET_PATH . '/js/getlocations_leaflet_geojson.js',
   );
   if ($reset) {
     $getlocations_leaflet_paths = $defaults;
@@ -1711,6 +1721,13 @@ function getlocations_leaflet_settings_form() {
     80,
     128,
     t('Where the Getlocations leaflet rectangles javascript file is located.')
+  );
+  $form['getlocations_leaflet_paths']['getlocations_leaflet_geojson_path'] = getlocations_element_path(
+    t('Path to Getlocations leaflet geojson javascript file'),
+    $getlocations_leaflet_paths['getlocations_leaflet_geojson_path'],
+    80,
+    128,
+    t('Where the Getlocations leaflet geojson javascript file is located.')
   );
   $form['getlocations_leaflet_paths']['reset'] = getlocations_element_map_checkbox(
     t('Reset'),

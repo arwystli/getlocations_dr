@@ -3644,33 +3644,7 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
       t('Activate Kml layer when map is first displayed.')
     );
 
-    // geojson
-    if (getlocations_get_geojson_path()) {
-      $form['geojson_enable'] = getlocations_element_map_checkbox(
-        t('Enable GeoJSON library'),
-        $defaults['geojson_enable'],
-        t('Show GeoJSON data if defined')
-      );
-      $form['geojson_enable']['#suffix'] = '<div id="wrap-getlocations-geojson-enable">';
-      $form['geojson_data'] = array(
-        '#type' => 'textarea',
-        '#title' => t('GeoJSON data'),
-        '#default_value' => $defaults['geojson_data'],
-        '#description' => t('A GeoJSON object. For more information about GeoJSON see !u', array('!u' => l(t('geojson.org'), 'http://www.geojson.org/', array('attributes' => array('target' => '_blank'))))),
-      );
-      $form['geojson_options'] = array(
-        '#type' => 'textarea',
-        '#title' => t('GeoJSON options'),
-        '#default_value' => $defaults['geojson_options'],
-        '#description' => t('A JSON object.'),
-      );
-      $form['geojson_options']['#suffix'] = '</div>';
-    }
-    else {
-      $form['geojson_enable'] = array('#type' => 'value', '#value' => 0);
-      $form['geojson_data'] = array('#type' => 'value', '#value' => '');
-      $form['geojson_options'] = array('#type' => 'value', '#value' => '');
-    }
+    $form += getlocations_geojson_form($defaults);
 
     // search_places
     // enable
@@ -4130,6 +4104,39 @@ function getlocations_shapes_form($defaults, $source) {
   return $form;
 }
 
+function getlocations_geojson_form($defaults) {
+  // geojson
+
+  $form = array();
+  if (getlocations_get_geojson_path()) {
+    $form['geojson_enable'] = getlocations_element_map_checkbox(
+      t('Enable GeoJSON library'),
+      $defaults['geojson_enable'],
+      t('Show GeoJSON data if defined')
+    );
+    $form['geojson_enable']['#suffix'] = '<div id="wrap-getlocations-geojson-enable">';
+    $form['geojson_data'] = array(
+      '#type' => 'textarea',
+      '#title' => t('GeoJSON data'),
+      '#default_value' => $defaults['geojson_data'],
+      '#description' => t('A GeoJSON object. For more information about GeoJSON see !u', array('!u' => l(t('geojson.org'), 'http://www.geojson.org/', array('attributes' => array('target' => '_blank'))))),
+    );
+    $form['geojson_options'] = array(
+      '#type' => 'textarea',
+      '#title' => t('GeoJSON options'),
+      '#default_value' => $defaults['geojson_options'],
+      '#description' => t('A JSON object.'),
+    );
+    $form['geojson_options']['#suffix'] = '</div>';
+  }
+  else {
+    $form['geojson_enable'] = array('#type' => 'value', '#value' => 0);
+    $form['geojson_data'] = array('#type' => 'value', '#value' => '');
+    $form['geojson_options'] = array('#type' => 'value', '#value' => '');
+  }
+  return $form;
+
+}
 
 /**
  * Function

@@ -55,3 +55,40 @@ function mymodule_getlocations_leaflet_map_info_alter(&$map_info) {
 
 Replace "mymodule" with the name of your module. This will also work in your theme's template.php.
 
+GeoJSON support
+Getlocations can support GeoJSON objects, see http://www.geojson.org/ for information about this format.
+You can download the library from https://github.com/JasonSanford/GeoJSON-to-Google-Maps.
+It should be installed in your libraries folder so you have a path something like this:
+sites/all/libraries/GeoJSON/GeoJSON.js
+
+Here is an example of geojson data:
+{
+  "type": "FeatureCollection",
+  "features": [{
+    "type": "Feature",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [102.0, 0.5]
+    },
+    "properties": {
+      "popup": "this is a marker"
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+      "type": "LineString",
+      "coordinates": [[102.0, 0.0], [103.0, 1.0], [104.0, 0.0], [105.0, 1.0]]
+    },
+    "properties": {
+      "popup": "hello world",
+      "style": {"color": "#00C0C0", "opacity": "0.85", "weight": "2"}
+    }
+  }
+]
+}
+
+The coordinates must be supplied as Longitude,Latitude.
+"popup" contains the content of a popup balloon.
+"style" can contain any valid Leaflet styling.
+
