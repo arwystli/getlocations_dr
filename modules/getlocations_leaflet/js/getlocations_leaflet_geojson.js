@@ -3,8 +3,8 @@
  * @author Bob Hutchinson http://drupal.org/user/52366
  * @copyright GNU GPL
  *
- * Javascript functions for getlocations GeoJSON support
- * See https://github.com/JasonSanford/GeoJSON-to-Google-Maps
+ * Javascript functions for getlocations_leaflet GeoJSON support
+ * See http://leafletjs.com/reference.html#geojson
  * and http://www.geojson.org
 */
 (function ($) {
