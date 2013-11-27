@@ -1771,6 +1771,13 @@ function getlocations_fields_getmap_show($settings, $lls = '', $minmaxes = '') {
   $getlocations_defaults['sv_imagedatecontrol']       = $settings['sv_imagedatecontrol'];
   $getlocations_defaults['sv_scrollwheel']            = $settings['sv_scrollwheel'];
   $getlocations_defaults['sv_clicktogo']              = $settings['sv_clicktogo'];
+  $getlocations_defaults['highlight_enable']          = $settings['highlight_enable'];
+  $getlocations_defaults['highlight_strokecolor']     = $settings['highlight_strokecolor'];
+  $getlocations_defaults['highlight_strokeopacity']   = $settings['highlight_strokeopacity'];
+  $getlocations_defaults['highlight_strokeweight']    = $settings['highlight_strokeweight'];
+  $getlocations_defaults['highlight_fillcolor']       = $settings['highlight_fillcolor'];
+  $getlocations_defaults['highlight_fillopacity']     = $settings['highlight_fillopacity'];
+  $getlocations_defaults['highlight_radius']          = $settings['highlight_radius'];
 
   $fieldables = getlocations_get_fieldable_entity_types();
   foreach ($fieldables AS $entity_type) {
@@ -2474,6 +2481,13 @@ function getlocations_fields_defaults() {
     'sv_scrollwheel'            => $getlocations_defaults['sv_scrollwheel'],
     'sv_clicktogo'              => $getlocations_defaults['sv_clicktogo'],
     'input_map_show'            => 1,
+    'highlight_enable'          => $getlocations_defaults['highlight_enable'],
+    'highlight_strokecolor'     => $getlocations_defaults['highlight_strokecolor'],
+    'highlight_strokeopacity'   => $getlocations_defaults['highlight_strokeopacity'],
+    'highlight_strokeweight'    => $getlocations_defaults['highlight_strokeweight'],
+    'highlight_fillcolor'       => $getlocations_defaults['highlight_fillcolor'],
+    'highlight_fillopacity'     => $getlocations_defaults['highlight_fillopacity'],
+    'highlight_radius'          => $getlocations_defaults['highlight_radius'],
   );
   foreach ($getlocations_defaults['kml_group'] AS $key => $layer) {
     $defaults['kml_group'][$key] = $layer;
@@ -2650,6 +2664,13 @@ function getlocations_fields_field_info_defaults() {
         'sv_scrollwheel'                  => $getlocations_fields_defaults['sv_scrollwheel'],
         'sv_clicktogo'                    => $getlocations_fields_defaults['sv_clicktogo'],
         'input_map_show'                  => $getlocations_fields_defaults['input_map_show'],
+        'highlight_enable'                => $getlocations_fields_defaults['highlight_enable'],
+        'highlight_strokecolor'           => $getlocations_fields_defaults['highlight_strokecolor'],
+        'highlight_strokeopacity'         => $getlocations_fields_defaults['highlight_strokeopacity'],
+        'highlight_strokeweight'          => $getlocations_fields_defaults['highlight_strokeweight'],
+        'highlight_fillcolor'             => $getlocations_fields_defaults['highlight_fillcolor'],
+        'highlight_fillopacity'           => $getlocations_fields_defaults['highlight_fillopacity'],
+        'highlight_radius'                => $getlocations_fields_defaults['highlight_radius'],
       ),
     ),
   );
@@ -2800,6 +2821,13 @@ function getlocations_fields_field_formatter_info_defaults() {
     'sv_imagedatecontrol'       => $getlocations_fields_defaults['sv_imagedatecontrol'],
     'sv_scrollwheel'            => $getlocations_fields_defaults['sv_scrollwheel'],
     'sv_clicktogo'              => $getlocations_fields_defaults['sv_clicktogo'],
+    'highlight_enable'          => $getlocations_defaults['highlight_enable'],
+    'highlight_strokecolor'     => $getlocations_defaults['highlight_strokecolor'],
+    'highlight_strokeopacity'   => $getlocations_defaults['highlight_strokeopacity'],
+    'highlight_strokeweight'    => $getlocations_defaults['highlight_strokeweight'],
+    'highlight_fillcolor'       => $getlocations_defaults['highlight_fillcolor'],
+    'highlight_fillopacity'     => $getlocations_defaults['highlight_fillopacity'],
+    'highlight_radius'          => $getlocations_defaults['highlight_radius'],
   );
 
   $fieldables = getlocations_get_fieldable_entity_types();

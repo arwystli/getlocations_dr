@@ -326,6 +326,20 @@
         }
       });
 
+      if ($("input[id$=highlight-enable]").attr('checked')) {
+        $("#wrap-getlocations-highlight").show();
+      }
+      else {
+        $("#wrap-getlocations-highlight").hide();
+      }
+      $("input[id$=highlight-enable]").change(function() {
+        if ($(this).attr('checked')) {
+          $("#wrap-getlocations-highlight").show();
+        }
+        else {
+          $("#wrap-getlocations-highlight").hide();
+        }
+      });
 
     }
   };

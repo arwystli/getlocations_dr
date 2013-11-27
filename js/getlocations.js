@@ -219,6 +219,17 @@ var getlocations_pano = [];
         global_settings.maxzoom = parseInt(settings.maxzoom);
         global_settings.nodezoom = parseInt(settings.nodezoom);
 
+        // highlighting
+        if (settings.highlight_enable) {
+          global_settings.highlight_enable = settings.highlight_enable;
+          global_settings.highlight_strokecolor = settings.highlight_strokecolor;
+          global_settings.highlight_strokeopacity = settings.highlight_strokeopacity;
+          global_settings.highlight_strokeweight = settings.highlight_strokeweight;
+          global_settings.highlight_fillcolor = settings.highlight_fillcolor;
+          global_settings.highlight_fillopacity = settings.highlight_fillopacity;
+          global_settings.highlight_radius = settings.highlight_radius;
+        }
+
         if (settings.minzoom_map == -1) {
           global_settings.minzoom_map = null;
         }
@@ -942,6 +953,58 @@ var getlocations_pano = [];
       });
 
     }
+
+    // highlighting
+    if (gs.markeractiontype != 'mouseover' && gs.highlight_enable) {
+      var circOpts = {
+        strokeColor: gs.highlight_strokecolor,
+        strokeOpacity: gs.highlight_strokeopacity,
+        strokeWeight: gs.highlight_strokeweight,
+        fillColor: gs.highlight_fillcolor,
+        fillOpacity: gs.highlight_fillopacity,
+        radius: parseInt(gs.highlight_radius),
+        center: p,
+        map: map,
+        visible: false,
+        clickable: false
+      };
+      var circ =  new google.maps.Circle(circOpts);
+      var conv = [];
+      conv[1] = 1048576;
+      conv[2] = 524288;
+      conv[3] = 262144;
+      conv[4] = 131072;
+      conv[5] = 65536;
+      conv[6] = 32768;
+      conv[7] = 16384;
+      conv[8] = 8192;
+      conv[9] = 4096;
+      conv[10] = 2048;
+      conv[11] = 1024;
+      conv[12] = 512;
+      conv[13] = 256;
+      conv[14] = 128;
+      conv[15] = 64;
+      conv[16] = 32;
+      conv[17] = 16;
+      conv[18] = 8;
+      conv[19] = 4;
+      conv[20] = 2;
+      conv[21] = 1;
+      google.maps.event.addListener(m,'mouseover', function() {
+        z = map.getZoom();
+        iz = conv[z];
+        cc = 0.1;
+        newr = gs.highlight_radius * iz * cc;
+        newr = parseInt(newr);
+        circ.setRadius(newr);
+        circ.setVisible(true);
+      });
+      google.maps.event.addListener(m,'mouseout', function() {
+        circ.setVisible(false);
+      });
+    }
+
     // we only have one marker
     if (gs.datanum == 1) {
       map.setCenter(p);

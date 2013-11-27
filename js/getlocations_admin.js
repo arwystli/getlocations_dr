@@ -511,6 +511,24 @@
       }
 
 
+      if ($("#edit-getlocations-default-highlight-enable").is('input')) {
+        if ($("#edit-getlocations-default-highlight-enable").attr('checked')) {
+          $("#wrap-getlocations-highlight").show();
+        }
+        else {
+          $("#wrap-getlocations-highlight").hide();
+        }
+        $("#edit-getlocations-default-highlight-enable").change(function() {
+          if ($(this).attr('checked')) {
+            $("#wrap-getlocations-highlight").show();
+          }
+          else {
+            $("#wrap-getlocations-highlight").hide();
+          }
+        });
+      }
+
+
     }
   };
 

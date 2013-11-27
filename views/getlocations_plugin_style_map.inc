@@ -181,6 +181,14 @@ class getlocations_plugin_style_map extends views_plugin_style {
     $options['scalecontrolposition'] = array('default' => $getlocations_defaults['scalecontrolposition']);
     $options['svcontrolposition']    = array('default' => $getlocations_defaults['svcontrolposition']);
 
+    $options['highlight_enable']         = array('default' => $getlocations_defaults['highlight_enable']);
+    $options['highlight_strokecolor']    = array('default' => $getlocations_defaults['highlight_strokecolor']);
+    $options['highlight_strokeopacity']  = array('default' => $getlocations_defaults['highlight_strokeopacity']);
+    $options['highlight_strokeweight']   = array('default' => $getlocations_defaults['highlight_strokeweight']);
+    $options['highlight_fillcolor']      = array('default' => $getlocations_defaults['highlight_fillcolor']);
+    $options['highlight_fillopacity']    = array('default' => $getlocations_defaults['highlight_fillopacity']);
+    $options['highlight_radius']         = array('default' => $getlocations_defaults['highlight_radius']);
+
     $fieldables = getlocations_get_fieldable_entity_types();
     foreach ($fieldables AS $entity_type) {
       $options[$entity_type . '_map_marker'] = array('default' => $getlocations_defaults[$entity_type . '_map_marker']);

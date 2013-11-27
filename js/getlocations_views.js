@@ -412,6 +412,22 @@
         });
       }
 
+      if ($("#edit-style-options-highlight-enable").is('input')) {
+        if ($("#edit-style-options-highlight-enable").attr('checked')) {
+          $("#wrap-getlocations-highlight").show();
+        }
+        else {
+          $("#wrap-getlocations-highlight").hide();
+        }
+        $("#edit-style-options-highlight-enable").change(function() {
+          if ($(this).attr('checked')) {
+            $("#wrap-getlocations-highlight").show();
+          }
+          else {
+            $("#wrap-getlocations-highlight").hide();
+          }
+        });
+      }
 
     }
   };

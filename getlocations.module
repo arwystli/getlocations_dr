@@ -1160,6 +1160,13 @@ function getlocations_defaults($reset = FALSE) {
     'nokeyboard'                    => 0,
     'nodoubleclickzoom'             => 0,
     'input_map_show'                => 1,
+    'highlight_enable'              => 0,
+    'highlight_strokecolor'         => "#FF0000",
+    'highlight_strokeopacity'       => "0.8",
+    'highlight_strokeweight'        => "3",
+    'highlight_fillcolor'           => "#FF0000",
+    'highlight_fillopacity'         => "0.35",
+    'highlight_radius'              => 10,
   );
 
   $fieldables = getlocations_get_fieldable_entity_types();
@@ -2377,6 +2384,23 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
   }
   else {
     $settings[$mapid]['categories'] = array();
+  }
+
+  // highlighting
+  $settings[$mapid]['highlight_enable'] = $defaults['highlight_enable'];
+  if ($defaults['highlight_enable']) {
+    if (! preg_match("/^#/", $defaults['highlight_strokecolor'])) {
+      $defaults['highlight_strokecolor'] = '#' . $defaults['highlight_strokecolor'];
+    }
+    if (! preg_match("/^#/", $defaults['highlight_fillcolor'])) {
+      $defaults['highlight_fillcolor'] = '#' . $defaults['highlight_fillcolor'];
+    }
+    $settings[$mapid]['highlight_strokecolor']   = $defaults['highlight_strokecolor'];
+    $settings[$mapid]['highlight_strokeopacity'] = $defaults['highlight_strokeopacity'];
+    $settings[$mapid]['highlight_strokeweight']  = $defaults['highlight_strokeweight'];
+    $settings[$mapid]['highlight_fillcolor']     = $defaults['highlight_fillcolor'];
+    $settings[$mapid]['highlight_fillopacity']   = $defaults['highlight_fillopacity'];
+    $settings[$mapid]['highlight_radius']        = $defaults['highlight_radius'];
   }
 
   drupal_add_js(array('getlocations' => $settings), 'setting');
@@ -3645,6 +3669,87 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
     );
 
     $form += getlocations_geojson_form($defaults);
+
+    // marker highlighting
+    $form['highlight_enable'] = getlocations_element_map_checkbox(
+      t('Enable Marker highlighting'),
+      $defaults['highlight_enable'],
+      t('Highlight a marker with a circle on mouseover')
+    );
+    $form['highlight_enable']['#suffix'] = '<div id="wrap-getlocations-highlight">';
+    if (module_exists('jquery_colorpicker') && $defaults['jquery_colorpicker_enabled']) {
+      $form['highlight_strokecolor'] = array(
+        '#type' => 'jquery_colorpicker',
+        '#title' => t('Highlight Circle line color'),
+        '#default_value' => preg_replace("/^#/", '', $defaults['highlight_strokecolor']),
+        '#description' => t('Click on the Colorpicker icon to select a color'),
+      );
+    }
+    else {
+      $form['highlight_strokecolor'] = getlocations_element_map_tf(
+        t('Highlight Circle line color'),
+        $defaults['highlight_strokecolor'],
+        t('HTML hex, eg #FF0000.'),
+        10,
+        10,
+        TRUE
+      );
+    }
+
+    $form['highlight_strokeopacity'] = getlocations_element_map_tf(
+      t('Highlight Circle line opacity'),
+      $defaults['highlight_strokeopacity'],
+      t('Must be between 0 and 1.'),
+      10,
+      10,
+      TRUE
+    );
+    $form['highlight_strokeweight'] = getlocations_element_map_tf(
+      t('Highlight Circle line thickness'),
+      $defaults['highlight_strokeweight'],
+      t('Must be an integer.'),
+      10,
+      10,
+      TRUE
+    );
+
+    // jquery_colorpicker
+    if (module_exists('jquery_colorpicker') && $defaults['jquery_colorpicker_enabled']) {
+      $form['highlight_fillcolor'] = array(
+        '#type' => 'jquery_colorpicker',
+        '#title' => t('Highlight Circle fill color'),
+        '#default_value' => preg_replace("/^#/", '', $defaults['highlight_fillcolor']),
+        '#description' => t('Click on the Colorpicker icon to select a color'),
+      );
+    }
+    else {
+      $form['highlight_fillcolor'] = getlocations_element_map_tf(
+        t('Highlight Circle fill color'),
+        $defaults['highlight_fillcolor'],
+        t('HTML hex, eg #FF0000.'),
+        10,
+        10,
+        TRUE
+      );
+    }
+
+    $form['highlight_fillopacity'] = getlocations_element_map_tf(
+      t('Highlight Circle fill opacity'),
+      $defaults['highlight_fillopacity'],
+      t('Must be between 0 and 1.'),
+      10,
+      10,
+      TRUE
+    );
+    $form['highlight_radius'] = getlocations_element_map_tf(
+      t('Highlight Circle size'),
+      $defaults['highlight_radius'],
+      t("The size of the highlight circle, between 5 and 15 recommended."),
+      5,
+      5,
+      TRUE
+    );
+    $form['highlight_radius']['#suffix'] = '</div>';
 
     // search_places
     // enable
