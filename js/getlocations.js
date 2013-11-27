@@ -992,12 +992,7 @@ var getlocations_pano = [];
       conv[20] = 2;
       conv[21] = 1;
       google.maps.event.addListener(m,'mouseover', function() {
-        z = map.getZoom();
-        iz = conv[z];
-        cc = 0.1;
-        newr = gs.highlight_radius * iz * cc;
-        newr = parseInt(newr);
-        circ.setRadius(newr);
+        circ.setRadius(parseInt(gs.highlight_radius * conv[map.getZoom()] * 0.1));
         circ.setVisible(true);
       });
       google.maps.event.addListener(m,'mouseout', function() {

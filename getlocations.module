@@ -3744,7 +3744,7 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
     $form['highlight_radius'] = getlocations_element_map_tf(
       t('Highlight Circle size'),
       $defaults['highlight_radius'],
-      t("The size of the highlight circle, between 5 and 15 recommended."),
+      t("The size of the highlight circle, 10 or 20 recommended."),
       5,
       5,
       TRUE
