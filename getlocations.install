@@ -12,14 +12,17 @@
  * Implements hook_uninstall().
  */
 function getlocations_uninstall() {
-  variable_del('getlocations_default');
-  variable_del('getlocations_paths');
-  variable_del('getlocations_node_marker');
-  variable_del('getlocations_vocabulary_marker');
-  variable_del('getlocations_term_marker');
-  variable_del('getlocations_colorbox');
-  variable_del('getlocations_api3_key');
-  variable_del('getlocations_ua');
+  $query = db_delete('variable')
+    ->condition('name', 'getlocations_%', 'LIKE')
+    ->execute();
+
+  // delete markerfile
+  if (file_default_scheme() == 'public') {
+    $markerpath = file_stream_wrapper_get_instance_by_scheme(file_default_scheme())->getDirectoryPath() . '/getlocations';
+    if (file_exists($markerpath)) {
+      file_unmanaged_delete_recursive($markerpath);
+    }
+  }
 }
 
 /**
