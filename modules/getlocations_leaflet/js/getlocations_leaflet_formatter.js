@@ -147,18 +147,34 @@
         }
       });
 
-      if ($("input[id$=returnlink-node-enable]").attr('checked')) {
-        $("#wrap-node-link").show();
+      if ($("input[id$=fullscreen]").attr('checked')) {
+       $("#wrap-getlocations-fullscreen").show();
       }
       else {
-        $("#wrap-node-link").hide();
+        $("#wrap-getlocations-fullscreen").hide();
       }
-      $("input[id$=returnlink-node-enable]").change(function() {
+      $("input[id$=fullscreen]").change(function() {
         if ($(this).attr('checked')) {
-          $("#wrap-node-link").show();
+          $("#wrap-getlocations-fullscreen").show();
         }
         else {
-          $("#wrap-node-link").hide();
+          $("#wrap-getlocations-fullscreen").hide();
+        }
+      });
+
+
+      if ($("input[id$=returnlink-page-enable]").attr('checked')) {
+        $("#wrap-page-link").show();
+      }
+      else {
+        $("#wrap-page-link").hide();
+      }
+      $("input[id$=returnlink-page-enable]").change(function() {
+        if ($(this).attr('checked')) {
+          $("#wrap-page-link").show();
+        }
+        else {
+          $("#wrap-page-link").hide();
         }
       });
 

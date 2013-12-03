@@ -91,9 +91,23 @@ function getlocations_leaflet_library() {
     'website' => 'http://drupal.org/project/getlocations',
     'version' => GETLOCATIONS_VERSION,
     'js' => array(
+      $getlocations_leaflet_paths['getlocations_leaflet_providers_path'] => array(
+        'type' => 'file',
+        'preprocess' => FALSE
+      ),
+      GETLOCATIONS_LEAFLET_PATH . '/plugins/fullscreen/Leaflet.fullscreen.min.js' => array(
+        'type' => 'file',
+        'preprocess' => FALSE
+      ),
       $getlocations_leaflet_paths['getlocations_leaflet_path'] => array(
         'type' => 'file',
         'preprocess' => FALSE
+      ),
+    ),
+    'css' => array(
+      GETLOCATIONS_LEAFLET_PATH . '/plugins/fullscreen/leaflet.fullscreen.css' => array(
+        'type' => 'file',
+        'media' => 'all',
       ),
     ),
     'dependencies' => array(
@@ -106,7 +120,15 @@ function getlocations_leaflet_library() {
     'website' => 'http://drupal.org/project/getlocations',
     'version' => GETLOCATIONS_VERSION,
     'js' => array(
-      GETLOCATIONS_LEAFLET_PATH . '/markercluster/leaflet.markercluster.js' => array(
+      GETLOCATIONS_LEAFLET_PATH . '/plugins/markercluster/leaflet.markercluster.js' => array(
+        'type' => 'file',
+        'preprocess' => FALSE
+      ),
+      GETLOCATIONS_LEAFLET_PATH . '/plugins/fullscreen/Leaflet.fullscreen.min.js' => array(
+        'type' => 'file',
+        'preprocess' => FALSE
+      ),
+      $getlocations_leaflet_paths['getlocations_leaflet_providers_path'] => array(
         'type' => 'file',
         'preprocess' => FALSE
       ),
@@ -116,19 +138,23 @@ function getlocations_leaflet_library() {
       ),
     ),
     'css' => array(
-      GETLOCATIONS_LEAFLET_PATH . '/markercluster/MarkerCluster.css' => array(
+      GETLOCATIONS_LEAFLET_PATH . '/plugins/markercluster/MarkerCluster.css' => array(
         'type' => 'file',
         'media' => 'all',
       ),
-      GETLOCATIONS_LEAFLET_PATH . '/markercluster/MarkerCluster.Default.css' => array(
+      GETLOCATIONS_LEAFLET_PATH . '/plugins/markercluster/MarkerCluster.Default.css' => array(
         'type' => 'file',
         'media' => 'all',
       ),
-      GETLOCATIONS_LEAFLET_PATH . '/markercluster/MarkerCluster.Default.ie.css' => array(
+      GETLOCATIONS_LEAFLET_PATH . '/plugins/markercluster/MarkerCluster.Default.ie.css' => array(
         'browsers' => array(
           'IE' => 'lte IE 8',
           '!IE' => FALSE,
         ),
+      ),
+      GETLOCATIONS_LEAFLET_PATH . '/plugins/fullscreen/leaflet.fullscreen.css' => array(
+        'type' => 'file',
+        'media' => 'all',
       ),
     ),
     'dependencies' => array(
@@ -138,8 +164,6 @@ function getlocations_leaflet_library() {
 
   return $libraries;
 }
-
-
 
 /**
  * Implements hook_views_api().
@@ -364,7 +388,7 @@ function getlocations_leaflet_field_formatter_view($entity_type, $entity, $field
         if (! empty($settings['baselayers'])) {
           $map_layers = array();
           foreach ($settings['baselayers'] AS $k => $v) {
-            if ($settings['baselayers'][$k]) {
+            if (isset($map_settings['map_layers'][$k]) && $settings['baselayers'][$k]) {
               $map_layers[$k] = $map_settings['map_layers'][$k];
             }
           }
@@ -803,10 +827,13 @@ function getlocations_leaflet_map_settings_do($map_settings, $defaults, $latlons
   $map_settings['map_opts']['zoomAnimation']      = ($defaults['zoomAnimation'] ? TRUE : FALSE);
   $map_settings['map_opts']['closePopupOnClick']  = ($defaults['closePopupOnClick'] ? TRUE : FALSE);
 
+  $map_settings['map_settings']['fullscreen'] = ($defaults['fullscreen'] ? TRUE : FALSE);
+  $map_settings['map_settings']['fullscreenposition'] = $defaults['fullscreenposition'];
+
   $map_settings['map_settings']['markercluster']  = ($defaults['markercluster'] ? TRUE : FALSE);
   $map_settings['map_settings']['markerclusteroptions'] = '';
-  if (file_exists(GETLOCATIONS_LEAFLET_PATH . '/markercluster/markerclusteroptions.inc')) {
-    module_load_include('inc', 'getlocations_leaflet', 'markercluster/markerclusteroptions');
+  if (file_exists(GETLOCATIONS_LEAFLET_PATH . '/plugins/markercluster/markerclusteroptions.inc')) {
+    module_load_include('inc', 'getlocations_leaflet', 'plugins/markercluster/markerclusteroptions');
     if (function_exists('getlocations_leaflet_get_markerclusteroptions')) {
       $map_settings['map_settings']['markerclusteroptions'] = getlocations_leaflet_get_markerclusteroptions();
     }
@@ -860,6 +887,11 @@ function getlocations_leaflet_map_settings_do($map_settings, $defaults, $latlons
 
   $map_settings['map_settings']['layercontrol_rect_ov'] = ($defaults['layercontrol_rect_ov'] ? TRUE : FALSE);
   $map_settings['map_settings']['layercontrol_rect_ov_label'] = $defaults['layercontrol_rect_ov_label'];
+
+  // default map
+  $ml = getlocations_leaflet_map_get_info('Getlocations OSM');
+  $map_settings['map_settings']['default_layer_name'] = $defaults['default_baselayer'];
+  $map_settings['map_settings']['default_layer_label'] = $ml['map_layers'][$defaults['default_baselayer']]['label'];
 
   // Scale
   $map_settings['map_settings']['scaleControl'] = ($defaults['scaleControl'] ? TRUE : FALSE);
@@ -960,7 +992,6 @@ function getlocations_leaflet_map_settings_do($map_settings, $defaults, $latlons
 
   return $map_settings;
 }
-
 
 function getlocations_leaflet_js_settings_do($defaults, $mapid) {
 
@@ -1084,10 +1115,8 @@ function getlocations_leaflet_map_get_info($map = NULL) {
  *
  */
 function getlocations_leaflet_getlocations_leaflet_map_info() {
-  $name = 'OSM map';
-  $urlTemplate = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-  $attribution = 'OSM map data @ <a target="_blank" href="http://www.openstreetmap.org/">OpenStreetMap contributors</a>, <a target="_blank" href="http://www.openstreetmap.org/copyright">ODBL</a>';
-  return array(
+
+  $map_info = array(
     'Getlocations OSM' => array(
       'label' => 'Getlocations OSM',
       'description' => t('Getlocations Leaflet maps.'),
@@ -1116,16 +1145,205 @@ function getlocations_leaflet_getlocations_leaflet_map_info() {
         'markeraction'               => '',
       ),
       'map_layers' => array(
-        "$name" => array(
-          'urlTemplate' => $urlTemplate,
-          'options' => array(
-            'attribution' => $attribution
-          ),
-          'description' => t('OpenStreet Map'),
+        'OpenStreetMap.Mapnik' => array(
+          'label' => t('OpenStreetMap Default'),
+          'type' => 'base',
+        ),
+        'OpenStreetMap.BlackAndWhite' => array(
+          'label' => t('OpenStreetMap Black and White'),
+          'type' => 'base',
+        ),
+        'OpenStreetMap.DE' => array(
+          'label' => t('OpenStreetMap German Style'),
+          'type' => 'base',
+        ),
+        'OpenStreetMap.HOT' => array(
+          'label' => t('OpenStreetMap H.O.T'),
+          'type' => 'base',
+        ),
+        'Thunderforest.OpenCycleMap' => array(
+          'label' => t('Thunderforest OpenCycleMap'),
+          'type' => 'base',
+        ),
+        'Thunderforest.Transport' => array(
+          'label' => t('Thunderforest Transport'),
+          'type' => 'base',
+        ),
+        'Thunderforest.Landscape' => array(
+          'label' => t('Thunderforest Landscape'),
+          'type' => 'base',
+        ),
+        'Thunderforest.Outdoors' => array(
+          'label' => t('Thunderforest Outdoors'),
+          'type' => 'base',
+        ),
+        'MapQuestOpen.OSM' => array(
+          'label' => t('MapQuestOpen OSM'),
+          'type' => 'base',
+        ),
+        'MapQuestOpen.Aerial' => array(
+          'label' => t('MapQuestOpen Aerial'),
+          'type' => 'base',
+        ),
+        'Stamen.Toner' => array(
+          'label' => t('Stamen Toner'),
+          'type' => 'base',
+        ),
+        'Stamen.TonerBackground' => array(
+          'label' => t('Stamen Toner Background'),
+          'type' => 'base',
+        ),
+        'Stamen.TonerHybrid' => array(
+          'label' => t('Stamen Toner Hybrid'),
+          'type' => 'base',
+        ),
+        'Stamen.TonerLines' => array(
+          'label' => t('Stamen Toner Lines'),
+          'type' => 'base',
+        ),
+        'Stamen.TonerLabels' => array(
+          'label' => t('Stamen Toner Labels'),
+          'type' => 'base',
+        ),
+        'Stamen.TonerLite' => array(
+          'label' => t('Stamen Toner Lite'),
+          'type' => 'base',
+        ),
+        'Stamen.Terrain' => array(
+          'label' => t('Stamen Terrain'),
+          'type' => 'base',
+        ),
+        'Stamen.TerrainBackground' => array(
+          'label' => t('Stamen Terrain Background'),
+          'type' => 'base',
+        ),
+        'Stamen.Watercolor' => array(
+          'label' => t('Stamen Watercolor'),
+          'type' => 'base',
+        ),
+        'Esri.WorldStreetMap' => array(
+          'label' => t('Esri WorldStreetMap'),
+          'type' => 'base',
+        ),
+        'Esri.DeLorme' => array(
+          'label' => t('Esri DeLorme'),
+          'type' => 'base',
+        ),
+        'Esri.WorldTopoMap' => array(
+          'label' => t('Esri WorldTopoMap'),
+          'type' => 'base',
+        ),
+        'Esri.WorldImagery' => array(
+          'label' => t('Esri WorldImagery'),
+          'type' => 'base',
+        ),
+        'Esri.WorldTerrain' => array(
+          'label' => t('Esri WorldTerrain'),
+          'type' => 'base',
+        ),
+        'Esri.WorldShadedRelief' => array(
+          'label' => t('Esri WorldShadedRelief'),
+          'type' => 'base',
+        ),
+        'Esri.WorldPhysical' => array(
+          'label' => t('Esri WorldPhysical'),
+          'type' => 'base',
+        ),
+        'Esri.OceanBasemap' => array(
+          'label' => t('Esri OceanBasemap'),
+          'type' => 'base',
+        ),
+        'Esri.NatGeoWorldMap' => array(
+          'label' => t('Esri NatGeoWorldMap'),
+          'type' => 'base',
+        ),
+        'Esri.WorldGrayCanvas' => array(
+          'label' => t('Esri WorldGrayCanvas'),
+          'type' => 'base',
+        ),
+        'Acetate.all' => array(
+          'label' => t('Acetate all'),
+          'type' => 'base',
+        ),
+        'Acetate.basemap' => array(
+          'label' => t('Acetate basemap'),
+          'type' => 'base',
+        ),
+        'Acetate.terrain' => array(
+          'label' => t('Acetate terrain'),
+          'type' => 'base',
+        ),
+        'Acetate.foreground' => array(
+          'label' => t('Acetate foreground'),
+          'type' => 'base',
+        ),
+        'Acetate.roads' => array(
+          'label' => t('Acetate roads'),
+          'type' => 'base',
+        ),
+        'Acetate.labels' => array(
+          'label' => t('Acetate labels'),
+          'type' => 'base',
+        ),
+        'Acetate.hillshading' => array(
+          'label' => t('Acetate hillshading'),
+          'type' => 'base',
+        ),
+        'OpenSeaMap' => array(
+          'label' => t('OpenSeaMap Overlay'),
+          'type' => 'overlay',
+        ),
+        'OpenWeatherMap.Clouds' => array(
+          'label' => t('OpenWeatherMap Clouds Overlay'),
+          'type' => 'overlay',
+        ),
+        'OpenWeatherMap.CloudsClassic' => array(
+          'label' => t('OpenWeatherMap Clouds Classic Overlay'),
+          'type' => 'overlay',
+        ),
+        'OpenWeatherMap.Precipitation' => array(
+          'label' => t('OpenWeatherMap Precipitation Overlay'),
+          'type' => 'overlay',
+        ),
+        'OpenWeatherMap.PrecipitationClassic' => array(
+          'label' => t('OpenWeatherMap Precipitation Classic Overlay'),
+          'type' => 'overlay',
+        ),
+        'OpenWeatherMap.Rain' => array(
+          'label' => t('OpenWeatherMap Rain Overlay'),
+          'type' => 'overlay',
+        ),
+        'OpenWeatherMap.RainClassic' => array(
+          'label' => t('OpenWeatherMap Rain Classic Overlay'),
+          'type' => 'overlay',
+        ),
+        'OpenWeatherMap.Pressure' => array(
+          'label' => t('OpenWeatherMap Pressure Overlay'),
+          'type' => 'overlay',
+        ),
+        'OpenWeatherMap.PressureContour' => array(
+          'label' => t('OpenWeatherMap PressureContour Overlay'),
+          'type' => 'overlay',
+        ),
+        'OpenWeatherMap.Wind' => array(
+          'label' => t('OpenWeatherMap Wind Overlay'),
+          'type' => 'overlay',
+        ),
+        'OpenWeatherMap.Temperature' => array(
+          'label' => t('OpenWeatherMap Temperature Overlay'),
+          'type' => 'overlay',
+        ),
+        'OpenWeatherMap.Snow' => array(
+          'label' => t('OpenWeatherMap Snow Overlay'),
+          'type' => 'overlay',
         ),
       ),
     ),
   );
+
+
+
+  return $map_info;
 }
 
 function getlocations_leaflet_defaults() {
@@ -1184,6 +1402,7 @@ function getlocations_leaflet_defaults() {
     'geojson_enable'             => $getlocations_defaults['geojson_enable'],
     'geojson_data'               => $getlocations_defaults['geojson_data'],
     'geojson_options'            => $getlocations_defaults['geojson_options'],
+    'fullscreen'                 => $getlocations_defaults['fullscreen'],
   );
 
   $fieldables = getlocations_get_fieldable_entity_types();
@@ -1229,13 +1448,18 @@ function getlocations_leaflet_defaults() {
   $newdefaults['layercontrol_rect_ov']       = 9;
   $newdefaults['layercontrol_rect_ov_label'] = t('Rectangles');
 
+  $newdefaults['fullscreenposition']        = '';
+
   $newdefaults['markeraction']               = '';
   $newdefaults['markercluster']              = 0;
-  $newdefaults['baselayers']              = array();
-
+  $newdefaults['default_baselayer']          = 'OpenStreetMap.Mapnik';
 
   $settings = variable_get('getlocations_leaflet_defaults', '');
+
+  $newdefaults['baselayers'] = $settings['baselayers'];
+
   $settings = getlocations_adjust_vars($newdefaults, $settings);
+
   return $settings;
 }
 
@@ -1246,28 +1470,24 @@ function getlocations_leaflet_get_map_layers($map_settings) {
     if (isset($cloudmade_info['cloudmade_key']) && ! empty($cloudmade_info['cloudmade_key'])) {
       $cloudmade_key = $cloudmade_info['cloudmade_key'];
       if (isset($cloudmade_info['cloudmade_maps']) && is_array($cloudmade_info['cloudmade_maps']) ) {
+        $res = getlocations_leaflet_get_cloudmade_resolutions();
         $add = array();
         foreach ($cloudmade_info['cloudmade_maps'] AS $k => $map) {
           $style_id = $map['style_id'];
           $style_name = $map['style_name'];
-          $style_description = $map['style_description'];
           $style_token = $map['style_token'];
           $query = '';
           if (! empty($style_token)) {
             $query = '?token=' . $style_token;
           }
-          $mobile = '';
-          $size = '256';
-          if (getlocations_is_mobile()) {
-            $mobile = '@2x';
-            $size = '64';
-          }
-          $urlTemplate = 'http://{s}.tile.cloudmade.com/' . $cloudmade_key . '/' . $style_id . $mobile . '/' . $size . '/{z}/{x}/{y}.png' . $query;
-          $attribution = '© <a target="_blank" href="http://cloudmade.com">Cloudmade ' . $style_id . '</a>';
           $add[$style_name] = array(
-            'urlTemplate' => $urlTemplate,
-            'options' => array('attribution' => $attribution),
-            'description' => $style_description
+            'label' => $res[$style_name],
+            'type' => 'base',
+            'options' => array(
+              'apiKey' => $cloudmade_key,
+              'styleID' => $style_id,
+              'styleToken' => $query,
+            ),
           );
         }
         if (count($add)) {
@@ -1277,15 +1497,31 @@ function getlocations_leaflet_get_map_layers($map_settings) {
     }
   }
 
-  // make sure default is last
-  $default_map_info = getlocations_leaflet_getlocations_leaflet_map_info();
-  $default_map_layer = $default_map_info['Getlocations OSM']['map_layers'];
-  unset($map_layers['OSM map']);
-  $map_layers += $default_map_layer;
-
   $map_settings['map_layers'] = $map_layers;
   return $map_settings;
 }
+
+function getlocations_leaflet_get_cloudmade_resolutions() {
+  $output = array(
+    'standardResolution1' => t('Standard Resolution 1'),
+    'standardResolution2' => t('Standard Resolution 2'),
+    'standardResolution3' => t('Standard Resolution 3'),
+    'standardResolution4' => t('Standard Resolution 4'),
+    'standardResolution5' => t('Standard Resolution 5'),
+    'highResolution1' => t('High Resolution 1'),
+    'highResolution2' => t('High Resolution 2'),
+    'highResolution3' => t('High Resolution 3'),
+    'highResolution4' => t('High Resolution 4'),
+    'highResolution5' => t('High Resolution 5'),
+    'highResolution1s' => t('High Resolution 1 Small tile'),
+    'highResolution2s' => t('High Resolution 2 Small tile'),
+    'highResolution3s' => t('High Resolution 3 Small tile'),
+    'highResolution4s' => t('High Resolution 4 Small tile'),
+    'highResolution5s' => t('High Resolution 5 Small tile'),
+  );
+  return $output;
+}
+
 
 function getlocations_leaflet_display_options_form($defaults) {
   $form = array();
@@ -1443,17 +1679,42 @@ function getlocations_leaflet_display_options_form($defaults) {
   $map_settings = getlocations_leaflet_map_get_info('Getlocations OSM');
   $map_settings = getlocations_leaflet_get_map_layers($map_settings);
   $map_layers = $map_settings['map_layers'];
+
   // reconfigure $defaults['baselayers']
   $old_baselayers = $defaults['baselayers'];
   $defaults['baselayers'] = array();
+  $default_baselayer_opts = array();
   foreach ($map_layers AS $k => $v) {
-    if ($k == 'OSM map') {
+    if ($k == $defaults['default_baselayer']) {
       $defaults['baselayers'][$k] = (isset($old_baselayers[$k]) ? $old_baselayers[$k] : 1);
     }
     else {
       $defaults['baselayers'][$k] = (isset($old_baselayers[$k]) ? $old_baselayers[$k] : 0);
     }
+    // make a list of enable baselayers for a dropdown
+    if (isset($old_baselayers[$k]) && $old_baselayers[$k]) {
+      if ($map_layers[$k]['type'] == 'base') {
+        $default_baselayer_opts[$k] = $map_layers[$k]['label'];
+      }
+    }
   }
+
+  if (count($default_baselayer_opts) > 1) {
+    $form['default_baselayer'] = getlocations_element_dd(
+      t('Default Map'),
+      $defaults['default_baselayer'],
+      $default_baselayer_opts
+    );
+
+  }
+  else {
+    $form['default_baselayer'] = array(
+      '#type' => 'value',
+      '#value' => $defaults['default_baselayer']
+    );
+  }
+
+
   $form['baselayers'] =  array(
     '#type' => 'fieldset',
     '#title' => t('Enable map types'),
@@ -1462,8 +1723,9 @@ function getlocations_leaflet_display_options_form($defaults) {
     '#collapsed' => FALSE,
   );
   foreach ($defaults['baselayers'] AS $key => $value) {
+    $label = (isset($map_layers[$key]['label']) ? $map_layers[$key]['label'] : $key);
     $form['baselayers'][$key] = getlocations_element_map_checkbox(
-      $key,
+      $label,
       $defaults['baselayers'][$key],
       (isset($map_layers[$key]['description']) ? $map_layers[$key]['description'] : '')
     );
@@ -1493,6 +1755,20 @@ function getlocations_leaflet_display_options_form($defaults) {
     t('Enable closePopupOnClick on the map.')
   );
 
+  // fullscreen
+  $form['fullscreen'] = getlocations_element_map_checkbox(
+    t('Fullscreen'),
+    $defaults['fullscreen'],
+    t('Enable Fullscreen button on the map.')
+  );
+  $form['fullscreen']['#suffix'] = '<div id="wrap-getlocations-fullscreen">';
+  $form['fullscreenposition'] = getlocations_element_dd(
+    t('Position of Fullscreen Control'),
+    $defaults['fullscreenposition'],
+    $controlpositions
+  );
+  $form['fullscreenposition']['#suffix'] = '</div>';
+
   $form['markeraction'] = getlocations_element_dd(
     t('Marker action'),
     $defaults['markeraction'],
@@ -1518,8 +1794,6 @@ function getlocations_leaflet_display_options_form($defaults) {
   return $form;
 }
 
-
-
 function getlocations_leaflet_paths_get($reset = FALSE) {
 
   $defaults = array(
@@ -1530,6 +1804,7 @@ function getlocations_leaflet_paths_get($reset = FALSE) {
     'getlocations_leaflet_polylines_path'  => GETLOCATIONS_LEAFLET_PATH . '/js/getlocations_leaflet_polylines.js',
     'getlocations_leaflet_rectangles_path' => GETLOCATIONS_LEAFLET_PATH . '/js/getlocations_leaflet_rectangles.js',
     'getlocations_leaflet_geojson_path'    => GETLOCATIONS_LEAFLET_PATH . '/js/getlocations_leaflet_geojson.js',
+    'getlocations_leaflet_providers_path'  => GETLOCATIONS_LEAFLET_PATH . '/js/getlocations_leaflet_providers.js',
   );
   if ($reset) {
     $getlocations_leaflet_paths = $defaults;
@@ -1540,6 +1815,7 @@ function getlocations_leaflet_paths_get($reset = FALSE) {
   }
   return $getlocations_leaflet_paths;
 }
+
 
 function getlocations_leaflet_settings_form() {
 
@@ -1583,23 +1859,24 @@ function getlocations_leaflet_settings_form() {
   else {
     $mapnum++;
   }
+  // limit mapnum
+  if ($mapnum > 5) {
+    $mapnum = 5;
+  }
+  $res = getlocations_leaflet_get_cloudmade_resolutions();
   for ($ct = 0; $ct < $mapnum; $ct++) {
+
+    $form['getlocations_leaflet_cloudmade']['cloudmade_maps'][$ct]['style_name'] = getlocations_element_dd(
+      t('Style Name @num', array('@num' => $ct+1)),
+      (isset($getlocations_leaflet_cloudmade['cloudmade_maps'][$ct]['style_name']) ? $getlocations_leaflet_cloudmade['cloudmade_maps'][$ct]['style_name'] : ''),
+      $res,
+      t('"Standard Resolution" is for general use, "High Resolution" is best for tablets, "High Resolution Small tile" is best for smartphones.')
+    );
+
     $form['getlocations_leaflet_cloudmade']['cloudmade_maps'][$ct]['style_id'] = getlocations_element_map_tf(
       t('Style ID @num', array('@num' => $ct+1)),
       (isset($getlocations_leaflet_cloudmade['cloudmade_maps'][$ct]['style_id']) ? $getlocations_leaflet_cloudmade['cloudmade_maps'][$ct]['style_id'] : ''),
       t('The style ID for the map you want to include, see <a href="@editor">Cloudmade style editor</a>, note the number in the bottom righthand corner of the examples.', array('@editor' => 'http://maps.cloudmade.com/editor')),
-      10
-    );
-    $form['getlocations_leaflet_cloudmade']['cloudmade_maps'][$ct]['style_name'] = getlocations_element_map_tf(
-      t('Style Name @num', array('@num' => $ct+1)),
-      (isset($getlocations_leaflet_cloudmade['cloudmade_maps'][$ct]['style_name']) ? $getlocations_leaflet_cloudmade['cloudmade_maps'][$ct]['style_name'] : ''),
-      t('The style name for the map you want to include, it will be used in the map control. Required if you want to be able to use it.'),
-      10
-    );
-    $form['getlocations_leaflet_cloudmade']['cloudmade_maps'][$ct]['style_description'] = getlocations_element_map_tf(
-      t('Style Description @num', array('@num' => $ct+1)),
-      (isset($getlocations_leaflet_cloudmade['cloudmade_maps'][$ct]['style_description']) ? $getlocations_leaflet_cloudmade['cloudmade_maps'][$ct]['style_description'] : ''),
-      t('A desciption of the map style, it will be used in the map selection form.'),
       10
     );
     $form['getlocations_leaflet_cloudmade']['cloudmade_maps'][$ct]['style_token'] = getlocations_element_map_tf(
@@ -1611,9 +1888,6 @@ function getlocations_leaflet_settings_form() {
 
   }
 
-#  $getlocations_leaflet_defaults = getlocations_leaflet_defaults();
-#  $settings = variable_get('getlocations_leaflet_defaults', '');
-#  $settings = getlocations_adjust_vars($getlocations_leaflet_defaults, $settings);
   $settings = getlocations_leaflet_defaults();
 
   $form['getlocations_leaflet_defaults'] = array(
@@ -1729,6 +2003,14 @@ function getlocations_leaflet_settings_form() {
     128,
     t('Where the Getlocations leaflet geojson javascript file is located.')
   );
+  $form['getlocations_leaflet_paths']['getlocations_leaflet_providers_path'] = getlocations_element_path(
+    t('Path to Getlocations leaflet providers javascript file'),
+    $getlocations_leaflet_paths['getlocations_leaflet_providers_path'],
+    80,
+    128,
+    t('Where the Getlocations leaflet providers javascript file is located.')
+  );
+
   $form['getlocations_leaflet_paths']['reset'] = getlocations_element_map_checkbox(
     t('Reset'),
     0,
@@ -1939,7 +2221,7 @@ function getlocations_leaflet_entity_type_map($type, $entity_id) {
     if (! empty($settings['baselayers'])) {
       $map_layers = array();
       foreach ($settings['baselayers'] AS $k => $v) {
-        if ($settings['baselayers'][$k]) {
+        if (isset($map_settings['map_layers'][$k]) && $settings['baselayers'][$k]) {
           $map_layers[$k] = $map_settings['map_layers'][$k];
         }
       }

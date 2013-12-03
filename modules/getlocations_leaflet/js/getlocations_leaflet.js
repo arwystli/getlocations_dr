@@ -4,7 +4,7 @@
  * @copyright GNU GPL
  *
  * Javascript functions for getlocations_leaflet module for Drupal 7
- * this is for googlemaps API version 3
+ * this is for leaflet maps http://leafletjs.com/
  */
 
 var getlocations_leaflet_map = [];
@@ -23,9 +23,6 @@ var getlocations_leaflet_layerscontrol = [];
     }
 
     $.each(Drupal.settings.getlocations_leaflet, function (key, settings) {
-
-      // functions
-      // end functions
 
       // is there really a map?
       if ( $("#getlocations_leaflet_canvas_" + key).is('div') ) {
@@ -46,18 +43,30 @@ var getlocations_leaflet_layerscontrol = [];
 
         // layers
         var layers = {};
+        var default_layer_name = map_settings.default_layer_name;
+        var default_layer_label = map_settings.default_layer_label;
+        layers[default_layer_label] = L.tileLayer.provider(default_layer_name).addTo(getlocations_leaflet_map[key]);
+
         for (var lkey in map_layers) {
-          var layer = map_layers[lkey];
-          var map_layer = new L.TileLayer(layer.urlTemplate);
-          map_layer._leaflet_id = lkey;
-          if (layer.options) {
-            for (var option in layer.options) {
-              map_layer.options[option] = layer.options[option];
+          if (lkey != default_layer_name) {
+            var layer = map_layers[lkey];
+            var map_layer = L.tileLayer.provider(lkey);
+            map_layer._leaflet_id = lkey;
+            if (layer.options) {
+              for (var option in layer.options) {
+                map_layer.options[option] = layer.options[option];
+              }
+            }
+            if (layer.type == 'base') {
+              layers[layer.label] = map_layer;
+            }
+            else if (layer.type == 'overlay') {
+              getlocations_leaflet_overlays[key][layer.label] = map_layer;
             }
           }
-          layers[lkey] = map_layer;
-          //getlocations_leaflet_map[key].addLayer(map_layer);
-          map_layer.addTo(getlocations_leaflet_map[key]);
+        }
+        if (layers.length) {
+          layers.addTo(getlocations_leaflet_map[key]);
         }
 
         // Zoom control
@@ -89,6 +98,15 @@ var getlocations_leaflet_layerscontrol = [];
             }
           }
           getlocations_leaflet_map[key].addControl(new L.Control.Scale(scaleopts));
+        }
+        // fullscreen control
+        if (map_settings.fullscreen) {
+          var fsopts = {};
+          if (map_settings.fullscreenposition) {
+            fsopts.position = map_settings.fullscreenposition;
+          }
+          fsopts.title = Drupal.t('Fullscreen');
+          getlocations_leaflet_map[key].addControl(new L.Control.Fullscreen(fsopts));
         }
 
         // latlons data
@@ -267,9 +285,9 @@ var getlocations_leaflet_layerscontrol = [];
         if (map_settings.layerControl) {
           var layeropts = {};
           if (map_settings.layercontrolposition) {
-            var layeropts = {position: map_settings.layercontrolposition};
+            layeropts.position = map_settings.layercontrolposition;
           }
-          getlocations_leaflet_layerscontrol[key] = new L.Control.Layers(layers, getlocations_leaflet_overlays[key], layeropts);
+          getlocations_leaflet_layerscontrol[key] = L.control.layers(layers, getlocations_leaflet_overlays[key], layeropts);
           getlocations_leaflet_map[key].addControl(getlocations_leaflet_layerscontrol[key]);
         }
 
