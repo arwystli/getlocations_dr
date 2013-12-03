@@ -1,5 +1,6 @@
+
 /**
- * @file
+ * @file getlocations_leaflet_providers.js
  * @author Bob Hutchinson http://drupal.org/user/52366
  * @copyright GNU GPL
  *
@@ -8,7 +9,6 @@
  * code derived from leaflet-providers.js https://github.com/leaflet-extras/leaflet-providers
  *
  */
-
 (function () {
   'use strict';
 

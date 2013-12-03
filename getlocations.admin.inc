@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @file
+ * @file getlocations.admin.inc
  * @author Bob Hutchinson http://drupal.org/user/52366
  * @copyright GNU GPL
  *

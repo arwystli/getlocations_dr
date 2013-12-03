@@ -1,11 +1,11 @@
 <?php
 
 /**
- * @file
+ * @file getlocations_leaflet.module
  * @author Bob Hutchinson http://drupal.org/user/52366
  * @copyright GNU GPL
  *
- * Provides Leaflet module integration for Getlocations Fields.
+ * Provides Leaflet maps integration for data from Getlocations Fields, location_cck, geofield and geolocation modules.
  *
  *
  */

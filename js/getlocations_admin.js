@@ -1,6 +1,6 @@
 
 /**
- * @file
+ * @file getlocations_admin.js
  * @author Bob Hutchinson http://drupal.org/user/52366
  * @copyright GNU GPL
  *
@@ -510,7 +510,6 @@
         });
       }
 
-
       if ($("#edit-getlocations-default-highlight-enable").is('input')) {
         if ($("#edit-getlocations-default-highlight-enable").attr('checked')) {
           $("#wrap-getlocations-highlight").show();
@@ -527,6 +526,7 @@
           }
         });
       }
+
 
 
     }

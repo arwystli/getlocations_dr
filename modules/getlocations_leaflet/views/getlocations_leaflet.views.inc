@@ -1,8 +1,11 @@
 <?php
 
 /**
- * @file
- * Leaflet maps views integration.
+ * @file getlocations_leaflet.views.inc
+ * @author Bob Hutchinson http://drupal.org/user/52366
+ * @copyright GNU GPL
+ *
+ * Getlocations Leaflet maps views integration.
  */
 
 /**

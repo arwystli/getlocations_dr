@@ -1,9 +1,196 @@
-commit 91cbb6d
+commit 7bfd8fb
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Tue Dec 3 12:12:22 2013 +0000
+
+    better header comments
+
+getlocations.admin.inc
+getlocations.css
+getlocations.install
+getlocations.markercluster.inc
+getlocations.markerinfo.inc
+getlocations.module
+js/getlocations.js
+js/getlocations_admin.js
+js/getlocations_box.js
+js/getlocations_categories.js
+js/getlocations_circles.js
+js/getlocations_colorbox.js
+js/getlocations_geo.js
+js/getlocations_geojson.js
+js/getlocations_marker_box.js
+js/getlocations_polygons.js
+js/getlocations_polylines.js
+js/getlocations_preview.js
+js/getlocations_rectangles.js
+js/getlocations_search_places.js
+js/getlocations_views.js
+js/icons.js
+modules/getlocations_blocks/getlocations_blocks.css
+modules/getlocations_blocks/getlocations_blocks.install
+modules/getlocations_blocks/getlocations_blocks.module
+modules/getlocations_blocks/js/getlocations_blocks.js
+modules/getlocations_blocks/js/getlocations_blocks_admin.js
+modules/getlocations_feeds/getlocations_feeds.install
+modules/getlocations_feeds/getlocations_feeds.module
+modules/getlocations_fields/getlocations_fields.admin.inc
+modules/getlocations_fields/getlocations_fields.css
+modules/getlocations_fields/getlocations_fields.functions.inc
+modules/getlocations_fields/getlocations_fields.install
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_fields/handlers/getlocations_fields_handler_argument_city.inc
+modules/getlocations_fields/handlers/getlocations_fields_handler_argument_country.inc
+modules/getlocations_fields/handlers/getlocations_fields_handler_argument_distance.inc
+modules/getlocations_fields/handlers/getlocations_fields_handler_argument_glid.inc
+modules/getlocations_fields/handlers/getlocations_fields_handler_argument_postcode.inc
+modules/getlocations_fields/handlers/getlocations_fields_handler_argument_province.inc
+modules/getlocations_fields/handlers/getlocations_fields_handler_field_coordinates.inc
+modules/getlocations_fields/handlers/getlocations_fields_handler_field_country.inc
+modules/getlocations_fields/handlers/getlocations_fields_handler_field_data.inc
+modules/getlocations_fields/handlers/getlocations_fields_handler_field_distance.inc
+modules/getlocations_fields/handlers/getlocations_fields_handler_field_latitude.inc
+modules/getlocations_fields/handlers/getlocations_fields_handler_field_longitude.inc
+modules/getlocations_fields/handlers/getlocations_fields_handler_filter_country.inc
+modules/getlocations_fields/handlers/getlocations_fields_handler_filter_distance.inc
+modules/getlocations_fields/handlers/getlocations_fields_handler_sort_distance.inc
+modules/getlocations_fields/js/getlocations_fields.js
+modules/getlocations_fields/js/getlocations_fields_admin.js
+modules/getlocations_fields/js/getlocations_fields_formatter.js
+modules/getlocations_fields/js/getlocations_fields_preview.js
+modules/getlocations_fields/js/getlocations_fields_streetview.js
+modules/getlocations_fields/js/getlocations_fields_views.js
+modules/getlocations_fields/views/getlocations_fields.views.inc
+modules/getlocations_fields/views/getlocations_fields.views_default.inc
+modules/getlocations_fields/views/getlocations_fields_plugin_style_streetview.inc
+modules/getlocations_fields_entity/getlocations_fields_entity.module
+modules/getlocations_leaflet/getlocations_leaflet.css
+modules/getlocations_leaflet/getlocations_leaflet.install
+modules/getlocations_leaflet/getlocations_leaflet.markerinfo.inc
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/js/getlocations_leaflet.js
+modules/getlocations_leaflet/js/getlocations_leaflet_circles.js
+modules/getlocations_leaflet/js/getlocations_leaflet_formatter.js
+modules/getlocations_leaflet/js/getlocations_leaflet_geojson.js
+modules/getlocations_leaflet/js/getlocations_leaflet_polygons.js
+modules/getlocations_leaflet/js/getlocations_leaflet_polylines.js
+modules/getlocations_leaflet/js/getlocations_leaflet_providers.js
+modules/getlocations_leaflet/js/getlocations_leaflet_rectangles.js
+modules/getlocations_leaflet/views/getlocations_leaflet.views.inc
+modules/getlocations_leaflet/views/getlocations_leaflet.views_default.inc
+modules/getlocations_leaflet/views/getlocations_leaflet_plugin_style.inc
+modules/getlocations_location_taxonomize/getlocations_location_taxonomize.inc
+modules/getlocations_location_taxonomize/getlocations_location_taxonomize.install
+modules/getlocations_location_taxonomize/getlocations_location_taxonomize.module
+modules/getlocations_map/getlocations_map.install
+modules/getlocations_map/getlocations_map.module
+modules/getlocations_map/js/getlocations_map_formatter.js
+modules/getlocations_search/getlocations_search.admin.inc
+modules/getlocations_search/getlocations_search.css
+modules/getlocations_search/getlocations_search.install
+modules/getlocations_search/getlocations_search.module
+modules/getlocations_search/getlocations_search_box.tpl.php
+modules/getlocations_search/js/getlocations_search.js
+modules/getlocations_search/js/getlocations_search_admin.js
+views/getlocations.views.inc
+views/getlocations.views_default.inc
+views/getlocations_plugin_style_map.inc
+
+commit 8ca65a4
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Tue Dec 3 09:55:05 2013 +0000
+
+    added fullscreen, moved plugins to own folder, added providers script
+
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/js/getlocations_leaflet.js
+modules/getlocations_leaflet/js/getlocations_leaflet_categories.js
+modules/getlocations_leaflet/js/getlocations_leaflet_formatter.js
+modules/getlocations_leaflet/js/getlocations_leaflet_providers.js
+modules/getlocations_leaflet/markercluster/MarkerCluster.Default.css
+modules/getlocations_leaflet/markercluster/MarkerCluster.Default.ie.css
+modules/getlocations_leaflet/markercluster/MarkerCluster.css
+modules/getlocations_leaflet/markercluster/leaflet.markercluster-src.js
+modules/getlocations_leaflet/markercluster/leaflet.markercluster.js
+modules/getlocations_leaflet/markercluster/markerclusteroptions.inc.txt
+modules/getlocations_leaflet/plugins/fullscreen/Leaflet.fullscreen.js
+modules/getlocations_leaflet/plugins/fullscreen/Leaflet.fullscreen.min.js
+modules/getlocations_leaflet/plugins/fullscreen/fullscreen.png
+modules/getlocations_leaflet/plugins/fullscreen/fullscreen@2x.png
+modules/getlocations_leaflet/plugins/fullscreen/leaflet.fullscreen.css
+modules/getlocations_leaflet/plugins/markercluster/MarkerCluster.Default.css
+modules/getlocations_leaflet/plugins/markercluster/MarkerCluster.Default.ie.css
+modules/getlocations_leaflet/plugins/markercluster/MarkerCluster.css
+modules/getlocations_leaflet/plugins/markercluster/leaflet.markercluster-src.js
+modules/getlocations_leaflet/plugins/markercluster/leaflet.markercluster.js
+modules/getlocations_leaflet/plugins/markercluster/markerclusteroptions.inc.txt
+
+commit 7dad655
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sat Nov 30 09:28:13 2013 +0000
+
+    better uninstall
+
+getlocations.install
+
+commit c8c6689
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Thu Nov 28 17:52:23 2013 +0000
+
+    added highlight to getlocations_search
+
+modules/getlocations_search/getlocations_search.module
+modules/getlocations_search/js/getlocations_search_admin.js
+
+commit bcd06f7
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Nov 27 23:49:34 2013 +0000
+
+    updated some comments
+
+modules/getlocations_leaflet/js/getlocations_leaflet_geojson.js
+
+commit 29561d5
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Nov 27 17:41:29 2013 +0000
+
+    highlight fixes
+
+getlocations.module
+js/getlocations.js
+
+commit c1defda
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Nov 27 10:25:36 2013 +0000
+
+    added highlight feature
+
+getlocations.module
+js/getlocations.js
+js/getlocations_admin.js
+js/getlocations_views.js
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_fields/js/getlocations_fields_formatter.js
+views/getlocations_plugin_style_map.inc
+
+commit 728716d
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Tue Nov 26 12:21:04 2013 +0000
+
+    added geoJSON support
+
+getlocations.module
+modules/getlocations_leaflet/README.txt
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/js/getlocations_leaflet_formatter.js
+modules/getlocations_leaflet/js/getlocations_leaflet_geojson.js
+
+commit 147550d
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Sun Nov 24 16:08:15 2013 +0000
 
     added leaflet support
 
+CHANGELOG.txt
 modules/getlocations_leaflet/README.txt
 modules/getlocations_leaflet/getlocations_leaflet.css
 modules/getlocations_leaflet/getlocations_leaflet.info

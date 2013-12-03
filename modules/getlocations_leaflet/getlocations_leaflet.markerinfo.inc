@@ -1,15 +1,14 @@
 <?php
 
 /**
- * @file
+ * @file getlocations_leaflet.markerinfo.inc
  * @author Bob Hutchinson http://drupal.org/user/52366
  * @copyright GNU GPL
  *
- * Provides Leaflet module integration for Getlocations Fields.
+ * Provides Leaflet Maps integration for Getlocations.
  *
  *
  */
-
 function _getlocations_leaflet_get_icondata() {
 
   $inis = array();

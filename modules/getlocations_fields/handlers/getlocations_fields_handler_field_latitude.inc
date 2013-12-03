@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @file
+ * @file getlocations_fields_handler_field_latitude.inc
  * @author Bob Hutchinson http://drupal.org/user/52366
  * @copyright GNU GPL
  *

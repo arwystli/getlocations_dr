@@ -1,6 +1,6 @@
 
 /**
- * @file
+ * @file getlocations_blocks_admin.js
  * @author Bob Hutchinson http://drupal.org/user/52366
  * @copyright GNU GPL
  *

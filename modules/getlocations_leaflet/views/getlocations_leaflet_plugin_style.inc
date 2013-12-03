@@ -1,7 +1,10 @@
 <?php
 
 /**
- * @file
+ * @file getlocations_leaflet_plugin_style.inc
+ * @author Bob Hutchinson http://drupal.org/user/52366
+ * @copyright GNU GPL
+ *
  * Extension of the Views Plugin Style for Leaflet Map
  * Adapted from the GeoField Map views module and the OpenLayers Views module.
  */

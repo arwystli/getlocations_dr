@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @file
+ * @file getlocations_leaflet.install
  * @author Bob Hutchinson http://drupal.org/user/52366
  * @copyright GNU GPL
  *
@@ -44,8 +44,6 @@ function getlocations_leaflet_requirements($phase) {
 
   return $requirements;
 }
-
-
 
 /**
  * Implements hook_uninstall().

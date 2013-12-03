@@ -1,8 +1,10 @@
 <?php
-// NEEDS WORK
-## NOT IN USE ATM
+
 /**
- * @file
+ * @file getlocations_fields_handler_field_distance.inc
+ * @author Bob Hutchinson http://drupal.org/user/52366
+ * @copyright GNU GPL
+ *
  * Distance field handler.
  */
 
