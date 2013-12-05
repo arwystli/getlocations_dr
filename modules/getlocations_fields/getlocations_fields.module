@@ -2220,7 +2220,7 @@ function getlocations_fields_load_location($glid) {
       $data = (isset($row->data) && ! empty($row->data) ? unserialize($row->data) : '');
 
       $keys = getlocations_fields_data_keys('d');
-      if (isset($data['data']['map_settings_allow'])) {
+      if (is_array($data) && isset($data['data']['map_settings_allow'])) {
         $map_settings_allow = $data['data']['map_settings_allow'];
       }
       else {
