@@ -109,6 +109,10 @@ var getlocations_leaflet_layerscontrol = [];
           fsopts.title = Drupal.t('Fullscreen');
           getlocations_leaflet_map[key].addControl(new L.Control.Fullscreen(fsopts));
         }
+        // graticule
+        if (map_settings.graticule) {
+          L.graticule().addTo(getlocations_leaflet_map[key]);
+        }
 
         // latlons data
         if (settings.datanum > 0) {

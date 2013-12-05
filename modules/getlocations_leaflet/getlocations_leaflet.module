@@ -85,59 +85,52 @@ function getlocations_leaflet_library() {
   );
 
   $getlocations_leaflet_paths = getlocations_leaflet_paths_get();
+  $getlocations_leaflet_plugins = getlocations_leaflet_plugins();
 
   $libraries['getlocations-leaflet'] = array(
     'title' => 'Getlocations Leaflet javascript',
     'website' => 'http://drupal.org/project/getlocations',
     'version' => GETLOCATIONS_VERSION,
-    'js' => array(
-      $getlocations_leaflet_paths['getlocations_leaflet_providers_path'] => array(
-        'type' => 'file',
-        'preprocess' => FALSE
-      ),
-      GETLOCATIONS_LEAFLET_PATH . '/plugins/fullscreen/Leaflet.fullscreen.min.js' => array(
-        'type' => 'file',
-        'preprocess' => FALSE
-      ),
-      $getlocations_leaflet_paths['getlocations_leaflet_path'] => array(
-        'type' => 'file',
-        'preprocess' => FALSE
-      ),
-    ),
-    'css' => array(
-      GETLOCATIONS_LEAFLET_PATH . '/plugins/fullscreen/leaflet.fullscreen.css' => array(
-        'type' => 'file',
-        'media' => 'all',
-      ),
-    ),
     'dependencies' => array(
       array('getlocations_leaflet', 'leaflet')
     )
   );
 
-  $libraries['getlocations-leaflet-markercluster'] = array(
-    'title' => 'Getlocations Leaflet javascript',
-    'website' => 'http://drupal.org/project/getlocations',
-    'version' => GETLOCATIONS_VERSION,
-    'js' => array(
-      GETLOCATIONS_LEAFLET_PATH . '/plugins/markercluster/leaflet.markercluster.js' => array(
-        'type' => 'file',
-        'preprocess' => FALSE
-      ),
+  // add plugins
+  $jsarr = array();
+  $cssarr = array();
+  if ($getlocations_leaflet_plugins['fullscreen']) {
+    $jsarr += array(
       GETLOCATIONS_LEAFLET_PATH . '/plugins/fullscreen/Leaflet.fullscreen.min.js' => array(
         'type' => 'file',
         'preprocess' => FALSE
       ),
-      $getlocations_leaflet_paths['getlocations_leaflet_providers_path'] => array(
+    );
+    $cssarr += array(
+      GETLOCATIONS_LEAFLET_PATH . '/plugins/fullscreen/leaflet.fullscreen.css' => array(
+        'type' => 'file',
+        'media' => 'all',
+      ),
+    );
+  }
+
+  if ($getlocations_leaflet_plugins['graticule']) {
+    $jsarr += array(
+      GETLOCATIONS_LEAFLET_PATH . '/plugins/graticule/L.Graticule.js' => array(
         'type' => 'file',
         'preprocess' => FALSE
       ),
-      $getlocations_leaflet_paths['getlocations_leaflet_path'] => array(
+    );
+  }
+
+  if ($getlocations_leaflet_plugins['markercluster']) {
+    $jsarr += array(
+      GETLOCATIONS_LEAFLET_PATH . '/plugins/markercluster/leaflet.markercluster.js' => array(
         'type' => 'file',
         'preprocess' => FALSE
       ),
-    ),
-    'css' => array(
+    );
+    $cssarr += array(
       GETLOCATIONS_LEAFLET_PATH . '/plugins/markercluster/MarkerCluster.css' => array(
         'type' => 'file',
         'media' => 'all',
@@ -152,15 +145,24 @@ function getlocations_leaflet_library() {
           '!IE' => FALSE,
         ),
       ),
-      GETLOCATIONS_LEAFLET_PATH . '/plugins/fullscreen/leaflet.fullscreen.css' => array(
-        'type' => 'file',
-        'media' => 'all',
-      ),
+
+    );
+  }
+  $jsarr += array(
+    $getlocations_leaflet_paths['getlocations_leaflet_providers_path'] => array(
+      'type' => 'file',
+      'preprocess' => FALSE
     ),
-    'dependencies' => array(
-      array('getlocations_leaflet', 'leaflet')
-    )
+    $getlocations_leaflet_paths['getlocations_leaflet_path'] => array(
+      'type' => 'file',
+      'preprocess' => FALSE
+    ),
   );
+
+  $libraries['getlocations-leaflet']['js'] = $jsarr;
+  if (! empty($cssarr)) {
+    $libraries['getlocations-leaflet']['css'] = $cssarr;
+  }
 
   return $libraries;
 }
@@ -420,12 +422,7 @@ function getlocations_leaflet_field_formatter_view($entity_type, $entity, $field
         $map_settings['datanum'] = $ct;
         $map_settings['latlons'] = $latlons;
 
-        if ($map_settings['map_settings']['markercluster']) {
-          drupal_add_library('getlocations_leaflet', 'getlocations-leaflet-markercluster');
-        }
-        else {
-          drupal_add_library('getlocations_leaflet', 'getlocations-leaflet');
-        }
+        drupal_add_library('getlocations_leaflet', 'getlocations-leaflet');
 
         getlocations_leaflet_js_settings_do($map_settings, $mapid);
         $element[$delta] = array(
@@ -827,10 +824,26 @@ function getlocations_leaflet_map_settings_do($map_settings, $defaults, $latlons
   $map_settings['map_opts']['zoomAnimation']      = ($defaults['zoomAnimation'] ? TRUE : FALSE);
   $map_settings['map_opts']['closePopupOnClick']  = ($defaults['closePopupOnClick'] ? TRUE : FALSE);
 
-  $map_settings['map_settings']['fullscreen'] = ($defaults['fullscreen'] ? TRUE : FALSE);
+  $getlocations_leaflet_plugins = getlocations_leaflet_plugins();
+  if ($getlocations_leaflet_plugins['fullscreen']) {
+    $map_settings['map_settings']['fullscreen'] = ($defaults['fullscreen'] ? TRUE : FALSE);
+  }
+  else {
+    $map_settings['map_settings']['fullscreen'] = FALSE;
+  }
   $map_settings['map_settings']['fullscreenposition'] = $defaults['fullscreenposition'];
-
-  $map_settings['map_settings']['markercluster']  = ($defaults['markercluster'] ? TRUE : FALSE);
+  if ($getlocations_leaflet_plugins['graticule']) {
+    $map_settings['map_settings']['graticule'] = ($defaults['graticule'] ? TRUE : FALSE);
+  }
+  else {
+    $map_settings['map_settings']['graticule'] = FALSE;
+  }
+  if ($getlocations_leaflet_plugins['markercluster']) {
+    $map_settings['map_settings']['markercluster']  = ($defaults['markercluster'] ? TRUE : FALSE);
+  }
+  else {
+    $map_settings['map_settings']['markercluster']  = FALSE;
+  }
   $map_settings['map_settings']['markerclusteroptions'] = '';
   if (file_exists(GETLOCATIONS_LEAFLET_PATH . '/plugins/markercluster/markerclusteroptions.inc')) {
     module_load_include('inc', 'getlocations_leaflet', 'plugins/markercluster/markerclusteroptions');
@@ -1452,6 +1465,8 @@ function getlocations_leaflet_defaults() {
 
   $newdefaults['markeraction']               = '';
   $newdefaults['markercluster']              = 0;
+  $newdefaults['graticule']                  = 0;
+
   $newdefaults['default_baselayer']          = 'OpenStreetMap.Mapnik';
 
   $settings = variable_get('getlocations_leaflet_defaults', '');
@@ -1461,6 +1476,17 @@ function getlocations_leaflet_defaults() {
   $settings = getlocations_adjust_vars($newdefaults, $settings);
 
   return $settings;
+}
+
+function getlocations_leaflet_plugins() {
+  $defaults = array(
+    'markercluster' => 0,
+    'fullscreen'    => 0,
+    'graticule'     => 0,
+  );
+  $settings = variable_get('getlocations_leaflet_plugins', $defaults);
+  $return = getlocations_adjust_vars($defaults, $settings);
+  return $return;
 }
 
 function getlocations_leaflet_get_map_layers($map_settings) {
@@ -1755,19 +1781,48 @@ function getlocations_leaflet_display_options_form($defaults) {
     t('Enable closePopupOnClick on the map.')
   );
 
-  // fullscreen
-  $form['fullscreen'] = getlocations_element_map_checkbox(
-    t('Fullscreen'),
-    $defaults['fullscreen'],
-    t('Enable Fullscreen button on the map.')
-  );
-  $form['fullscreen']['#suffix'] = '<div id="wrap-getlocations-fullscreen">';
-  $form['fullscreenposition'] = getlocations_element_dd(
-    t('Position of Fullscreen Control'),
-    $defaults['fullscreenposition'],
-    $controlpositions
-  );
-  $form['fullscreenposition']['#suffix'] = '</div>';
+  // plugins
+  $getlocations_leaflet_plugins = getlocations_leaflet_plugins();
+  if ($getlocations_leaflet_plugins['fullscreen']) {
+    // fullscreen
+    $form['fullscreen'] = getlocations_element_map_checkbox(
+      t('Fullscreen'),
+      $defaults['fullscreen'],
+      t('Enable Fullscreen button on the map.')
+    );
+    $form['fullscreen']['#suffix'] = '<div id="wrap-getlocations-fullscreen">';
+    $form['fullscreenposition'] = getlocations_element_dd(
+      t('Position of Fullscreen Control'),
+      $defaults['fullscreenposition'],
+      $controlpositions
+    );
+    $form['fullscreenposition']['#suffix'] = '</div>';
+  }
+  else {
+    $form['fullscreen'] = array('#type' => 'value', '#value' => 0);
+    $form['fullscreenposition'] = array('#type' => 'value', '#value' => $defaults['fullscreenposition']);
+  }
+
+  if ($getlocations_leaflet_plugins['markercluster']) {
+    $form['markercluster'] = getlocations_element_map_checkbox(
+      t('Marker Cluster'),
+      $defaults['markercluster'],
+      t('Enable markercluster on the map.')
+    );
+  }
+  else {
+    $form['markercluster'] = array('#type' => 'value', '#value' => 0);
+  }
+  if ($getlocations_leaflet_plugins['graticule']) {
+    $form['graticule'] = getlocations_element_map_checkbox(
+      t('Graticule'),
+      $defaults['graticule'],
+      t('Enable a grid on the map.')
+    );
+  }
+  else {
+    $form['graticule'] = array('#type' => 'value', '#value' => 0);
+  }
 
   $form['markeraction'] = getlocations_element_dd(
     t('Marker action'),
@@ -1777,11 +1832,6 @@ function getlocations_leaflet_display_options_form($defaults) {
       'popup' => t('Popup'),
       'link' => t('Link to content')
     )
-  );
-  $form['markercluster'] = getlocations_element_map_checkbox(
-    t('Marker Cluster'),
-    $defaults['markercluster'],
-    t('Enable markercluster on the map.')
   );
 
   // shapes
@@ -1835,6 +1885,26 @@ function getlocations_leaflet_settings_form() {
     t('Flush marker cache'),
     variable_get('getlocations_leaflet_flush', 1),
     t('Include the marker cache when the Drupal cache is flushed.')
+  );
+
+  // plugins
+  $getlocations_leaflet_plugins = getlocations_leaflet_plugins();
+  $form['getlocations_leaflet_plugins'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Leaflet plugins'),
+    '#tree' => TRUE,
+  );
+  $form['getlocations_leaflet_plugins']['markercluster'] = getlocations_element_map_checkbox(
+    t('Enable Markercluster plugin'),
+    $getlocations_leaflet_plugins['markercluster']
+  );
+  $form['getlocations_leaflet_plugins']['fullscreen'] = getlocations_element_map_checkbox(
+    t('Enable Fullscreen plugin'),
+    $getlocations_leaflet_plugins['fullscreen']
+  );
+  $form['getlocations_leaflet_plugins']['graticule'] = getlocations_element_map_checkbox(
+    t('Enable Graticule plugin'),
+    $getlocations_leaflet_plugins['graticule']
   );
 
   // cloudmade
@@ -2252,12 +2322,8 @@ function getlocations_leaflet_entity_type_map($type, $entity_id) {
     $map_settings['datanum'] = $ct;
     $map_settings['latlons'] = $latlons;
 
-    if ($map_settings['map_settings']['markercluster']) {
-      drupal_add_library('getlocations_leaflet', 'getlocations-leaflet-markercluster');
-    }
-    else {
-      drupal_add_library('getlocations_leaflet', 'getlocations-leaflet');
-    }
+    drupal_add_library('getlocations_leaflet', 'getlocations-leaflet');
+
     getlocations_leaflet_js_settings_do($map_settings, $mapid);
 
     $output = theme('getlocations_leaflet_map', array(

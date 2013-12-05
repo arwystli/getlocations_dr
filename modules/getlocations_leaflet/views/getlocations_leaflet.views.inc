@@ -276,12 +276,7 @@ function template_preprocess_getlocations_leaflet_view_map(&$variables) {
     $map_settings['map_settings']['categories'] = $cats;
     $map_settings['map_settings']['category_showhide_buttons'] = $options['category_showhide_buttons'];
 
-    if ($map_settings['map_settings']['markercluster']) {
-      drupal_add_library('getlocations_leaflet', 'getlocations-leaflet-markercluster');
-    }
-    else {
-      drupal_add_library('getlocations_leaflet', 'getlocations-leaflet');
-    }
+    drupal_add_library('getlocations_leaflet', 'getlocations-leaflet');
 
     getlocations_leaflet_js_settings_do($map_settings, $mapid);
 
