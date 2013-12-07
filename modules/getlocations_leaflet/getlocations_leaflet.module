@@ -516,6 +516,18 @@ function getlocations_leaflet_field_formatter_settings_summary($field, $instance
       if ($settings['scaleControl']) {
         $summary[] = t('Show scale: Yes');
       }
+      if ($settings['attributionControl']) {
+        $summary[] = t('Show attribution: Yes');
+      }
+      if ($settings['fullscreen']) {
+        $summary[] = t('Show fullscreen control: Yes');
+      }
+      if ($settings['markercluster']) {
+        $summary[] = t('Enable markercluster: Yes');
+      }
+      if ($settings['graticule']) {
+        $summary[] = t('Show grid: Yes');
+      }
 
       if ($settings['polygons_enable']) {
         $summary[] = t('Enable polygons: Yes');

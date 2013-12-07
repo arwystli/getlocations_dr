@@ -70,11 +70,47 @@ var getlocations_leaflet_layerscontrol = [];
           layers.addTo(getlocations_leaflet_map[key]);
         }
 
+        // fullscreen control
+        if (map_settings.fullscreen) {
+          var fsopts = {};
+          if (map_settings.fullscreenposition) {
+            fsopts.position = map_settings.fullscreenposition;
+          }
+          fsopts.title = Drupal.t('Fullscreen');
+          getlocations_leaflet_map[key].addControl(L.control.fullscreen(fsopts));
+        }
+        // pancontrol
+        if (map_settings.leaflet_pancontrol) {
+          var popts = {};
+          if (map_settings.pancontrolposition) {
+            popts.position = map_settings.pancontrolposition;
+          }
+          getlocations_leaflet_map[key].addControl(L.control.pan(popts));
+        }
+
+        // zoomslider
+        if (map_settings.leaflet_zoomslider) {
+          var popts = {};
+          if (map_settings.zoomsliderposition) {
+            popts.position = map_settings.zoomsliderposition;
+          }
+          getlocations_leaflet_map[key].addControl(L.control.zoomslider(popts));
+        }
+
+        // graticule
+        if (map_settings.graticule) {
+          L.graticule().addTo(getlocations_leaflet_map[key]);
+        }
+
         // Zoom control
-        if (map_settings.zoomControl && map_settings.zoomcontrolposition) {
-          var zoomopts = {position: map_settings.zoomcontrolposition};
+        if (map_settings.zoomControl) {
+          var zoomopts = {};
+          if (map_settings.zoomcontrolposition) {
+            zoomopts.position = map_settings.zoomcontrolposition;
+          }
           getlocations_leaflet_map[key].addControl(new L.Control.Zoom(zoomopts));
         }
+
         // Attribution control
         if (map_settings.attributionControl && map_settings.attributioncontrolposition) {
           var attributionopts = {position: map_settings.attributioncontrolposition};
@@ -82,6 +118,7 @@ var getlocations_leaflet_layerscontrol = [];
           getlocations_leaflet_map[key].addControl(attribcontrol);
           attribcontrol.addAttribution(map_layers.earth.options.attribution);
         }
+
         // Scale control
         if (map_settings.scaleControl) {
           var scaleopts = {};
@@ -100,19 +137,8 @@ var getlocations_leaflet_layerscontrol = [];
           }
           getlocations_leaflet_map[key].addControl(new L.Control.Scale(scaleopts));
         }
-        // fullscreen control
-        if (map_settings.fullscreen) {
-          var fsopts = {};
-          if (map_settings.fullscreenposition) {
-            fsopts.position = map_settings.fullscreenposition;
-          }
-          fsopts.title = Drupal.t('Fullscreen');
-          getlocations_leaflet_map[key].addControl(new L.Control.Fullscreen(fsopts));
-        }
-        // graticule
-        if (map_settings.graticule) {
-          L.graticule().addTo(getlocations_leaflet_map[key]);
-        }
+
+
 
         // latlons data
         if (settings.datanum > 0) {
@@ -295,6 +321,9 @@ var getlocations_leaflet_layerscontrol = [];
           getlocations_leaflet_layerscontrol[key] = L.control.layers(layers, getlocations_leaflet_overlays[key], layeropts);
           getlocations_leaflet_map[key].addControl(getlocations_leaflet_layerscontrol[key]);
         }
+
+
+
 
       } // end is there really a map?
     }); // end each setting loop
