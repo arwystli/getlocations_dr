@@ -99,22 +99,22 @@ function getlocations_leaflet_library() {
   // add plugins
   $jsarr = array();
   $cssarr = array();
-  if ($getlocations_leaflet_plugins['fullscreen']) {
+  if ($getlocations_leaflet_plugins['fullscreen_enable']) {
     $jsarr += array(
-      GETLOCATIONS_LEAFLET_PATH . '/plugins/fullscreen/Leaflet.fullscreen.min.js' => array(
+      GETLOCATIONS_LEAFLET_PATH . '/plugins/fullscreen/Control.FullScreen.js' => array(
         'type' => 'file',
         'preprocess' => FALSE
       ),
     );
     $cssarr += array(
-      GETLOCATIONS_LEAFLET_PATH . '/plugins/fullscreen/leaflet.fullscreen.css' => array(
+      GETLOCATIONS_LEAFLET_PATH . '/plugins/fullscreen/Control.FullScreen.css' => array(
         'type' => 'file',
         'media' => 'all',
       ),
     );
   }
 
-  if ($getlocations_leaflet_plugins['graticule']) {
+  if ($getlocations_leaflet_plugins['graticule_enable']) {
     $jsarr += array(
       GETLOCATIONS_LEAFLET_PATH . '/plugins/graticule/L.Graticule.js' => array(
         'type' => 'file',
@@ -123,7 +123,7 @@ function getlocations_leaflet_library() {
     );
   }
 
-  if ($getlocations_leaflet_plugins['markercluster']) {
+  if ($getlocations_leaflet_plugins['markercluster_enable']) {
     $jsarr += array(
       GETLOCATIONS_LEAFLET_PATH . '/plugins/markercluster/leaflet.markercluster.js' => array(
         'type' => 'file',
@@ -139,15 +139,51 @@ function getlocations_leaflet_library() {
         'type' => 'file',
         'media' => 'all',
       ),
-      GETLOCATIONS_LEAFLET_PATH . '/plugins/markercluster/MarkerCluster.Default.ie.css' => array(
+    );
+  }
+
+  if ($getlocations_leaflet_plugins['pancontrol_enable']) {
+    $jsarr += array(
+      GETLOCATIONS_LEAFLET_PATH . '/plugins/pancontrol/L.Control.Pan.js' => array(
+        'type' => 'file',
+        'preprocess' => FALSE
+      ),
+    );
+    $cssarr += array(
+      GETLOCATIONS_LEAFLET_PATH . '/plugins/pancontrol/L.Control.Pan.css' => array(
+        'type' => 'file',
+        'media' => 'all',
+      ),
+      GETLOCATIONS_LEAFLET_PATH . '/plugins/pancontrol/L.Control.Pan.ie.css' => array(
         'browsers' => array(
           'IE' => 'lte IE 8',
           '!IE' => FALSE,
         ),
       ),
-
     );
   }
+
+  if ($getlocations_leaflet_plugins['zoomslider_enable']) {
+    $jsarr += array(
+      GETLOCATIONS_LEAFLET_PATH . '/plugins/zoomslider/L.Control.Zoomslider.js' => array(
+        'type' => 'file',
+        'preprocess' => FALSE
+      ),
+    );
+    $cssarr += array(
+      GETLOCATIONS_LEAFLET_PATH . '/plugins/zoomslider/L.Control.Zoomslider.css' => array(
+        'type' => 'file',
+        'media' => 'all',
+      ),
+      GETLOCATIONS_LEAFLET_PATH . '/plugins/zoomslider/L.Control.Zoomslider.ie.css' => array(
+        'browsers' => array(
+          'IE' => 'lte IE 8',
+          '!IE' => FALSE,
+        ),
+      ),
+    );
+  }
+
   $jsarr += array(
     $getlocations_leaflet_paths['getlocations_leaflet_providers_path'] => array(
       'type' => 'file',
@@ -507,7 +543,10 @@ function getlocations_leaflet_field_formatter_settings_summary($field, $instance
 
       $summary[] = t('Getlocations Leaflet Map Field settings');
 
-      if ($settings['zoomControl']) {
+      if ($settings['zoomslider']) {
+        $summary[] = t('Show zoom slider: Yes');
+      }
+      elseif ($settings['zoomControl']) {
         $summary[] = t('Show zoom control: Yes');
       }
       if ($settings['layerControl']) {
@@ -525,10 +564,12 @@ function getlocations_leaflet_field_formatter_settings_summary($field, $instance
       if ($settings['markercluster']) {
         $summary[] = t('Enable markercluster: Yes');
       }
+      if ($settings['pancontrol']) {
+        $summary[] = t('Show Pan control: Yes');
+      }
       if ($settings['graticule']) {
         $summary[] = t('Show grid: Yes');
       }
-
       if ($settings['polygons_enable']) {
         $summary[] = t('Enable polygons: Yes');
         if ($settings['polygons_clickable']) {
@@ -553,7 +594,6 @@ function getlocations_leaflet_field_formatter_settings_summary($field, $instance
           $summary[] = t('Polylines clickable: Yes');
         }
       }
-
 
       break;
 
@@ -827,6 +867,7 @@ function getlocations_leaflet_link_formatter_defaults() {
 
 function getlocations_leaflet_map_settings_do($map_settings, $defaults, $latlons, $mapid) {
 
+
   $map_settings['map_opts']['dragging']           = ($defaults['dragging'] ? TRUE : FALSE);
   $map_settings['map_opts']['scrollWheelZoom']    = ($defaults['scrollWheelZoom'] ? TRUE : FALSE);
   $map_settings['map_opts']['doubleClickZoom']    = ($defaults['doubleClickZoom'] ? TRUE : FALSE);
@@ -837,25 +878,36 @@ function getlocations_leaflet_map_settings_do($map_settings, $defaults, $latlons
   $map_settings['map_opts']['closePopupOnClick']  = ($defaults['closePopupOnClick'] ? TRUE : FALSE);
 
   $getlocations_leaflet_plugins = getlocations_leaflet_plugins();
-  if ($getlocations_leaflet_plugins['fullscreen']) {
+  if ($getlocations_leaflet_plugins['fullscreen_enable']) {
     $map_settings['map_settings']['fullscreen'] = ($defaults['fullscreen'] ? TRUE : FALSE);
   }
   else {
     $map_settings['map_settings']['fullscreen'] = FALSE;
   }
   $map_settings['map_settings']['fullscreenposition'] = $defaults['fullscreenposition'];
-  if ($getlocations_leaflet_plugins['graticule']) {
+
+  if ($getlocations_leaflet_plugins['graticule_enable']) {
     $map_settings['map_settings']['graticule'] = ($defaults['graticule'] ? TRUE : FALSE);
   }
   else {
     $map_settings['map_settings']['graticule'] = FALSE;
   }
-  if ($getlocations_leaflet_plugins['markercluster']) {
+
+  if ($getlocations_leaflet_plugins['markercluster_enable']) {
     $map_settings['map_settings']['markercluster']  = ($defaults['markercluster'] ? TRUE : FALSE);
   }
   else {
     $map_settings['map_settings']['markercluster']  = FALSE;
   }
+
+  if ($getlocations_leaflet_plugins['pancontrol_enable']) {
+    $map_settings['map_settings']['leaflet_pancontrol'] = ($defaults['pancontrol'] ? TRUE : FALSE);
+  }
+  else {
+    $map_settings['map_settings']['leaflet_pancontrol'] = FALSE;
+  }
+  $map_settings['map_settings']['pancontrolposition'] = $defaults['pancontrolposition'];
+
   $map_settings['map_settings']['markerclusteroptions'] = '';
   if (file_exists(GETLOCATIONS_LEAFLET_PATH . '/plugins/markercluster/markerclusteroptions.inc')) {
     module_load_include('inc', 'getlocations_leaflet', 'plugins/markercluster/markerclusteroptions');
@@ -865,16 +917,30 @@ function getlocations_leaflet_map_settings_do($map_settings, $defaults, $latlons
   }
 
   // Zoom
-  if ($defaults['zoomControl'] && $defaults['zoomcontrolposition']) {
+  if ($defaults['zoomControl']) {
     $map_settings['map_opts']['zoomControl'] = FALSE;
     $map_settings['map_settings']['zoomControl'] = TRUE;
-    $map_settings['map_settings']['zoomcontrolposition'] = $defaults['zoomcontrolposition'];
   }
   else {
-    $map_settings['map_opts']['zoomControl'] = ($defaults['zoomControl'] ? TRUE : FALSE);
+    $map_settings['map_opts']['zoomControl'] = FALSE;
     $map_settings['map_settings']['zoomControl'] = FALSE;
-    $map_settings['map_settings']['zoomcontrolposition'] = '';
   }
+  $map_settings['map_settings']['zoomcontrolposition'] = $defaults['zoomcontrolposition'];
+
+  // zoomslider
+  if ($getlocations_leaflet_plugins['zoomslider_enable']) {
+    $map_settings['map_settings']['leaflet_zoomslider'] = ($defaults['zoomslider'] ? TRUE : FALSE);
+    // kill off zoomcontrol
+    if ($defaults['zoomslider']) {
+      $map_settings['map_settings']['zoomControl'] = FALSE;
+      $map_settings['map_opts']['zoomControl'] = FALSE;
+    }
+  }
+  else {
+    $map_settings['map_settings']['leaflet_zoomslider'] = FALSE;
+  }
+  $map_settings['map_settings']['zoomsliderposition'] = $defaults['zoomsliderposition'];
+
   // Attribution
   if ($defaults['attributionControl'] && $defaults['attributioncontrolposition']) {
     $map_settings['map_opts']['attributionControl'] = FALSE;
@@ -1478,6 +1544,10 @@ function getlocations_leaflet_defaults() {
   $newdefaults['markeraction']               = '';
   $newdefaults['markercluster']              = 0;
   $newdefaults['graticule']                  = 0;
+  $newdefaults['pancontrol']                 = 0;
+  $newdefaults['pancontrolposition']         = '';
+  $newdefaults['zoomslider']                 = 0;
+  $newdefaults['zoomsliderposition']         = '';
 
   $newdefaults['default_baselayer']          = 'OpenStreetMap.Mapnik';
 
@@ -1492,9 +1562,11 @@ function getlocations_leaflet_defaults() {
 
 function getlocations_leaflet_plugins() {
   $defaults = array(
-    'markercluster' => 0,
-    'fullscreen'    => 0,
-    'graticule'     => 0,
+    'markercluster_enable' => 0,
+    'fullscreen_enable'    => 0,
+    'graticule_enable'     => 0,
+    'pancontrol_enable'    => 0,
+    'zoomslider_enable'    => 0,
   );
   $settings = variable_get('getlocations_leaflet_plugins', $defaults);
   $return = getlocations_adjust_vars($defaults, $settings);
@@ -1795,14 +1867,14 @@ function getlocations_leaflet_display_options_form($defaults) {
 
   // plugins
   $getlocations_leaflet_plugins = getlocations_leaflet_plugins();
-  if ($getlocations_leaflet_plugins['fullscreen']) {
+  if ($getlocations_leaflet_plugins['fullscreen_enable']) {
     // fullscreen
     $form['fullscreen'] = getlocations_element_map_checkbox(
       t('Fullscreen'),
       $defaults['fullscreen'],
       t('Enable Fullscreen button on the map.')
     );
-    $form['fullscreen']['#suffix'] = '<div id="wrap-getlocations-fullscreen">';
+    $form['fullscreen']['#suffix'] = '<div id="getlocations-fullscreen-wrap">';
     $form['fullscreenposition'] = getlocations_element_dd(
       t('Position of Fullscreen Control'),
       $defaults['fullscreenposition'],
@@ -1815,7 +1887,7 @@ function getlocations_leaflet_display_options_form($defaults) {
     $form['fullscreenposition'] = array('#type' => 'value', '#value' => $defaults['fullscreenposition']);
   }
 
-  if ($getlocations_leaflet_plugins['markercluster']) {
+  if ($getlocations_leaflet_plugins['markercluster_enable']) {
     $form['markercluster'] = getlocations_element_map_checkbox(
       t('Marker Cluster'),
       $defaults['markercluster'],
@@ -1825,7 +1897,7 @@ function getlocations_leaflet_display_options_form($defaults) {
   else {
     $form['markercluster'] = array('#type' => 'value', '#value' => 0);
   }
-  if ($getlocations_leaflet_plugins['graticule']) {
+  if ($getlocations_leaflet_plugins['graticule_enable']) {
     $form['graticule'] = getlocations_element_map_checkbox(
       t('Graticule'),
       $defaults['graticule'],
@@ -1834,6 +1906,42 @@ function getlocations_leaflet_display_options_form($defaults) {
   }
   else {
     $form['graticule'] = array('#type' => 'value', '#value' => 0);
+  }
+
+  if ($getlocations_leaflet_plugins['pancontrol_enable']) {
+    $form['pancontrol'] = getlocations_element_map_checkbox(
+      t('Pancontrol'),
+      $defaults['pancontrol'],
+      t('Enable Pan control on the map.')
+    );
+    $form['pancontrol']['#suffix'] = '<div id="getlocations-pancontrol-wrap">';
+    $form['pancontrolposition'] = getlocations_element_dd(
+      t('Position of Pan Control'),
+      $defaults['pancontrolposition'],
+      $controlpositions
+    );
+    $form['pancontrolposition']['#suffix'] = '</div>';
+  }
+  else {
+    $form['pancontrol'] = array('#type' => 'value', '#value' => 0);
+  }
+
+  if ($getlocations_leaflet_plugins['zoomslider_enable']) {
+    $form['zoomslider'] = getlocations_element_map_checkbox(
+      t('Zoomslider'),
+      $defaults['zoomslider'],
+      t('Enable Zoom Slider on the map.')
+    );
+    $form['zoomslider']['#suffix'] = '<div id="getlocations-zoomslider-wrap">';
+    $form['zoomsliderposition'] = getlocations_element_dd(
+      t('Position of Zoomslider'),
+      $defaults['zoomsliderposition'],
+      $controlpositions
+    );
+    $form['zoomsliderposition']['#suffix'] = '</div>';
+  }
+  else {
+    $form['zoomslider'] = array('#type' => 'value', '#value' => 0);
   }
 
   $form['markeraction'] = getlocations_element_dd(
@@ -1906,17 +2014,25 @@ function getlocations_leaflet_settings_form() {
     '#title' => t('Leaflet plugins'),
     '#tree' => TRUE,
   );
-  $form['getlocations_leaflet_plugins']['markercluster'] = getlocations_element_map_checkbox(
+  $form['getlocations_leaflet_plugins']['markercluster_enable'] = getlocations_element_map_checkbox(
     t('Enable Markercluster plugin'),
-    $getlocations_leaflet_plugins['markercluster']
+    $getlocations_leaflet_plugins['markercluster_enable']
   );
-  $form['getlocations_leaflet_plugins']['fullscreen'] = getlocations_element_map_checkbox(
+  $form['getlocations_leaflet_plugins']['fullscreen_enable'] = getlocations_element_map_checkbox(
     t('Enable Fullscreen plugin'),
-    $getlocations_leaflet_plugins['fullscreen']
+    $getlocations_leaflet_plugins['fullscreen_enable']
   );
-  $form['getlocations_leaflet_plugins']['graticule'] = getlocations_element_map_checkbox(
+  $form['getlocations_leaflet_plugins']['graticule_enable'] = getlocations_element_map_checkbox(
     t('Enable Graticule plugin'),
-    $getlocations_leaflet_plugins['graticule']
+    $getlocations_leaflet_plugins['graticule_enable']
+  );
+  $form['getlocations_leaflet_plugins']['pancontrol_enable'] = getlocations_element_map_checkbox(
+    t('Enable Pancontrol plugin'),
+    $getlocations_leaflet_plugins['pancontrol_enable']
+  );
+  $form['getlocations_leaflet_plugins']['zoomslider_enable'] = getlocations_element_map_checkbox(
+    t('Enable Zoomslider plugin'),
+    $getlocations_leaflet_plugins['zoomslider_enable']
   );
 
   // cloudmade

@@ -1,9 +1,77 @@
-commit 7bfd8fb
+commit bc2239a
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sun Dec 8 09:25:25 2013 +0000
+
+    fixed js match, cleanup
+
+js/getlocations_circles.js
+js/getlocations_polygons.js
+js/getlocations_polylines.js
+js/getlocations_rectangles.js
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/js/getlocations_leaflet.js
+modules/getlocations_leaflet/js/getlocations_leaflet_circles.js
+modules/getlocations_leaflet/js/getlocations_leaflet_polygons.js
+modules/getlocations_leaflet/js/getlocations_leaflet_polylines.js
+modules/getlocations_leaflet/js/getlocations_leaflet_rectangles.js
+
+commit 1ea4c9f
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sat Dec 7 00:49:19 2013 +0000
+
+    updated markercluster, added pancontrol, zoomslider
+
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/js/getlocations_leaflet.js
+modules/getlocations_leaflet/plugins/fullscreen/Control.FullScreen.css
+modules/getlocations_leaflet/plugins/fullscreen/Control.FullScreen.js
+modules/getlocations_leaflet/plugins/fullscreen/Leaflet.fullscreen.js
+modules/getlocations_leaflet/plugins/fullscreen/Leaflet.fullscreen.min.js
+modules/getlocations_leaflet/plugins/fullscreen/fullscreen.png
+modules/getlocations_leaflet/plugins/fullscreen/fullscreen@2x.png
+modules/getlocations_leaflet/plugins/fullscreen/icon-fullscreen.png
+modules/getlocations_leaflet/plugins/fullscreen/leaflet.fullscreen.css
+modules/getlocations_leaflet/plugins/markercluster/MarkerCluster.Default.css
+modules/getlocations_leaflet/plugins/markercluster/MarkerCluster.Default.ie.css
+modules/getlocations_leaflet/plugins/markercluster/leaflet.markercluster-src.js
+modules/getlocations_leaflet/plugins/markercluster/leaflet.markercluster.js
+modules/getlocations_leaflet/plugins/pancontrol/L.Control.Pan.css
+modules/getlocations_leaflet/plugins/pancontrol/L.Control.Pan.ie.css
+modules/getlocations_leaflet/plugins/pancontrol/L.Control.Pan.js
+modules/getlocations_leaflet/plugins/pancontrol/images/pan-down.png
+modules/getlocations_leaflet/plugins/pancontrol/images/pan-left.png
+modules/getlocations_leaflet/plugins/pancontrol/images/pan-right.png
+modules/getlocations_leaflet/plugins/pancontrol/images/pan-up.png
+modules/getlocations_leaflet/plugins/zoomslider/L.Control.Zoomslider.css
+modules/getlocations_leaflet/plugins/zoomslider/L.Control.Zoomslider.ie.css
+modules/getlocations_leaflet/plugins/zoomslider/L.Control.Zoomslider.js
+
+commit 2266827
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Thu Dec 5 21:48:47 2013 +0000
+
+    added graticule, reorganised libraries
+
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/js/getlocations_leaflet.js
+modules/getlocations_leaflet/plugins/graticule/L.Graticule.js
+modules/getlocations_leaflet/views/getlocations_leaflet.views.inc
+
+commit 0d9fbd6
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Thu Dec 5 21:48:28 2013 +0000
+
+    fixed bug in $data, see #2148715
+
+modules/getlocations_fields/getlocations_fields.module
+
+commit 390b203
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Tue Dec 3 12:12:22 2013 +0000
 
     better header comments
 
+CHANGELOG.txt
 getlocations.admin.inc
 getlocations.css
 getlocations.install

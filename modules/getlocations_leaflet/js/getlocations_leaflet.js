@@ -40,14 +40,15 @@ var getlocations_leaflet_layerscontrol = [];
         getlocations_leaflet_overlays[key] = {};
         getlocations_leaflet_layerscontrol[key] = {};
 
-        getlocations_leaflet_map[key] = new L.Map('getlocations_leaflet_canvas_' + key, map_opts);
+        // get the map
+        getlocations_leaflet_map[key] = L.map('getlocations_leaflet_canvas_' + key, map_opts);
 
         // layers
         var layers = {};
+        // do the default layer first and separately
         var default_layer_name = map_settings.default_layer_name;
         var default_layer_label = map_settings.default_layer_label;
         layers[default_layer_label] = L.tileLayer.provider(default_layer_name).addTo(getlocations_leaflet_map[key]);
-
         for (var lkey in map_layers) {
           if (lkey != default_layer_name) {
             var layer = map_layers[lkey];
@@ -79,6 +80,7 @@ var getlocations_leaflet_layerscontrol = [];
           fsopts.title = Drupal.t('Fullscreen');
           getlocations_leaflet_map[key].addControl(L.control.fullscreen(fsopts));
         }
+
         // pancontrol
         if (map_settings.leaflet_pancontrol) {
           var popts = {};
@@ -108,13 +110,13 @@ var getlocations_leaflet_layerscontrol = [];
           if (map_settings.zoomcontrolposition) {
             zoomopts.position = map_settings.zoomcontrolposition;
           }
-          getlocations_leaflet_map[key].addControl(new L.Control.Zoom(zoomopts));
+          getlocations_leaflet_map[key].addControl(L.control.zoom(zoomopts));
         }
 
         // Attribution control
         if (map_settings.attributionControl && map_settings.attributioncontrolposition) {
           var attributionopts = {position: map_settings.attributioncontrolposition};
-          var attribcontrol = new L.Control.Attribution(attributionopts)
+          var attribcontrol = L.control.attribution(attributionopts)
           getlocations_leaflet_map[key].addControl(attribcontrol);
           attribcontrol.addAttribution(map_layers.earth.options.attribution);
         }
@@ -135,19 +137,19 @@ var getlocations_leaflet_layerscontrol = [];
               scaleopts.imperial = true;
             }
           }
-          getlocations_leaflet_map[key].addControl(new L.Control.Scale(scaleopts));
+          getlocations_leaflet_map[key].addControl(L.control.scale(scaleopts));
         }
-
-
 
         // latlons data
         if (settings.datanum > 0) {
 
+          // categories
           var categories = {};
           if (map_settings.category_showhide_buttons) {
             categories = (map_settings.categories ? map_settings.categories : {});
           }
 
+          // markers
           var Markers = [];
           if (map_settings.markercluster) {
             if (map_settings.category_showhide_buttons) {
@@ -162,11 +164,11 @@ var getlocations_leaflet_layerscontrol = [];
           else {
             if (map_settings.category_showhide_buttons) {
               for (var c in categories) {
-                Markers[c] = new L.LayerGroup();
+                Markers[c] = L.layerGroup();
               }
             }
             else {
-              Markers['loc'] = new L.LayerGroup();
+              Markers['loc'] = L.layerGroup();
             }
           }
 
@@ -211,42 +213,44 @@ var getlocations_leaflet_layerscontrol = [];
             }
 
             // make markers
-            var latLng = new L.LatLng(lat, lon);
+            var latLng = L.latLng(lat, lon);
             var icon = '';
             if (markername) {
               icon = icons[markername];
             }
             if (icon) {
-              var thisIcon = new L.Icon({iconUrl: icon.iconUrl});
-
+              var thisIcon = L.icon({iconUrl: icon.iconUrl});
               // override applicable marker defaults
               if (icon.iconSize) {
-                thisIcon.options.iconSize = new L.Point(parseInt(icon.iconSize.x, 10), parseInt(icon.iconSize.y, 10));
+                thisIcon.options.iconSize = L.point(parseInt(icon.iconSize.x, 10), parseInt(icon.iconSize.y, 10));
               }
               if (icon.iconAnchor) {
-                thisIcon.options.iconAnchor = new L.Point(parseFloat(icon.iconAnchor.x, 10), parseFloat(icon.iconAnchor.y, 10));
+                thisIcon.options.iconAnchor = L.point(parseFloat(icon.iconAnchor.x, 10), parseFloat(icon.iconAnchor.y, 10));
               }
               if (icon.popupAnchor) {
-                thisIcon.options.popupAnchor = new L.Point(parseFloat(icon.popupAnchor.x, 10), parseFloat(icon.popupAnchor.y, 10));
+                thisIcon.options.popupAnchor = L.point(parseFloat(icon.popupAnchor.x, 10), parseFloat(icon.popupAnchor.y, 10));
               }
               if (icon.shadowUrl !== undefined) {
                 thisIcon.options.shadowUrl = icon.shadowUrl;
                 if (icon.shadowSize) {
-                  thisIcon.options.shadowSize = new L.Point(parseInt(icon.shadowSize.x, 10), parseInt(icon.shadowSize.y, 10));
+                  thisIcon.options.shadowSize = L.point(parseInt(icon.shadowSize.x, 10), parseInt(icon.shadowSize.y, 10));
                 }
                 if (icon.shadowAnchor) {
-                  thisIcon.options.shadowAnchor = new L.Point(parseInt(icon.shadowAnchor.x, 10), parseInt(icon.shadowAnchor.y, 10));
+                  thisIcon.options.shadowAnchor = L.point(parseInt(icon.shadowAnchor.x, 10), parseInt(icon.shadowAnchor.y, 10));
                 }
               }
-              Marker = new L.Marker(latLng, {icon: thisIcon});
+              Marker = L.marker(latLng, {icon: thisIcon});
             }
             else {
-              Marker = new L.Marker(latLng);
+              // default leaflet marker
+              Marker = L.marker(latLng);
             }
+
             // tooltip
             if (title) {
               Marker.options.title = title;
             }
+
             // markeraction
             if (markeraction && markeraction.type && markeraction.data) {
               if (markeraction.type == 'popup') {
@@ -300,14 +304,14 @@ var getlocations_leaflet_layerscontrol = [];
 
         } // end datanum > 0
 
+        // minmaxes will apply when there are more than one marker on the map
         if (settings.datanum > 1) {
-          // minmaxes will apply when there are more than one marker on the map
           var minmaxes = (map_settings.minmaxes ? map_settings.minmaxes : false);
           if (minmaxes) {
             var mmarr = minmaxes.split(',');
-            var sw = new L.LatLng(parseFloat(mmarr[2]), parseFloat(mmarr[3])),
-              ne = new L.LatLng(parseFloat(mmarr[0]), parseFloat(mmarr[1])),
-              bounds = new L.LatLngBounds(sw, ne).pad(0.1);
+            var sw = L.latLng(parseFloat(mmarr[2]), parseFloat(mmarr[3])),
+              ne = L.latLng(parseFloat(mmarr[0]), parseFloat(mmarr[1])),
+              bounds = L.latLngBounds(sw, ne).pad(0.1);
               getlocations_leaflet_map[key].fitBounds(bounds);
           }
         }
@@ -321,9 +325,6 @@ var getlocations_leaflet_layerscontrol = [];
           getlocations_leaflet_layerscontrol[key] = L.control.layers(layers, getlocations_leaflet_overlays[key], layeropts);
           getlocations_leaflet_map[key].addControl(getlocations_leaflet_layerscontrol[key]);
         }
-
-
-
 
       } // end is there really a map?
     }); // end each setting loop

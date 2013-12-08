@@ -32,13 +32,13 @@
       $.each(Drupal.settings.getlocations_circles, function (key, settings) {
 
         var strokeColor = (settings.strokeColor ? settings.strokeColor : default_circle_settings.strokeColor);
-        if (typeof strokeColor.match("/^#/") === null) {
+        if (! strokeColor.match(/^#/)) {
           strokeColor = '#' + strokeColor;
         }
         var strokeOpacity = (settings.strokeOpacity ? settings.strokeOpacity : default_circle_settings.strokeOpacity);
         var strokeWeight = (settings.strokeWeight ? settings.strokeWeight : default_circle_settings.strokeWeight);
         var fillColor = (settings.fillColor ? settings.fillColor : default_circle_settings.fillColor);
-        if (typeof fillColor.match("/^#/") === null) {
+        if (! fillColor.match(/^#/)) {
           fillColor = '#' + fillColor;
         }
         var fillOpacity = (settings.fillOpacity ? settings.fillOpacity : default_circle_settings.fillOpacity);
@@ -60,7 +60,7 @@
           rc = circles[i];
           if (rc.coords) {
             if (rc.strokeColor) {
-              if (typeof rc.strokeColor.match("/^#/") === null) {
+              if (! rc.strokeColor.match(/^#/)) {
                 rc.strokeColor = '#' + rc.strokeColor;
               }
               p_strokeColor = rc.strokeColor;
@@ -72,7 +72,7 @@
               p_strokeWeight = rc.strokeWeight;
             }
             if (rc.fillColor) {
-              if (typeof rc.fillColor.match("/^#/") === null) {
+              if (! rc.fillColor.match(/^#/)) {
                 rc.fillColor = '#' + rc.fillColor;
               }
               p_fillColor = rc.fillColor;

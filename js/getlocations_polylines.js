@@ -25,7 +25,7 @@
       $.each(Drupal.settings.getlocations_polylines, function (key, settings) {
 
         var strokeColor = (settings.strokeColor ? settings.strokeColor : default_polyline_settings.strokeColor);
-        if (typeof strokeColor.match("/^#/") === null) {
+        if (! strokeColor.match(/^#/)) {
           strokeColor = '#' + strokeColor;
         }
         var strokeOpacity = (settings.strokeOpacity ? settings.strokeOpacity : default_polyline_settings.strokeOpacity);
@@ -44,7 +44,7 @@
           pl = polylines[i];
           if (pl.coords) {
             if (pl.strokeColor) {
-              if (typeof pl.strokeColor.match("/^#/") === null) {
+              if (! pl.strokeColor.match(/^#/)) {
                 pl.strokeColor = '#' + pl.strokeColor;
               }
               p_strokeColor = pl.strokeColor;
