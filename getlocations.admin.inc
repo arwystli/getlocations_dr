@@ -331,6 +331,20 @@ function getlocations_settings_form() {
     TRUE
   );
 
+  $getlocations_aggr = getlocations_aggr_get();
+  $form['getlocations_agg'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Javescript Aggregation'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    // This will store all the defaults in one variable.
+    '#tree' => FALSE,
+  );
+  $form['getlocations_agg']['getlocations_aggr'] = getlocations_element_map_checkbox(
+    t('Allow Getlocations Javascript to be aggregated'),
+    $getlocations_aggr
+  );
+
   $form['getlocations_paths'] = array(
     '#type' => 'fieldset',
     '#title' => t('Javascript paths'),

@@ -1635,10 +1635,14 @@ function getlocations_fields_getmap($settings, $active) {
   $mapid = getlocations_setup_map($getlocations_defaults);
   drupal_add_css(GETLOCATIONS_FIELDS_PATH . '/getlocations_fields.css');
 
+  $aggr = (getlocations_aggr_get() ? TRUE : FALSE);
+
   $getlocations_fields_paths = getlocations_fields_paths_get();
   $js_opts = array();
   $js_opts['weight'] = $getlocations_defaults['getlocations_js_weight'] + 10;
   $js_opts['type'] = 'file';
+  $js_opts['preprocess'] = $aggr;
+
   $latlons = array();
   if ($active) {
     drupal_add_js($getlocations_fields_paths['getlocations_fields_path'], $js_opts);

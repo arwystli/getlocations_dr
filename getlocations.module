@@ -691,6 +691,8 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
 
   $key = variable_get('getlocations_api3_key', '');
 
+  $aggr = (getlocations_aggr_get() ? TRUE : FALSE);
+
   // v3 googlemaps API
   $query = array();
   if (! empty($key)) {
@@ -793,6 +795,7 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
       $js_opts = array();
       $js_opts['weight'] = $getlocations_js_weight;
       $js_opts['type'] = 'file';
+      $js_opts['preprocess'] = $aggr;
       drupal_add_js($getlocations_fields_paths['getlocations_fields_streetview_path'], $js_opts);
       $getlocations_js_weight++;
     }
@@ -803,6 +806,7 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
     $js_opts = array();
     $js_opts['weight'] = $getlocations_js_weight;
     $js_opts['type'] = 'file';
+    $js_opts['preprocess'] = $aggr;
     drupal_add_js(GETLOCATIONS_PATH . '/js/icons.js', $js_opts);
     $getlocations_js_weight++;
   }
@@ -812,6 +816,7 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
     $js_opts = array();
     $js_opts['weight'] = $getlocations_js_weight;
     $js_opts['type'] = 'file';
+    $js_opts['preprocess'] = $aggr;
     drupal_add_js($markerfile, $js_opts);
     $getlocations_js_weight++;
   }
@@ -821,6 +826,7 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
     $js_opts = array();
     $js_opts['weight'] = $getlocations_js_weight;
     $js_opts['type'] = 'file';
+    $js_opts['preprocess'] = $aggr;
     drupal_add_js($getlocations_paths['getlocations_geo_path'], $js_opts);
     $getlocations_js_weight++;
   }
@@ -829,6 +835,7 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
     $js_opts = array();
     $js_opts['weight'] = $getlocations_js_weight;
     $js_opts['type'] = 'file';
+    $js_opts['preprocess'] = $aggr;
     drupal_add_js($getlocations_paths['markermanager_path'], $js_opts);
     $getlocations_js_weight++;
   }
@@ -836,6 +843,7 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
     $js_opts = array();
     $js_opts['weight'] = $getlocations_js_weight;
     $js_opts['type'] = 'file';
+    $js_opts['preprocess'] = $aggr;
     drupal_add_js($getlocations_paths['markerclusterer_path'], $js_opts);
     $getlocations_js_weight++;
 
@@ -856,12 +864,14 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
     $js_opts = array();
     $js_opts['weight'] = $getlocations_js_weight;
     $js_opts['type'] = 'file';
+    $js_opts['preprocess'] = $aggr;
     drupal_add_js($getlocations_paths['infobubble_path'], $js_opts);
     $getlocations_js_weight++;
 
     $js_opts = array();
     $js_opts['weight'] = $getlocations_js_weight;
     $js_opts['type'] = 'file';
+    $js_opts['preprocess'] = $aggr;
     drupal_add_js($getlocations_paths['infobubble_extended_path'], $js_opts);
     $getlocations_js_weight++;
 
@@ -869,6 +879,7 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
       $js_opts = array();
       $js_opts['weight'] = $getlocations_js_weight;
       $js_opts['type'] = 'file';
+      $js_opts['preprocess'] = $aggr;
       drupal_add_js($getlocations_paths['infobubble_options_path'], $js_opts);
       $getlocations_js_weight++;
     }
@@ -877,6 +888,7 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
     $js_opts = array();
     $js_opts['weight'] = $getlocations_js_weight;
     $js_opts['type'] = 'file';
+    $js_opts['preprocess'] = $aggr;
     drupal_add_js($getlocations_paths['infowindow_options_path'], $js_opts);
     $getlocations_js_weight++;
   }
@@ -886,6 +898,7 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
     $js_opts = array();
     $js_opts['weight'] = $getlocations_js_weight;
     $js_opts['type'] = 'file';
+    $js_opts['preprocess'] = $aggr;
     drupal_add_js($getlocations_paths['getlocations_path'], $js_opts);
     $getlocations_js_weight++;
   }
@@ -895,6 +908,7 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
       $js_opts = array();
       $js_opts['weight'] = $getlocations_js_weight;
       $js_opts['type'] = 'file';
+      $js_opts['preprocess'] = $aggr;
       drupal_add_js($getlocations_paths['getlocations_polygons_path'], $js_opts);
       $getlocations_js_weight++;
     }
@@ -904,6 +918,7 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
       $js_opts = array();
       $js_opts['weight'] = $getlocations_js_weight;
       $js_opts['type'] = 'file';
+      $js_opts['preprocess'] = $aggr;
       drupal_add_js($getlocations_paths['getlocations_rectangles_path'], $js_opts);
       $getlocations_js_weight++;
     }
@@ -913,6 +928,7 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
       $js_opts = array();
       $js_opts['weight'] = $getlocations_js_weight;
       $js_opts['type'] = 'file';
+      $js_opts['preprocess'] = $aggr;
       drupal_add_js($getlocations_paths['getlocations_circles_path'], $js_opts);
       $getlocations_js_weight++;
     }
@@ -922,6 +938,7 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
       $js_opts = array();
       $js_opts['weight'] = $getlocations_js_weight;
       $js_opts['type'] = 'file';
+      $js_opts['preprocess'] = $aggr;
       drupal_add_js($getlocations_paths['getlocations_polylines_path'], $js_opts);
       $getlocations_js_weight++;
     }
@@ -932,6 +949,7 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
       $js_opts = array();
       $js_opts['weight'] = $getlocations_js_weight;
       $js_opts['type'] = 'file';
+      $js_opts['preprocess'] = $aggr;
       drupal_add_js($getlocations_paths['getlocations_search_places_path'], $js_opts);
       $getlocations_js_weight++;
     }
@@ -943,6 +961,7 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
       $js_opts = array();
       $js_opts['weight'] = $getlocations_js_weight;
       $js_opts['type'] = 'file';
+      $js_opts['preprocess'] = $aggr;
       drupal_add_js($getlocations_paths['getlocations_categories_path'], $js_opts);
       $getlocations_js_weight++;
     }
@@ -954,6 +973,7 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
       $js_opts = array();
       $js_opts['weight'] = $getlocations_js_weight;
       $js_opts['type'] = 'file';
+      $js_opts['preprocess'] = $aggr;
       drupal_add_js($getlocations_paths['getlocations_preview_path'], $js_opts);
       $getlocations_js_weight++;
     }
@@ -965,6 +985,7 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
       $js_opts = array();
       $js_opts['weight'] = $getlocations_js_weight;
       $js_opts['type'] = 'file';
+      $js_opts['preprocess'] = $aggr;
       drupal_add_js($geojson_path, $js_opts);
       $getlocations_js_weight++;
     }
@@ -973,6 +994,7 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
         $js_opts = array();
         $js_opts['weight'] = $getlocations_js_weight;
         $js_opts['type'] = 'file';
+        $js_opts['preprocess'] = $aggr;
         drupal_add_js($getlocations_paths['getlocations_geojson_path'], $js_opts);
         $getlocations_js_weight++;
       }
@@ -5490,6 +5512,21 @@ function getlocations_ua_get() {
  *   Returns
  *
  */
+function getlocations_aggr_get() {
+  $getlocations_aggr = variable_get('getlocations_aggr', 1);
+  return $getlocations_aggr;
+}
+
+
+/**
+ * Function
+ *
+ * @param
+ *
+ * @return
+ *   Returns
+ *
+ */
 function getlocations_get_term_marker($nid, $marker) {
   $getlocations_defaults = getlocations_defaults();
   // term markers
@@ -5669,28 +5706,26 @@ function getlocations_get_type_markers($all_entity_types = '') {
     $all_entity_types = array($all_entity_types);
   }
 
-
   $data = array();
-  $module = getlocations_get_current_supported_module();
+  if ($module = getlocations_get_current_supported_module()) {
+    foreach ($all_entity_types AS $entity_type) {
+      $query = db_select('field_config', 'f');
+      $query->fields('i', array('bundle', 'field_name'));
+      $query->join('field_config_instance', 'i', 'f.id=i.field_id');
+      $query->condition('f.module', $module)
+        ->condition('i.entity_type', $entity_type)
+        ->condition('f.active', 1);
+      $rows = $query->execute();
 
-  foreach ($all_entity_types AS $entity_type) {
-    $query = db_select('field_config', 'f');
-    $query->fields('i', array('bundle', 'field_name'));
-    $query->join('field_config_instance', 'i', 'f.id=i.field_id');
-    $query->condition('f.module', $module)
-      ->condition('i.entity_type', $entity_type)
-      ->condition('f.active', 1);
-    $rows = $query->execute();
-
-    foreach ($rows AS $row) {
-      $entity_get_info = entity_get_info($entity_type);
-      if (isset($entity_get_info['bundles'][$row->bundle]['label'])) {
-        $data[$entity_type][$row->bundle][$row->field_name]['bundle_label'] = $entity_get_info['bundles'][$row->bundle]['label'];
+      foreach ($rows AS $row) {
+        $entity_get_info = entity_get_info($entity_type);
+        if (isset($entity_get_info['bundles'][$row->bundle]['label'])) {
+          $data[$entity_type][$row->bundle][$row->field_name]['bundle_label'] = $entity_get_info['bundles'][$row->bundle]['label'];
+        }
       }
     }
   }
   return $data;
-
 }
 
 /**

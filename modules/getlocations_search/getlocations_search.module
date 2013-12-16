@@ -285,12 +285,15 @@ function getlocations_search_getmap($which = 'page') {
   }
   $mapid = getlocations_setup_map($getlocations_defaults);
 
+  $aggr = (getlocations_aggr_get() ? TRUE : FALSE);
+
   getlocations_search_js_settings_do($getlocations_search_defaults, $mapid);
   $getlocations_search_paths = getlocations_search_paths_get();
   $jsfile = $getlocations_search_paths['getlocations_search_path'];
   $js_opts = array();
   $js_opts['weight'] = $getlocations_defaults['getlocations_js_weight'] + 10;
   $js_opts['type'] = 'file';
+  $js_opts['preprocess'] = $aggr;
   drupal_add_js($jsfile, $js_opts);
 
   $minmaxes = '';
