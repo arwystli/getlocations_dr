@@ -214,13 +214,13 @@ Theming.
 Getlocations pages can be themed by copying the relevant function to your theme's template.php,
 renaming it in the usual manner.
 eg
-theme_getlocations_info() becomes MYTHEME_getlocations_info() where MYTHEME is the name of your theme.
+theme_getlocations_adinfo() becomes MYTHEME_getlocations_adinfo() where MYTHEME is the name of your theme.
 You can edit it there to suit your needs.
 
 These functions can be found in the file getlocations.theme.inc
 
 Theming the content of InfoWindow or InfoBubble.
-This is done with function theme_getlocations_info()
+This is done with function theme_getlocations_adinfo()
 
 Theming the map display.
 This is done with function theme_getlocations_show()
