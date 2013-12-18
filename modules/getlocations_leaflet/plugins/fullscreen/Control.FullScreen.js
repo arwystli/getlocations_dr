@@ -4,21 +4,21 @@ L.Control.FullScreen = L.Control.extend({
 		title: 'Full Screen',
 		forceSeparateButton: false
 	},
-	
+
 	onAdd: function (map) {
 		var className = 'leaflet-control-zoom-fullscreen', container;
-		
+
 		if (map.zoomControl && !this.options.forceSeparateButton) {
 			container = map.zoomControl._container;
 		} else {
 			container = L.DomUtil.create('div', 'leaflet-bar');
 		}
-		
+
 		this._createButton(this.options.title, className, container, this.toogleFullScreen, map);
 
 		return container;
 	},
-	
+
 	_createButton: function (title, className, container, fn, context) {
 		var link = L.DomUtil.create('a', className, container);
 		link.href = '#';
@@ -28,12 +28,12 @@ L.Control.FullScreen = L.Control.extend({
 			.addListener(link, 'click', L.DomEvent.stopPropagation)
 			.addListener(link, 'click', L.DomEvent.preventDefault)
 			.addListener(link, 'click', fn, context);
-		
+
 		L.DomEvent
 			.addListener(container, fullScreenApi.fullScreenEventName, L.DomEvent.stopPropagation)
 			.addListener(container, fullScreenApi.fullScreenEventName, L.DomEvent.preventDefault)
 			.addListener(container, fullScreenApi.fullScreenEventName, this._handleEscKey, context);
-		
+
 		L.DomEvent
 			.addListener(document, fullScreenApi.fullScreenEventName, L.DomEvent.stopPropagation)
 			.addListener(document, fullScreenApi.fullScreenEventName, L.DomEvent.preventDefault)
@@ -41,7 +41,7 @@ L.Control.FullScreen = L.Control.extend({
 
 		return link;
 	},
-	
+
 	toogleFullScreen: function () {
 		this._exitFired = false;
 		var container = this._container;
@@ -67,7 +67,7 @@ L.Control.FullScreen = L.Control.extend({
 			this._isFullscreen = true;
 		}
 	},
-	
+
 	_handleEscKey: function () {
 		if (!fullScreenApi.isFullScreen(this) && !this._exitFired) {
 			this.fire('exitFullscreen');
@@ -88,7 +88,7 @@ L.control.fullscreen = function (options) {
 	return new L.Control.FullScreen(options);
 };
 
-/* 
+/*
 Native FullScreen JavaScript API
 -------------
 Assumes Mozilla naming conventions instead of W3C for now
@@ -98,39 +98,39 @@ source : http://johndyer.name/native-fullscreen-javascript-api-plus-jquery-plugi
 */
 
 (function() {
-	var 
-		fullScreenApi = { 
+	var
+		fullScreenApi = {
 			supportsFullScreen: false,
-			isFullScreen: function() { return false; }, 
-			requestFullScreen: function() {}, 
+			isFullScreen: function() { return false; },
+			requestFullScreen: function() {},
 			cancelFullScreen: function() {},
 			fullScreenEventName: '',
 			prefix: ''
 		},
 		browserPrefixes = 'webkit moz o ms khtml'.split(' ');
-	
+
 	// check for native support
 	if (typeof document.exitFullscreen != 'undefined') {
 		fullScreenApi.supportsFullScreen = true;
-	} else {	 
+	} else {
 		// check for fullscreen support by vendor prefix
 		for (var i = 0, il = browserPrefixes.length; i < il; i++ ) {
 			fullScreenApi.prefix = browserPrefixes[i];
-			
+
 			if (typeof document[fullScreenApi.prefix + 'CancelFullScreen' ] != 'undefined' ) {
 				fullScreenApi.supportsFullScreen = true;
-				
+
 				break;
 			}
 		}
 	}
-	
+
 	// update methods to do something useful
 	if (fullScreenApi.supportsFullScreen) {
 		fullScreenApi.fullScreenEventName = fullScreenApi.prefix + 'fullscreenchange';
-		
+
 		fullScreenApi.isFullScreen = function() {
-			switch (this.prefix) {	
+			switch (this.prefix) {
 				case '':
 					return document.fullScreen;
 				case 'webkit':
@@ -138,19 +138,19 @@ source : http://johndyer.name/native-fullscreen-javascript-api-plus-jquery-plugi
 				default:
 					return document[this.prefix + 'FullScreen'];
 			}
-		}
+		};
 		fullScreenApi.requestFullScreen = function(el) {
 			return (this.prefix === '') ? el.requestFullscreen() : el[this.prefix + 'RequestFullScreen'](Element.ALLOW_KEYBOARD_INPUT);
-		}
+		};
 		fullScreenApi.cancelFullScreen = function(el) {
 			return (this.prefix === '') ? document.exitFullscreen() : document[this.prefix + 'CancelFullScreen']();
-		}		
+		};
 	}
 
 	// jQuery plugin
 	if (typeof jQuery != 'undefined') {
 		jQuery.fn.requestFullScreen = function() {
-	
+
 			return this.each(function() {
 				var el = jQuery(this);
 				if (fullScreenApi.supportsFullScreen) {
@@ -161,5 +161,5 @@ source : http://johndyer.name/native-fullscreen-javascript-api-plus-jquery-plugi
 	}
 
 	// export api
-	window.fullScreenApi = fullScreenApi;	
+	window.fullScreenApi = fullScreenApi;
 })();

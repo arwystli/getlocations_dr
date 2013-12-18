@@ -97,44 +97,99 @@ class getlocations_leaflet_plugin_style extends views_plugin_style {
     unset($form['nodezoom']['#options']['20']);
     unset($form['nodezoom']['#options']['19']);
 
-    // markers
-    $markers = getlocations_get_marker_titles();
-
     $fieldables = getlocations_get_fieldable_entity_types();
-    foreach ($fieldables AS $entity_type) {
-      $entity_get_info = entity_get_info($entity_type);
-      $label = $entity_get_info['label'];
-      $desc = '';
-      if (getlocations_check_entity_type($entity_type)) {
-        #$desc = t('In use');
-        $form[$entity_type . '_map_marker'] = getlocations_element_map_marker(
-          t('Default !label Map marker', array('!label' => $label)),
-          $markers,
-          $this->options[$entity_type . '_map_marker'],
-          $desc
-        );
+
+    // markers
+    if ($this->options['awesome'] && $this->options['marker_type'] == 'fa') {
+      $getlocations_markers = variable_get('getlocations_markers', array());
+      $type_markers = getlocations_get_type_markers();
+      $per_field_markers = FALSE;
+      foreach ($type_markers AS $entity_type => $bundles) {
+        if (isset($getlocations_markers[$entity_type]['enable']) && $getlocations_markers[$entity_type]['enable']) {
+          $per_field_markers = TRUE;
+          $entity_get_info = entity_get_info($entity_type);
+          $entity_type_label = $entity_get_info['label'];
+          foreach ($bundles AS $bundle => $field_names) {
+            foreach ($field_names AS $field_name => $marker_data) {
+              $bundle_label = $marker_data['bundle_label'];
+              $label = t('Type %etl, Bundle %name, Field %field Map marker', array('%etl' => $entity_type_label, '%name' => $bundle_label, '%field' => $field_name));
+              $mkey = $entity_type . '__' . $bundle . '__' . $field_name;
+              $labels = array(
+                'awesome_icon'         => t($label . ' Awesome icon'),
+                'awesome_icon_color'   => t($label . ' Awesome icon color'),
+                'awesome_marker_color' => t($label . ' Awesome marker color'),
+                'awesome_title'        => t($label . ' Awesome Fonts icon settings'),
+                'awesome_icon_spin'    => t($label . ' Awesome icon spin'),
+                'awesome_icon_size'    => t($label . ' Awesome icon size'),
+                'awesome_icon_type'    => t($label . ' Awesome icon type'),
+                'awesome_icon_flip'    => t($label . ' Awesome icon flip and rotate'),
+              );
+              $form += getlocations_leaflet_awesome_markers_elements_get($this->options, $labels, $mkey);
+            }
+          }
+        }
+      }
+      if (! $per_field_markers) {
+        foreach ($fieldables AS $entity_type) {
+          if (getlocations_check_entity_type($entity_type)) {
+            $entity_get_info = entity_get_info($entity_type);
+            $label = $entity_get_info['label'];
+            $labels = array(
+              'awesome_icon'         => t($label . ' Awesome icon'),
+              'awesome_icon_color'   => t($label . ' Awesome icon color'),
+              'awesome_marker_color' => t($label . ' Awesome marker color'),
+              'awesome_title'        => t($label . ' Awesome Fonts icon settings'),
+              'awesome_icon_spin'    => t($label . ' Awesome icon spin'),
+              'awesome_icon_size'    => t($label . ' Awesome icon size'),
+              'awesome_icon_type'    => t($label . ' Awesome icon type'),
+              'awesome_icon_flip'    => t($label . ' Awesome icon flip and rotate'),
+            );
+            $form += getlocations_leaflet_awesome_markers_elements_get($this->options, $labels, $entity_type);
+          }
+          else {
+            $form += getlocations_leaflet_awesome_markers_elements_get($this->options);
+          }
+        }
       }
     }
-
-    $getlocations_markers = variable_get('getlocations_markers', array());
-    $type_markers = getlocations_get_type_markers();
-    foreach ($type_markers AS $entity_type => $bundles) {
-      if (isset($getlocations_markers[$entity_type]['enable']) && $getlocations_markers[$entity_type]['enable']) {
-
-        $entity_get_info = entity_get_info($entity_type);
-        $entity_type_label = $entity_get_info['label'];
-
-        foreach ($bundles AS $bundle => $field_names) {
-          foreach ($field_names AS $field_name => $marker_data) {
-            $bundle_label = $marker_data['bundle_label'];
-            $mkey = 'marker__' . $entity_type . '__' . $bundle . '__' . $field_name;
-            if (! isset($this->options[$mkey])) {
-              $this->options[$mkey] = (isset($getlocations_markers[$entity_type][$bundle][$field_name]['marker'] ) ? $getlocations_markers[$entity_type][$bundle][$field_name]['marker'] : (isset($getlocations_defaults[$entity_type . '_map_marker']) ? $this->options[$entity_type . '_map_marker'] : $this->options['map_marker']));
+    else {
+      $markers = getlocations_get_marker_titles();
+      $getlocations_markers = variable_get('getlocations_markers', array());
+      $type_markers = getlocations_get_type_markers();
+      $per_field_markers = FALSE;
+      foreach ($type_markers AS $entity_type => $bundles) {
+        if (isset($getlocations_markers[$entity_type]['enable']) && $getlocations_markers[$entity_type]['enable']) {
+          $per_field_markers = TRUE;
+          $entity_get_info = entity_get_info($entity_type);
+          $entity_type_label = $entity_get_info['label'];
+          foreach ($bundles AS $bundle => $field_names) {
+            foreach ($field_names AS $field_name => $marker_data) {
+              $bundle_label = $marker_data['bundle_label'];
+              $mkey = 'marker__' . $entity_type . '__' . $bundle . '__' . $field_name;
+              if (! isset($this->options[$mkey])) {
+                $this->options[$mkey] = (isset($getlocations_markers[$entity_type][$bundle][$field_name]['marker'] ) ? $getlocations_markers[$entity_type][$bundle][$field_name]['marker'] : (isset($getlocations_defaults[$entity_type . '_map_marker']) ? $this->options[$entity_type . '_map_marker'] : $this->options['map_marker']));
+              }
+              $form[$mkey] = getlocations_element_map_marker(
+                t('Type %etl, Bundle %name, Field %field Map marker', array('%etl' => $entity_type_label, '%name' => $bundle_label, '%field' => $field_name)),
+                $markers,
+                $this->options[$mkey]
+              );
             }
-            $form[$mkey] = getlocations_element_map_marker(
-              t('Type %etl, Bundle %name, Field %field Map marker', array('%etl' => $entity_type_label, '%name' => $bundle_label, '%field' => $field_name)),
+          }
+        }
+      }
+      if (! $per_field_markers) {
+        // markers
+        foreach ($fieldables AS $entity_type) {
+          $entity_get_info = entity_get_info($entity_type);
+          $label = $entity_get_info['label'];
+          $desc = '';
+          if (getlocations_check_entity_type($entity_type)) {
+            $form[$entity_type . '_map_marker'] = getlocations_element_map_marker(
+              t('Default !label Map marker', array('!label' => $label)),
               $markers,
-              $this->options[$mkey]
+              $this->options[$entity_type . '_map_marker'],
+              $desc
             );
           }
         }

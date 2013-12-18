@@ -38,7 +38,7 @@ L.Control.Pan = L.Control.extend({
 			.on(link, 'click', L.DomEvent.stopPropagation)
 			.on(link, 'click', L.DomEvent.preventDefault)
 			.on(link, 'click', function(){ map.panBy(offset); }, map)
-			.on(link, 'dblclick', L.DomEvent.stopPropagation)
+			.on(link, 'dblclick', L.DomEvent.stopPropagation);
 
 		return link;
 	}

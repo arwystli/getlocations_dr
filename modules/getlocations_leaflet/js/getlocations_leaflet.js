@@ -116,7 +116,7 @@ var getlocations_leaflet_layerscontrol = [];
         // Attribution control
         if (map_settings.attributionControl && map_settings.attributioncontrolposition) {
           var attributionopts = {position: map_settings.attributioncontrolposition};
-          var attribcontrol = L.control.attribution(attributionopts)
+          var attribcontrol = L.control.attribution(attributionopts);
           getlocations_leaflet_map[key].addControl(attribcontrol);
           attribcontrol.addAttribution(map_layers.earth.options.attribution);
         }
@@ -182,8 +182,11 @@ var getlocations_leaflet_layerscontrol = [];
             var glid          = latlon[4];
             var title         = latlon[5];
             var markername    = latlon[6];
-            var markeraction  = latlon[7];
-            var cat           = latlon[8];
+            var vector        = latlon[7];
+            var markeraction  = latlon[8];
+            var cat           = latlon[9];
+            var vicon = vector.data;
+            var marker_type = vector.type;
 
             // check for duplicates
             var hash = lat + lon;
@@ -214,32 +217,49 @@ var getlocations_leaflet_layerscontrol = [];
 
             // make markers
             var latLng = L.latLng(lat, lon);
+
             var icon = '';
             if (markername) {
               icon = icons[markername];
             }
-            if (icon) {
-              var thisIcon = L.icon({iconUrl: icon.iconUrl});
-              // override applicable marker defaults
-              if (icon.iconSize) {
-                thisIcon.options.iconSize = L.point(parseInt(icon.iconSize.x, 10), parseInt(icon.iconSize.y, 10));
-              }
-              if (icon.iconAnchor) {
-                thisIcon.options.iconAnchor = L.point(parseFloat(icon.iconAnchor.x, 10), parseFloat(icon.iconAnchor.y, 10));
-              }
-              if (icon.popupAnchor) {
-                thisIcon.options.popupAnchor = L.point(parseFloat(icon.popupAnchor.x, 10), parseFloat(icon.popupAnchor.y, 10));
-              }
-              if (icon.shadowUrl !== undefined) {
-                thisIcon.options.shadowUrl = icon.shadowUrl;
-                if (icon.shadowSize) {
-                  thisIcon.options.shadowSize = L.point(parseInt(icon.shadowSize.x, 10), parseInt(icon.shadowSize.y, 10));
+            if (icon || (vicon && map_settings.awesome)) {
+              if (vicon && map_settings.awesome) {
+                // icon only
+                if (marker_type == 'i') {
+                  var px = parseInt(vicon.px);
+                  var diopts = {className: 'getlocations-leaflet-div-icon', iconSize: [px, px], html: vicon.html};
+                  var thisVicon = L.divIcon(diopts);
                 }
-                if (icon.shadowAnchor) {
-                  thisIcon.options.shadowAnchor = L.point(parseInt(icon.shadowAnchor.x, 10), parseInt(icon.shadowAnchor.y, 10));
+                else {
+                  var thisVicon = L.AwesomeMarkers.icon(vicon);
                 }
+                Marker = L.marker(latLng, {icon: thisVicon});
+
               }
-              Marker = L.marker(latLng, {icon: thisIcon});
+              else if (icon) {
+                var thisIcon = L.icon({iconUrl: icon.iconUrl});
+                // override applicable marker defaults
+                if (icon.iconSize) {
+                  thisIcon.options.iconSize = L.point(parseInt(icon.iconSize.x, 10), parseInt(icon.iconSize.y, 10));
+                }
+                if (icon.iconAnchor) {
+                  thisIcon.options.iconAnchor = L.point(parseFloat(icon.iconAnchor.x, 10), parseFloat(icon.iconAnchor.y, 10));
+                }
+                if (icon.popupAnchor) {
+                  thisIcon.options.popupAnchor = L.point(parseFloat(icon.popupAnchor.x, 10), parseFloat(icon.popupAnchor.y, 10));
+                }
+                if (icon.shadowUrl !== undefined) {
+                  thisIcon.options.shadowUrl = icon.shadowUrl;
+                  if (icon.shadowSize) {
+                    thisIcon.options.shadowSize = L.point(parseInt(icon.shadowSize.x, 10), parseInt(icon.shadowSize.y, 10));
+                  }
+                  if (icon.shadowAnchor) {
+                    thisIcon.options.shadowAnchor = L.point(parseInt(icon.shadowAnchor.x, 10), parseInt(icon.shadowAnchor.y, 10));
+                  }
+                }
+                Marker = L.marker(latLng, {icon: thisIcon});
+              }
+
             }
             else {
               // default leaflet marker

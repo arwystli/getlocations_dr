@@ -147,20 +147,49 @@
       });
 
       if ($("input[id$=fullscreen]").attr('checked')) {
-       $("#wrap-getlocations-fullscreen").show();
+        $("#getlocations-fullscreen-wrap").show();
       }
       else {
-        $("#wrap-getlocations-fullscreen").hide();
+        $("#getlocations-fullscreen-wrap").hide();
       }
       $("input[id$=fullscreen]").change(function() {
         if ($(this).attr('checked')) {
-          $("#wrap-getlocations-fullscreen").show();
+          $("#getlocations-fullscreen-wrap").show();
         }
         else {
-          $("#wrap-getlocations-fullscreen").hide();
+          $("#getlocations-fullscreen-wrap").hide();
         }
       });
 
+      if ($("input[id$=pancontrol]").attr('checked')) {
+       $("#getlocations-pancontrol-wrap").show();
+      }
+      else {
+        $("#getlocations-pancontrol-wrap").hide();
+      }
+      $("input[id$=pancontrol]").change(function() {
+        if ($(this).attr('checked')) {
+          $("#getlocations-pancontrol-wrap").show();
+        }
+        else {
+          $("#getlocations-pancontrol-wrap").hide();
+        }
+      });
+
+      if ($("input[id$=zoomslider]").attr('checked')) {
+       $("#getlocations-zoomslider-wrap").show();
+      }
+      else {
+        $("#getlocations-zoomslider-wrap").hide();
+      }
+      $("input[id$=zoomslider]").change(function() {
+        if ($(this).attr('checked')) {
+          $("#getlocations-zoomslider-wrap").show();
+        }
+        else {
+          $("#getlocations-zoomslider-wrap").hide();
+        }
+      });
 
       if ($("input[id$=returnlink-page-enable]").attr('checked')) {
         $("#wrap-page-link").show();
@@ -265,6 +294,20 @@
         }
       });
 
+      if ($("select[id$=marker-type]").val() == 'fa') {
+        $('#getlocations-awesome-wrap').show();
+      }
+      else {
+        $('#getlocations-awesome-wrap').hide();
+      }
+      $("select[id$=marker-type]").change(function() {
+        if ($("select[id$=marker-type]").val() == 'fa') {
+          $('#getlocations-awesome-wrap').show();
+        }
+        else {
+          $('#getlocations-awesome-wrap').hide();
+        }
+      });
 
     }
   };

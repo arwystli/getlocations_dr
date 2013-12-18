@@ -138,29 +138,68 @@ function template_preprocess_getlocations_leaflet_view_map(&$variables) {
         $location['longitude'] = $location[$location['field_name'] . '_1'];
       }
       if ($lid > 0) {
-
-        // default
-        $marker = $options['map_marker'];
-        if ($entity_type_found && $options[$entity_type_found . '_map_marker']) {
-          $marker = $options[$entity_type_found . '_map_marker'];
-        }
-        // getlocations_markers
-        $getlocations_markers = variable_get('getlocations_markers', array());
-        if ($entity_type_found && isset($getlocations_markers[$entity_type_found]['enable']) && $getlocations_markers[$entity_type_found]['enable']) {
-          $type_markers = getlocations_get_type_markers();
-          foreach ($type_markers AS $et => $bundles) {
-            if ($et == $entity_type_found) {
-              foreach ($bundles AS $bundle => $field_names) {
-                foreach ($field_names AS $field_name => $marker_data) {
-                  if ($field_name == $location['field_name']) {
-                    $mkey = 'marker__' . $entity_type_found . '__' . $bundle . '__' . $field_name;
-                    if (isset($options[$mkey]) && $options[$mkey]) {
-                      $marker = $options[$mkey];
+        $marker = '';
+        $vector = '';
+        // awesome
+        if ($options['awesome'] && $options['marker_type'] == 'fa') {
+          $per_field_markers = FALSE;
+          $getlocations_markers = variable_get('getlocations_markers', array());
+          if ($entity_type_found && isset($getlocations_markers[$entity_type_found]['enable']) && $getlocations_markers[$entity_type_found]['enable']) {
+            $type_markers = getlocations_get_type_markers();
+            foreach ($type_markers AS $et => $bundles) {
+              if ($et == $entity_type_found) {
+                foreach ($bundles AS $bundle => $field_names) {
+                  foreach ($field_names AS $field_name => $marker_data) {
+                    if ($field_name == $location['field_name']) {
+                      $per_field_markers = TRUE;
+                      $m = $entity_type_found . '__' . $bundle . '__' . $field_name;
+                      $vicon = getlocations_leaflet_awesome_marker_get($options, $m);
                     }
-
                   }
                 }
               }
+            }
+          }
+          if (! $per_field_markers) {
+            if ($entity_type_found) {
+              $vicon = getlocations_leaflet_awesome_marker_get($options, $entity_type_found);
+            }
+            else {
+              // default
+              $vicon = getlocations_leaflet_awesome_marker_get($options);
+            }
+          }
+          $vector = $vicon;
+        }
+        else {
+          $per_field_markers = FALSE;
+          // getlocations_markers
+          $getlocations_markers = variable_get('getlocations_markers', array());
+          if ($entity_type_found && isset($getlocations_markers[$entity_type_found]['enable']) && $getlocations_markers[$entity_type_found]['enable']) {
+            $type_markers = getlocations_get_type_markers();
+            foreach ($type_markers AS $et => $bundles) {
+              if ($et == $entity_type_found) {
+                foreach ($bundles AS $bundle => $field_names) {
+                  foreach ($field_names AS $field_name => $marker_data) {
+                    if ($field_name == $location['field_name']) {
+                      $mkey = 'marker__' . $entity_type_found . '__' . $bundle . '__' . $field_name;
+                      if (isset($options[$mkey]) && $options[$mkey]) {
+                        $per_field_markers = TRUE;
+                        $marker = $options[$mkey];
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+          if (! $per_field_markers) {
+            if ($entity_type_found && $options[$entity_type_found . '_map_marker']) {
+              $marker = $options[$entity_type_found . '_map_marker'];
+            }
+            else {
+              // default
+              $marker = $options['map_marker'];
             }
           }
         }
@@ -230,7 +269,7 @@ function template_preprocess_getlocations_leaflet_view_map(&$variables) {
 
           $iconlist[$marker] = getlocations_leaflet_get_marker($marker);
 
-          $latlons[$ct] = array($location['latitude'], $location['longitude'], $base_field, 0, $lid, $title, $marker, $markeraction, $cat);
+          $latlons[$ct] = array($location['latitude'], $location['longitude'], $base_field, 0, $lid, $title, $marker, $vector, $markeraction, $cat);
           $ct++;
         }
       }

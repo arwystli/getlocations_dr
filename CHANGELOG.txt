@@ -1,9 +1,114 @@
-commit bc2239a
+commit cb99053
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Dec 18 20:22:05 2013 +0000
+
+    added font-awesome
+
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/js/getlocations_leaflet.js
+modules/getlocations_leaflet/js/getlocations_leaflet.min.js
+modules/getlocations_leaflet/js/getlocations_leaflet_circles.min.js
+modules/getlocations_leaflet/js/getlocations_leaflet_formatter.js
+modules/getlocations_leaflet/js/getlocations_leaflet_formatter.min.js
+modules/getlocations_leaflet/js/getlocations_leaflet_geojson.min.js
+modules/getlocations_leaflet/js/getlocations_leaflet_polygons.min.js
+modules/getlocations_leaflet/js/getlocations_leaflet_polylines.min.js
+modules/getlocations_leaflet/js/getlocations_leaflet_providers.min.js
+modules/getlocations_leaflet/js/getlocations_leaflet_rectangles.min.js
+modules/getlocations_leaflet/plugins/awesome-markers/images/markers-matte.png
+modules/getlocations_leaflet/plugins/awesome-markers/images/markers-matte@2x.png
+modules/getlocations_leaflet/plugins/awesome-markers/images/markers-plain.png
+modules/getlocations_leaflet/plugins/awesome-markers/images/markers-shadow.png
+modules/getlocations_leaflet/plugins/awesome-markers/images/markers-shadow@2x.png
+modules/getlocations_leaflet/plugins/awesome-markers/images/markers-soft.png
+modules/getlocations_leaflet/plugins/awesome-markers/images/markers-soft@2x.png
+modules/getlocations_leaflet/plugins/awesome-markers/leaflet.awesome-markers.css
+modules/getlocations_leaflet/plugins/awesome-markers/leaflet.awesome-markers.js
+modules/getlocations_leaflet/plugins/awesome-markers/leaflet.awesome-markers.min.css
+modules/getlocations_leaflet/plugins/awesome-markers/leaflet.awesome-markers.min.js
+modules/getlocations_leaflet/plugins/font-awesome/css/font-awesome.css
+modules/getlocations_leaflet/plugins/font-awesome/css/font-awesome.min.css
+modules/getlocations_leaflet/plugins/font-awesome/fonts/FontAwesome.otf
+modules/getlocations_leaflet/plugins/font-awesome/fonts/fontawesome-webfont.eot
+modules/getlocations_leaflet/plugins/font-awesome/fonts/fontawesome-webfont.svg
+modules/getlocations_leaflet/plugins/font-awesome/fonts/fontawesome-webfont.ttf
+modules/getlocations_leaflet/plugins/font-awesome/fonts/fontawesome-webfont.woff
+modules/getlocations_leaflet/plugins/font-awesome/less/bordered-pulled.less
+modules/getlocations_leaflet/plugins/font-awesome/less/core.less
+modules/getlocations_leaflet/plugins/font-awesome/less/fixed-width.less
+modules/getlocations_leaflet/plugins/font-awesome/less/font-awesome.less
+modules/getlocations_leaflet/plugins/font-awesome/less/icons.less
+modules/getlocations_leaflet/plugins/font-awesome/less/larger.less
+modules/getlocations_leaflet/plugins/font-awesome/less/list.less
+modules/getlocations_leaflet/plugins/font-awesome/less/mixins.less
+modules/getlocations_leaflet/plugins/font-awesome/less/path.less
+modules/getlocations_leaflet/plugins/font-awesome/less/rotated-flipped.less
+modules/getlocations_leaflet/plugins/font-awesome/less/spinning.less
+modules/getlocations_leaflet/plugins/font-awesome/less/stacked.less
+modules/getlocations_leaflet/plugins/font-awesome/less/variables.less
+modules/getlocations_leaflet/plugins/font-awesome/scss/_bordered-pulled.scss
+modules/getlocations_leaflet/plugins/font-awesome/scss/_core.scss
+modules/getlocations_leaflet/plugins/font-awesome/scss/_fixed-width.scss
+modules/getlocations_leaflet/plugins/font-awesome/scss/_icons.scss
+modules/getlocations_leaflet/plugins/font-awesome/scss/_larger.scss
+modules/getlocations_leaflet/plugins/font-awesome/scss/_list.scss
+modules/getlocations_leaflet/plugins/font-awesome/scss/_mixins.scss
+modules/getlocations_leaflet/plugins/font-awesome/scss/_path.scss
+modules/getlocations_leaflet/plugins/font-awesome/scss/_rotated-flipped.scss
+modules/getlocations_leaflet/plugins/font-awesome/scss/_spinning.scss
+modules/getlocations_leaflet/plugins/font-awesome/scss/_stacked.scss
+modules/getlocations_leaflet/plugins/font-awesome/scss/_variables.scss
+modules/getlocations_leaflet/plugins/font-awesome/scss/font-awesome.scss
+modules/getlocations_leaflet/plugins/fullscreen/Control.FullScreen.js
+modules/getlocations_leaflet/plugins/fullscreen/Control.FullScreen.min.css
+modules/getlocations_leaflet/plugins/fullscreen/Control.FullScreen.min.js
+modules/getlocations_leaflet/plugins/graticule/L.Graticule.min.js
+modules/getlocations_leaflet/plugins/markercluster/MarkerCluster.Default.min.css
+modules/getlocations_leaflet/plugins/markercluster/MarkerCluster.min.css
+modules/getlocations_leaflet/plugins/pancontrol/L.Control.Pan.ie.min.css
+modules/getlocations_leaflet/plugins/pancontrol/L.Control.Pan.js
+modules/getlocations_leaflet/plugins/pancontrol/L.Control.Pan.min.css
+modules/getlocations_leaflet/plugins/pancontrol/L.Control.Pan.min.js
+modules/getlocations_leaflet/plugins/zoomslider/L.Control.Zoomslider.ie.min.css
+modules/getlocations_leaflet/plugins/zoomslider/L.Control.Zoomslider.min.css
+modules/getlocations_leaflet/plugins/zoomslider/L.Control.Zoomslider.min.js
+modules/getlocations_leaflet/views/getlocations_leaflet.views.inc
+modules/getlocations_leaflet/views/getlocations_leaflet_plugin_style.inc
+
+commit 827cf0f
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Dec 18 16:43:28 2013 +0000
+
+    increased weight of getlocations_fields.js to 30
+
+modules/getlocations_fields/getlocations_fields.module
+
+commit f032575
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Dec 18 08:22:26 2013 +0000
+
+    updated README
+
+README.txt
+
+commit b267a97
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Mon Dec 16 22:07:48 2013 +0000
+
+    added agregation option
+
+getlocations.admin.inc
+getlocations.module
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_search/getlocations_search.module
+
+commit 4bb6e01
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Sun Dec 8 09:25:25 2013 +0000
 
     fixed js match, cleanup
 
+CHANGELOG.txt
 js/getlocations_circles.js
 js/getlocations_polygons.js
 js/getlocations_polylines.js
