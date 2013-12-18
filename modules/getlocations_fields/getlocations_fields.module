@@ -1639,7 +1639,7 @@ function getlocations_fields_getmap($settings, $active) {
 
   $getlocations_fields_paths = getlocations_fields_paths_get();
   $js_opts = array();
-  $js_opts['weight'] = $getlocations_defaults['getlocations_js_weight'] + 10;
+  $js_opts['weight'] = $getlocations_defaults['getlocations_js_weight'] + 30;
   $js_opts['type'] = 'file';
   $js_opts['preprocess'] = $aggr;
 
