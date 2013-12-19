@@ -309,6 +309,36 @@
         }
       });
 
+      if ($("input[id$=graticule]").attr('checked')) {
+       $("#getlocations-graticule-wrap").show();
+      }
+      else {
+        $("#getlocations-graticule-wrap").hide();
+      }
+      $("input[id$=graticule]").change(function() {
+        if ($(this).attr('checked')) {
+          $("#getlocations-graticule-wrap").show();
+        }
+        else {
+          $("#getlocations-graticule-wrap").hide();
+        }
+      });
+
+      if ($("input[id$=mouseposition]").attr('checked')) {
+       $("#getlocations-mouseposition-wrap").show();
+      }
+      else {
+        $("#getlocations-mouseposition-wrap").hide();
+      }
+      $("input[id$=mouseposition]").change(function() {
+        if ($(this).attr('checked')) {
+          $("#getlocations-mouseposition-wrap").show();
+        }
+        else {
+          $("#getlocations-mouseposition-wrap").hide();
+        }
+      });
+
     }
   };
 }(jQuery));

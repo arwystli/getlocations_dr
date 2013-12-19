@@ -101,7 +101,21 @@ var getlocations_leaflet_layerscontrol = [];
 
         // graticule
         if (map_settings.graticule) {
-          L.graticule().addTo(getlocations_leaflet_map[key]);
+          gropts = {};
+          gropts.style = {};
+          if (map_settings.graticule_color) {
+            gropts.style.color = map_settings.graticule_color;
+          }
+          if (map_settings.graticule_opacity) {
+            gropts.style.opacity = map_settings.graticule_opacity;
+          }
+          if (map_settings.graticule_weight) {
+            gropts.style.weight = map_settings.graticule_weight;
+          }
+          if (map_settings.graticule_interval) {
+            gropts.interval = parseInt(map_settings.graticule_interval);
+          }
+          L.graticule(gropts).addTo(getlocations_leaflet_map[key]);
         }
 
         // Zoom control
@@ -119,6 +133,20 @@ var getlocations_leaflet_layerscontrol = [];
           var attribcontrol = L.control.attribution(attributionopts);
           getlocations_leaflet_map[key].addControl(attribcontrol);
           attribcontrol.addAttribution(map_layers.earth.options.attribution);
+        }
+
+        // Mouseposition
+        if (map_settings.mouseposition) {
+          var mopts = {};
+          mopts.emptystring = Drupal.t('Unavailable');
+          if (map_settings.mouseposition_position) {
+            mopts.position = map_settings.mouseposition_position;
+          }
+          if (map_settings.mouseposition_display_dms) {
+            mopts.lngFormatter = getlocations_leaflet_dd_to_dms_lng;
+            mopts.latFormatter = getlocations_leaflet_dd_to_dms_lat;
+          }
+          getlocations_leaflet_map[key].addControl(L.control.mousePosition(mopts));
         }
 
         // Scale control
@@ -139,6 +167,7 @@ var getlocations_leaflet_layerscontrol = [];
           }
           getlocations_leaflet_map[key].addControl(L.control.scale(scaleopts));
         }
+
 
         // latlons data
         if (settings.datanum > 0) {
@@ -351,6 +380,46 @@ var getlocations_leaflet_layerscontrol = [];
     $("body").addClass("getlocations-leaflet-maps-processed");
 
   } // end getlocations_leaflet_init
+
+  getlocations_leaflet_dd_to_dms_lat = function(coord) {
+    negative = (coord < 0) ? true : false;
+    coord = Math.abs(coord);
+    degrees = Math.floor(coord);
+    coord = coord - degrees;
+    coord = coord * 60;
+    minutes = Math.floor(coord);
+    coord = coord - minutes;
+    coord = coord * 60;
+    seconds = Math.round(coord, 6);
+    output = degrees + "&deg;&nbsp;" + minutes + "&#39;&nbsp;" + seconds + "&#34;&nbsp;";
+    if (! negative) {
+      output += 'N';
+    }
+    else {
+      output += 'S';
+    }
+    return output;
+  };
+
+  getlocations_leaflet_dd_to_dms_lng = function(coord) {
+    negative = (coord < 0) ? true : false;
+    coord = Math.abs(coord);
+    degrees = Math.floor(coord);
+    coord = coord - degrees;
+    coord = coord * 60;
+    minutes = Math.floor(coord);
+    coord = coord - minutes;
+    coord = coord * 60;
+    seconds = Math.round(coord, 6);
+    output = degrees + "&deg;&nbsp;" + minutes + "&#39;&nbsp;" + seconds + "&#34;&nbsp;";
+    if (! negative) {
+      output += 'E';
+    }
+    else {
+      output += 'W';
+    }
+    return output;
+  };
 
   function getlocations_leaflet_do_link(m, l) {
     m.on('click', function() {

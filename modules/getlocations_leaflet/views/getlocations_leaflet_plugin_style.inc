@@ -61,7 +61,8 @@ class getlocations_leaflet_plugin_style extends views_plugin_style {
 
     $form['#theme'] = 'getlocations_leaflet_plugin_style_options_form';
 
-    $form['#attached']['js'] = array(GETLOCATIONS_LEAFLET_PATH . '/js/getlocations_leaflet_formatter.js' => array('type' => 'file'));
+    $getlocations_leaflet_paths = getlocations_leaflet_paths_get();
+    $form['#attached']['js'] = array($getlocations_leaflet_paths['getlocations_leaflet_formatter_path']);
 
     $handlers = $this->display->handler->get_handlers('field');
     $source_options = array('' => t('None'));

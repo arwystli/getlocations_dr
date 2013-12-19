@@ -9,7 +9,7 @@
  * and http://www.geojson.org
 */
 (function ($) {
-  Drupal.behaviors.getlocations_leaflet_circles = {
+  Drupal.behaviors.getlocations_leaflet_geojson = {
     attach: function() {
 
       // bail out
