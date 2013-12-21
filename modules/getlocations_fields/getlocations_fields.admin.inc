@@ -19,6 +19,8 @@ function getlocations_fields_settings_form() {
   $getlocations_fields_defaults = getlocations_fields_defaults();
 
   $form = array();
+  $pagetitle = '<div><h4>' . t('Getlocations Fields') . '</h4></div>';
+  $form['pagetitle'] = array('#markup' => $pagetitle);
 
   $form['getlocations_fields_defaults'] = array(
     '#type' => 'fieldset',

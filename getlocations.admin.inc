@@ -21,13 +21,15 @@ function getlocations_settings_form() {
 
   $form = array();
 
-  $pagetitle = '<div><h4>' . t('Getlocations base settings') . '</h4><p>' . t('The setting selected here will be used as the starting point for all other Google maps.') . '</p></div>';
+  $pagetitle = '<div><h4>' . t('Getlocations base settings') . '</h4><p>' . t('The settings selected here will be used as the starting point for all other Google maps.') . '</p></div>';
   $form['pagetitle'] = array('#markup' => $pagetitle);
 
   $form['rebuild'] = array(
     '#type' => 'fieldset',
     '#title' => t('Regenerate Getlocations marker cache'),
     '#description' => t('If you are having problems with markers, or have changed anything in the markers library, click on the Regenerate button.'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
   );
   if (file_default_scheme() != 'public') {
     $form['rebuild']['getlocations_private_markerfile'] = getlocations_element_map_tf(
@@ -90,6 +92,8 @@ function getlocations_settings_form() {
     '#title' => t('Getlocations Default map settings'),
     // This will store all the defaults in one variable.
     '#tree' => TRUE,
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
   );
 
   $form['getlocations_default'] += getlocations_map_display_basics_form($getlocations_defaults);
@@ -232,6 +236,8 @@ function getlocations_settings_form() {
       '#title' => t('Entity Type markers'),
       // This will store all the defaults in one variable.
       '#tree' => TRUE,
+      '#collapsible' => TRUE,
+      '#collapsed' => FALSE,
     );
     foreach ($type_markers AS $entity_type => $bundles) {
       // enable $entity_markers
@@ -262,6 +268,8 @@ function getlocations_settings_form() {
       '#title' => t('Colorbox settings'),
       // This will store all the defaults in one variable.
       '#tree' => TRUE,
+      '#collapsible' => TRUE,
+      '#collapsed' => FALSE,
     );
     $form['getlocations_colorbox']['enable'] = getlocations_element_map_checkbox(
       t('Enable Colorbox'),

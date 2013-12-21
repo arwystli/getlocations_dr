@@ -2304,13 +2304,15 @@ function getlocations_leaflet_paths_get($reset = FALSE, $min = FALSE) {
 function getlocations_leaflet_settings_form() {
 
   $form = array();
-  $pagetitle = '<div><h4>' . t('Getlocations leaflet settings') . '</h4><p>' . t('The setting selected here will be used as the starting point for all other Leaflet maps.') . '</p></div>';
+  $pagetitle = '<div><h4>' . t('Getlocations Leaflet') . '</h4><p>' . t('The settings selected here will be used as the starting point for all other Leaflet maps.') . '</p></div>';
   $form['pagetitle'] = array('#markup' => $pagetitle);
 
   $form['rebuild'] = array(
     '#type' => 'fieldset',
     '#title' => t('Regenerate Getlocations leaflet marker cache'),
     '#description' => t('If you are having problems with markers, or have changed anything in the markers library, click on the Regenerate button.'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
   );
   $form['rebuild']['rebuild_marker_js'] = array(
     '#type' => 'submit',
@@ -2329,6 +2331,8 @@ function getlocations_leaflet_settings_form() {
     '#type' => 'fieldset',
     '#title' => t('Leaflet plugins'),
     '#tree' => TRUE,
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
   );
   $form['getlocations_leaflet_plugins']['markercluster_enable'] = getlocations_element_map_checkbox(
     t('Enable Markercluster plugin'),
@@ -2368,9 +2372,10 @@ function getlocations_leaflet_settings_form() {
   $form['getlocations_leaflet_cloudmade'] = array(
     '#type' => 'fieldset',
     '#title' => t('Cloudmade maps'),
-
     // This will store all the defaults in one variable.
     '#tree' => TRUE,
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
   );
   $form['getlocations_leaflet_cloudmade']['cloudmade_key'] = getlocations_element_map_tf(
     t('CloudMade Developers Key'),
@@ -2418,9 +2423,11 @@ function getlocations_leaflet_settings_form() {
 
   $form['getlocations_leaflet_defaults'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Page settings'),
+    '#title' => t('Default Page settings'),
     // This will store all the defaults in one variable.
     '#tree' => TRUE,
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
   );
   $labels = array(
     'width' => t('Width'),
@@ -3332,7 +3339,7 @@ function getlocations_leaflet_awesome_markers_elements_get($defaults, $labels = 
     array('b' => t('Icon in marker'), 'i' => t('Icon only'), 'm' => t('Marker only'))
   );
 
-  $form[$prefix . 'awesome_icon_type']['#prefix'] = '<fieldset class="form-wrapper"><legend><span class="fieldset-legend">' . $labels['awesome_title'] . '</span></legend><div class="fieldset-wrapper">';
+  $form[$prefix . 'awesome_icon_type']['#prefix'] = '<fieldset class="collapsible collapsed form-wrapper"><legend><span class="fieldset-legend">' . $labels['awesome_title'] . '</span></legend><div class="fieldset-wrapper">';
 
   $form[$prefix . 'awesome_icon'] = getlocations_element_dd(
     $labels['awesome_icon'],

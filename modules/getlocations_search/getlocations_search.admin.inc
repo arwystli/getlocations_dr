@@ -17,8 +17,10 @@ function getlocations_search_settings_form() {
 
   $getlocations_search_defaults = getlocations_search_defaults();
   $form = array();
+  $pagetitle = '<div><h4>' . t('Getlocations Search') . '</h4></div>';
+  $form['pagetitle'] = array('#markup' => $pagetitle);
 
-  $form = _getlocations_search_settings_form($getlocations_search_defaults, 'admin');
+  $form += _getlocations_search_settings_form($getlocations_search_defaults, 'admin');
 
   $form['getlocations_search_paths'] = array(
     '#type' => 'fieldset',

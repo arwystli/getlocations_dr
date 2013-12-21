@@ -4427,14 +4427,14 @@ function theme_getlocations_fields_settings_form($variables) {
   unset($form['getlocations_fields_defaults']['input_fax_required']);
   unset($form['getlocations_fields_defaults']['input_fax_weight']);
 
-  $prefix = '<fieldset class="form-wrapper">';
+  $prefix = '<fieldset class="collapsible form-wrapper">';
   $prefix .= '<legend><span class="fieldset-legend">' . t('Default Input form settings') . '</span></legend>';
   $prefix .= '<div class="fieldset-wrapper">';
   $prefix .= '<div class="fieldset-description">' . t('Configure the default input form.') . '</div>';
   $form['getlocations_fields_defaults']['use_address']['#prefix'] = $prefix;
   $form['getlocations_fields_defaults']['use_country_dropdown']['#suffix'] = '</div></fieldset>';
 
-  $prefix = '<fieldset class="form-wrapper">';
+  $prefix = '<fieldset class="collapsible form-wrapper">';
   $prefix .= '<legend><span class="fieldset-legend">' . t('Default Address display settings') . '</span></legend>';
   $prefix .= '<div class="fieldset-wrapper">';
   $prefix .= '<div class="fieldset-description">' . t('Configure the default address display.') . '</div>';
