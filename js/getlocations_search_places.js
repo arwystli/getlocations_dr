@@ -203,7 +203,7 @@
   Drupal.getlocations_search_places_clearmarkers = function(key, state) {
     // clear out existing markers
     for (var i = 0; i < getlocations_sp_markers.length; i++) {
-      sp_marker = getlocations_sp_markers[i]
+      sp_marker = getlocations_sp_markers[i];
       sp_marker.setMap(null);
     }
     getlocations_sp_markers = [];

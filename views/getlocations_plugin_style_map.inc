@@ -202,8 +202,8 @@ class getlocations_plugin_style_map extends views_plugin_style {
     parent::options_form($form, $form_state);
 
     $form['#theme'] = 'getlocations_plugin_style_map_options_form';
-
-    $form['#attached']['js'] = array(GETLOCATIONS_PATH . '/js/getlocations_views.js' => array('type' => 'file'));
+    $getlocations_paths = getlocations_paths_get();
+    $form['#attached']['js'] = array($getlocations_paths['getlocations_views_path']);
 
     $handlers = $this->display->handler->get_handlers('field');
     $source_options = array('' => t('None'));

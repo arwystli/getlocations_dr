@@ -16,7 +16,8 @@
  */
 function getlocations_settings_form() {
   $getlocations_defaults = getlocations_defaults();
-  drupal_add_js(GETLOCATIONS_PATH . '/js/getlocations_admin.js');
+  $getlocations_paths = getlocations_paths_get();
+  drupal_add_js($getlocations_paths['getlocations_admin_path']);
 
   $form = array();
 
@@ -355,7 +356,6 @@ function getlocations_settings_form() {
     '#tree' => TRUE,
   );
 
-  $getlocations_paths = getlocations_paths_get();
   $form['getlocations_paths']['infobubble_path'] = getlocations_element_path(
     t('Path to InfoBubble javascript file'),
     $getlocations_paths['infobubble_path'],
@@ -400,7 +400,6 @@ function getlocations_settings_form() {
     128,
     t('Where the markerclusterer javascript file is located.')
   );
-
   $form['getlocations_paths']['getlocations_polygons_path'] = getlocations_element_path(
     t('Path to getlocations Polygons javascript file'),
     $getlocations_paths['getlocations_polygons_path'],
@@ -470,6 +469,54 @@ function getlocations_settings_form() {
     128,
     t('Where the getlocations geojson javascript file is located.')
   );
+  // admin
+  $form['getlocations_paths']['getlocations_admin_path'] = getlocations_element_path(
+    t('Path to getlocations Admin javascript file'),
+    $getlocations_paths['getlocations_admin_path'],
+    60,
+    128,
+    t('Where the getlocations admin javascript file is located.')
+  );
+  // box
+  $form['getlocations_paths']['getlocations_box_path'] = getlocations_element_path(
+    t('Path to getlocations Box javascript file'),
+    $getlocations_paths['getlocations_box_path'],
+    60,
+    128,
+    t('Where the getlocations box javascript file is located.')
+  );
+  // colorbox
+  $form['getlocations_paths']['getlocations_colorbox_path'] = getlocations_element_path(
+    t('Path to getlocations Colorbox javascript file'),
+    $getlocations_paths['getlocations_colorbox_path'],
+    60,
+    128,
+    t('Where the getlocations colorbox javascript file is located.')
+  );
+  // marker_box
+  $form['getlocations_paths']['getlocations_marker_box_path'] = getlocations_element_path(
+    t('Path to getlocations Markerbox javascript file'),
+    $getlocations_paths['getlocations_marker_box_path'],
+    60,
+    128,
+    t('Where the getlocations markerbox javascript file is located.')
+  );
+  // views
+  $form['getlocations_paths']['getlocations_views_path'] = getlocations_element_path(
+    t('Path to getlocations Views javascript file'),
+    $getlocations_paths['getlocations_views_path'],
+    60,
+    128,
+    t('Where the getlocations views javascript file is located.')
+  );
+  // icons
+  $form['getlocations_paths']['getlocations_icons_path'] = getlocations_element_path(
+    t('Path to getlocations Icons javascript file'),
+    $getlocations_paths['getlocations_icons_path'],
+    60,
+    128,
+    t('Where the getlocations icons javascript file is located.')
+  );
 
   $form['getlocations_paths']['getlocations_path'] = getlocations_element_path(
     t('Path to getlocations javascript file'),
@@ -478,9 +525,11 @@ function getlocations_settings_form() {
     128,
     t('Where the getlocations javascript file is located.')
   );
-  $form['getlocations_paths']['reset'] = getlocations_element_map_checkbox(
+
+  $form['getlocations_paths']['reset'] = getlocations_element_dd(
     t('Reset'),
     0,
+    array(0 => t('No'), 1 => t('Reset'), 2 => t('Reset to minified')),
     t('Reset the paths to the defaults.')
   );
 
@@ -606,8 +655,11 @@ function getlocations_settings_validate($form, &$form_state) {
 
   $reset = $form_state['values']['getlocations_paths']['reset'];
   unset($form_state['values']['getlocations_paths']['reset']);
-  if ($reset) {
+  if ($reset == 1) {
     $form_state['values']['getlocations_paths'] = getlocations_paths_get(TRUE);
+  }
+  elseif ($reset == 2) {
+    $form_state['values']['getlocations_paths'] = getlocations_paths_get(FALSE, TRUE);
   }
 
 }

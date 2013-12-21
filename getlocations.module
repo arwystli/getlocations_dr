@@ -33,7 +33,8 @@ function getlocations_init() {
     $getlocations_colorbox = getlocations_colorbox_settings();
     $settings = array('getlocations_colorbox' => $getlocations_colorbox);
     drupal_add_js($settings, 'setting');
-    drupal_add_js(GETLOCATIONS_PATH . '/js/getlocations_colorbox.js');
+    $getlocations_paths = getlocations_paths_get();
+    drupal_add_js($getlocations_paths['getlocations_colorbox_path']);
   }
 
 }
@@ -802,12 +803,12 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
     return;
   }
 
-  if (!stristr($current_js, GETLOCATIONS_PATH . '/js/icons.js')) {
+  if (!stristr($current_js, $getlocations_paths['getlocations_icons_path'])) {
     $js_opts = array();
     $js_opts['weight'] = $getlocations_js_weight;
     $js_opts['type'] = 'file';
     $js_opts['preprocess'] = $aggr;
-    drupal_add_js(GETLOCATIONS_PATH . '/js/icons.js', $js_opts);
+    drupal_add_js($getlocations_paths['getlocations_icons_path'], $js_opts);
     $getlocations_js_weight++;
   }
 
@@ -4274,27 +4275,62 @@ function getlocations_geojson_form($defaults) {
  *   Returns array of javascript paths
  *
  */
-function getlocations_paths_get($reset = FALSE) {
+function getlocations_paths_get($reset = FALSE, $min = FALSE) {
+  if ($min) {
+    $defaults = array(
+      'infobubble_path'                 => GETLOCATIONS_PATH . '/js/infobubble.min.js',
+      'infobubble_options_path'         => GETLOCATIONS_PATH . '/js/infobubble_options.js',
+      'infobubble_extended_path'        => GETLOCATIONS_PATH . '/js/infobubble_extended.min.js',
+      'markermanager_path'              => GETLOCATIONS_PATH . '/js/markermanager_packed.js',
+      'markerclusterer_path'            => GETLOCATIONS_PATH . '/js/markerclusterer_packed.js',
+      'infowindow_options_path'         => GETLOCATIONS_PATH . '/js/infowindow_options.js',
+      'getlocations_path'               => GETLOCATIONS_PATH . '/js/getlocations.min.js',
+      'getlocations_polygons_path'      => GETLOCATIONS_PATH . '/js/getlocations_polygons.min.js',
+      'getlocations_rectangles_path'    => GETLOCATIONS_PATH . '/js/getlocations_rectangles.min.js',
+      'getlocations_circles_path'       => GETLOCATIONS_PATH . '/js/getlocations_circles.min.js',
+      'getlocations_polylines_path'     => GETLOCATIONS_PATH . '/js/getlocations_polylines.min.js',
+      'getlocations_categories_path'    => GETLOCATIONS_PATH . '/js/getlocations_categories.min.js',
+      'getlocations_search_places_path' => GETLOCATIONS_PATH . '/js/getlocations_search_places.min.js',
+      'getlocations_geo_path'           => GETLOCATIONS_PATH . '/js/getlocations_geo.min.js',
+      'getlocations_preview_path'       => GETLOCATIONS_PATH . '/js/getlocations_preview.min.js',
+      'getlocations_geojson_path'       => GETLOCATIONS_PATH . '/js/getlocations_geojson.min.js',
+      'getlocations_admin_path'         => GETLOCATIONS_PATH . '/js/getlocations_admin.min.js',
+      'getlocations_box_path'           => GETLOCATIONS_PATH . '/js/getlocations_box.min.js',
+      'getlocations_colorbox_path'      => GETLOCATIONS_PATH . '/js/getlocations_colorbox.min.js',
+      'getlocations_marker_box_path'    => GETLOCATIONS_PATH . '/js/getlocations_marker_box.min.js',
+      'getlocations_views_path'         => GETLOCATIONS_PATH . '/js/getlocations_views.min.js',
+      'getlocations_icons_path'         => GETLOCATIONS_PATH . '/js/icons.min.js',
+    );
+  }
+  else {
+    $defaults = array(
+      'infobubble_path'                 => GETLOCATIONS_PATH . '/js/infobubble.js',
+      'infobubble_options_path'         => GETLOCATIONS_PATH . '/js/infobubble_options.js',
+      'infobubble_extended_path'        => GETLOCATIONS_PATH . '/js/infobubble_extended.js',
+      'markermanager_path'              => GETLOCATIONS_PATH . '/js/markermanager.js',
+      'markerclusterer_path'            => GETLOCATIONS_PATH . '/js/markerclusterer.js',
+      'infowindow_options_path'         => GETLOCATIONS_PATH . '/js/infowindow_options.js',
+      'getlocations_path'               => GETLOCATIONS_PATH . '/js/getlocations.js',
+      'getlocations_polygons_path'      => GETLOCATIONS_PATH . '/js/getlocations_polygons.js',
+      'getlocations_rectangles_path'    => GETLOCATIONS_PATH . '/js/getlocations_rectangles.js',
+      'getlocations_circles_path'       => GETLOCATIONS_PATH . '/js/getlocations_circles.js',
+      'getlocations_polylines_path'     => GETLOCATIONS_PATH . '/js/getlocations_polylines.js',
+      'getlocations_categories_path'    => GETLOCATIONS_PATH . '/js/getlocations_categories.js',
+      'getlocations_search_places_path' => GETLOCATIONS_PATH . '/js/getlocations_search_places.js',
+      'getlocations_geo_path'           => GETLOCATIONS_PATH . '/js/getlocations_geo.js',
+      'getlocations_preview_path'       => GETLOCATIONS_PATH . '/js/getlocations_preview.js',
+      'getlocations_geojson_path'       => GETLOCATIONS_PATH . '/js/getlocations_geojson.js',
+      'getlocations_admin_path'         => GETLOCATIONS_PATH . '/js/getlocations_admin.js',
+      'getlocations_box_path'           => GETLOCATIONS_PATH . '/js/getlocations_box.js',
+      'getlocations_colorbox_path'      => GETLOCATIONS_PATH . '/js/getlocations_colorbox.js',
+      'getlocations_marker_box_path'    => GETLOCATIONS_PATH . '/js/getlocations_marker_box.js',
+      'getlocations_views_path'         => GETLOCATIONS_PATH . '/js/getlocations_views.js',
+      'getlocations_icons_path'         => GETLOCATIONS_PATH . '/js/icons.js',
+    );
 
-  $defaults = array(
-    'infobubble_path'                 => GETLOCATIONS_PATH . '/js/infobubble.js',
-    'infobubble_options_path'         => GETLOCATIONS_PATH . '/js/infobubble_options.js',
-    'infobubble_extended_path'        => GETLOCATIONS_PATH . '/js/infobubble_extended.js',
-    'markermanager_path'              => GETLOCATIONS_PATH . '/js/markermanager.js',
-    'markerclusterer_path'            => GETLOCATIONS_PATH . '/js/markerclusterer.js',
-    'infowindow_options_path'         => GETLOCATIONS_PATH . '/js/infowindow_options.js',
-    'getlocations_path'               => GETLOCATIONS_PATH . '/js/getlocations.js',
-    'getlocations_polygons_path'      => GETLOCATIONS_PATH . '/js/getlocations_polygons.js',
-    'getlocations_rectangles_path'    => GETLOCATIONS_PATH . '/js/getlocations_rectangles.js',
-    'getlocations_circles_path'       => GETLOCATIONS_PATH . '/js/getlocations_circles.js',
-    'getlocations_polylines_path'     => GETLOCATIONS_PATH . '/js/getlocations_polylines.js',
-    'getlocations_categories_path'    => GETLOCATIONS_PATH . '/js/getlocations_categories.js',
-    'getlocations_search_places_path' => GETLOCATIONS_PATH . '/js/getlocations_search_places.js',
-    'getlocations_geo_path'           => GETLOCATIONS_PATH . '/js/getlocations_geo.js',
-    'getlocations_preview_path'       => GETLOCATIONS_PATH . '/js/getlocations_preview.js',
-    'getlocations_geojson_path'       => GETLOCATIONS_PATH . '/js/getlocations_geojson.js',
-  );
-  if ($reset) {
+  }
+
+  if ($reset || $min) {
     $getlocations_paths = $defaults;
   }
   else {
@@ -6279,7 +6315,8 @@ function template_preprocess_getlocations_box(&$variables) {
   if (module_exists('admin_menu')) {
     admin_menu_suppress();
   }
-  drupal_add_js(GETLOCATIONS_PATH . '/js/getlocations_box.js');
+  $getlocations_paths = getlocations_paths_get();
+  drupal_add_js($getlocations_paths['getlocations_box_path']);
 
   // Construct page title
   if (drupal_get_title()) {
@@ -6328,7 +6365,8 @@ function template_preprocess_getlocations_marker_box(&$variables) {
   if (module_exists('admin_menu')) {
     admin_menu_suppress();
   }
-  drupal_add_js(GETLOCATIONS_PATH . '/js/getlocations_marker_box.js');
+  $getlocations_paths = getlocations_paths_get();
+  drupal_add_js($getlocations_paths['getlocations_marker_box_path']);
 
   $head_title = t('Getlocations markers');
   $variables['head_title'] = $head_title;

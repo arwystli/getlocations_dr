@@ -49,7 +49,7 @@
    */
   Drupal.getlocations.geo.toRad = function(deg) {
     return deg * Math.PI / 180;
-  }
+  };
 
   /**
    * Radians to Decimal Degrees.
@@ -59,7 +59,7 @@
    */
   Drupal.getlocations.geo.toDeg = function(rad) {
     return rad * 180 / Math.PI;
-  }
+  };
 
   /**
    * Returns the earth's radius at a given latitude
@@ -73,7 +73,7 @@
     var y = (Math.sin(lat) / Drupal.getlocations.geo.EARTH_RADIUS_SEMIMINOR);
     var r = (1 / (Math.sqrt(x * x + y * y)));
     return r;
-  }
+  };
 
   /**
    * Estimate the min and max longitudes within distance of a given location.
@@ -116,7 +116,7 @@
     maxlongDeg = Drupal.getlocations.geo.normalizeLng(maxlongDeg);
     var r = [minlongDeg.toFixed(6), maxlongDeg.toFixed(6)];
     return r;
-  }
+  };
 
   /**
    * Estimate the min and max latitudes within distance of a given location.
@@ -164,7 +164,7 @@
     maxlatDeg = Drupal.getlocations.geo.normalizeLat(maxlatDeg);
     var r = [minlatDeg.toFixed(6), maxlatDeg.toFixed(6)];
     return r;
-  }
+  };
 
   /**
    * Estimate the earth-surface distance between two locations.
@@ -188,7 +188,7 @@
     var radius = Drupal.getlocations.geo.earth_radius((latitude1 + latitude2) / 2);
     var cosangle = Math.cos(lat1) * Math.cos(lat2) * (Math.cos(long1) * Math.cos(long2) + Math.sin(long1) * Math.sin(long2)) + Math.sin(lat1) * Math.sin(lat2);
     return Math.acos(cosangle) * radius;
-  }
+  };
 
   /**
    * Convert a distance to meters
@@ -214,7 +214,7 @@
     var n = parseFloat(distance) * parseFloat(conv);
     var retval = n.toFixed(2);
     return retval;
-  }
+  };
 
   /**
    * Convert meters to a distance
@@ -240,7 +240,7 @@
     var n = parseFloat(meters) * parseFloat(conv);
     var retval = n.toFixed(2);
     return retval;
-  }
+  };
 
 
 }(jQuery));
