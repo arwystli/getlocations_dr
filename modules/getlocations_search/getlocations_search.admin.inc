@@ -37,9 +37,18 @@ function getlocations_search_settings_form() {
     128,
     t('Where the getlocations_search javascript file is located.')
   );
-  $form['getlocations_search_paths']['reset'] = getlocations_element_map_checkbox(
+  $form['getlocations_search_paths']['getlocations_search_admin_path'] = getlocations_element_path(
+    t('Path to getlocations_search admin javascript file'),
+    $getlocations_search_paths['getlocations_search_admin_path'],
+    70,
+    128,
+    t('Where the getlocations_search admin javascript file is located.')
+  );
+
+  $form['getlocations_search_paths']['reset'] = getlocations_element_dd(
     t('Reset'),
     0,
+    array(0 => t('No'), 1 => t('Reset'), 2 => t('Reset to minified')),
     t('Reset the paths to the defaults.')
   );
 
@@ -53,7 +62,8 @@ function getlocations_search_settings_form() {
 
 // form shared between admin config and block config
 function _getlocations_search_settings_form($defaults, $which = 'admin') {
-  drupal_add_js(GETLOCATIONS_SEARCH_PATH . '/js/getlocations_search_admin.js');
+  $getlocations_search_paths = getlocations_search_paths_get();
+  drupal_add_js($getlocations_search_paths['getlocations_search_admin_path']);
 
   $getlocations_defaults = getlocations_defaults();
   $defaults['jquery_colorpicker_enabled'] = $getlocations_defaults['jquery_colorpicker_enabled'];
@@ -517,8 +527,11 @@ function getlocations_search_settings_validate($form, &$form_state) {
 
   $reset = $form_state['values']['getlocations_search_paths']['reset'];
   unset($form_state['values']['getlocations_search_paths']['reset']);
-  if ($reset) {
+  if ($reset == 1) {
     $form_state['values']['getlocations_search_paths'] = getlocations_search_paths_get(TRUE);
+  }
+  elseif ($reset == 2) {
+    $form_state['values']['getlocations_search_paths'] = getlocations_search_paths_get(FALSE ,TRUE);
   }
 
 }

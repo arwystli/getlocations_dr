@@ -291,7 +291,7 @@ function getlocations_search_getmap($which = 'page') {
   $getlocations_search_paths = getlocations_search_paths_get();
   $jsfile = $getlocations_search_paths['getlocations_search_path'];
   $js_opts = array();
-  $js_opts['weight'] = $getlocations_defaults['getlocations_js_weight'] + 10;
+  $js_opts['weight'] = $getlocations_defaults['getlocations_js_weight'] + 30;
   $js_opts['type'] = 'file';
   $js_opts['preprocess'] = $aggr;
   drupal_add_js($jsfile, $js_opts);
@@ -1087,9 +1087,20 @@ function getlocations_search_term_get() {
   return $matches;
 }
 
-function getlocations_search_paths_get($reset = FALSE) {
-  $defaults = array('getlocations_search_path' => GETLOCATIONS_SEARCH_PATH . '/js/getlocations_search.js');
-  if ($reset) {
+function getlocations_search_paths_get($reset = FALSE, $min = FALSE) {
+  if ($min) {
+    $defaults = array(
+      'getlocations_search_path' => GETLOCATIONS_SEARCH_PATH . '/js/getlocations_search.min.js',
+      'getlocations_search_admin_path' => GETLOCATIONS_SEARCH_PATH . '/js/getlocations_search_admin.min.js',
+    );
+  }
+  else {
+    $defaults = array(
+      'getlocations_search_path' => GETLOCATIONS_SEARCH_PATH . '/js/getlocations_search.js',
+      'getlocations_search_admin_path' => GETLOCATIONS_SEARCH_PATH . '/js/getlocations_search_admin.js',
+    );
+  }
+  if ($reset || $min) {
     $getlocations_search_paths = $defaults;
   }
   else {
