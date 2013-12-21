@@ -40,13 +40,13 @@ function getlocations_search_permission() {
 function getlocations_search_menu() {
   $items = array();
 
-  $items['admin/config/services/getlocations_search'] = array(
-    'title' => 'Getlocations search',
+  $items[GETLOCATIONS_ADMIN_PATH . '/search'] = array(
+    'title' => 'Search',
     'description' => 'Configure Getlocations search',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('getlocations_search_settings_form'),
     'access arguments' => array('administer site configuration'),
-    'type' => MENU_NORMAL_ITEM,
+    'type' => MENU_LOCAL_TASK,
     'file' => 'getlocations_search.admin.inc',
   );
 

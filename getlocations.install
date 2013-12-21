@@ -118,3 +118,6 @@ function getlocations_update_7101() {
   }
 }
 
+function getlocations_update_7102() {
+  menu_rebuild();
+}

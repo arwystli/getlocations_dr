@@ -11,6 +11,7 @@
  */
 
 define('GETLOCATIONS_PATH', drupal_get_path('module', 'getlocations'));
+define('GETLOCATIONS_ADMIN_PATH', 'admin/config/services/getlocations');
 define('GETLOCATIONS_VERSION', '7.x-2.x');
 
 /**
@@ -80,13 +81,23 @@ function getlocations_views_api() {
 function getlocations_menu() {
   $items = array();
 
-  $items['admin/config/services/getlocations'] = array(
-    'title' => 'Get locations',
-    'description' => 'Configure Get locations',
+  $items[GETLOCATIONS_ADMIN_PATH] = array(
+    'title' => 'Getlocations',
+    'description' => 'Configure Getlocations',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('getlocations_settings_form'),
     'access arguments' => array('administer site configuration'),
     'type' => MENU_NORMAL_ITEM,
+    'file' => 'getlocations.admin.inc',
+  );
+
+  $items[GETLOCATIONS_ADMIN_PATH . '/base'] = array(
+    'title' => 'Base',
+    'description' => 'Getlocations base configuration',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('getlocations_settings_form'),
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_DEFAULT_LOCAL_TASK,
     'file' => 'getlocations.admin.inc',
   );
 
@@ -822,16 +833,6 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
     $getlocations_js_weight++;
   }
 
-
-  if ($defaults['geo_enable'] && !stristr($current_js, $getlocations_paths['getlocations_geo_path'])) {
-    $js_opts = array();
-    $js_opts['weight'] = $getlocations_js_weight;
-    $js_opts['type'] = 'file';
-    $js_opts['preprocess'] = $aggr;
-    drupal_add_js($getlocations_paths['getlocations_geo_path'], $js_opts);
-    $getlocations_js_weight++;
-  }
-
   if ($defaults['markermanagertype'] == 1 && !stristr($current_js, $getlocations_paths['markermanager_path'])) {
     $js_opts = array();
     $js_opts['weight'] = $getlocations_js_weight;
@@ -1002,6 +1003,14 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
     }
   }
 
+  if ($defaults['geo_enable'] && !stristr($current_js, $getlocations_paths['getlocations_geo_path'])) {
+    $js_opts = array();
+    $js_opts['weight'] = $getlocations_js_weight + 10;
+    $js_opts['type'] = 'file';
+    $js_opts['preprocess'] = $aggr;
+    drupal_add_js($getlocations_paths['getlocations_geo_path'], $js_opts);
+    $getlocations_js_weight++;
+  }
 
 }
 

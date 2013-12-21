@@ -39,13 +39,13 @@ function getlocations_fields_init() {
 function getlocations_fields_menu() {
   $items = array();
 
-  $items['admin/config/services/getlocations_fields'] = array(
-    'title' => 'Getlocations fields',
+  $items[GETLOCATIONS_ADMIN_PATH . '/fields'] = array(
+    'title' => 'Fields',
     'description' => 'Configure Getlocations fields',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('getlocations_fields_settings_form'),
     'access arguments' => array('administer site configuration'),
-    'type' => MENU_NORMAL_ITEM,
+    'type' => MENU_LOCAL_TASK,
     'file' => 'getlocations_fields.admin.inc',
   );
 

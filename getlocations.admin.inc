@@ -21,6 +21,9 @@ function getlocations_settings_form() {
 
   $form = array();
 
+  $pagetitle = '<div><h4>' . t('Getlocations base settings') . '</h4><p>' . t('The setting selected here will be used as the starting point for all other Google maps.') . '</p></div>';
+  $form['pagetitle'] = array('#markup' => $pagetitle);
+
   $form['rebuild'] = array(
     '#type' => 'fieldset',
     '#title' => t('Regenerate Getlocations marker cache'),

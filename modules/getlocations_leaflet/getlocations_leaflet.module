@@ -28,13 +28,13 @@ function getlocations_leaflet_help($path, $arg) {
  */
 function getlocations_leaflet_menu() {
   $items = array();
-  $items['admin/config/services/getlocations_leaflet'] = array(
-    'title' => 'Getlocations leaflet',
+  $items[GETLOCATIONS_ADMIN_PATH . '/leaflet'] = array(
+    'title' => 'Leaflet',
     'description' => 'Configure Getlocations leaflet',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('getlocations_leaflet_settings_form'),
     'access arguments' => array('administer site configuration'),
-    'type' => MENU_NORMAL_ITEM,
+    'type' => MENU_LOCAL_TASK,
   );
 
   // getlocations/[entity_type]/$nid    # show all location on one entity_type
@@ -2304,6 +2304,8 @@ function getlocations_leaflet_paths_get($reset = FALSE, $min = FALSE) {
 function getlocations_leaflet_settings_form() {
 
   $form = array();
+  $pagetitle = '<div><h4>' . t('Getlocations leaflet settings') . '</h4><p>' . t('The setting selected here will be used as the starting point for all other Leaflet maps.') . '</p></div>';
+  $form['pagetitle'] = array('#markup' => $pagetitle);
 
   $form['rebuild'] = array(
     '#type' => 'fieldset',
