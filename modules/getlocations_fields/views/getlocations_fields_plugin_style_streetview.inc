@@ -69,7 +69,8 @@ class getlocations_fields_plugin_style_streetview extends views_plugin_style {
     }
     $form['#theme'] = 'getlocations_plugin_style_streetview_options_form';
 
-    $form['#attached']['js'] = array(GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields_views.js' => array('type' => 'file'));
+    $getlocations_fields_paths = getlocations_fields_paths_get();
+    $form['#attached']['js'] = array($getlocations_fields_paths['getlocations_fields_views_path']);
 
     $handlers = $this->display->handler->get_handlers('field');
     $source_options = array('' => t('None'));

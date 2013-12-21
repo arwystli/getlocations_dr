@@ -616,30 +616,12 @@ function getlocations_fields_views_default_views() {
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['style_plugin'] = 'default';
   $handler->display->display_options['row_plugin'] = 'fields';
-  /* Relationship: Getlocations Fields: Content using Address */
-  #$handler->display->display_options['relationships']['reverse_field_address_node']['id'] = 'reverse_field_address_node';
-  #$handler->display->display_options['relationships']['reverse_field_address_node']['table'] = 'getlocations_fields';
-  #$handler->display->display_options['relationships']['reverse_field_address_node']['field'] = 'reverse_field_address_node';
   /* Field: Getlocations Fields: Glid */
   $handler->display->display_options['fields']['glid']['id'] = 'glid';
   $handler->display->display_options['fields']['glid']['table'] = 'getlocations_fields';
   $handler->display->display_options['fields']['glid']['field'] = 'glid';
-  #$handler->display->display_options['fields']['glid']['relationship'] = 'reverse_field_address_node';
   $handler->display->display_options['fields']['glid']['label'] = '';
   $handler->display->display_options['fields']['glid']['element_label_colon'] = FALSE;
-  /* Field: Content: Nid */
-  $handler->display->display_options['fields']['nid']['id'] = 'nid';
-  $handler->display->display_options['fields']['nid']['table'] = 'node';
-  $handler->display->display_options['fields']['nid']['field'] = 'nid';
-  #$handler->display->display_options['fields']['nid']['relationship'] = 'reverse_field_address_node';
-  /* Field: Content: Title */
-  $handler->display->display_options['fields']['title']['id'] = 'title';
-  $handler->display->display_options['fields']['title']['table'] = 'node';
-  $handler->display->display_options['fields']['title']['field'] = 'title';
-  #$handler->display->display_options['fields']['title']['relationship'] = 'reverse_field_address_node';
-  $handler->display->display_options['fields']['title']['label'] = '';
-  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
   /* Field: Getlocations Fields: Latitude */
   $handler->display->display_options['fields']['latitude']['id'] = 'latitude';
   $handler->display->display_options['fields']['latitude']['table'] = 'getlocations_fields';
@@ -668,7 +650,6 @@ function getlocations_fields_views_default_views() {
   $handler->display->display_options['fields']['field_name']['label'] = '';
   $handler->display->display_options['fields']['field_name']['exclude'] = TRUE;
   $handler->display->display_options['fields']['field_name']['element_label_colon'] = FALSE;
-
   /* Filter criterion: Getlocations Fields: Latitude */
   $handler->display->display_options['filters']['latitude']['id'] = 'latitude';
   $handler->display->display_options['filters']['latitude']['table'] = 'getlocations_fields';
@@ -707,7 +688,6 @@ function getlocations_fields_views_default_views() {
   $handler->display->display_options['pager']['options']['items_per_page'] = '10';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['pager']['options']['id'] = '0';
-  $handler->display->display_options['pager']['options']['quantity'] = '9';
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'getlocations';
   $handler->display->display_options['defaults']['style_options'] = FALSE;
@@ -715,6 +695,35 @@ function getlocations_fields_views_default_views() {
   $handler->display->display_options['row_plugin'] = 'fields';
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['block_description'] = 'View: Getlocations showall map';
+
+  // leaflet showall map
+  if (module_exists('getlocations_leaflet')) {
+
+    /* Display: Leaflet Page */
+    $handler = $view->new_display('page', 'Leaflet Page', 'page_2');
+    $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+    $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+    $handler->display->display_options['style_plugin'] = 'getlocations_leaflet';
+    $handler->display->display_options['style_options']['pancontrol'] = 0;
+    $handler->display->display_options['style_options']['baselayers'] = array(
+      'OpenStreetMap.Mapnik' => 1
+    );
+    $handler->display->display_options['style_options']['markeraction'] = 'popup';
+    $handler->display->display_options['style_options']['fullscreen'] = 0;
+    $handler->display->display_options['style_options']['category_method'] = '0';
+    $handler->display->display_options['style_options']['category_term_reference_field'] = '';
+    $handler->display->display_options['style_options']['layerControl'] = 1;
+    $handler->display->display_options['style_options']['markercluster'] = 0;
+    $handler->display->display_options['style_options']['graticule'] = 0;
+    $handler->display->display_options['style_options']['zoomslider'] = 0;
+    $handler->display->display_options['style_options']['awesome'] = 0;
+    $handler->display->display_options['style_options']['marker_type'] = 'fa';
+    $handler->display->display_options['defaults']['style_options'] = FALSE;
+    $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+    $handler->display->display_options['row_plugin'] = 'fields';
+    $handler->display->display_options['defaults']['row_options'] = FALSE;
+    $handler->display->display_options['path'] = 'getlocations_leaflet_showall';
+  }
 
   $views[$view->name] = $view;
 

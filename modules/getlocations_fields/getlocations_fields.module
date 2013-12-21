@@ -655,7 +655,8 @@ function getlocations_fields_field_formatter_view($entity_type, $entity, $field,
  *   The form elements for the formatter settings.
  */
 function getlocations_fields_field_formatter_settings_form($field, $instance, $view_mode, $form, &$form_state) {
-  drupal_add_js(GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields_formatter.js');
+  $getlocations_fields_paths = getlocations_fields_paths_get();
+  drupal_add_js($getlocations_fields_paths['getlocations_fields_formatter_path']);
   $display = $instance['display'][$view_mode];
   $settings = $display['settings'];
   $getlocations_fields_defaults = getlocations_fields_defaults();
@@ -2853,7 +2854,8 @@ function getlocations_fields_field_formatter_info_defaults() {
  *
  */
 function getlocations_fields_input_settings_form($defaults) {
-  drupal_add_js(GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields_admin.js');
+  $getlocations_fields_paths = getlocations_fields_paths_get();
+  drupal_add_js($getlocations_fields_paths['getlocations_fields_admin_path']);
   drupal_add_css(GETLOCATIONS_FIELDS_PATH . '/getlocations_fields.css');
 
   $form = array();
@@ -3462,14 +3464,29 @@ function getlocations_fields_get_countries_list($upper = TRUE) {
   return $countries;
 }
 
-function getlocations_fields_paths_get($reset = FALSE) {
+function getlocations_fields_paths_get($reset = FALSE, $min = FALSE) {
+  if ($min) {
+    $defaults = array(
+      'getlocations_fields_path'            => GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields.min.js',
+      'getlocations_fields_preview_path'    => GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields_preview.min.js',
+      'getlocations_fields_streetview_path' => GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields_streetview.min.js',
+      'getlocations_fields_admin_path'      => GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields_admin.min.js',
+      'getlocations_fields_formatter_path'  => GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields_formatter.min.js',
+      'getlocations_fields_views_path'      => GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields_views.min.js',
+    );
+  }
+  else {
+    $defaults = array(
+      'getlocations_fields_path'            => GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields.js',
+      'getlocations_fields_preview_path'    => GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields_preview.js',
+      'getlocations_fields_streetview_path' => GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields_streetview.js',
+      'getlocations_fields_admin_path'      => GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields_admin.js',
+      'getlocations_fields_formatter_path'  => GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields_formatter.js',
+      'getlocations_fields_views_path'      => GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields_views.js',
+    );
+  }
 
-  $defaults = array(
-    'getlocations_fields_path' => GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields.js',
-    'getlocations_fields_preview_path' => GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields_preview.js',
-    'getlocations_fields_streetview_path' => GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields_streetview.js',
-  );
-  if ($reset) {
+  if ($reset || $min) {
     $getlocations_fields_paths = $defaults;
   }
   else {
