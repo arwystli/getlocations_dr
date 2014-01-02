@@ -1,9 +1,169 @@
-commit cb99053
+commit a01b695
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Thu Jan 2 10:47:17 2014 +0000
+
+    reworked js to get ajax working
+
+getlocations.module
+js/getlocations.js
+js/getlocations.min.js
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_fields/js/getlocations_fields.js
+modules/getlocations_fields/js/getlocations_fields.min.js
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/js/getlocations_leaflet.js
+modules/getlocations_leaflet/js/getlocations_leaflet.min.js
+modules/getlocations_leaflet/views/getlocations_leaflet.views.inc
+modules/getlocations_leaflet/views/getlocations_leaflet_plugin_style.inc
+modules/getlocations_map/getlocations_map.module
+modules/getlocations_search/getlocations_search.module
+views/getlocations.views.inc
+
+commit b0b6a78
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Thu Jan 2 09:53:05 2014 +0000
+
+    improved dd_to_dms
+
+modules/getlocations_leaflet/js/getlocations_leaflet.js
+modules/getlocations_leaflet/js/getlocations_leaflet.min.js
+
+commit eeaf1ff
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sat Dec 21 19:13:42 2013 +0000
+
+    improved fieldsets
+
+getlocations.admin.inc
+modules/getlocations_fields/getlocations_fields.admin.inc
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_search/getlocations_search.admin.inc
+
+commit d9c2b94
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sat Dec 21 12:14:27 2013 +0000
+
+    reorganised admin menu
+
+getlocations.admin.inc
+getlocations.install
+getlocations.module
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_search/getlocations_search.module
+
+commit 18f8e07
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sat Dec 21 09:39:43 2013 +0000
+
+    added minify for getlocations
+
+getlocations.admin.inc
+getlocations.module
+js/getlocations.min.js
+js/getlocations_admin.min.js
+js/getlocations_box.min.js
+js/getlocations_categories.min.js
+js/getlocations_circles.min.js
+js/getlocations_colorbox.min.js
+js/getlocations_geo.js
+js/getlocations_geo.min.js
+js/getlocations_geojson.min.js
+js/getlocations_marker_box.min.js
+js/getlocations_polygons.min.js
+js/getlocations_polylines.min.js
+js/getlocations_preview.min.js
+js/getlocations_rectangles.min.js
+js/getlocations_search_places.js
+js/getlocations_search_places.min.js
+js/getlocations_views.min.js
+js/icons.js
+js/icons.min.js
+js/infobubble.min.js
+js/infobubble_extended.min.js
+views/getlocations_plugin_style_map.inc
+
+commit 80588bf
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sat Dec 21 09:39:08 2013 +0000
+
+    added minify for getlocations_fields
+
+modules/getlocations_fields/getlocations_fields.admin.inc
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_fields/js/getlocations_fields.min.js
+modules/getlocations_fields/js/getlocations_fields_admin.min.js
+modules/getlocations_fields/js/getlocations_fields_formatter.min.js
+modules/getlocations_fields/js/getlocations_fields_preview.min.js
+modules/getlocations_fields/js/getlocations_fields_streetview.min.js
+modules/getlocations_fields/js/getlocations_fields_views.min.js
+modules/getlocations_fields/views/getlocations_fields.views_default.inc
+modules/getlocations_fields/views/getlocations_fields_plugin_style_streetview.inc
+
+commit 2081d19
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sat Dec 21 09:38:40 2013 +0000
+
+    added minify for getlocations_leaflet
+
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/js/getlocations_leaflet.js
+modules/getlocations_leaflet/js/getlocations_leaflet.min.js
+
+commit c8afb8e
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sat Dec 21 05:41:13 2013 +0000
+
+    added minify
+
+modules/getlocations_search/getlocations_search.admin.inc
+modules/getlocations_search/getlocations_search.module
+modules/getlocations_search/js/getlocations_search.min.js
+modules/getlocations_search/js/getlocations_search_admin.min.js
+
+commit 98f4c35
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Thu Dec 19 23:42:46 2013 +0000
+
+    added minimap plugin
+
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/js/getlocations_leaflet.js
+modules/getlocations_leaflet/js/getlocations_leaflet.min.js
+modules/getlocations_leaflet/plugins/minimap/L.Control.Layers.Minimap.js
+modules/getlocations_leaflet/plugins/minimap/L.Control.Layers.Minimap.min.js
+modules/getlocations_leaflet/plugins/minimap/control.layers.minimap.css
+modules/getlocations_leaflet/plugins/minimap/control.layers.minimap.min.css
+modules/getlocations_leaflet/plugins/sync/L.Map.Sync.js
+modules/getlocations_leaflet/plugins/sync/L.Map.Sync.min.js
+
+commit cacfb74
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Thu Dec 19 17:54:16 2013 +0000
+
+    added mouseposition plugin
+
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/js/getlocations_leaflet.js
+modules/getlocations_leaflet/js/getlocations_leaflet.min.js
+modules/getlocations_leaflet/js/getlocations_leaflet_formatter.js
+modules/getlocations_leaflet/js/getlocations_leaflet_formatter.min.js
+modules/getlocations_leaflet/js/getlocations_leaflet_geojson.js
+modules/getlocations_leaflet/js/getlocations_leaflet_geojson.min.js
+modules/getlocations_leaflet/plugins/mouseposition/L.Control.MousePosition.css
+modules/getlocations_leaflet/plugins/mouseposition/L.Control.MousePosition.js
+modules/getlocations_leaflet/plugins/mouseposition/L.Control.MousePosition.min.css
+modules/getlocations_leaflet/plugins/mouseposition/L.Control.MousePosition.min.js
+modules/getlocations_leaflet/views/getlocations_leaflet_plugin_style.inc
+
+commit f10d36a
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Wed Dec 18 20:22:05 2013 +0000
 
     added font-awesome
 
+CHANGELOG.txt
 modules/getlocations_leaflet/getlocations_leaflet.module
 modules/getlocations_leaflet/js/getlocations_leaflet.js
 modules/getlocations_leaflet/js/getlocations_leaflet.min.js

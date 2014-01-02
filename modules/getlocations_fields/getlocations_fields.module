@@ -1660,7 +1660,7 @@ function getlocations_fields_getmap($settings, $active) {
   $minmaxes = '';
   getlocations_js_settings_do($getlocations_defaults, $latlons, $minmaxes, $mapid, $active);
 
-  $map = theme('getlocations_show', array('width' => $settings['mapwidth'] , 'height' => $settings['mapheight'] , 'defaults' => $getlocations_defaults, 'mapid' => $mapid, 'entity_info' => '', 'object' => ''));
+  $map = theme('getlocations_show', array('width' => $settings['mapwidth'] , 'height' => $settings['mapheight'] , 'defaults' => $getlocations_defaults, 'mapid' => $mapid, 'latlons' => $latlons, 'minmaxes' => $minmaxes, 'entity_info' => '', 'object' => ''));
 
   return array($map, $mapid);
 }
@@ -1804,7 +1804,7 @@ function getlocations_fields_getmap_show($settings, $lls = '', $minmaxes = '') {
   $mapid = getlocations_setup_map($getlocations_defaults);
 
   getlocations_js_settings_do($getlocations_defaults, $latlons, $minmaxes, $mapid);
-  return theme('getlocations_show', array('width' => $settings['display_mapwidth'], 'height' => $settings['display_mapheight'], 'defaults' => $getlocations_defaults, 'mapid' => $mapid, 'entity_info' => '', 'object' => ''));
+  return theme('getlocations_show', array('width' => $settings['display_mapwidth'], 'height' => $settings['display_mapheight'], 'defaults' => $getlocations_defaults, 'mapid' => $mapid, 'latlons' => $latlons, 'minmaxes' => $minmaxes, 'entity_info' => '', 'object' => ''));
 }
 
 /**

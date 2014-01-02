@@ -549,7 +549,7 @@ function getlocations_leaflet_field_formatter_view($entity_type, $entity, $field
 
         drupal_add_library('getlocations_leaflet', 'getlocations-leaflet');
 
-        getlocations_leaflet_js_settings_do($map_settings, $mapid);
+        #getlocations_leaflet_js_settings_do($map_settings, $mapid);
         $element[$delta] = array(
           '#theme' => 'getlocations_leaflet_map',
           '#width' => $default['width'],
@@ -2879,7 +2879,7 @@ function getlocations_leaflet_entity_type_map($type, $entity_id) {
 
     drupal_add_library('getlocations_leaflet', 'getlocations-leaflet');
 
-    getlocations_leaflet_js_settings_do($map_settings, $mapid);
+    #getlocations_leaflet_js_settings_do($map_settings, $mapid);
 
     $output = theme('getlocations_leaflet_map', array(
       'width' => $settings['width'],
@@ -3531,6 +3531,17 @@ function theme_getlocations_leaflet_map($variables) {
   $mapid = $variables['mapid'];
   $links = $variables['links'];
 
+  $datanum = $map_settings['datanum'];
+  $latlons = $map_settings['latlons'];
+  $icons = $map_settings['icons'];
+  $minmaxes = $map_settings['map_settings']['minmaxes'];
+  unset($map_settings['datanum']);
+  unset($map_settings['latlons']);
+  unset($map_settings['icons']);
+  unset($map_settings['map_settings']['minmaxes']);
+
+  getlocations_leaflet_js_settings_do($map_settings, $mapid);
+
   $output = '';
 
   // links
@@ -3538,11 +3549,21 @@ function theme_getlocations_leaflet_map($variables) {
     $output .= '<div class="getlocations_returnlink">' . $links['returnlink'] . '</div>';
   }
 
-
   // wrap the map
   $output .= '<div id="getlocations_leaflet_wrapper_' . $mapid . '"  style="width: ' . $width . '; height: ' . $height . '" >';
   $output .= '<div class="getlocations_leaflet_canvas" id="getlocations_leaflet_canvas_' . $mapid . '" style="width: 100%; height: 100%" ></div>';
   $output .= '</div>';
+
+  // give each map its own data
+  $localdata = json_encode(array(
+    'datanum'  => $datanum,
+    'latlons'  => $latlons,
+    'icons'    => $icons,
+    'minmaxes' => $minmaxes
+  ));
+  $output .= "\n" . '<script type="text/javascript">' . "\n" . '<!--//--><![CDATA[//><!--' . "\n";
+  $output .= 'getlocations_leaflet_data["' . $mapid . '"] = ' . $localdata . ';' . "\n";
+  $output .= '//--><!]]>' . "\n" . '</script>' . "\n";
 
   return $output;
 

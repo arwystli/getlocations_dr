@@ -333,7 +333,7 @@ function getlocations_search_getmap($which = 'page') {
 
   getlocations_js_settings_do($getlocations_defaults, $latlons, $minmaxes, $mapid, FALSE, $getlocations_defaults['extcontrol']);
 
-  $map = theme('getlocations_show', array('width' => $getlocations_defaults['width'] , 'height' => $getlocations_defaults['height'] , 'defaults' => $getlocations_defaults, 'mapid' => $mapid, 'entity_info' => '', 'object' => ''));
+  $map = theme('getlocations_show', array('width' => $getlocations_defaults['width'] , 'height' => $getlocations_defaults['height'] , 'defaults' => $getlocations_defaults, 'mapid' => $mapid, 'latlons' => $latlons, 'minmaxes' => $minmaxes, 'entity_info' => '', 'object' => ''));
   return array('map' => $map, 'mapid' => $mapid);
 }
 

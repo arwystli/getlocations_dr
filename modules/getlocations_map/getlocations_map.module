@@ -286,6 +286,8 @@ function getlocations_map_field_formatter_view($entity_type, $entity, $field, $i
           '#height'      => $default['height'],
           '#defaults'    => $default,
           '#mapid'       => $mapid,
+          '#latlons'     => $latlons,
+          '#minmaxes'    => $minmaxes,
           '#entity_info' => $entity_info,
           '#object'      => '',
         );
