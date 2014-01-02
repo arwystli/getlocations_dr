@@ -146,6 +146,10 @@ var getlocations_leaflet_layerscontrol = [];
             mopts.lngFormatter = getlocations_leaflet_dd_to_dms_lng;
             mopts.latFormatter = getlocations_leaflet_dd_to_dms_lat;
           }
+          else {
+            mopts.lngFormatter = getlocations_leaflet_dd_lng;
+            mopts.latFormatter = getlocations_leaflet_dd_lat;
+          }
           getlocations_leaflet_map[key].addControl(L.control.mousePosition(mopts));
         }
 
@@ -386,43 +390,55 @@ var getlocations_leaflet_layerscontrol = [];
   } // end getlocations_leaflet_init
 
   getlocations_leaflet_dd_to_dms_lat = function(coord) {
-    negative = (coord < 0) ? true : false;
-    coord = Math.abs(coord);
-    degrees = Math.floor(coord);
-    coord = coord - degrees;
-    coord = coord * 60;
-    minutes = Math.floor(coord);
-    coord = coord - minutes;
-    coord = coord * 60;
-    seconds = Math.round(coord, 6);
-    output = degrees + "&deg;&nbsp;" + minutes + "&#39;&nbsp;" + seconds + "&#34;&nbsp;";
-    if (! negative) {
-      output += 'N';
-    }
-    else {
-      output += 'S';
-    }
-    return output;
+    return getlocations_leaflet_dd_to_dms_do(coord, 'lat');
   };
 
   getlocations_leaflet_dd_to_dms_lng = function(coord) {
-    negative = (coord < 0) ? true : false;
-    coord = Math.abs(coord);
-    degrees = Math.floor(coord);
-    coord = coord - degrees;
-    coord = coord * 60;
-    minutes = Math.floor(coord);
-    coord = coord - minutes;
-    coord = coord * 60;
-    seconds = Math.round(coord, 6);
-    output = degrees + "&deg;&nbsp;" + minutes + "&#39;&nbsp;" + seconds + "&#34;&nbsp;";
-    if (! negative) {
-      output += 'E';
+    return getlocations_leaflet_dd_to_dms_do(coord, 'lng');
+  };
+
+  getlocations_leaflet_dd_to_dms_do = function(coord, latlon) {
+    if (latlon == 'lat') {
+      coord = getlocations_leaflet_normalize_lat(coord);
+      direction = (coord < 0) ? 'S' : 'N';
     }
     else {
-      output += 'W';
+      coord = getlocations_leaflet_normalize_lng(coord);
+      direction = (coord < 0) ? 'W' : 'E';
     }
+    coord = Math.abs(coord);
+    degrees = Math.floor(coord);
+    coord = (coord - degrees) * 60;
+    minutes = Math.floor(coord);
+    coord = (coord - minutes) * 60;
+    seconds = Math.round(coord, 6);
+    output = degrees + "&deg;&nbsp;" + minutes + "&#39;&nbsp;" + seconds + "&#34;&nbsp;" + direction;
     return output;
+  };
+
+  getlocations_leaflet_dd_lat = function(coord) {
+    coord = getlocations_leaflet_normalize_lat(coord);
+    return coord.toFixed(6);
+  };
+
+  getlocations_leaflet_dd_lng = function(coord) {
+    coord = getlocations_leaflet_normalize_lng(coord);
+    return coord.toFixed(6);
+  };
+
+  // normalize functions
+  getlocations_leaflet_normalize_lat = function(lat) {
+    lat = parseFloat(lat);
+    return Math.max(-90, Math.min(90, lat));
+  };
+
+  getlocations_leaflet_normalize_lng = function(lng) {
+    lng = parseFloat(lng);
+    mod = lng % 360;
+    if (mod == 180) {
+      return 180;
+    }
+    return ((mod < -180) ? (lng + 360) : (mod > 180) ? (lng - 360) : lng);
   };
 
   function getlocations_leaflet_do_link(m, l) {
