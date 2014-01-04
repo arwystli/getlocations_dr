@@ -61,6 +61,7 @@ function template_preprocess_getlocations_view_map(&$variables) {
   $latlons = array();
   $minmaxes = array('minlat' => 0, 'minlon' => 0, 'maxlat' => 0, 'maxlon' => 0);
   $ct = 0;
+  $thiskey = FALSE;
 
   if (count($locations)) {
     // we should loop over them and dump bummers with no lat/lon
