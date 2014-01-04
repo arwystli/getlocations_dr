@@ -8,7 +8,12 @@
  * drush integration for getlocations.
  * 'drush getlocations-markers' will install the basic getlocations marker set
  * 'drush getlocations-geojson' will install the GeoJSON javascript library
+ * 'drush getlocations-leaflet' will install the Leafletjs javascript library
  */
+
+define('GETLOCATIONS_MARKERS_DOWNLOAD_URI', 'http://dl.dropboxusercontent.com/u/41489105/Drupal/getlocations/getlocations-markers.zip');
+define('GETLOCATIONS_GEOJSON_DOWNLOAD_URI', 'https://github.com/JasonSanford/GeoJSON-to-Google-Maps/archive/master.zip');
+define('GETLOCATIONS_LEAFLET_DOWNLOAD_URI', 'http://leaflet-cdn.s3.amazonaws.com/build/leaflet-0.7.1.zip');
 
 /**
  * Implementation of hook_drush_command().
@@ -47,6 +52,15 @@ function getlocations_drush_command() {
     ),
     'aliases' => array('getlocationsgeojson'),
   );
+  $items['getlocations-leaflet'] = array(
+    'callback' => 'drush_getlocations_leaflet',
+    'description' => dt('Download and install the Leafletjs library.'),
+    'bootstrap' => DRUSH_BOOTSTRAP_DRUSH, // No bootstrap.
+    'arguments' => array(
+      'path' => dt('Optional. A path where to install the Leafletjs library. If omitted Drush will use the default location.'),
+    ),
+    'aliases' => array('getlocationsleaflet'),
+  );
 
   return $items;
 }
@@ -69,6 +83,8 @@ function getlocations_drush_help($section) {
       return dt('Download and install the basic set of getlocations markers from Dropbox, default location is sites/all/libraries.');
     case 'drush:getlocations-geojson':
       return dt('Download and install the GeoJSON javascript library from Github, default location is sites/all/libraries.');
+    case 'drush:getlocations-leaflet':
+      return dt('Download and install the Leafletjs library from http://leafletjs.com, default location is sites/all/libraries.');
   }
 }
 
@@ -94,7 +110,7 @@ function drush_getlocations_markers() {
   $olddir = getcwd();
   chdir($path);
 
-  $zip = 'http://dl.dropboxusercontent.com/u/41489105/Drupal/getlocations/getlocations-markers.zip';
+  $zip = GETLOCATIONS_MARKERS_DOWNLOAD_URI;
   $dirname = 'getlocations';
 
   // Getlocations markers directory exists, bailing out
@@ -145,7 +161,7 @@ function drush_getlocations_geojson() {
   $olddir = getcwd();
   chdir($path);
 
-  $zip = 'https://github.com/JasonSanford/GeoJSON-to-Google-Maps/archive/master.zip';
+  $zip = GETLOCATIONS_GEOJSON_DOWNLOAD_URI;
   $dirname = 'GeoJSON';
   // Download the zip archive
   if ($filepath = drush_download_file($zip)) {
@@ -177,3 +193,53 @@ function drush_getlocations_geojson() {
   chdir($olddir);
 }
 
+/**
+ * Command to download the Leafletjs library.
+ */
+function drush_getlocations_leaflet() {
+  $args = func_get_args();
+  if (!empty($args[0])) {
+    $path = $args[0];
+  }
+  else {
+    $path = 'sites/all/libraries';
+  }
+
+  // Create the path if it does not exist.
+  if (!is_dir($path)) {
+    drush_op('mkdir', $path);
+    drush_log(dt('Directory @path was created', array('@path' => $path)), 'notice');
+  }
+
+  // Set the directory to the download location.
+  $olddir = getcwd();
+  chdir($path);
+
+  $zip = GETLOCATIONS_LEAFLET_DOWNLOAD_URI;
+  // Download the archive
+  if ($filepath = drush_download_file($zip)) {
+    $filename = basename($filepath);
+    $dirname = 'leaflet';
+
+    // Remove any existing directory
+    if (is_dir($dirname)) {
+      drush_delete_dir($dirname, TRUE);
+      drush_log(dt('An existing Leafletjs library was deleted from @path', array('@path' => $path)), 'notice');
+    }
+
+    // Decompress the zip archive
+    drush_tarball_extract($filename, $dirname);
+
+  }
+
+  if (is_dir($dirname)) {
+    drush_log(dt('Leafletjs library has been installed in @path', array('@path' => $path)), 'success');
+  }
+  else {
+    drush_log(dt('Drush was unable to install the Leafletjs library to @path', array('@path' => $path)), 'error');
+  }
+
+  // Set working directory back to the previous working directory.
+  chdir($olddir);
+
+}
