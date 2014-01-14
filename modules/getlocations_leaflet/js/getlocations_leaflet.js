@@ -223,7 +223,7 @@ var getlocations_leaflet_data = [];
             var attributionopts = {position: map_settings.attributioncontrolposition};
             var attribcontrol = L.control.attribution(attributionopts);
             getlocations_leaflet_map[key].addControl(attribcontrol);
-            attribcontrol.addAttribution(map_layers.earth.options.attribution);
+            //attribcontrol.addAttribution(map_layers.earth.options.attribution);
           }
 
           // Mouseposition
