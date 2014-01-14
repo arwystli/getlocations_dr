@@ -4,15 +4,20 @@ If you have any questions or suggestions please contact me at
 http://drupal.org/user/52366 or use the Getlocations issue queue.
 
 Leaflet from
-http://leaflet-cdn.s3.amazonaws.com/build/leaflet-0.6.4.zip
+http://leaflet-cdn.s3.amazonaws.com/build/leaflet-0.7.1.zip
 Extract it to your drupal root /sites/all/libraries/leaflet.
 The file 'leaflet.js' must be found at /sites/all/libraries/leaflet/leaflet.js.
 All other files and folder(s) that come with the library are also needed there.
+You can install it using drush:
+drush getlocations-leaflet
 
 markercluster comes from
 https://github.com/Leaflet/Leaflet.markercluster
 It is already installed but if you want to configure it in detail you might want to look at the examples.
 See markercluster/markerclusteroptions.inc.txt for how to add options.
+
+The list of available maps is based on code from
+https://github.com/leaflet-extras/leaflet-providers
 
 You can add maps from http://cloudmade.com/ on the form at admin/config/services/getlocations_leaflet
 You can also add maps using a bespoke module, it should contain a function similar to this:
@@ -60,6 +65,8 @@ Getlocations can support GeoJSON objects, see http://www.geojson.org/ for inform
 You can download the library from https://github.com/JasonSanford/GeoJSON-to-Google-Maps.
 It should be installed in your libraries folder so you have a path something like this:
 sites/all/libraries/GeoJSON/GeoJSON.js
+You can install it using drush:
+drush getlocations-geojson
 
 Here is an example of geojson data:
 {
@@ -91,4 +98,15 @@ Here is an example of geojson data:
 The coordinates must be supplied as Longitude,Latitude.
 "popup" contains the content of a popup balloon.
 "style" can contain any valid Leaflet styling.
+
+Other plugin sources:
+https://github.com/turban/Leaflet.Graticule
+https://github.com/lvoogdt/Leaflet.awesome-markers
+http://fortawesome.github.io/Font-Awesome/
+http://kartena.github.com/Leaflet.Pancontrol/
+http://kartena.github.com/Leaflet.zoomslider/
+http://brunob.github.com/leaflet.fullscreen
+https://github.com/turban/Leaflet.Sync
+https://github.com/Norkart/Leaflet-MiniMap
+https://github.com/ardhi/Leaflet.MousePosition
 
