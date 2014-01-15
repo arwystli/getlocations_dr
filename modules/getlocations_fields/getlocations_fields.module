@@ -3874,6 +3874,10 @@ function theme_getlocations_fields_show($variables) {
       }
       $settings += getlocations_fields_get_display_settings($location);
     }
+    else {
+      $settings['sv_enable'] = 0;
+      $settings['sv_showfirst'] = 0;
+    }
 
     if ($location['longitude'] && $location['latitude']) {
 
