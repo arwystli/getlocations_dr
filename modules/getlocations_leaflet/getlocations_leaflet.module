@@ -657,7 +657,12 @@ function getlocations_leaflet_field_formatter_settings_summary($field, $instance
         $summary[] = t('Show Pan control: Yes');
       }
       if ($settings['awesome']) {
-        $summary[] = t('Enable Awesome fonts: Yes');
+        if ($settings['marker_type'] == 'gg') {
+          $summary[] = t('Marker type: Getlocations');
+        }
+        elseif ($settings['marker_type'] == 'fa') {
+          $summary[] = t('Marker type: Awesome fonts');
+        }
       }
       if ($settings['graticule']) {
         $summary[] = t('Show grid: Yes');
