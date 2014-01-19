@@ -32,7 +32,7 @@ function getlocations_leaflet_requirements($phase) {
   else {
     $requirements['leaflet'] = array(
       'title' => t('Leaflet library not found'),
-      'value' => t('The !leaflet javascript library was not found. Please !download it into the <em>sites/all/libraries</em> folder, stripping its name of the version number. Ensure that it is named <strong>leaflet</strong> with a lowercase "l".',
+      'value' => t('The !leaflet javascript library was not found. Please !download it and unzip the files into <em>sites/all/libraries/leaflet</em>. You can also use "drush getlocations-leaflet".',
         array(
           '!leaflet' => l('Leaflet', 'http://leafletjs.com'),
           '!download' => l('download', 'http://leafletjs.com/download.html'),

@@ -4,7 +4,7 @@ If you have any questions or suggestions please contact me at
 http://drupal.org/user/52366 or use the Getlocations issue queue.
 
 Leaflet from
-http://leaflet-cdn.s3.amazonaws.com/build/leaflet-0.7.1.zip
+http://leaflet-cdn.s3.amazonaws.com/build/leaflet-0.7.2.zip
 Extract it to your drupal root /sites/all/libraries/leaflet.
 The file 'leaflet.js' must be found at /sites/all/libraries/leaflet/leaflet.js.
 All other files and folder(s) that come with the library are also needed there.
