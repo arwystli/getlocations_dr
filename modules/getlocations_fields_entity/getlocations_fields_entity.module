@@ -111,13 +111,13 @@ function getlocations_fields_entity_key_map() {
       'description' => t('Getlocations Fields Field name field')
     ),
   );
-  if (getlocations_fields_column_check('data')) {
+#  if (getlocations_fields_column_check('data')) {
     $keys['data'] = array(
       'type' => 'text',
       'label' => t('Data'),
       'description' => t('Getlocations Fields serialized data field')
     );
-  }
+#  }
   return $keys;
 
 }
