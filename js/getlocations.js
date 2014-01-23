@@ -18,11 +18,11 @@ var getlocations_data = [];
 
 (function ($) {
 
+  // in icons.js
+  Drupal.getlocations.iconSetup();
+
   Drupal.behaviors.getlocations = {
     attach: function(context, settings) {
-
-      // in icons.js
-      Drupal.getlocations.iconSetup();
 
       // work over all class 'getlocations_map_canvas'
       $(".getlocations_map_canvas", context).once('getlocations-map-processed', function(index, element) {

@@ -1,9 +1,47 @@
-commit 0888a28
+commit 096f0ae
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Thu Jan 23 20:51:06 2014 +0000
+
+    moved icon setup
+
+js/getlocations.js
+js/getlocations.min.js
+
+commit 2aa23b6
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Jan 22 22:52:42 2014 +0000
+
+    removed getlocations_fields_column_check
+
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_fields_entity/getlocations_fields_entity.module
+modules/getlocations_search/getlocations_search.module
+
+commit a55e028
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sun Jan 19 18:17:14 2014 +0000
+
+    updated getlocations install instructions
+
+modules/getlocations_leaflet/README.txt
+modules/getlocations_leaflet/getlocations_leaflet.install
+
+commit 3add04f
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sat Jan 18 00:05:18 2014 +0000
+
+    updated markerclusterer
+
+js/markerclusterer.js
+js/markerclusterer_packed.js
+
+commit 9b73e49
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Fri Jan 17 19:49:07 2014 +0000
 
     updated leaflet version
 
+CHANGELOG.txt
 drush/getlocations.drush.inc
 
 commit 9cbe5d6
