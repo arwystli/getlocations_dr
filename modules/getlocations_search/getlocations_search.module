@@ -48,6 +48,7 @@ function getlocations_search_menu() {
     'access arguments' => array('administer site configuration'),
     'type' => MENU_LOCAL_TASK,
     'file' => 'getlocations_search.admin.inc',
+    'weight' => 3,
   );
 
   $items['getlocations_search'] = array(

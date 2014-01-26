@@ -47,6 +47,7 @@ function getlocations_fields_menu() {
     'access arguments' => array('administer site configuration'),
     'type' => MENU_LOCAL_TASK,
     'file' => 'getlocations_fields.admin.inc',
+    'weight' => 2,
   );
 
 #  // ajax callback to fetch country code from full name

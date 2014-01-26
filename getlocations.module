@@ -99,6 +99,7 @@ function getlocations_menu() {
     'access arguments' => array('administer site configuration'),
     'type' => MENU_DEFAULT_LOCAL_TASK,
     'file' => 'getlocations.admin.inc',
+    'weight' => 1,
   );
 
   if (getlocations_check_entity_type('user') || getlocations_check_entity_type('profile2')) {
