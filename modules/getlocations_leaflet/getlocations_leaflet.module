@@ -1610,7 +1610,7 @@ function getlocations_leaflet_getlocations_leaflet_map_info() {
 
 function getlocations_leaflet_defaults() {
   $getlocations_defaults = getlocations_defaults();
-  $defaults = array(
+  $newdefaults = array(
     'width'                      => $getlocations_defaults['width'],
     'height'                     => $getlocations_defaults['height'],
     'zoom'                       => $getlocations_defaults['zoom'],
@@ -1665,22 +1665,23 @@ function getlocations_leaflet_defaults() {
     'geojson_data'               => $getlocations_defaults['geojson_data'],
     'geojson_options'            => $getlocations_defaults['geojson_options'],
     'fullscreen'                 => $getlocations_defaults['fullscreen'],
+    'dragging'                   => $getlocations_defaults['draggable'],
+    'scrollWheelZoom'            => $getlocations_defaults['scrollwheel'],
+    'doubleClickZoom'            => ($getlocations_defaults['nodoubleclickzoom'] ? 0 : 1),
+    'zoomControl'                => ($getlocations_defaults['controltype'] == 'none' ? 0 : 1),
+    'scaleControl'               => $getlocations_defaults['scale'],
+    'jquery_colorpicker_enabled' => $getlocations_defaults['jquery_colorpicker_enabled'],
   );
 
   $fieldables = getlocations_get_fieldable_entity_types();
   foreach ($fieldables AS $entity_type) {
-    $defaults[$entity_type . '_map_marker'] = $getlocations_defaults[$entity_type . '_map_marker'];
+    $newdefaults[$entity_type . '_map_marker'] = $getlocations_defaults[$entity_type . '_map_marker'];
     $entity_get_info = entity_get_info($entity_type);
     $label = $entity_get_info['label'];
-    $defaults['returnlink_' . $entity_type . '_enable'] = 0;
-    $defaults['returnlink_' . $entity_type . '_link'] = t('Return to !l', array('!l' => $label));
+    $newdefaults['returnlink_' . $entity_type . '_enable'] = 0;
+    $newdefaults['returnlink_' . $entity_type . '_link'] = t('Return to !l', array('!l' => $label));
   }
-
-  $newdefaults = getlocations_adjust_vars($getlocations_defaults, $defaults);
-  $newdefaults['dragging']           = $getlocations_defaults['draggable'];
-  $newdefaults['scrollWheelZoom']    = $getlocations_defaults['scrollwheel'];
-  $newdefaults['doubleClickZoom']    = ($getlocations_defaults['nodoubleclickzoom'] ? 0 : 1);
-  $newdefaults['zoomControl']        = ($getlocations_defaults['controltype'] == 'none' ? 0 : 1);
+  $newdefaults['map_marker']         = $getlocations_defaults['map_marker'];
   $newdefaults['touchZoom']          = 1;
   $newdefaults['attributionControl'] = 1;
   $newdefaults['trackResize']        = 1;
@@ -1770,6 +1771,10 @@ function getlocations_leaflet_defaults() {
   $newdefaults['marker_type'] = 'gg'; // or 'fa'
 
   $newdefaults['default_baselayer'] = 'OpenStreetMap.Mapnik';
+
+  $newdefaults['map_resize'] = 0;
+  $newdefaults['fullscreen_disable'] = 0;
+  $newdefaults['styles'] = '';
 
   $settings = variable_get('getlocations_leaflet_defaults', '');
 
