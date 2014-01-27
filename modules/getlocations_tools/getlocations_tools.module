@@ -66,8 +66,9 @@ function getlocations_tools_export_form($form, &$form_state) {
     );
 
     $output = FALSE;
+    $addon = $base_url . "\n" . '// ' . t('Date') . ': ' . date('Y-m-d H:i:s T') . "\n";
     if ($export_select == 1) {
-      $output = '// getlocations.module configuration on ' . $base_url . "\n" . '// ' . t('Date') . ': ' . date('Y-m-d H:i:s T') . "\n";
+      $output = '// getlocations.module configuration on ' . $addon;
       $output .= '$getlocations_defaults = ';
       $defaults = getlocations_defaults();
       $output .= var_export($defaults, TRUE) . ';' . "\n";
@@ -105,7 +106,7 @@ function getlocations_tools_export_form($form, &$form_state) {
       $title = t('Getlocations configuration settings');
     }
     elseif ($export_select == 2) {
-      $output = '// getlocations_fields.module configuration on ' . $base_url . "\n" . '// ' . t('Date') . ': ' . date('Y-m-d H:i:s T') . "\n";
+      $output = '// getlocations_fields.module configuration on ' . $addon;
       $output .= '$getlocations_fields_defaults = ';
       $defaults = getlocations_fields_defaults();
       $output .= var_export($defaults, TRUE) . ';' . "\n";
@@ -117,7 +118,7 @@ function getlocations_tools_export_form($form, &$form_state) {
       $title = t('Getlocations Fields configuration settings');
     }
     elseif ($export_select == 3) {
-      $output = '// getlocations_search.module configuration on ' . $base_url . "\n" . '// ' . t('Date') . ': ' . date('Y-m-d H:i:s T') . "\n";
+      $output = '// getlocations_search.module configuration on ' . $addon;
       $output .= '$getlocations_search_defaults = ';
       $defaults = getlocations_search_defaults();
       $output .= var_export($defaults, TRUE) . ';' . "\n";
@@ -129,7 +130,7 @@ function getlocations_tools_export_form($form, &$form_state) {
       $title = t('Getlocations Search configuration settings');
     }
     elseif ($export_select == 4) {
-      $output = '// getlocations_leaflet.module configuration on ' . $base_url . "\n" . '// ' . t('Date') . ': ' . date('Y-m-d H:i:s T') . "\n";
+      $output = '// getlocations_leaflet.module configuration on ' . $addon;
       $output .= '$getlocations_leaflet_defaults = ';
       $defaults = getlocations_leaflet_defaults();
       $output .= var_export($defaults, TRUE) . ';' . "\n";
