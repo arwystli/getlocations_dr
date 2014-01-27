@@ -41,7 +41,7 @@ class getlocations_leaflet_plugin_style extends views_plugin_style {
     $options['map_resize']            = array('default' =>  0);
     $options['fullscreen_disable']    = array('default' =>  0);
     $options['styles']                = array('default' => '');
-
+    $options['jquery_colorpicker_enabled'] = array('default' => 0);
 
     $fieldables = getlocations_get_fieldable_entity_types();
     foreach ($fieldables AS $entity_type) {
