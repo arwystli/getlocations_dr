@@ -1,9 +1,71 @@
-commit 096f0ae
+commit 4b508c6
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Tue Jan 28 12:33:49 2014 +0000
+
+    tidy up
+
+modules/getlocations_tools/getlocations_tools.module
+
+commit ee7ba47
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Tue Jan 28 10:24:09 2014 +0000
+
+    added README to getlocations_tools
+
+modules/getlocations_tools/README.txt
+
+commit e7399aa
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Mon Jan 27 15:35:58 2014 +0000
+
+    improved settings
+
+modules/getlocations_tools/getlocations_tools.module
+
+commit 7fcf1ee
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Mon Jan 27 15:35:42 2014 +0000
+
+    disabled colorpicker
+
+modules/getlocations_leaflet/views/getlocations_leaflet_plugin_style.inc
+
+commit f6f67bc
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Mon Jan 27 15:35:24 2014 +0000
+
+    improved output
+
+modules/getlocations_leaflet/getlocations_leaflet.module
+
+commit df4fb7d
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sun Jan 26 22:41:47 2014 +0000
+
+    added timestamp to getlocations_tools export
+
+modules/getlocations_tools/getlocations_tools.module
+
+commit 590d227
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sun Jan 26 19:47:20 2014 +0000
+
+    added getlocations_tools
+
+getlocations.module
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_search/getlocations_search.module
+modules/getlocations_tools/getlocations_tools.info
+modules/getlocations_tools/getlocations_tools.module
+
+commit cda7bc0
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Thu Jan 23 20:51:06 2014 +0000
 
     moved icon setup
 
+CHANGELOG.txt
 js/getlocations.js
 js/getlocations.min.js
 

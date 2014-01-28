@@ -224,12 +224,7 @@ function getlocations_tools_import_form_submit($form, &$form_state) {
     variable_set('getlocations_tools_import_select', $form_state['values']['getlocations_tools_import_select']);
   }
 
-  if (! isset($form_state['values']['getlocations_tools_import_content'])) {
-    return;
-  }
-
   if (empty($form_state['values']['getlocations_tools_import_content'])) {
-    #drupal_set_message(t('Import empty'));
     return;
   }
 
