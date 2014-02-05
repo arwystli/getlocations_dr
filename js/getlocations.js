@@ -100,6 +100,7 @@ var getlocations_data = [];
           if (setting.preload_data) {
             global_settings.getlocations_info = Drupal.settings.getlocations_info[key];
           }
+          global_settings.getdirections_link = setting.getdirections_link;
 
           getlocations_markers[key] = {};
           getlocations_markers[key].coords = {};
@@ -927,20 +928,22 @@ var getlocations_data = [];
                 }
               }
               else {
-                var path = gs.info_path;
-                var qs = {'lid': lid, 'key': lidkey};
+                var qs = {};
+                qs.lid = lid;
+                qs.key = lidkey;
+                qs.gdlink = gs.getdirections_link;
                 if (gs.show_distance) {
                   if ($("#getlocations_search_slat_" + mkey).is('div')) {
                     var slat = $("#getlocations_search_slat_" + mkey).html();
                     var slon = $("#getlocations_search_slon_" + mkey).html();
                     var sunit = $("#getlocations_search_sunit_" + mkey).html();
                     if (slat && slon) {
-                      qs = {'lid': lid, 'key': lidkey, 'sdist': sunit + '|' + slat + '|' + slon};
+                      qs.sdist = sunit + '|' + slat + '|' + slon;
                     }
                   }
                 }
 
-                $.get(path, qs, function(data) {
+                $.get(gs.info_path, qs, function(data) {
                   Drupal.getlocations.showPopup(map, m, gs, data, mkey);
                 });
               }

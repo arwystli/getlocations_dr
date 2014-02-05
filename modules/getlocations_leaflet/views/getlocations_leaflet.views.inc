@@ -259,7 +259,12 @@ function template_preprocess_getlocations_leaflet_view_map(&$variables) {
           }
 
           if ($options['markeraction'] == 'popup') {
-            $markeraction = array('type' => 'popup', 'data' => ($custom_content ? $custom_content : getlocations_getinfo($lid, $base_field)));
+            $extra = FALSE;
+            if (isset($options['getdirections_link'])) {
+              $extra['gdlink'] = $options['getdirections_link'];
+            }
+
+            $markeraction = array('type' => 'popup', 'data' => ($custom_content ? $custom_content : getlocations_getinfo($lid, $base_field, $extra)));
           }
           elseif ($options['markeraction'] == 'link') {
             $markeraction = array('type' => 'link', 'data' => getlocations_getlidinfo($lid, $base_field));

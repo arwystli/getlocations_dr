@@ -487,7 +487,11 @@ function getlocations_leaflet_field_formatter_view($entity_type, $entity, $field
               }
 
               if ($lid && $default['markeraction'] == 'popup') {
-                $markeraction = array('type' => 'popup', 'data' => getlocations_getinfo($lid, $entity_key));
+                $extra = FALSE;
+                if (isset($default['getdirections_link'])) {
+                  $extra['gdlink'] = $default['getdirections_link'];
+                }
+                $markeraction = array('type' => 'popup', 'data' => getlocations_getinfo($lid, $entity_key, $extra));
               }
               elseif ($lid && $default['markeraction'] == 'link') {
                 $markeraction = array('type' => 'link', 'data' => getlocations_getlidinfo($lid, $entity_key));
@@ -1671,6 +1675,7 @@ function getlocations_leaflet_defaults() {
     'zoomControl'                => ($getlocations_defaults['controltype'] == 'none' ? 0 : 1),
     'scaleControl'               => $getlocations_defaults['scale'],
     'jquery_colorpicker_enabled' => $getlocations_defaults['jquery_colorpicker_enabled'],
+    'getdirections_link'         => $getlocations_defaults['getdirections_link'],
   );
 
   $fieldables = getlocations_get_fieldable_entity_types();
@@ -2238,6 +2243,13 @@ function getlocations_leaflet_display_options_form($defaults, $admin = FALSE) {
       'link' => t('Link to content')
     )
   );
+  if (module_exists('getdirections')) {
+    $form['getdirections_link'] = getlocations_element_map_checkbox(
+      t('Link to Getdirections in bubble'),
+      $defaults['getdirections_link'],
+      t('Include a link to the Getdirections page in InfoBubble/InfoWindow.')
+    );
+  }
 
   // shapes
   $form += getlocations_shapes_form($defaults, '');
@@ -2828,7 +2840,11 @@ function getlocations_leaflet_entity_type_map($type, $entity_id) {
         }
 
         if ($lid && $settings['markeraction'] == 'popup') {
-          $markeraction = array('type' => 'popup', 'data' => getlocations_getinfo($lid, $entity_key));
+          $extra = FALSE;
+          if (isset($getlocations_leaflet_defaults['getdirections_link'])) {
+            $extra['gdlink'] = $getlocations_leaflet_defaults['getdirections_link'];
+          }
+          $markeraction = array('type' => 'popup', 'data' => getlocations_getinfo($lid, $entity_key, $extra));
         }
         elseif ($lid && $settings['markeraction'] == 'link') {
           $markeraction = array('type' => 'link', 'data' => getlocations_getlidinfo($lid, $entity_key));

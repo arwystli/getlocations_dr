@@ -395,6 +395,14 @@ function _getlocations_search_settings_form($defaults, $which = 'admin') {
     $defaults['markeraction']
   );
 
+  if (module_exists('getdirections')) {
+    $form[$varname]['getdirections_link'] = getlocations_element_map_checkbox(
+      t('Link to Getdirections in bubble'),
+      $defaults['getdirections_link'],
+      t('Include a link to the Getdirections page in InfoBubble/InfoWindow.')
+    );
+  }
+
   $form[$varname]['zoom_on_single_use'] = getlocations_element_map_checkbox(
     t('Apply Default Zoom for Single location'),
     $defaults['zoom_on_single_use'],

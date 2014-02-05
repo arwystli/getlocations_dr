@@ -271,6 +271,7 @@ function getlocations_search_getmap($which = 'page') {
     'geojson_enable', 'geojson_data', 'geojson_options', 'nokeyboard', 'nodoubleclickzoom',
     'zoomcontrolposition', 'pancontrolposition', 'mapcontrolposition', 'scalecontrolposition', 'svcontrolposition',
     'highlight_enable', 'highlight_strokecolor', 'highlight_strokeopacity', 'highlight_strokeweight', 'highlight_fillcolor', 'highlight_fillopacity', 'highlight_radius',
+    'getdirections_link',
   );
 
   foreach ($keys AS $key) {
@@ -1002,6 +1003,7 @@ function getlocations_search_defaults() {
     'highlight_fillcolor'       => $getlocations_defaults['highlight_fillcolor'],
     'highlight_fillopacity'     => $getlocations_defaults['highlight_fillopacity'],
     'highlight_radius'          => $getlocations_defaults['highlight_radius'],
+    'getdirections_link'        => $getlocations_defaults['getdirections_link'],
   );
 
   $settings = variable_get('getlocations_search_defaults', $defaults);

@@ -140,6 +140,14 @@ function getlocations_settings_form() {
   $form['getlocations_default']['markeractiontype'] = getlocations_element_map_markeractiontype($getlocations_defaults['markeractiontype']);
   $form['getlocations_default']['markeraction'] = getlocations_element_map_markeraction($getlocations_defaults['markeraction']);
 
+  if (module_exists('getdirections')) {
+    $form['getlocations_default']['getdirections_link'] = getlocations_element_map_checkbox(
+      t('Link to Getdirections in bubble'),
+      $getlocations_defaults['getdirections_link'],
+      t('Include a link to the Getdirections page in InfoBubble/InfoWindow.')
+    );
+  }
+
   $form['getlocations_default']['preload_data'] = getlocations_element_map_checkbox(
     t('Preload marker data'),
     $getlocations_defaults['preload_data'],

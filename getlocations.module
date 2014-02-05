@@ -1200,6 +1200,7 @@ function getlocations_defaults($reset = FALSE) {
     'highlight_fillcolor'           => "#FF0000",
     'highlight_fillopacity'         => "0.35",
     'highlight_radius'              => 10,
+    'getdirections_link'            => 0,
   );
 
   $fieldables = getlocations_get_fieldable_entity_types();
@@ -1491,7 +1492,15 @@ function getlocations_adinfo() {
 
   $lid = $_GET['lid'];
   $lidkey = $_GET['key'];
-  $extra = (isset($_GET['sdist']) ? array('sdist' => $_GET['sdist']) : '');
+
+  $extra = FALSE;
+  if (isset($_GET['sdist'])) {
+    $extra['sdist'] = $_GET['sdist'];
+  }
+  if (isset($_GET['gdlink'])) {
+    $extra['gdlink'] = $_GET['gdlink'];
+  }
+
   $content = getlocations_getinfo($lid, $lidkey, $extra);
   drupal_json_output(array('content' => $content));
 
@@ -1547,6 +1556,9 @@ function getlocations_getinfo($lid, $lidkey, $extra=FALSE) {
         $dist = getlocations_distance_between($latlon_a, $latlon_b, $sunit);
         $location['sdist'] = $dist['scalar'];
         $location['sunit'] = $dist['distance_unit'];
+      }
+      if (is_array($extra) && isset($extra['gdlink'])) {
+        $location['getdirections_link'] = $extra['gdlink'];
       }
     }
 
@@ -2432,6 +2444,7 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
     $settings[$mapid]['highlight_fillopacity']   = $defaults['highlight_fillopacity'];
     $settings[$mapid]['highlight_radius']        = $defaults['highlight_radius'];
   }
+  $settings[$mapid]['getdirections_link']        = $defaults['getdirections_link'];
 
   drupal_add_js(array('getlocations' => $settings), 'setting');
 
@@ -2448,7 +2461,11 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
           $info[$ct]['entity_type'] = $latlon[5];
           $info[$ct]['content'] = '';
           if ($defaults['markeraction'] == 1 || $defaults['markeraction'] == 2) {
-            $info[$ct]['content'] = getlocations_getinfo($latlon[2], $latlon[5]);
+            $extra = FALSE;
+            if (isset($defaults['getdirections_link'])) {
+              $extra['gdlink'] = $defaults['getdirections_link'];
+            }
+            $info[$ct]['content'] = getlocations_getinfo($latlon[2], $latlon[5], $extra);
           }
           elseif ($defaults['markeraction'] == 3) {
             $info[$ct]['content'] = getlocations_getlidinfo($latlon[2], $latlon[5]);
@@ -6321,6 +6338,29 @@ function theme_getlocations_adinfo($variables) {
     }
     $output .= '<div class="search-distance">' . number_format(floatval($location['sdist']), 2) . "&nbsp;" . $unit_disp . '</div>';
   }
+
+  if (module_exists('getdirections') && isset($location['getdirections_link']) && $location['getdirections_link']) {
+    $gdlink = '';
+    if ($location['entity_id'] && $location['entity_type']) {
+      $gdlink = l(t('Directions'), 'getdirections/' . $location['entity_type'] . '/to/' . $location['entity_id'], array('attributes' => array('class' => array('getlocations_infolink'), 'target' => '_parent')));
+    }
+#    if (isset($location['nid']) && $location['entity_type'] == 'node') {
+#      $gdlink = l(t('Directions'), 'getdirections/location/to/' . $location['nid'], array('attributes' => array('class' => array('getlocations_infolink'), 'target' => '_parent')));
+#    }
+#    elseif (isset($location['uid']) && $location['uid']) {
+#      $gdlink = l(t('Directions'), 'getdirections/location_user/to/' . $location['uid'], array('attributes' => array('class' => array('getlocations_infolink'), 'target' => '_parent')));
+#    }
+#    elseif (isset($location['cid']) && $location['cid'] && getdirections_check_entity_type('comment')) {
+#      $gdlink = l(t('Directions'), 'getdirections/location_comment/to/' . $location['cid'], array('attributes' => array('class' => array('getlocations_infolink'), 'target' => '_parent')));
+#    }
+#    elseif (isset($location['tid']) && $location['tid'] && getdirections_get_vocabularies()) {
+#      $gdlink = l(t('Directions'), 'getdirections/location_term/to/' . $location['tid'], array('attributes' => array('class' => array('getlocations_infolink'), 'target' => '_parent')));
+#    }
+    if ($gdlink) {
+      $output .= '<div class="getdirections-link">' . $gdlink . '</div>';
+    }
+  }
+
   $output .= '</div>';
 
   return $output;

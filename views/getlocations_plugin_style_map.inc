@@ -188,6 +188,7 @@ class getlocations_plugin_style_map extends views_plugin_style {
     $options['highlight_fillcolor']      = array('default' => $getlocations_defaults['highlight_fillcolor']);
     $options['highlight_fillopacity']    = array('default' => $getlocations_defaults['highlight_fillopacity']);
     $options['highlight_radius']         = array('default' => $getlocations_defaults['highlight_radius']);
+    $options['getdirections_link']       = array('default' => $getlocations_defaults['getdirections_link']);
 
     $fieldables = getlocations_get_fieldable_entity_types();
     foreach ($fieldables AS $entity_type) {
@@ -274,6 +275,14 @@ class getlocations_plugin_style_map extends views_plugin_style {
     $form['markeraction'] = getlocations_element_map_markeraction(
       $this->options['markeraction']
     );
+
+    if (module_exists('getdirections')) {
+      $form['getdirections_link'] = getlocations_element_map_checkbox(
+        t('Link to Getdirections in bubble'),
+        $this->options['getdirections_link'],
+        t('Include a link to the Getdirections page in InfoBubble/InfoWindow.')
+      );
+    }
 
     // categories
     $term_reference_fields = getlocations_get_term_reference_fields();
