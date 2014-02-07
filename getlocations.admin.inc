@@ -31,6 +31,16 @@ function getlocations_settings_form() {
     '#collapsible' => TRUE,
     '#collapsed' => FALSE,
   );
+
+  $c = count(getlocations_get_marker_titles());
+  if ($c) {
+    $rebuildmsg = '<p>' . format_plural($c, 'You have 1 marker installed.', 'You have @count markers installed.') . '</p>';
+  }
+  else {
+    $rebuildmsg = '<p class="error">' . t('WARNING! NO markers found.') . '</p>';
+  }
+  $form['rebuild']['msg'] = array('#markup' => $rebuildmsg);
+
   if (file_default_scheme() != 'public') {
     $form['rebuild']['getlocations_private_markerfile'] = getlocations_element_map_tf(
       t('Path to getlocations_markers.js'),

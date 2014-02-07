@@ -1,9 +1,35 @@
-commit 4b508c6
+commit 3260c40
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Fri Feb 7 11:46:10 2014 +0000
+
+    added message with marker count to admin page
+
+getlocations.admin.inc
+
+commit 013a7de
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Feb 5 15:44:31 2014 +0000
+
+    added Getdirections link in bubble
+
+getlocations.admin.inc
+getlocations.module
+js/getlocations.js
+js/getlocations.min.js
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/views/getlocations_leaflet.views.inc
+modules/getlocations_search/getlocations_search.admin.inc
+modules/getlocations_search/getlocations_search.module
+views/getlocations_plugin_style_map.inc
+
+commit 7673d7b
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Tue Jan 28 12:33:49 2014 +0000
 
     tidy up
 
+CHANGELOG.txt
 modules/getlocations_tools/getlocations_tools.module
 
 commit ee7ba47
