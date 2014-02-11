@@ -962,6 +962,12 @@ var getlocations_data = [];
 
     // highlighting
     if (gs.markeractiontype != 'mouseover' && gs.highlight_enable) {
+      var conv = [];
+      var temp = 0.5;
+      for (var c = 21; c > 0; c--) {
+        temp += temp;
+        conv[c] = temp;
+      }
       var circOpts = {
         strokeColor: gs.highlight_strokecolor,
         strokeOpacity: gs.highlight_strokeopacity,
@@ -975,28 +981,6 @@ var getlocations_data = [];
         clickable: false
       };
       var circ =  new google.maps.Circle(circOpts);
-      var conv = [];
-      conv[1] = 1048576;
-      conv[2] = 524288;
-      conv[3] = 262144;
-      conv[4] = 131072;
-      conv[5] = 65536;
-      conv[6] = 32768;
-      conv[7] = 16384;
-      conv[8] = 8192;
-      conv[9] = 4096;
-      conv[10] = 2048;
-      conv[11] = 1024;
-      conv[12] = 512;
-      conv[13] = 256;
-      conv[14] = 128;
-      conv[15] = 64;
-      conv[16] = 32;
-      conv[17] = 16;
-      conv[18] = 8;
-      conv[19] = 4;
-      conv[20] = 2;
-      conv[21] = 1;
       google.maps.event.addListener(m,'mouseover', function() {
         circ.setRadius(parseInt(gs.highlight_radius * conv[map.getZoom()] * 0.1));
         circ.setVisible(true);
@@ -1209,4 +1193,3 @@ var getlocations_data = [];
   };
 
 }(jQuery));
-
