@@ -282,6 +282,21 @@
         }
       });
 
+      if ($("input[id$=fullscreen]").attr('checked')) {
+        $("#wrap-getlocations-fs-show").show();
+      }
+      else {
+        $("#wrap-getlocations-fs-show").hide();
+      }
+      $("input[id$=fullscreen]").change(function() {
+        if ($(this).attr('checked')) {
+          $("#wrap-getlocations-fs-show").show();
+        }
+        else {
+          $("#wrap-getlocations-fs-show").hide();
+        }
+      });
+
       // streetview overlay settings
       if ($("input[id$=sv-addresscontrol]").attr('checked')) {
         $("#wrap-getlocations-sv-addresscontrol").show();

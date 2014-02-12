@@ -93,6 +93,7 @@ var getlocations_data = [];
           var zoomcontrolposition = setting.zoomcontrolposition;
           var scalecontrolposition = setting.scalecontrolposition;
           var svcontrolposition = setting.svcontrolposition;
+          var fullscreen_controlposition = setting.fullscreen_controlposition;
 
           global_settings.info_path = setting.info_path;
           global_settings.lidinfo_path = setting.lidinfo_path;
@@ -473,6 +474,7 @@ var getlocations_data = [];
               $(this).val(label);
             });
           }
+
           // Traffic Layer
           if (setting.trafficinfo) {
             var trafficInfo = {};
@@ -501,6 +503,7 @@ var getlocations_data = [];
               $(this).val(label);
             });
           }
+
           // Bicycling Layer
           if (setting.bicycleinfo) {
             var bicycleInfo = {};
@@ -529,6 +532,7 @@ var getlocations_data = [];
               $(this).val(label);
             });
           }
+
           // Transit Layer
           if (setting.transitinfo) {
             var transitInfo = {};
@@ -557,6 +561,7 @@ var getlocations_data = [];
               $(this).val(label);
             });
           }
+
           // Panoramio Layer
           if (setting.panoramio_use && setting.panoramio_show) {
             var panoramioLayer = {};
@@ -585,6 +590,7 @@ var getlocations_data = [];
               $(this).val(label);
             });
           }
+
           // Weather Layer
           if (setting.weather_use) {
             if (setting.weather_show) {
@@ -666,7 +672,6 @@ var getlocations_data = [];
             }
           }
 
-
           // exporting global_settings to getlocations_settings
           getlocations_settings[key] = global_settings;
 
@@ -703,7 +708,11 @@ var getlocations_data = [];
             var fsdoc = document.createElement("DIV");
             var fs = new FullScreenControl(fsdoc);
             fsdoc.index = 0;
-            getlocations_map[key].controls[google.maps.ControlPosition.TOP_RIGHT].setAt(0, fsdoc);
+            var fs_p = controlpositions['tr'];
+            if (fullscreen_controlposition) {
+              var fs_p = controlpositions[fullscreen_controlposition];
+            }
+            getlocations_map[key].controls[fs_p].setAt(0, fsdoc);
           }
 
           // search_places in getlocations_search_places.js

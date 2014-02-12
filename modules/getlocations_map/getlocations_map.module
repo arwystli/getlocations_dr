@@ -721,6 +721,7 @@ function getlocations_map_defaults() {
     'show_maplinks'                 => $getlocations_defaults['show_maplinks'],
     'show_bubble_on_one_marker'     => $getlocations_defaults['show_bubble_on_one_marker'],
     'fullscreen'                    => $getlocations_defaults['fullscreen'],
+    'fullscreen_controlposition'    => $getlocations_defaults['fullscreen_controlposition'],
     'sv_show'                       => $getlocations_defaults['sv_show'],
     'sv_showfirst'                  => $getlocations_defaults['sv_showfirst'],
     'sv_heading'                    => $getlocations_defaults['sv_heading'],

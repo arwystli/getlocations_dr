@@ -510,6 +510,23 @@
         });
       }
 
+      if ($("#edit-getlocations-default-fullscreen").is('input')) {
+        if ($("#edit-getlocations-default-fullscreen").attr('checked')) {
+          $("#wrap-getlocations-fs-show").show();
+        }
+        else {
+          $("#wrap-getlocations-fs-show").hide();
+        }
+        $("#edit-getlocations-default-fullscreen").change(function() {
+          if ($(this).attr('checked')) {
+            $("#wrap-getlocations-fs-show").show();
+          }
+          else {
+            $("#wrap-getlocations-fs-show").hide();
+          }
+        });
+      }
+
       if ($("#edit-getlocations-default-highlight-enable").is('input')) {
         if ($("#edit-getlocations-default-highlight-enable").attr('checked')) {
           $("#wrap-getlocations-highlight").show();

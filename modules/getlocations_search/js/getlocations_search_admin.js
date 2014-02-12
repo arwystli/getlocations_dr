@@ -430,6 +430,23 @@
         });
       }
 
+      if ($("#edit-getlocations-search-defaults-fullscreen, #edit-getlocations-search-block-defaults-fullscreen").is('input')) {
+        if ($("#edit-getlocations-search-defaults-fullscreen, #edit-getlocations-search-block-defaults-fullscreen").attr('checked')) {
+          $("#wrap-getlocations-fs-show").show();
+        }
+        else {
+          $("#wrap-getlocations-fs-show").hide();
+        }
+        $("#edit-getlocations-search-defaults-fullscreen, #edit-getlocations-search-block-defaults-fullscreen").change(function() {
+          if ($(this).attr('checked')) {
+            $("#wrap-getlocations-fs-show").show();
+          }
+          else {
+            $("#wrap-getlocations-fs-show").hide();
+          }
+        });
+      }
+
       if ($("#edit-getlocations-search-defaults-highlight-enable, #edit-getlocations-search-block-defaults-highlight-enable").is('input')) {
         if ($("#edit-getlocations-search-defaults-highlight-enable, #edit-getlocations-search-block-defaults-highlight-enable").attr('checked')) {
           $("#wrap-getlocations-highlight").show();

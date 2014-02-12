@@ -281,6 +281,21 @@
         }
       });
 
+      if ($("input[id$=fullscreen]").attr('checked')) {
+        $("#wrap-getlocations-fs-show").show();
+      }
+      else {
+        $("#wrap-getlocations-fs-show").hide();
+      }
+      $("input[id$=fullscreen]").change(function() {
+        if ($(this).attr('checked')) {
+          $("#wrap-getlocations-fs-show").show();
+        }
+        else {
+          $("#wrap-getlocations-fs-show").hide();
+        }
+      });
+
     }
   };
 }(jQuery));

@@ -166,6 +166,23 @@
         });
       }
 
+      if ($("#edit-getlocations-fields-defaults-fullscreen,#edit-field-settings-fullscreen").is('input')) {
+        if ($("#edit-getlocations-fields-defaults-fullscreen,#edit-field-settings-fullscreen").attr('checked')) {
+          $("#wrap-getlocations-fs-show").show();
+        }
+        else {
+          $("#wrap-getlocations-fs-show").hide();
+        }
+        $("#edit-getlocations-fields-defaults-fullscreen,#edit-field-settings-fullscreen").change(function() {
+          if ($(this).attr('checked')) {
+            $("#wrap-getlocations-fs-show").show();
+          }
+          else {
+            $("#wrap-getlocations-fs-show").hide();
+          }
+        });
+      }
+
 
     }
   };
