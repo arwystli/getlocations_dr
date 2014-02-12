@@ -1,9 +1,53 @@
-commit 3260c40
+commit dad9d4a
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Feb 12 23:12:33 2014 +0000
+
+    fixed map_resize height bug, #2193953
+
+getlocations.module
+
+commit 2eb370a
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Feb 12 16:05:35 2014 +0000
+
+    added fullscreen position option
+
+getlocations.module
+js/getlocations.js
+js/getlocations.min.js
+js/getlocations_admin.js
+js/getlocations_admin.min.js
+js/getlocations_views.js
+js/getlocations_views.min.js
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_fields/js/getlocations_fields_admin.js
+modules/getlocations_fields/js/getlocations_fields_admin.min.js
+modules/getlocations_fields/js/getlocations_fields_formatter.js
+modules/getlocations_fields/js/getlocations_fields_formatter.min.js
+modules/getlocations_map/getlocations_map.module
+modules/getlocations_map/js/getlocations_map_formatter.js
+modules/getlocations_search/getlocations_search.module
+modules/getlocations_search/js/getlocations_search_admin.js
+modules/getlocations_search/js/getlocations_search_admin.min.js
+
+commit 6237fb3
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Tue Feb 11 15:45:47 2014 +0000
+
+    better convert in getlocations.js, cleanup in getlocations_leaflet.js
+
+js/getlocations.js
+js/getlocations.min.js
+modules/getlocations_leaflet/js/getlocations_leaflet.js
+modules/getlocations_leaflet/js/getlocations_leaflet.min.js
+
+commit ed37dfd
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Fri Feb 7 11:46:10 2014 +0000
 
     added message with marker count to admin page
 
+CHANGELOG.txt
 getlocations.admin.inc
 
 commit 013a7de
