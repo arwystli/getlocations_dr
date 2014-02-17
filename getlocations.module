@@ -3486,7 +3486,7 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
     $form['show_maplinks'] = getlocations_element_map_checkbox(
       t('Show map links'),
       $defaults['show_maplinks'],
-      t('Show a list of links to popup InfoWindow/InfoBubble on the map.')
+      t('Show a list of links to popup InfoWindow/InfoBubble/Link on the map.')
     );
 
     $form['show_bubble_on_one_marker'] = getlocations_element_map_checkbox(
