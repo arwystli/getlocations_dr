@@ -6157,9 +6157,11 @@ function theme_getlocations_show($variables) {
   }
 
   // wrap the map
+  $output .= '<div class="getlocations_map_wrapper_inner">';
   $output .= '<div id="getlocations_map_wrapper_' . $mapid . '"  style="width: ' . $width . '; height: ' . $height . '" >';
   $output .= '<div class="getlocations_map_canvas" id="getlocations_map_canvas_' . $mapid . '" style="width: 100%; height: 100%" ></div>';
   $output .= '</div>';
+  $output .= '</div>'; // getlocations_map_wrapper_inner
 
   // give each map its own data
   $localdata = json_encode(array(
