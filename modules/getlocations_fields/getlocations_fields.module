@@ -1396,6 +1396,16 @@ function getlocations_fields_field_widget_form(&$form, &$form_state, $field, $in
         }
       }
 
+      // Clear button
+      if ($settings['use_clear_button']) {
+        $element['clear_button'] = array(
+          '#markup' => '',
+        );
+        if (! empty($settings['input_clear_button_weight'])) {
+          $element['clear_button']['#weight'] = $settings['input_clear_button_weight'];
+        }
+      }
+
       // map
       $element['map'] = array( '#markup' => '');
       if (! empty($settings['input_map_weight'])) {
@@ -2395,6 +2405,8 @@ function getlocations_fields_defaults() {
     'input_geobutton_weight'          => 0,
     'input_smart_ip_button_weight'    => 0,
     'input_geolocation_button_weight' => 0,
+    'input_clear_button_weight'       => 0,
+    'use_clear_button'                => 1,
     'use_smart_ip_button'             => 0,
     'use_geolocation_button'          => 0,
     'use_country_dropdown'            => 1,
@@ -2590,6 +2602,8 @@ function getlocations_fields_field_info_defaults() {
         'input_smart_ip_button_weight'    => $getlocations_fields_defaults['input_smart_ip_button_weight'],
         'input_geolocation_button_weight' => $getlocations_fields_defaults['input_geolocation_button_weight'],
         'use_smart_ip_button'             => $getlocations_fields_defaults['use_smart_ip_button'],
+        'input_clear_button_weight'       => $getlocations_fields_defaults['input_clear_button_weight'],
+        'use_clear_button'                => $getlocations_fields_defaults['use_clear_button'],
         'use_country_dropdown'            => $getlocations_fields_defaults['use_country_dropdown'],
         'only_continents'                 => $getlocations_fields_defaults['only_continents'],
         'only_countries'                  => $getlocations_fields_defaults['only_countries'],
@@ -2925,6 +2939,12 @@ function getlocations_fields_input_settings_form($defaults) {
     t('Use the browser to find a location.')
   );
 
+  $form['use_clear_button'] = getlocations_element_map_checkbox(
+    t('Provide Clear button'),
+    $defaults['use_clear_button'],
+    t('Provide a button to empty the address.')
+  );
+
   $form['input_name_width'] = getlocations_element_map_tf(
     t('Name box width'),
     $defaults['input_name_width'],
@@ -3144,6 +3164,12 @@ function getlocations_fields_input_settings_form($defaults) {
   $form['input_geolocation_button_weight'] = getlocations_fields_element_weight(
     t('Geolocation button position'),
     $defaults['input_geolocation_button_weight'],
+    ''
+  );
+
+  $form['input_clear_button_weight'] = getlocations_fields_element_weight(
+    t('Clear button position'),
+    $defaults['input_clear_button_weight'],
     ''
   );
 
@@ -4217,6 +4243,12 @@ function theme_getlocations_fields_field_widget_form($variables) {
     $geolocation_button = '<p><input type="button" value="' . t('Find Location') . '" title="' . t('Get the latitude and longitude for this address from the browser') . '" id="getlocations_geolocation_button_' . $mapid . '" class="form-submit" />&nbsp;<span id="getlocations_geolocation_status_' . $mapid . '" ></span></p>';
     $geolocation_button .= '<p>Use the browser to find your current location</p>';
     $form['geolocation_button']['#markup'] = $geolocation_button;
+  }
+
+  // Clear button
+  if (isset($form['clear_button'])) {
+    $clear_button = '<p><input type="button" value="' . t('Clear') . '" title="' . t('Clear the address on the form') . '" id="getlocations_clear_button_' . $mapid . '" class="form-submit" /></p>';
+    $form['clear_button']['#markup'] = $clear_button;
   }
 
   $form['latitude']['#prefix'] = '<div class="getlocations_fields_latlon_wrapper clearfix"><div class="getlocations_fields_lat_wrapper">';

@@ -142,6 +142,12 @@
             }
           }
 
+          // Clear button
+          $("#" + 'getlocations_clear_button_' + key).click( function () {
+            clearForm(key);
+            return false;
+          });
+
           // do 'fake' required fields
           var requireds = ['name', 'street', 'additional', 'city', 'province', 'postal_code', 'country'];
           $.each(requireds, function(k, v) {
@@ -619,6 +625,18 @@
           else if (maptype == 'Physical')      { m = google.maps.MapTypeId.TERRAIN; }
           else if (maptype == 'OpenStreetMap') { m = 'OSM'; }
           return m;
+        }
+
+        // Clear form
+        function clearForm(k) {
+          $("#" + adrsfield + k).val("");
+          $("#" + namefield + k).val("");
+          $("#" + streetfield + k).val("");
+          $("#" + additionalfield + k).val("");
+          $("#" + cityfield + k).val("");
+          $("#" + provincefield + k).val("");
+          $("#" + postal_codefield + k).val("");
+          $("#" + countryfield + k).val(search_country);
         }
 
         // end functions
