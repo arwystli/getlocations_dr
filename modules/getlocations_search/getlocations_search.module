@@ -116,6 +116,7 @@ function getlocations_search_form($form, &$form_state, $which, $mapid) {
   $form['which'] = array('#type' => 'value', '#value' => $which);
   $form['mapid'] = array('#type' => 'value', '#value' => $mapid);
   $form['display_latlon'] = array('#type' => 'value', '#value' => $getlocations_search_defaults['display_latlon']);
+  $form['display_geo_microformat'] = array('#type' => 'value', '#value' => $getlocations_search_defaults['display_geo_microformat']);
   $form['display_accuracy'] = array('#type' => 'value', '#value' => $getlocations_search_defaults['display_accuracy']);
 
   if ($getlocations_search_defaults['method'] == 'vocab' && $getlocations_search_defaults['vocab_element'] == 'dropdown') {
@@ -376,6 +377,7 @@ function getlocations_search_js_settings_do($defaults, $mapid) {
       'zoom_on_single_use'             => $defaults['zoom_on_single_use'],
       'display_accuracy'               => $defaults['display_accuracy'],
       'showall'                        => $defaults['showall'],
+      'display_geo_microformat'        => $defaults['display_geo_microformat'],
     ),
   );
 
@@ -685,9 +687,11 @@ function theme_getlocations_search_form($variables) {
   $mapid = $form['mapid']['#value'];
   unset($form['mapid']);
   $display_latlon = $form['display_latlon']['#value'];
-  unset($form['display_latlon']['#value']);
+  unset($form['display_latlon']);
   $display_accuracy = $form['display_accuracy']['#value'];
-  unset($form['display_accuracy']['#value']);
+  unset($form['display_accuracy']);
+  $display_geo_microformat = $form['display_geo_microformat']['#value'];
+  unset($form['display_geo_microformat']);
   $output = '';
   $form['getlocations_search_' . $mapid]['#prefix'] = '<div id="getlocations_search_wrapper">';
   $form['getlocations_search_submit']['#suffix'] = '</div>';
@@ -726,12 +730,17 @@ function theme_getlocations_search_form($variables) {
   if ($display_accuracy) {
     $output .= '<div id="getlocations_search_accuracy_' . $mapid . '"></div>';
   }
-  $output .= '<div id="getlocations_search' . ($which == 'block' ? '_block' : '') . '_latlon_wrapper">';
   if ($display_latlon) {
-    $output .= '<div id="getlocations_search_lat_' . $mapid . '" class="getlocations_search' . ($which == 'block' ? '_block' : '') . '_lat"></div>';
-    $output .= '<div id="getlocations_search_lon_' . $mapid . '" class="getlocations_search' . ($which == 'block' ? '_block' : '') . '_lon"></div>';
+    $output .= '<div id="getlocations_search' . ($which == 'block' ? '_block' : '') . '_latlon_wrapper">';
+    if ($display_geo_microformat) {
+      $output .= '<div id="getlocations_search_latlon_' . $mapid . '" class="getlocations_search' . ($which == 'block' ? '_block' : '') . '_latlon"></div>';
+    }
+    else {
+      $output .= '<div id="getlocations_search_lat_' . $mapid . '" class="getlocations_search' . ($which == 'block' ? '_block' : '') . '_lat"></div>';
+      $output .= '<div id="getlocations_search_lon_' . $mapid . '" class="getlocations_search' . ($which == 'block' ? '_block' : '') . '_lon"></div>';
+    }
+    $output .= '</div>';
   }
-  $output .= '</div>';
   $output .= '</div>';
   // hidden
   $output .= '<div id="getlocations_search_data_' . $mapid . '" class="js-hide">';
@@ -855,6 +864,7 @@ function getlocations_search_defaults() {
     'search_type'                   => 'all',
     'display_dms'                   => 0,
     'display_latlon'                => 0,
+    'display_geo_microformat'       => 0,
     'display_accuracy'              => 0,
     'show_distance'                 => 0,
     'search_marker'                 => 'drupal',
@@ -1185,7 +1195,7 @@ function getlocations_search_info_sql($lat, $lon, $distance, $units, $type, $dos
 
   $getlocations_defaults = getlocations_defaults();
   $getlocations_search_defaults = getlocations_search_defaults();
-  $dms = ($getlocations_search_defaults['display_dms'] ? TRUE : FALSE);
+  $dms = ( ($getlocations_search_defaults['display_dms'] || $getlocations_search_defaults['display_geo_microformat']) ? TRUE : FALSE);
 
   $distance_meters = getlocations_convert_distance_to_meters($distance, $units);
   $latrange = getlocations_earth_latitude_range($lat, $lon, $distance_meters);

@@ -344,6 +344,11 @@ function _getlocations_search_settings_form($defaults, $which = 'admin') {
     $defaults['display_dms'],
     ''
   );
+  $form[$varname]['display_geo_microformat'] = getlocations_element_map_checkbox(
+    t('Show Latitude/Longitude in accordance with Geo Microformat markup'),
+    $defaults['display_geo_microformat'],
+    t('See the <a href="@a" target="_blank">Microformats wiki</a> for more information', array('@a' => url('http://microformats.org/wiki/geo')))
+  );
   $form[$varname]['display_accuracy'] = getlocations_element_map_checkbox(
     t('Show accuracy results'),
     $defaults['display_accuracy'],

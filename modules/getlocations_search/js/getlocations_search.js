@@ -37,6 +37,7 @@
         var country = searchsettings.country;
         var maxzoom = searchsettings.maxzoom;
         gset.showall = searchsettings.showall;
+        gset.display_geo_microformat = searchsettings.display_geo_microformat;
 
         var mapid = key;
         var mapid2 = key.replace("_", "-");
@@ -241,6 +242,7 @@
     $("#getlocations_search_type_" + mkey).html('');
     $("#getlocations_search_lat_" + mkey).html('');
     $("#getlocations_search_lon_" + mkey).html('');
+    $("#getlocations_search_latlon_" + mkey).html('');
     if (gs.show_maplinks) {
       $("div#getlocations_map_links_" + mkey + " ul").html("");
     }
@@ -352,8 +354,13 @@
           if (accuracy) {
             $("#getlocations_search_accuracy_" + mkey).html('<span class="results-label">' + Drupal.t('Accuracy') + ':</span><span class="results-value">' + accuracy + '</span>');
           }
-          $("#getlocations_search_lat_" + mkey).html('<span class="results-label">' + Drupal.t('Latitude') + ':</span><span class="results-value">' + latout + '</span>');
-          $("#getlocations_search_lon_" + mkey).html('<span class="results-label">' + Drupal.t('Longitude') + ':</span><span class="results-value">' + lonout + '</span>');
+          if (gs.display_geo_microformat) {
+            $("#getlocations_search_latlon_" + mkey).html('<div class="geo"><abbr class="latitude" title="' + slat + '">' + latout + '</abbr>&nbsp;<abbr class="longitude" title="' + slon + '">' + lonout + '</abbr></div>');
+          }
+          else {
+            $("#getlocations_search_lat_" + mkey).html('<span class="results-label">' + Drupal.t('Latitude') + ':</span><span class="results-value">' + latout + '</span>');
+            $("#getlocations_search_lon_" + mkey).html('<span class="results-label">' + Drupal.t('Longitude') + ':</span><span class="results-value">' + lonout + '</span>');
+          }
           // hidden stuff, used by search distance and search marker
           $("#getlocations_search_slat_" + mkey).html(slat);
           $("#getlocations_search_slon_" + mkey).html(slon);
