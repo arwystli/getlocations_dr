@@ -36,7 +36,6 @@ Configure extra settings for sort criterion Getlocations Fields: Distance
 Make sure it is pointing to the right Location to use.
 
 In Block 5 you will want to do the Format > Getlocations > Settings
-Exposing forms in blocks with maps does NOT work at present.
 
 In Block 6 there is no further configuration required.
 You might want to try exposing the Pager, Distance or Order. Remember to set ajax to Yes
