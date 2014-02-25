@@ -260,6 +260,9 @@ class getlocations_leaflet_plugin_style extends views_plugin_style {
 #    );
     $form['empty_result'] = array('#type' => 'value', '#value' => 0);
 
+    // munge the title and description
+    $form['category_showhide_buttons']['#title'] = t('Enable category show/hide checkboxes');
+    $form['category_showhide_buttons']['#description'] = t('This option will place checkboxes on the layer control');
 
   } // end options_form
 

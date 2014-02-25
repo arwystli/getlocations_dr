@@ -145,20 +145,6 @@ var getlocations_leaflet_data = [];
             getlocations_leaflet_map[key].addControl(L.control.fullscreen(fsopts));
           }
 
-          // Layer control
-          if (map_settings.layerControl) {
-            var layeropts = {};
-            if (map_settings.layercontrolposition) {
-              layeropts.position = map_settings.layercontrolposition;
-            }
-            if (map_settings.minimap) {
-              getlocations_leaflet_layerscontrol[key] = L.control.layers.minimap(layers, getlocations_leaflet_overlays[key], layeropts).addTo(getlocations_leaflet_map[key]);
-            }
-            else {
-              getlocations_leaflet_layerscontrol[key] = L.control.layers(layers, getlocations_leaflet_overlays[key], layeropts).addTo(getlocations_leaflet_map[key]);
-            }
-          }
-
           // pancontrol
           if (map_settings.leaflet_pancontrol) {
             var popts = {};
@@ -433,6 +419,20 @@ var getlocations_leaflet_data = [];
             }
 
           } // end datanum > 0
+
+          // Layer control
+          if (map_settings.layerControl) {
+            var layeropts = {};
+            if (map_settings.layercontrolposition) {
+              layeropts.position = map_settings.layercontrolposition;
+            }
+            if (map_settings.minimap) {
+              getlocations_leaflet_layerscontrol[key] = L.control.layers.minimap(layers, getlocations_leaflet_overlays[key], layeropts).addTo(getlocations_leaflet_map[key]);
+            }
+            else {
+              getlocations_leaflet_layerscontrol[key] = L.control.layers(layers, getlocations_leaflet_overlays[key], layeropts).addTo(getlocations_leaflet_map[key]);
+            }
+          }
 
           // minmaxes will apply when there are more than one marker on the map
           if (datanum > 1) {

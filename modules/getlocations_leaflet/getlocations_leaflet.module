@@ -3577,8 +3577,10 @@ function theme_getlocations_leaflet_map($variables) {
   }
 
   // wrap the map
+  $output .= '<div class="getlocations_map_wrapper_inner">';
   $output .= '<div id="getlocations_leaflet_wrapper_' . $mapid . '"  style="width: ' . $width . '; height: ' . $height . '" >';
   $output .= '<div class="getlocations_leaflet_canvas" id="getlocations_leaflet_canvas_' . $mapid . '" style="width: 100%; height: 100%" ></div>';
+  $output .= '</div>';
   $output .= '</div>';
 
   // give each map its own data
