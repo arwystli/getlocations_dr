@@ -1,9 +1,38 @@
-commit 02dafc0
+commit dbf10c9
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Fri Feb 28 11:58:41 2014 +0000
+
+    fixed bug #2206503
+
+modules/getlocations_fields/getlocations_fields.install
+modules/getlocations_fields/getlocations_fields.module
+
+commit 5b220ff
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Tue Feb 25 11:34:47 2014 +0000
+
+    fixed bug in categories
+
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/js/getlocations_leaflet.js
+modules/getlocations_leaflet/js/getlocations_leaflet.min.js
+modules/getlocations_leaflet/views/getlocations_leaflet_plugin_style.inc
+
+commit 149f0b9
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Tue Feb 25 11:34:23 2014 +0000
+
+    added check for mobile
+
+modules/getlocations_search/getlocations_search.module
+
+commit 7c7d588
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Fri Feb 21 09:12:57 2014 +0000
 
     added missing min
 
+CHANGELOG.txt
 modules/getlocations_fields/js/getlocations_fields.min.js
 
 commit 4885448

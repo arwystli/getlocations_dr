@@ -216,11 +216,8 @@ function getlocations_fields_update_7101() {
  * Add data field.
  */
 function getlocations_fields_update_7201() {
-  $result = db_query("SELECT column_name FROM INFORMATION_SCHEMA.COLUMNS where table_name='{getlocations_fields}'");
-  foreach ($result as $record) {
-    if ($record->column_name == 'data') {
-      return;
-    }
+  if ($result = db_field_exists('getlocations_fields', 'data')) {
+    return;
   }
 
   $spec = array(

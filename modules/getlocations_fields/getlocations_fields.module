@@ -27,10 +27,10 @@ function getlocations_fields_help($path, $arg) {
  */
 function getlocations_fields_init() {
   module_load_include('inc', 'getlocations_fields', 'getlocations_fields.functions');
-#  global $user;
-#  if ($user->uid > 0 && ! getlocations_fields_column_check('data')) {
-#    drupal_set_message(t('You need to run update <a href="@url">now</a>.', array('@url' => url('update.php') )), 'error');
-#  }
+  global $user;
+  if ($user->uid > 0 && ! getlocations_fields_column_check('data')) {
+    drupal_set_message(t('You need to run update <a href="@url">now</a>.', array('@url' => url('update.php') )), 'error');
+  }
 }
 
 /**
@@ -2214,9 +2214,9 @@ function getlocations_fields_load_location($glid) {
     $getlocations_fields_defaults = getlocations_fields_defaults();
     $getlocations_defaults = getlocations_defaults();
     $fields = array('glid', 'name', 'street', 'additional', 'city', 'province', 'postal_code', 'country', 'address', 'latitude', 'longitude', 'marker', 'field_name');
-#    if (getlocations_fields_column_check('data')) {
+    if (getlocations_fields_column_check('data')) {
       $fields[] = 'data';
-#    }
+    }
     $query = db_select('getlocations_fields', 'f');
     $query->fields('f', $fields);
     $query->condition('f.glid', $glid);
@@ -3540,18 +3540,12 @@ function getlocations_fields_paths_get($reset = FALSE, $min = FALSE) {
 
 }
 
-#function getlocations_fields_column_check($field) {
-#  $found = FALSE;
-#  if ($field) {
-#    $result = db_query("SELECT column_name FROM INFORMATION_SCHEMA.COLUMNS where table_name='{getlocations_fields}'");
-#    foreach ($result as $record) {
-#      if ($record->column_name == $field) {
-#        $found = TRUE;
-#      }
-#    }
-#  }
-#  return $found;
-#}
+function getlocations_fields_column_check($field) {
+  if ($result = db_field_exists('getlocations_fields', $field)) {
+    return TRUE;
+  }
+  return FALSE;
+}
 
 function getlocations_fields_data_keys($type = 'dd') {
   if ($type == 'dd') {
