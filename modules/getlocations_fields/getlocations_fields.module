@@ -3574,6 +3574,7 @@ function getlocations_fields_data_keys($type = 'dd') {
       'sv_pitch'            => 0,
       'mapzoom'             => 12,
       'map_maptype'         => 'Map',
+      'map_settings_allow'  => 0,
       'sv_enable'           => 0,
       'sv_showfirst' => 0,
     );

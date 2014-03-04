@@ -1,9 +1,34 @@
-commit dbf10c9
+commit dc4b6cc
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Tue Mar 4 21:36:23 2014 +0000
+
+    fixed bug #2210537
+
+modules/getlocations_fields/getlocations_fields.module
+
+commit 4fc77a5
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Mon Mar 3 09:32:43 2014 +0000
+
+    use base_path() instead of url() in image paths
+
+modules/getlocations_search/getlocations_search.module
+
+commit f722217
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sat Mar 1 15:48:55 2014 +0000
+
+    fixed issue #2208085
+
+modules/getlocations_search/getlocations_search.module
+
+commit ea3cf3d
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Fri Feb 28 11:58:41 2014 +0000
 
     fixed bug #2206503
 
+CHANGELOG.txt
 modules/getlocations_fields/getlocations_fields.install
 modules/getlocations_fields/getlocations_fields.module
 
