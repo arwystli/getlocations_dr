@@ -195,6 +195,9 @@ class getlocations_plugin_style_map extends views_plugin_style {
       $options[$entity_type . '_map_marker'] = array('default' => $getlocations_defaults[$entity_type . '_map_marker']);
     }
 
+    // empty_result
+    $options['empty_result'] = array('default' => FALSE);
+
     return $options;
 
   } // end option_definition

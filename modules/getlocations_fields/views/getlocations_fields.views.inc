@@ -346,6 +346,13 @@ function getlocations_fields_views_proximity_get_reference_location($view, $opti
       $coordinates['latitude'] = (isset($options['latitude']) ? (float) $options['latitude'] : 0);
       $coordinates['longitude'] = (isset($options['longitude']) ? (float) $options['longitude'] : 0);
       break;
+
+    case 'search':
+      // works
+      $coordinates['latitude'] = (isset($options['latitude']) ? (float) $options['latitude'] : 0);
+      $coordinates['longitude'] = (isset($options['longitude']) ? (float) $options['longitude'] : 0);
+      break;
+
 #    case 'tied':
 #      if (!empty($view->filter)) {
 #        foreach ($view->filter as $filter) {

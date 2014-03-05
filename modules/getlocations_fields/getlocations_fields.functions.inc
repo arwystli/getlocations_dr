@@ -42,6 +42,7 @@ function getlocations_fields_element_origin($default, $distance=FALSE) {
 #    'postal' => t('Postal Code / Country'),
 #    'postal_default' => t('Postal Code (assume default country)'),
     'php' => t('Use PHP code to determine Lat/Lon'),
+    'search' => t('Google Autocomplete search'),
   );
 
   $element = array(

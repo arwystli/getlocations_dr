@@ -774,6 +774,154 @@ function getlocations_fields_views_default_views() {
 
 #  $views[$view->name] = $view;
 
+  // Use Google Autocomplete to search for nearby locations
+  $view = new view();
+  $view->name = 'getlocations_search_nearby';
+  $view->description = 'Provides a map and form using Google Autocomplete search';
+  $view->tag = 'getlocations view';
+  $view->base_table = 'getlocations_fields';
+  $view->human_name = 'Getlocations search nearby';
+  $view->core = 7;
+  $view->api_version = '3';
+  $view->disabled = TRUE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Master */
+  $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'none';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['expose_sort_order'] = FALSE;
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['row_plugin'] = 'fields';
+  /* Field: Getlocations Fields: Glid */
+  $handler->display->display_options['fields']['glid']['id'] = 'glid';
+  $handler->display->display_options['fields']['glid']['table'] = 'getlocations_fields';
+  $handler->display->display_options['fields']['glid']['field'] = 'glid';
+  $handler->display->display_options['fields']['glid']['label'] = '';
+  $handler->display->display_options['fields']['glid']['element_label_colon'] = FALSE;
+  /* Field: Getlocations Fields: Latitude */
+  $handler->display->display_options['fields']['latitude']['id'] = 'latitude';
+  $handler->display->display_options['fields']['latitude']['table'] = 'getlocations_fields';
+  $handler->display->display_options['fields']['latitude']['field'] = 'latitude';
+  $handler->display->display_options['fields']['latitude']['label'] = '';
+  $handler->display->display_options['fields']['latitude']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['latitude']['element_label_colon'] = FALSE;
+  /* Field: Getlocations Fields: Longitude */
+  $handler->display->display_options['fields']['longitude']['id'] = 'longitude';
+  $handler->display->display_options['fields']['longitude']['table'] = 'getlocations_fields';
+  $handler->display->display_options['fields']['longitude']['field'] = 'longitude';
+  $handler->display->display_options['fields']['longitude']['label'] = '';
+  $handler->display->display_options['fields']['longitude']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['longitude']['element_label_colon'] = FALSE;
+  /* Field: Getlocations Fields: Name */
+  $handler->display->display_options['fields']['name']['id'] = 'name';
+  $handler->display->display_options['fields']['name']['table'] = 'getlocations_fields';
+  $handler->display->display_options['fields']['name']['field'] = 'name';
+  $handler->display->display_options['fields']['name']['label'] = '';
+  $handler->display->display_options['fields']['name']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['name']['element_label_colon'] = FALSE;
+  /* Field: Getlocations Fields: Field name */
+  $handler->display->display_options['fields']['field_name']['id'] = 'field_name';
+  $handler->display->display_options['fields']['field_name']['table'] = 'getlocations_fields';
+  $handler->display->display_options['fields']['field_name']['field'] = 'field_name';
+  $handler->display->display_options['fields']['field_name']['label'] = '';
+  $handler->display->display_options['fields']['field_name']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_name']['element_label_colon'] = FALSE;
+  /* Field: Getlocations Fields: Marker */
+  $handler->display->display_options['fields']['marker']['id'] = 'marker';
+  $handler->display->display_options['fields']['marker']['table'] = 'getlocations_fields';
+  $handler->display->display_options['fields']['marker']['field'] = 'marker';
+  $handler->display->display_options['fields']['marker']['label'] = '';
+  $handler->display->display_options['fields']['marker']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['marker']['element_label_colon'] = FALSE;
+
+  /* Filter criterion: Getlocations Fields: Glid */
+  $handler->display->display_options['filters']['glid']['id'] = 'glid';
+  $handler->display->display_options['filters']['glid']['table'] = 'getlocations_fields';
+  $handler->display->display_options['filters']['glid']['field'] = 'glid';
+  $handler->display->display_options['filters']['glid']['operator'] = '>';
+  $handler->display->display_options['filters']['glid']['value']['value'] = '0';
+  $handler->display->display_options['filters']['glid']['group'] = 1;
+  /* Filter criterion: Getlocations Fields: Latitude */
+  $handler->display->display_options['filters']['latitude']['id'] = 'latitude';
+  $handler->display->display_options['filters']['latitude']['table'] = 'getlocations_fields';
+  $handler->display->display_options['filters']['latitude']['field'] = 'latitude';
+  $handler->display->display_options['filters']['latitude']['operator'] = '!=';
+  $handler->display->display_options['filters']['latitude']['value']['value'] = '0';
+  $handler->display->display_options['filters']['latitude']['group'] = 1;
+  /* Filter criterion: Getlocations Fields: Longitude */
+  $handler->display->display_options['filters']['longitude']['id'] = 'longitude';
+  $handler->display->display_options['filters']['longitude']['table'] = 'getlocations_fields';
+  $handler->display->display_options['filters']['longitude']['field'] = 'longitude';
+  $handler->display->display_options['filters']['longitude']['operator'] = '!=';
+  $handler->display->display_options['filters']['longitude']['value']['value'] = '0';
+  $handler->display->display_options['filters']['longitude']['group'] = 1;
+  /* Filter criterion: Getlocations Fields: Distance */
+  $handler->display->display_options['filters']['distance']['id'] = 'distance';
+  $handler->display->display_options['filters']['distance']['table'] = 'getlocations_fields';
+  $handler->display->display_options['filters']['distance']['field'] = 'distance';
+  $handler->display->display_options['filters']['distance']['group'] = 1;
+  $handler->display->display_options['filters']['distance']['expose']['operator_id'] = 'distance_op';
+  $handler->display->display_options['filters']['distance']['expose']['label'] = 'Distance';
+  $handler->display->display_options['filters']['distance']['expose']['operator'] = 'distance_op';
+  $handler->display->display_options['filters']['distance']['expose']['identifier'] = 'distance';
+
+  /* Display: Search Page */
+  $handler = $view->new_display('page', 'Search Page', 'search_page');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Search locations';
+  $handler->display->display_options['display_description'] = 'Use Google Autocomplete to define the origin';
+  $handler->display->display_options['defaults']['use_ajax'] = FALSE;
+  $handler->display->display_options['use_ajax'] = TRUE;
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'getlocations';
+  $handler->display->display_options['style_options']['empty_result'] = 1;
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Getlocations Fields: Glid */
+  $handler->display->display_options['filters']['glid']['id'] = 'glid';
+  $handler->display->display_options['filters']['glid']['table'] = 'getlocations_fields';
+  $handler->display->display_options['filters']['glid']['field'] = 'glid';
+  $handler->display->display_options['filters']['glid']['operator'] = '>';
+  $handler->display->display_options['filters']['glid']['value']['value'] = '0';
+  $handler->display->display_options['filters']['glid']['group'] = 1;
+  /* Filter criterion: Getlocations Fields: Latitude */
+  $handler->display->display_options['filters']['latitude']['id'] = 'latitude';
+  $handler->display->display_options['filters']['latitude']['table'] = 'getlocations_fields';
+  $handler->display->display_options['filters']['latitude']['field'] = 'latitude';
+  $handler->display->display_options['filters']['latitude']['operator'] = '!=';
+  $handler->display->display_options['filters']['latitude']['value']['value'] = '0';
+  $handler->display->display_options['filters']['latitude']['group'] = 1;
+  /* Filter criterion: Getlocations Fields: Longitude */
+  $handler->display->display_options['filters']['longitude']['id'] = 'longitude';
+  $handler->display->display_options['filters']['longitude']['table'] = 'getlocations_fields';
+  $handler->display->display_options['filters']['longitude']['field'] = 'longitude';
+  $handler->display->display_options['filters']['longitude']['operator'] = '!=';
+  $handler->display->display_options['filters']['longitude']['value']['value'] = '0';
+  $handler->display->display_options['filters']['longitude']['group'] = 1;
+  /* Filter criterion: Getlocations Fields: Distance */
+  $handler->display->display_options['filters']['distance']['id'] = 'distance';
+  $handler->display->display_options['filters']['distance']['table'] = 'getlocations_fields';
+  $handler->display->display_options['filters']['distance']['field'] = 'distance';
+  $handler->display->display_options['filters']['distance']['group'] = 1;
+  $handler->display->display_options['filters']['distance']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['distance']['expose']['operator_id'] = 'distance_op';
+  $handler->display->display_options['filters']['distance']['expose']['operator'] = 'distance_op';
+  $handler->display->display_options['filters']['distance']['expose']['identifier'] = 'distance';
+  $handler->display->display_options['filters']['distance']['origin'] = 'search';
+  $handler->display->display_options['path'] = 'getlocations_search_nearby';
+
+  $views[$view->name] = $view;
+
+
+
 
   return $views;
 }

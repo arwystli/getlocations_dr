@@ -18,10 +18,15 @@ class getlocations_fields_handler_filter_distance extends views_handler_filter {
   function option_definition() {
     $options = parent::option_definition();
 
-    $options['operator'] = array('default' => 'mbr');
-    $options['identifier'] = array('default' => 'distance');
-    $options['group'] = array('default' => '0');
-    $options['origin'] = array('default' => 'nid_arg');
+    $options['operator']            = array('default' => 'mbr');
+    $options['identifier']          = array('default' => 'distance');
+    $options['group']               = array('default' => '0');
+    $options['origin']              = array('default' => 'nid_arg');
+    $options['settings']['searchbox_size']          = array('default' => '60');
+    $options['settings']['restrict_by_country']     = array('default' => 0);
+    $options['settings']['country']                 = array('default' => variable_get('site_default_country', ''));
+    $options['settings']['display_search_distance'] = array('default' => 1);
+    $options['settings']['display_search_units']    = array('default' => 1);
 
     $options['value'] = array(
       'default' => array(
@@ -40,12 +45,14 @@ class getlocations_fields_handler_filter_distance extends views_handler_filter {
         'cid_loc_field' => 'comment',
         'search_distance' => 100,
         'search_units' => 'km',
+        'search_field' => '',
       ),
     );
 
     $options['expose']['contains']['operator_id'] = array('default' => 'mbr');
     $options['expose']['contains']['search_units'] = array('default' => 'km');
     $options['expose']['contains']['search_distance'] = array('default' => 10);
+    $options['expose']['contains']['search_field'] = array('default' => '');
 
     return $options;
   }
@@ -69,11 +76,77 @@ class getlocations_fields_handler_filter_distance extends views_handler_filter {
 
     $this->options['expose']['search_units'] = array('default' => 'km');
     $this->options['expose']['search_distance'] = array('default' => 10);
+    $this->options['expose']['search_field'] = array('default' => '');
   }
 
   function value_form(&$form, &$form_state) {
     parent::value_form($form, $form_state);
+
     $form['origin'] = getlocations_fields_element_origin($this->options['origin']);
+
+    if (! empty($this->options['exposed'])) {
+      $form['settings'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Form settings'),
+        '#collapsible' => TRUE,
+        '#collapsed' => FALSE,
+        // This will store all the defaults in one variable.
+        '#tree' => TRUE,
+      );
+
+      $form['settings']['display_search_units'] = getlocations_element_map_checkbox(
+        t('Display Search units dropdown'),
+        (isset($this->options['settings']['display_search_units']) ? $this->options['settings']['display_search_units'] : 1),
+        t('Allow users to modify the search units.')
+      );
+
+      $form['settings']['display_search_distance'] = getlocations_element_map_checkbox(
+        t('Display Search distance box'),
+        (isset($this->options['settings']['display_search_distance']) ? $this->options['settings']['display_search_distance'] : 1),
+        t('Allow users to modify the search distance.')
+      );
+      // Google autocomplete
+      $form['settings']['searchbox_size'] = getlocations_element_map_tf(
+        t('Search box size'),
+        (isset($this->options['settings']['searchbox_size']) ? $this->options['settings']['searchbox_size'] : 60),
+        t('The width of the search box.'),
+        5,
+        5,
+        TRUE
+      );
+      $form['settings']['searchbox_size']['#dependency'] = array('edit-options-origin' => array('search'));
+      // country restriction
+      $form['settings']['restrict_by_country'] = getlocations_element_map_checkbox(
+        t('Restrict by country'),
+        (isset($this->options['settings']['restrict_by_country']) ? $this->options['settings']['restrict_by_country'] : 0),
+        t('Restrict searches to the country set below. Works with Google Autocomplete.')
+      );
+      $form['settings']['restrict_by_country']['#dependency'] = array('edit-options-origin' => array('search'));
+      $form['settings']['restrict_by_country']['#suffix'] = '<div id="getlocations_search_country">';
+      $countries = getlocations_get_countries_list();
+      $form['settings']['country'] = getlocations_element_dd(
+        t('Search country'),
+        (isset($this->options['settings']['country']) ? $this->options['settings']['country'] : variable_get('site_default_country', '')),
+        $countries
+      );
+      $form['settings']['country']['#dependency'] = array('edit-options-origin' => array('search'));
+      $form['settings']['country']['#suffix'] = '</div>';
+
+      if ($this->options['origin'] == 'search') {
+        if (isset($this->options['settings'])) {
+          $settings = array(
+            'getlocations_fields_search_views' => array(
+              'restrict_by_country' => (isset($this->options['settings']['restrict_by_country']) ? $this->options['settings']['restrict_by_country'] : 0),
+              'country' => (isset($this->options['settings']['country']) ? $this->options['settings']['country'] : variable_get('site_default_country', '')),
+            )
+          );
+          drupal_add_js($settings, 'setting');
+        }
+        $form['#attached']['js'] = array(GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields_search_views.js');
+
+      }
+
+    }
 
     if (! empty($form_state['exposed'])) {
       $identifier = $this->options['expose']['identifier'];
@@ -87,8 +160,17 @@ class getlocations_fields_handler_filter_distance extends views_handler_filter {
     $form['value'] = array(
       '#tree' => TRUE,
     );
+    if ($this->options['origin'] == 'search') {
+      $form['value']['search_field'] = getlocations_element_map_tf(t('Search'), '', '', (isset($this->options['settings']['searchbox_size']) && $this->options['settings']['searchbox_size'] ? $this->options['settings']['searchbox_size'] : 60));
+      $form['value']['search_field']['#dependency'] = array('edit-options-origin' => array('search'));
+      $form['value']['search_field']['#attributes']['title'] = array(t('Start typing an address, then select from the dropdown'));
+    }
     $form['value']['latitude'] = getlocations_fields_element_latitude($this->value['latitude']);
     $form['value']['longitude'] = getlocations_fields_element_longitude($this->value['longitude']);
+    if ($this->options['origin'] == 'search') {
+      $form['value']['latitude']['#prefix'] = '<div class="js-hide">';
+       $form['value']['longitude']['#suffix'] = '</div>';
+    }
     #$form['value']['postal_code'] = getlocations_fields_element_postal_code($this->value['postal_code']);
     #$form['value']['country'] = getlocations_fields_element_country($this->value['country']);
     $form['value']['php_code'] = getlocations_fields_element_php_code($this->value['php_code']);
@@ -113,12 +195,11 @@ class getlocations_fields_handler_filter_distance extends views_handler_filter {
       $form['value']['cid_loc_field'] = getlocations_fields_element_cid_loc_field($this->value['cid_loc_field'], $loc_field_options);
     }
 
-
     $form['value']['search_units'] = getlocations_element_distance_unit($this->value['search_units']);
     $form['value']['search_distance'] = getlocations_element_search_distance($this->value['search_distance']);
 
   }
-  // TODO
+
   function exposed_form(&$form, &$form_state) {
     parent::exposed_form($form, $form_state);
     $key = $this->options['expose']['identifier'];
@@ -131,8 +212,10 @@ class getlocations_fields_handler_filter_distance extends views_handler_filter {
       }
     }
     // unset anything not needed on exposed form
-    unset($form[$key]['latitude']);
-    unset($form[$key]['longitude']);
+    if ($origin != 'search') {
+      unset($form[$key]['latitude']);
+      unset($form[$key]['longitude']);
+    }
     unset($form[$key]['php_code']);
     unset($form[$key]['nid_arg']);
     unset($form[$key]['nid_loc_field']);
@@ -143,6 +226,29 @@ class getlocations_fields_handler_filter_distance extends views_handler_filter {
     unset($form[$key]['cid_arg']);
     unset($form[$key]['cid_loc_field']);
     unset($form['origin']);
+
+    if (isset($this->options['settings']['display_search_distance'])) {
+      if (! $this->options['settings']['display_search_distance']) {
+        $def = $form[$key]['search_distance']['#default_value'];
+        unset($form[$key]['search_distance']);
+        $form[$key]['search_distance'] = array('#type' => 'value', '#value' => $def);
+      }
+      else {
+        if (! $this->options['settings']['display_search_units']) {
+          $def = $form[$key]['search_units']['#default_value'];
+          $form[$key]['search_distance']['#field_suffix'] = getlocations_get_unit_names($def, 'plurals');
+        }
+      }
+    }
+
+    if (isset($this->options['settings']['display_search_units'])) {
+      if (! $this->options['settings']['display_search_units']) {
+        $def = $form[$key]['search_units']['#default_value'];
+        unset($form[$key]['search_units']);
+        $form[$key]['search_units'] = array('#type' => 'value', '#value' => $def);
+      }
+    }
+    unset($form['settings']);
   }
 
   function query() {
