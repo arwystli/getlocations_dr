@@ -29,6 +29,7 @@
         gset.search_marker = searchsettings.search_marker;
         gset.search_distance_type = searchsettings.search_distance_type;
         gset.search_marker_toggle = searchsettings.search_marker_toggle;
+        gset.search_marker_toggle_active = searchsettings.search_marker_toggle_active;
         gset.search_info_path = searchsettings.search_info_path;
         gset.zoom_on_single_use = searchsettings.zoom_on_single_use;
         gset.display_accuracy = searchsettings.display_accuracy;
@@ -41,9 +42,22 @@
 
         var mapid = key;
         var mapid2 = key.replace("_", "-");
+        // collect defaults
+        var default_distance = $("#edit-getlocations-search-distance-" + mapid2).val();
+        var default_units = $("#edit-getlocations-search-units-" + mapid2).val();
+        var default_type = $("#edit-getlocations-search-type-" + mapid2).val();
+        var default_limits = $("#edit-getlocations-search-limits-" + mapid2).val();
 
+        // hide geocode button
+        if ($("#getlocations_search_geocode_button_wrapper_" + mapid).is('div')) {
+          $("#getlocations_search_geocode_button_" + mapid).hide();
+        }
+
+        var fm_adrs = '';
         // search area shape
         gset.search_radshape_enable = searchsettings.search_radshape_enable;
+        gset.search_radshape_toggle = searchsettings.search_radshape_toggle;
+        gset.search_radshape_toggle_active = searchsettings.search_radshape_toggle_active;
         if (searchsettings.search_radshape_enable) {
           if (searchsettings.search_distance_type == 'dist') {
             // radius circle
@@ -101,7 +115,6 @@
 
         if (method == 'google_ac') {
           var input_adrs = document.getElementById("edit-getlocations-search-" + mapid2);
-          var fm_adrs = '';
           var opts = {};
           if (restrict_by_country > 0 && country) {
             var c = {'country':country};
@@ -116,6 +129,9 @@
             fm_adrs = {'address': place_adrs.formatted_address};
             // Create a Client Geocoder
             do_Geocode(getlocations_map[key], gset, fm_adrs, key);
+            if ($("#getlocations_search_geocode_button_wrapper_" + key).is('div')) {
+              $("#getlocations_search_geocode_button_" + key).show();
+            }
           });
         }
         else {
@@ -141,6 +157,30 @@
         }
         else {
           $("#getlocations_search_geolocation_button_wrapper_" + key).hide();
+        }
+
+        // Geocode button
+        if ($("#getlocations_search_geocode_button_wrapper_" + key).is('div')) {
+          $("#getlocations_search_geocode_button_" + key).click( function () {
+            do_Geocode(getlocations_map[key], gset, fm_adrs, key);
+          });
+        }
+
+        // Reset button
+        if ($("#getlocations_search_reset_button_wrapper_" + key).is('div')) {
+          $("#getlocations_search_reset_button_" + key).click( function () {
+            // reset to defaults
+            $("#edit-getlocations-search-distance-" + mapid2).val(default_distance);
+            $("#edit-getlocations-search-units-" + mapid2).val(default_units);
+            $("#edit-getlocations-search-type-" + mapid2).val(default_type);
+            $("#edit-getlocations-search-limits-" + mapid2).val(default_limits);
+            $("#edit-getlocations-search-" + mapid2).val("");
+            if ($("#getlocations_search_geocode_button_wrapper_" + key).is('div')) {
+              $("#getlocations_search_geocode_button_" + key).hide();
+            }
+            getlocations_search_clear_results(key, gset);
+            getlocations_search_reset_map(key, gset);
+          });
         }
 
         // search area shape
@@ -211,14 +251,7 @@
     if (! gs.showall) {
       // are there any markers already?
       if (search_markersArray.length) {
-        getlocations_search_deleteOverlays();
-        // clear out manager
-        if (gs.usemarkermanager) {
-          gs.mgr.clearMarkers();
-        }
-        else if (gs.useclustermanager) {
-          gs.cmgr.clearMarkers();
-        }
+        getlocations_search_deleteOverlays(gs);
       }
     }
     // clear out search marker
@@ -236,22 +269,7 @@
     }
 
     // clear the results box
-    $("#getlocations_search_address_" + mkey).html('');
-    $("#getlocations_search_count_" + mkey).html('');
-    $("#getlocations_search_distance_" + mkey).html('');
-    $("#getlocations_search_type_" + mkey).html('');
-    $("#getlocations_search_lat_" + mkey).html('');
-    $("#getlocations_search_lon_" + mkey).html('');
-    $("#getlocations_search_latlon_" + mkey).html('');
-    if (gs.show_maplinks) {
-      $("div#getlocations_map_links_" + mkey + " ul").html("");
-    }
-
-    // switch off area shape
-    if (gs.search_radshape_enable) {
-      radShape[mkey].setVisible(false);
-      $("#getlocations_search_toggleShape_" + mkey).attr('disabled', true);
-    }
+    getlocations_search_clear_results(mkey, gs);
 
     // set up some display vars
     var unitsdisplay = {'km': Drupal.t('Kilometer'), 'm': Drupal.t('Meter'), 'mi': Drupal.t('Mile'), 'yd': Drupal.t('Yard'), 'nmi': Drupal.t('Nautical mile')};
@@ -505,12 +523,108 @@
   }
 
   // Deletes all markers in the array by removing references to them
-  function getlocations_search_deleteOverlays() {
+  function getlocations_search_deleteOverlays(gs) {
     if (search_markersArray) {
       for (i in search_markersArray) {
         search_markersArray[i].setMap(null);
       }
       search_markersArray.length = 0;
+    }
+    // clear out manager
+    if (gs.usemarkermanager) {
+      gs.mgr.clearMarkers();
+    }
+    else if (gs.useclustermanager) {
+      gs.cmgr.clearMarkers();
+    }
+  }
+
+  function getlocations_search_clear_results(k, gs) {
+    // clear the results box
+    $("#getlocations_search_address_" + k).html('');
+    $("#getlocations_search_count_" + k).html('');
+    $("#getlocations_search_distance_" + k).html('');
+    $("#getlocations_search_type_" + k).html('');
+    $("#getlocations_search_lat_" + k).html('');
+    $("#getlocations_search_lon_" + k).html('');
+    $("#getlocations_search_latlon_" + k).html('');
+    $("#getlocations_search_accuracy_" + k).html('');
+    $("#getlocations_search_slat_" + k).html('');
+    $("#getlocations_search_slon_" + k).html('');
+    $("#getlocations_search_sunit_" + k).html('');
+    if (gs.show_maplinks) {
+      $("div#getlocations_map_links_" + k + " ul").html("");
+    }
+    // switch off area shape
+    if (gs.search_radshape_enable) {
+      radShape[k].setVisible(false);
+      if (gs.search_radshape_toggle) {
+        if (gs.search_radshape_toggle_active > 0) {
+          shapetoggleState[k] = true;
+          label = Drupal.t('Search area Off');
+        }
+        else {
+          shapetoggleState[k] = false;
+          label = Drupal.t('Search area On');
+        }
+        $("#getlocations_search_toggleShape_" + k).val(label);
+      }
+      $("#getlocations_search_toggleShape_" + k).attr('disabled', true);
+    }
+    if (gs.do_search_marker && searchmarker[k]) {
+      searchmarker[k].setVisible(false);
+      if (gs.search_marker_toggle) {
+        if (gs.search_marker_toggle_active > 0) {
+          markertoggleState[k] = true;
+          label = Drupal.t('Marker Off');
+        }
+        else {
+          markertoggleState[k] = false;
+          label = Drupal.t('Marker On');
+        }
+        $("#getlocations_search_toggleMarker_" + k).val(label);
+      }
+      $("#getlocations_search_toggleMarker_" + k).attr('disabled', true);
+    }
+  }
+
+  function getlocations_search_reset_map(k, gs) {
+    var lat = Drupal.settings.getlocations[k].lat;
+    var lon = Drupal.settings.getlocations[k].lng;
+    var zoom = Drupal.settings.getlocations[k].zoom;
+    var pansetting = Drupal.settings.getlocations[k].pansetting;
+    var latlons = (getlocations_data[k].latlons ? getlocations_data[k].latlons : '');
+    var minmaxes = (getlocations_data[k].minmaxes ? getlocations_data[k].minmaxes : '');
+    var minlat = '';
+    var minlon = '';
+    var maxlat = '';
+    var maxlon = '';
+    var cenlat = '';
+    var cenlon = '';
+    if (minmaxes) {
+      minlat = parseFloat(minmaxes.minlat);
+      minlon = parseFloat(minmaxes.minlon);
+      maxlat = parseFloat(minmaxes.maxlat);
+      maxlon = parseFloat(minmaxes.maxlon);
+      cenlat = ((minlat + maxlat)/2);
+      cenlon = ((minlon + maxlon)/2);
+    }
+    if (gs.showall && cenlat && cenlon) {
+      if (pansetting == 1) {
+        Drupal.getlocations.doBounds(getlocations_map[k], minlat, minlon, maxlat, maxlon, true);
+      }
+      else if (pansetting == 2) {
+        Drupal.getlocations.doBounds(getlocations_map[k], minlat, minlon, maxlat, maxlon, false);
+      }
+      else if (pansetting == 3) {
+        getlocations_map[k].setCenter(new google.maps.LatLng(parseFloat(cenlat), parseFloat(cenlon)));
+        getlocations_map[k].setZoom(parseInt(zoom));
+      }
+    }
+    else {
+      getlocations_search_deleteOverlays(gs);
+      getlocations_map[k].setCenter(new google.maps.LatLng(parseFloat(lat), parseFloat(lon)));
+      getlocations_map[k].setZoom(parseInt(zoom));
     }
   }
 

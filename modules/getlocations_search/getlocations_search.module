@@ -206,6 +206,16 @@ function getlocations_search_form($form, &$form_state, $which, $mapid) {
       '#value' => t('Go')
     );
   }
+  else {
+    if ($getlocations_search_defaults['geocode_button_enable']) {
+      // geocode button
+      $form['getlocations_search_geocode_button_' . $mapid] = array('#markup' => '');
+    }
+  }
+  if ($getlocations_search_defaults['reset_button_enable']) {
+    // Reset button
+    $form['getlocations_search_reset_button_' . $mapid] = array('#markup' => '');
+  }
 
   return $form;
 }
@@ -716,6 +726,22 @@ function theme_getlocations_search_form($variables) {
     $form['getlocations_search_country_' . $mapid]['#markup'] = $restrict_country;
   }
 
+  // geocode button
+  if (isset($form['getlocations_search_geocode_button_' . $mapid]['#markup'])) {
+    $geocode_button = '<div id="getlocations_search_geocode_button_wrapper_' . $mapid . '">';
+    $geocode_button .= '<input type="button" value="' . t('Geocode') . '" title="' . t('Geocode this address') . '" id="getlocations_search_geocode_button_' . $mapid . '" class="form-submit" />';
+    $geocode_button .= '</div>';
+    $form['getlocations_search_geocode_button_' . $mapid]['#markup'] = $geocode_button;
+  }
+
+  // reset button
+  if (isset($form['getlocations_search_reset_button_' . $mapid]['#markup'])) {
+    $reset_button = '<div id="getlocations_search_reset_button_wrapper_' . $mapid . '">';
+    $reset_button .= '<input type="button" value="' . t('Reset') . '" title="' . t('Reset this form') . '" id="getlocations_search_reset_button_' . $mapid . '" class="form-submit" />';
+    $reset_button .= '</div>';
+    $form['getlocations_search_reset_button_' . $mapid]['#markup'] = $reset_button;
+  }
+
   $output .= drupal_render_children($form);
 
   // $which can be page or block so we can change things accordingly
@@ -1015,6 +1041,8 @@ function getlocations_search_defaults() {
     'highlight_fillopacity'     => $getlocations_defaults['highlight_fillopacity'],
     'highlight_radius'          => $getlocations_defaults['highlight_radius'],
     'getdirections_link'        => $getlocations_defaults['getdirections_link'],
+    'geocode_button_enable'     => 0,
+    'reset_button_enable'       => 0,
   );
 
   $settings = variable_get('getlocations_search_defaults', $defaults);
