@@ -165,7 +165,7 @@ function getlocations_fields_field_schema($field) {
  */
 function getlocations_fields_enable() {
 
-  drupal_set_message(st('Thank you for installing Getlocations fields. To set it up please visit the <a href="@url">configuration page</a>.', array('@url' => url('admin/config/services/getlocations_fields'))), 'status');
+  drupal_set_message(st('Thank you for installing Getlocations fields. To set it up please visit the <a href="@url">configuration page</a>.', array('@url' => url('admin/config/services/getlocations/fields'))), 'status');
 
 }
 

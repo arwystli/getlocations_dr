@@ -61,7 +61,7 @@ function getlocations_leaflet_uninstall() {
  */
 function getlocations_leaflet_enable() {
 
-  drupal_set_message(st('Thank you for installing Getlocations Leaflet. To set it up please visit the <a href="@url">configuration page</a>.', array('@url' => url('admin/config/services/getlocations_leaflet'))), 'status');
+  drupal_set_message(st('Thank you for installing Getlocations Leaflet. To set it up please visit the <a href="@url">configuration page</a>.', array('@url' => url('admin/config/services/getlocations/leaflet'))), 'status');
 
 }
 
