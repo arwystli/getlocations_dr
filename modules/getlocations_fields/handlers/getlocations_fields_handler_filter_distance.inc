@@ -70,7 +70,7 @@ class getlocations_fields_handler_filter_distance extends views_handler_filter {
       'dist' => t('Proximity (Circular)'),
     );
   }
-  // TODO
+
   function expose_options() {
     parent::expose_options();
 
