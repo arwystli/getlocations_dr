@@ -91,6 +91,14 @@ function getlocations_fields_settings_form() {
     128,
     t('Where the getlocations fields views javascript file is located.')
   );
+  // search views
+  $form['getlocations_fields_paths']['getlocations_fields_search_views_path'] = getlocations_element_path(
+    t('Path to getlocations fields Search Views javascript file'),
+    $getlocations_fields_paths['getlocations_fields_search_views_path'],
+    80,
+    128,
+    t('Where the getlocations fields search views javascript file is located.')
+  );
 
   $form['getlocations_fields_paths']['reset'] = getlocations_element_dd(
     t('Reset'),
