@@ -7,3 +7,4 @@ php = 5
 dependencies[] = libraries
 dependencies[] = entity
 files[] = "views/getlocations_plugin_style_map.inc"
+configure = admin/config/services/getlocations

@@ -6,3 +6,5 @@ package = Fields
 dependencies[] = getlocations
 
 files[] = views/getlocations_leaflet_plugin_style.inc
+
+configure = admin/config/services/getlocations/leaflet
