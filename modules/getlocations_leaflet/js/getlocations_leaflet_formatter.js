@@ -339,6 +339,21 @@
         }
       });
 
+      if ($("input[id$=geocoder]").attr('checked')) {
+       $("#wrap-getlocations-geocoder").show();
+      }
+      else {
+        $("#wrap-getlocations-geocoder").hide();
+      }
+      $("input[id$=geocoder]").change(function() {
+        if ($(this).attr('checked')) {
+          $("#wrap-getlocations-geocoder").show();
+        }
+        else {
+          $("#wrap-getlocations-geocoder").hide();
+        }
+      });
+
     }
   };
 }(jQuery));

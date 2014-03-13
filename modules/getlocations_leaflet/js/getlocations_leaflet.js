@@ -236,6 +236,28 @@ var getlocations_leaflet_data = [];
             getlocations_leaflet_map[key].addControl(L.control.scale(scaleopts));
           }
 
+          // Geocoder control
+          if (map_settings.geocoder) {
+            var geo_opts = {};
+            geo_opts.placeholder = Drupal.t("Search...");
+            geo_opts.errorMessage = Drupal.t("Nothing found.");
+            geo_opts.collapsed = (map_settings.geocodercollapsed ? true : false);
+            if (map_settings.geocoderposition) {
+              geo_opts.position = map_settings.geocoderposition;
+            }
+            if (map_settings.geocodersrc == 'b' && map_settings.geocoder_bing_key) {
+              geo_opts.geocoder = L.Control.Geocoder.bing(map_settings.geocoder_bing_key);
+            }
+            else if (map_settings.geocodersrc == 'm' && map_settings.geocoder_mapquest_key) {
+              geo_opts.geocoder = L.Control.Geocoder.mapQuest(map_settings.geocoder_mapquest_key);
+            }
+            else {
+              geo_opts.geocoder = L.Control.Geocoder.nominatim();
+            }
+            getlocations_leaflet_map[key].addControl(L.Control.geocoder(geo_opts));
+            //$('div.leaflet-control-geocoder-icon').attr('title', Drupal.t('Search the map'));
+          }
+
           // latlons data
           if (datanum > 0) {
 

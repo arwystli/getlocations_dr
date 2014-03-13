@@ -240,6 +240,21 @@ function getlocations_leaflet_library() {
     );
   }
 
+  if ($getlocations_leaflet_plugins['geocoder_enable']) {
+    $jsarr += array(
+      GETLOCATIONS_LEAFLET_PATH . '/plugins/geocoder/Control.Geocoder.min.js' => array(
+        'type' => 'file',
+        'preprocess' => $aggr
+      ),
+    );
+    $cssarr += array(
+      GETLOCATIONS_LEAFLET_PATH . '/plugins/geocoder/Control.Geocoder.min.css' => array(
+        'type' => 'file',
+        'media' => 'all',
+      ),
+    );
+  }
+
   $jsarr += array(
     $getlocations_leaflet_paths['getlocations_leaflet_providers_path'] => array(
       'type' => 'file',
@@ -1068,6 +1083,18 @@ function getlocations_leaflet_map_settings_do($map_settings, $defaults, $latlons
     $map_settings['map_settings']['minimap'] = FALSE;
   }
 
+  if ($getlocations_leaflet_plugins['geocoder_enable']) {
+    $map_settings['map_settings']['geocoder'] = ($defaults['geocoder'] ? TRUE : FALSE);
+    $map_settings['map_settings']['geocoderposition'] = $defaults['geocoderposition'];
+    $map_settings['map_settings']['geocodersrc'] = $defaults['geocodersrc'];
+    $map_settings['map_settings']['geocodercollapsed'] = $defaults['geocodercollapsed'];
+    $map_settings['map_settings']['geocoder_bing_key'] = $defaults['geocoder_bing_key'];
+    $map_settings['map_settings']['geocoder_mapquest_key'] = $defaults['geocoder_mapquest_key'];
+  }
+  else {
+    $map_settings['map_settings']['geocoder'] = FALSE;
+  }
+
   if ($getlocations_leaflet_plugins['markercluster_enable']) {
     $map_settings['map_settings']['markercluster']  = ($defaults['markercluster'] ? TRUE : FALSE);
   }
@@ -1733,6 +1760,13 @@ function getlocations_leaflet_defaults() {
   $newdefaults['mouseposition_display_dms']  = 0;
   $newdefaults['minimap']                    = 0;
 
+  $newdefaults['geocoder']                    = 0;
+  $newdefaults['geocoderposition']            = '';
+  $newdefaults['geocodersrc']                 = 'n'; // n = nominatim, b = bing, m = mapquest
+  $newdefaults['geocodercollapsed']           = 1;
+  $newdefaults['geocoder_bing_key']           = ''; // required for bing
+  $newdefaults['geocoder_mapquest_key']       = ''; // required for mapquest
+
   $newdefaults['awesome']                     = 0;
   $newdefaults['awesome_icon']                = 'fa-home';
   $newdefaults['awesome_icon_color_selector'] = 'white';
@@ -1800,6 +1834,7 @@ function getlocations_leaflet_plugins() {
     'awesome_enable'       => 0,
     'mouseposition_enable' => 0,
     'minimap_enable'       => 0,
+    'geocoder_enable'      => 0,
   );
   $settings = variable_get('getlocations_leaflet_plugins', $defaults);
   $return = getlocations_adjust_vars($defaults, $settings);
@@ -1944,6 +1979,44 @@ function getlocations_leaflet_display_options_form($defaults, $admin = FALSE) {
     $controlpositions
   );
   $form['attributioncontrolposition']['#suffix'] = '</div>';
+
+  if ($getlocations_leaflet_plugins['geocoder_enable']) {
+    $form['geocoder'] = getlocations_element_map_checkbox(
+      t('Geocoder Control'),
+      $defaults['geocoder']
+    );
+    $form['geocoder']['#suffix'] = '<div id="wrap-getlocations-geocoder">';
+    $form['geocoderposition'] = getlocations_element_dd(
+      t('Position of Geocoder Control'),
+      $defaults['geocoderposition'],
+      $controlpositions
+    );
+    $form['geocodersrc'] = getlocations_element_dd(
+      t('Geocoding source'),
+      $defaults['geocodersrc'],
+      array('n' => t('Nominatim'), 'b' => t('Bing'), 'm' => t('Mapquest'))
+    );
+    $form['geocoder_bing_key'] = getlocations_element_map_tf(
+      t('Bing Geocoder key'),
+      $defaults['geocoder_bing_key'],
+      t('A Geocoder key is required for Bing.'),
+      40
+    );
+    $form['geocoder_mapquest_key'] = getlocations_element_map_tf(
+      t('Mapquest Geocoder key'),
+      $defaults['geocoder_mapquest_key'],
+      t('A Geocoder key is required for Mapquest.'),
+      40
+    );
+    $form['geocodercollapsed'] = getlocations_element_map_checkbox(
+      t('Geocoder Collapsed'),
+      $defaults['geocodercollapsed']
+    );
+    $form['geocodercollapsed']['#suffix'] = '</div>';
+  }
+  else {
+    $form['geocoder'] = array('#type' => 'value', '#value' => 0);
+  }
 
   $form['layerControl'] = getlocations_element_map_checkbox(
     t('Layer Control'),
@@ -2388,6 +2461,10 @@ function getlocations_leaflet_settings_form() {
   $form['getlocations_leaflet_plugins']['minimap_enable'] = getlocations_element_map_checkbox(
     t('Enable Minimap plugin'),
     $getlocations_leaflet_plugins['minimap_enable']
+  );
+  $form['getlocations_leaflet_plugins']['geocoder_enable'] = getlocations_element_map_checkbox(
+    t('Enable Geocoder plugin'),
+    $getlocations_leaflet_plugins['geocoder_enable']
   );
 
   // cloudmade
