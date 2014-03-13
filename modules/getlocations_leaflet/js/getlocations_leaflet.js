@@ -14,6 +14,7 @@ var getlocations_leaflet_settings = [];
 var getlocations_leaflet_overlays = [];
 var getlocations_leaflet_layerscontrol = [];
 var getlocations_leaflet_data = [];
+var getlocations_leaflet_geocoder = [];
 
 (function ($) {
   Drupal.behaviors.getlocations_leaflet = {
@@ -254,8 +255,8 @@ var getlocations_leaflet_data = [];
             else {
               geo_opts.geocoder = L.Control.Geocoder.nominatim();
             }
-            getlocations_leaflet_map[key].addControl(L.Control.geocoder(geo_opts));
-            //$('div.leaflet-control-geocoder-icon').attr('title', Drupal.t('Search the map'));
+            getlocations_leaflet_geocoder[key] = L.Control.geocoder(geo_opts);
+            getlocations_leaflet_map[key].addControl(getlocations_leaflet_geocoder[key]);
           }
 
           // latlons data
