@@ -670,6 +670,9 @@ function getlocations_leaflet_field_formatter_settings_summary($field, $instance
       if ($settings['fullscreen']) {
         $summary[] = t('Show fullscreen control: Yes');
       }
+      if ($settings['geocoder']) {
+        $summary[] = t('Show Geocoder control: Yes');
+      }
       if ($settings['markercluster']) {
         $summary[] = t('Enable markercluster: Yes');
       }
