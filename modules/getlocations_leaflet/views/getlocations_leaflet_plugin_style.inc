@@ -28,6 +28,11 @@ class getlocations_leaflet_plugin_style extends views_plugin_style {
   /**
    * Set default options
    */
+  function options(&$options) {
+    parent::options($options);
+    $options['empty_result'] = FALSE;
+  }
+
   function option_definition() {
     $options = parent::option_definition();
 
@@ -254,6 +259,7 @@ class getlocations_leaflet_plugin_style extends views_plugin_style {
 #    );
 
 
+    // not working AFAICT
 #    $form['empty_result'] = getlocations_element_map_checkbox(
 #      t('Show map even if view has no results'),
 #      $this->options['empty_result']
