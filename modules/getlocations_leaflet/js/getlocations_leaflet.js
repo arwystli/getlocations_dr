@@ -103,10 +103,8 @@ var getlocations_leaflet_geocoder = [];
           getlocations_leaflet_layerscontrol[key] = {};
 
           // get the map
-          getlocations_leaflet_map[key] = L.map('getlocations_leaflet_canvas_' + key, map_opts);
-          // another way
-          //var map = L.map($(element).get(0), map_opts);
-          //getlocations_leaflet_map[key] = map;
+          //getlocations_leaflet_map[key] = L.map('getlocations_leaflet_canvas_' + key, map_opts);
+          getlocations_leaflet_map[key] = L.map($(element).get(0), map_opts);
 
           // layers
           var layers = {};

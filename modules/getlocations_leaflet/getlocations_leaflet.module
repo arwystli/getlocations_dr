@@ -553,6 +553,7 @@ function getlocations_leaflet_field_formatter_view($entity_type, $entity, $field
         elseif ($ct < 1) {
           $ll = explode(',', $default['latlong']);
           $map_settings['map_opts']['center'] = array($ll[0], $ll[1]);
+          $map_settings['map_opts']['zoom'] = $settings['zoom'];
         }
 
         $mapid = getlocations_setup_map('', FALSE, FALSE, TRUE);
@@ -2971,6 +2972,7 @@ function getlocations_leaflet_entity_type_map($type, $entity_id) {
     elseif ($ct < 1) {
       $ll = explode(',', $settings['latlong']);
       $map_settings['map_opts']['center'] = array($ll[0], $ll[1]);
+      $map_settings['map_opts']['zoom'] = $settings['zoom'];
     }
 
     $mapid = getlocations_setup_map('', FALSE, FALSE, TRUE);
@@ -2985,8 +2987,6 @@ function getlocations_leaflet_entity_type_map($type, $entity_id) {
     $map_settings['latlons'] = $latlons;
 
     drupal_add_library('getlocations_leaflet', 'getlocations-leaflet');
-
-    #getlocations_leaflet_js_settings_do($map_settings, $mapid);
 
     $output = theme('getlocations_leaflet_map', array(
       'width' => $settings['width'],

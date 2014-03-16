@@ -1,9 +1,75 @@
-commit 2ffa84f
+commit 47b0593
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sun Mar 16 08:52:12 2014 +0000
+
+    fixed leaflet even_empty bug
+
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/js/getlocations_leaflet.js
+modules/getlocations_leaflet/js/getlocations_leaflet.min.js
+modules/getlocations_leaflet/views/getlocations_leaflet.views.inc
+modules/getlocations_leaflet/views/getlocations_leaflet_plugin_style.inc
+
+commit f7a1e96
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Fri Mar 14 23:24:20 2014 +0000
+
+    added more empty_result code
+
+modules/getlocations_leaflet/views/getlocations_leaflet_plugin_style.inc
+
+commit 5e97d23
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Fri Mar 14 17:05:41 2014 +0000
+
+    re-added getlocations_fields_column_check() to entity and search
+
+modules/getlocations_fields_entity/getlocations_fields_entity.module
+modules/getlocations_search/getlocations_search.module
+
+commit 48c49b4
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Thu Mar 13 22:56:16 2014 +0000
+
+    added geocoder to summary
+
+modules/getlocations_leaflet/getlocations_leaflet.module
+
+commit 68611ae
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Thu Mar 13 16:55:55 2014 +0000
+
+    added external access to geocoder
+
+modules/getlocations_leaflet/js/getlocations_leaflet.js
+modules/getlocations_leaflet/js/getlocations_leaflet.min.js
+modules/getlocations_leaflet/plugins/geocoder/README.txt
+
+commit 83c8fed
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Thu Mar 13 10:05:44 2014 +0000
+
+    added geocoder to leaflet
+
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/js/getlocations_leaflet.js
+modules/getlocations_leaflet/js/getlocations_leaflet.min.js
+modules/getlocations_leaflet/js/getlocations_leaflet_formatter.js
+modules/getlocations_leaflet/js/getlocations_leaflet_formatter.min.js
+modules/getlocations_leaflet/plugins/geocoder/Control.Geocoder.css
+modules/getlocations_leaflet/plugins/geocoder/Control.Geocoder.js
+modules/getlocations_leaflet/plugins/geocoder/Control.Geocoder.min.css
+modules/getlocations_leaflet/plugins/geocoder/Control.Geocoder.min.js
+modules/getlocations_leaflet/plugins/geocoder/images/geocoder.png
+modules/getlocations_leaflet/plugins/geocoder/images/throbber.gif
+
+commit a12d3b6
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Wed Mar 12 10:46:23 2014 +0000
 
     added configure key to info files
 
+CHANGELOG.txt
 getlocations.info
 modules/getlocations_fields/getlocations_fields.info
 modules/getlocations_leaflet/getlocations_leaflet.info
