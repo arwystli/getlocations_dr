@@ -93,15 +93,8 @@ it is the client browser not the server that is doing the work so you need to
 test on slow machines and basic handheld devices to determine the best
 settings for your site.
 
-If you have hundreds of markers make sure that the markermanager is enabled and
-that the markers are not all in the viewport at once, at least not on the map
-as it is initially set up.
-This applies especially to the
-"/getlocations/type/zzz"
-map which shows all the markers (of a given content-type)
-
-Alternately you can use the MarkerClusterer feature, useful if you have many markers
-near each other.
+If you have many markers you can use MarkerClusterer to control your markers.
+There is also a Markermanager but it is not as reliable.
 
 If you have the Colorbox module installed and enabled in Get Locations
 you can place any of the above paths in a colorbox iframe by replacing
