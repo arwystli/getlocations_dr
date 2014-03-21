@@ -98,6 +98,12 @@ Path: /getlocations_search_nearby
 The exposed form contains a Google Autocomplete textbox, Unit selector and Distance textbox.
 This form can be configured to appear with the page or in a block.
 
+In the View, under "Advanced", if "Exposed form in block" is "yes"
+make sure the block "Exposed form: getlocations_search_nearby-page_1" is enabled in the sidebar.
+Make sure it is configured with "Only the listed pages" set to "getlocations_search_nearby"
+If you set "Exposed form in block" to "no" it will appear with the map.
+
+
 All of the views may need to be limited to one or more content-types, depending on your use case.
 
 
