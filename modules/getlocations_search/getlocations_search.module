@@ -329,8 +329,28 @@ function getlocations_search_getmap($which = 'page') {
           if (! isset($location['key'])) {
             $location['key'] = '';
           }
+          $id = 0;
+          if (isset($location['lid']) && $location['lid']) {
+            $id = $location['lid'];
+          }
+          elseif (isset($location['nid']) && $location['nid']) {
+            $id = $location['nid'];
+            $location['key'] = 'nid';
+          }
+          elseif (isset($location['uid']) && $location['uid']) {
+            $id = $location['uid'];
+            $location['key'] = 'uid';
+          }
+          elseif (isset($location['tid']) && $location['tid']) {
+            $id = $location['tid'];
+            $location['key'] = 'tid';
+          }
+          elseif (isset($location['cid']) && $location['cid']) {
+            $id = $location['cid'];
+            $location['key'] = 'cid';
+          }
           $name = htmlspecialchars_decode(isset($location['name']) ? strip_tags($location['name']) : strip_tags($location['title']), ENT_QUOTES);
-          $latlons[] = array($location['latitude'], $location['longitude'], (isset($location['lid']) ? $location['lid'] : 0), $name, $location['marker'] , $location['key'], '', '');
+          $latlons[] = array($location['latitude'], $location['longitude'], $id, $name, $location['marker'] , $location['key'], '', '');
           $ct++;
         }
       }
