@@ -354,7 +354,7 @@ function getlocations_entity_type_map($type, $entity_id) {
           $marker = $location['marker'];
         }
         $name = '';
-        if ($location['name']) {
+        if (isset($location['name']) && $location['name']) {
           $name = htmlspecialchars_decode(strip_tags($location['name']), ENT_QUOTES);
         }
         elseif ($entity_title) {
@@ -440,7 +440,7 @@ function getlocations_usersmap() {
           if (isset($location['marker']) && ! empty($location['marker'])) {
             $marker = $location['marker'];
           }
-          $name = htmlspecialchars_decode($location['name'] ? strip_tags($location['name']) : strip_tags($row->name), ENT_QUOTES);
+          $name = htmlspecialchars_decode(isset($location['name']) ? strip_tags($location['name']) : strip_tags($row->name), ENT_QUOTES);
           $latlons[$ct] = array($location['latitude'], $location['longitude'], $location['lid'], $name, $marker, $location['key'], '', '');
           $ct++;
         }
