@@ -517,7 +517,7 @@ function getlocations_leaflet_field_formatter_view($entity_type, $entity, $field
 
               $iconlist[$marker] = getlocations_leaflet_get_marker($marker);
 
-              $latlons[$ct] = array($location['latitude'], $location['longitude'], $entity_key, $entity_id, $location['glid'], $title, $marker, $vector, $markeraction, '');
+              $latlons[$ct] = array($location['latitude'], $location['longitude'], $entity_key, $entity_id, $lid, $title, $marker, $vector, $markeraction, '');
 
               $ct++;
             } // end lat lon check
