@@ -1204,6 +1204,8 @@ function getlocations_leaflet_map_settings_do($map_settings, $defaults, $latlons
     $map_settings['map_opts']['maxZoom'] = $defaults['maxzoom_map'];
   }
 
+  $map_settings['map_settings']['show_maplinks'] = $defaults['show_maplinks'];
+
   $getlocations_leaflet_paths = getlocations_leaflet_paths_get();
   // shapes
   // polygons
@@ -1707,6 +1709,7 @@ function getlocations_leaflet_defaults() {
     'scaleControl'               => $getlocations_defaults['scale'],
     'jquery_colorpicker_enabled' => $getlocations_defaults['jquery_colorpicker_enabled'],
     'getdirections_link'         => $getlocations_defaults['getdirections_link'],
+    'show_maplinks'              => $getlocations_defaults['show_maplinks'],
   );
 
   $fieldables = getlocations_get_fieldable_entity_types();
@@ -2322,11 +2325,18 @@ function getlocations_leaflet_display_options_form($defaults, $admin = FALSE) {
       'link' => t('Link to content')
     )
   );
+
+  $form['show_maplinks'] = getlocations_element_map_checkbox(
+    t('Show map links'),
+    $defaults['show_maplinks'],
+    t('Show a list of links to show Popup or go to Link on the map.')
+  );
+
   if (module_exists('getdirections')) {
     $form['getdirections_link'] = getlocations_element_map_checkbox(
-      t('Link to Getdirections in bubble'),
+      t('Link to Getdirections in popup'),
       $defaults['getdirections_link'],
-      t('Include a link to the Getdirections page in InfoBubble/InfoWindow.')
+      t('Include a link to the Getdirections page in Popup.')
     );
   }
 
@@ -3646,6 +3656,7 @@ function theme_getlocations_leaflet_map($variables) {
   $latlons = $map_settings['latlons'];
   $icons = $map_settings['icons'];
   $minmaxes = $map_settings['map_settings']['minmaxes'];
+  $show_maplinks = $map_settings['map_settings']['show_maplinks'];
   unset($map_settings['datanum']);
   unset($map_settings['latlons']);
   unset($map_settings['icons']);
@@ -3677,6 +3688,11 @@ function theme_getlocations_leaflet_map($variables) {
   $output .= "\n" . '<script type="text/javascript">' . "\n" . '<!--//--><![CDATA[//><!--' . "\n";
   $output .= 'getlocations_leaflet_data["' . $mapid . '"] = ' . $localdata . ';' . "\n";
   $output .= '//--><!]]>' . "\n" . '</script>' . "\n";
+
+  // show maplinks if enabled
+  if ($show_maplinks) {
+    $output .= '<div class="getlocations_leaflet_map_links" id="getlocations_leaflet_map_links_' . $mapid . '" ><ul></ul></div>';
+  }
 
   return $output;
 

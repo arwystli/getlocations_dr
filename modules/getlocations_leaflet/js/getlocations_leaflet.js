@@ -79,6 +79,22 @@ var getlocations_leaflet_geocoder = [];
         });
       }
 
+      // show_maplinks
+      function getlocations_leaflet_show_maplinks(key, glid, m, a) {
+        $("div#getlocations_leaflet_map_links_" + key + " ul").append('<li><a href="#maptop_' + key + '" class="glid-' + glid + '">' + m.options.title + '</a></li>');
+        $("div#getlocations_leaflet_map_links_" + key + " a.glid-" + glid).click(function() {
+          $("div#getlocations_leaflet_map_links_" + key + " a").removeClass('active');
+          $("div#getlocations_leaflet_map_links_" + key + " a.glid-" + glid).addClass('active');
+          if (a.type == 'link') {
+            // relocate
+            window.location = a.data;
+          }
+          else if (a.type == 'popup') {
+            m.fire('click');
+          }
+        });
+      }
+
       // work over all class 'getlocations_leaflet_canvas'
       $(".getlocations_leaflet_canvas", context).once('getlocations-leaflet-processed', function(index, element) {
         var elemID = $(element).attr('id');
@@ -400,7 +416,6 @@ var getlocations_leaflet_geocoder = [];
               else {
                 Marker.options.clickable = false;
               }
-
               // add the marker to the group(s)
               if (map_settings.category_showhide_buttons && cat) {
                 for (var c in categories) {
@@ -411,6 +426,13 @@ var getlocations_leaflet_geocoder = [];
               }
               else {
                 Markers['loc'].addLayer(Marker);
+              }
+
+              // show_maplinks
+              if (markeraction && markeraction.type && markeraction.data) {
+                if (title && map_settings.show_maplinks) {
+                  getlocations_leaflet_show_maplinks(key, glid, Marker, markeraction);
+                }
               }
 
               // add marker to getlocations_leaflet_markers

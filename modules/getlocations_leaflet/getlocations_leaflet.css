@@ -22,3 +22,22 @@
 .leaflet-control-attribution a {
   color:  #000000;
 }
+
+.getlocations_map_wrapper_inner {
+}
+
+
+/* map links feature */
+.getlocations_leaflet_map_links {
+  border: 1px solid #CCCCCC;
+  width: 100%;
+  padding: 4px;
+  margin-bottom: 4px;
+  margin-top: 8px;
+  max-height: 150px;
+  overflow: auto;
+}
+.getlocations_leaflet_map_links ul {
+  list-style-type: none;
+  margin-left: 0px;
+}
