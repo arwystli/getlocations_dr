@@ -14,7 +14,7 @@
 <?php if (!empty($title)): ?>
   <h3><?php print $title; ?></h3>
 <?php endif; ?>
-
+<div class="getlocations_leaflet_map_wrapper">
 <?php print $map; ?>
-
+</div>
 <!-- /getlocations-leaflet-view-map.tpl -->
