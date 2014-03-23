@@ -89,14 +89,7 @@ function getlocations_search_menu() {
  */
 function getlocations_search($which = 'page') {
   $contents = '';
-  $contents .= '<div id="getlocations_search_' . $which . '">';
-  $getmap = getlocations_search_getmap($which);
-  $map = $getmap['map'];
-  $mapid = $getmap['mapid'];
-  $form = drupal_get_form('getlocations_search_form', $which, $mapid);
-  $contents .= drupal_render($form);
-  $contents .= $map;
-  $contents .= '</div>';
+  $contents .= theme('getlocations_search', array('which' => $which));
   return $contents;
 }
 
@@ -685,6 +678,11 @@ function getlocations_search_load_all_locations($search_type = 'all') {
  */
 function getlocations_search_theme() {
   return array(
+    'getlocations_search' => array(
+      'variables' => array(
+        'which' => NULL,
+      ),
+    ),
     'getlocations_search_form' => array(
       'render element' => 'form',
     ),
@@ -701,6 +699,29 @@ function getlocations_search_theme() {
       'template' => 'getlocations_search_box',
     ),
   );
+}
+
+/**
+ * Themes the search page.
+ *
+ * @param array $variables
+ *
+ * @return
+ *   Returns $content
+ *
+ */
+function theme_getlocations_search($variables) {
+  $which = $variables['which'];
+  $contents = '';
+  $contents .= '<div id="getlocations_search_' . $which . '">';
+  $getmap = getlocations_search_getmap($which);
+  $map = $getmap['map'];
+  $mapid = $getmap['mapid'];
+  $form = drupal_get_form('getlocations_search_form', $which, $mapid);
+  $contents .= drupal_render($form);
+  $contents .= $map;
+  $contents .= '</div>';
+  return $contents;
 }
 
 /**
