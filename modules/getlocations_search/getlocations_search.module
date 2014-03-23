@@ -89,12 +89,14 @@ function getlocations_search_menu() {
  */
 function getlocations_search($which = 'page') {
   $contents = '';
+  $contents .= '<div id="getlocations_search_' . $which . '">';
   $getmap = getlocations_search_getmap($which);
   $map = $getmap['map'];
   $mapid = $getmap['mapid'];
   $form = drupal_get_form('getlocations_search_form', $which, $mapid);
   $contents .= drupal_render($form);
   $contents .= $map;
+  $contents .= '</div>';
   return $contents;
 }
 
