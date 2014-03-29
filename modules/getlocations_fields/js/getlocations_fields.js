@@ -14,6 +14,7 @@
       var gsettings = Drupal.settings.getlocations;
       var nodezoom = '';
       var mark = [];
+      var movelistener = false;
       var map_marker = 'drupal';
       var adrsfield = 'getlocations_address_';
       var namefield = 'getlocations_name_';
@@ -399,6 +400,10 @@
           if (mark[mkey]) {
             mark[mkey].setMap();
           }
+          if (movelistener) {
+            google.maps.event.removeListener(movelistener);
+            movelistener = false;
+          }
           marker = Drupal.getlocations.getIcon(map_marker);
           mark[mkey] = new google.maps.Marker({
             icon: marker.image,
@@ -420,7 +425,7 @@
             $("#" + lonfield + mmkey).val(lng);
             streetviewSetupButtonDo(mkey);
           });
-          google.maps.event.addListener(mmap, "click", function (e) {
+          movelistener = google.maps.event.addListener(mmap, "click", function (e) {
             p = e.latLng;
             mmmap.panTo(p);
             mark[mmkey].setPosition(p);
