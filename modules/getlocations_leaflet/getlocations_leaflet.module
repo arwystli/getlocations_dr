@@ -1850,6 +1850,8 @@ function getlocations_leaflet_plugins() {
 
 function getlocations_leaflet_get_map_layers($map_settings) {
   $map_layers = $map_settings['map_layers'];
+  $add = array();
+  // cloudmade
   $cloudmade_info = variable_get('getlocations_leaflet_cloudmade', '');
   if (! empty($cloudmade_info)) {
     if (isset($cloudmade_info['cloudmade_key']) && ! empty($cloudmade_info['cloudmade_key'])) {
@@ -1875,11 +1877,27 @@ function getlocations_leaflet_get_map_layers($map_settings) {
             ),
           );
         }
-        if (count($add)) {
-          $map_layers += $add;
-        }
       }
     }
+  }
+  // mapbox
+  $mapbox_info = variable_get('getlocations_leaflet_mapbox', '');
+  if (! empty($mapbox_info) && isset($mapbox_info['mapbox_info']) && is_array($mapbox_info['mapbox_info'])) {
+    foreach ($mapbox_info['mapbox_info'] AS $k => $info) {
+      if (isset($info['key']) && $info['key'] && isset($info['label']) && $info['label']) {
+        $add['MapBox' . '.' . $info['label']] = array(
+          'label' => $info['label'],
+          'type' => 'base',
+          'options' => array(
+            'mapid' => $info['key']
+          ),
+        );
+      }
+    }
+  }
+
+  if (count($add)) {
+    $map_layers += $add;
   }
 
   $map_settings['map_layers'] = $map_layers;
@@ -2535,6 +2553,36 @@ function getlocations_leaflet_settings_form() {
 
   }
 
+  // mapbox
+  $getlocations_leaflet_mapbox = variable_get('getlocations_leaflet_mapbox', array('mapbox_info' => array()));
+  $form['getlocations_leaflet_mapbox'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('MapBox maps'),
+    // This will store all the defaults in one variable.
+    '#tree' => TRUE,
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+  $mapnum = count($getlocations_leaflet_mapbox['mapbox_info']);
+  if ($mapnum == 0) {
+    $mapnum = 2;
+  }
+  else {
+    $mapnum++;
+  }
+  for ($ct = 0; $ct < $mapnum; $ct++) {
+    $form['getlocations_leaflet_mapbox']['mapbox_info'][$ct]['label'] = getlocations_element_map_tf(
+      t('Name of map @n', array('@n' => $ct + 1)),
+      (isset($getlocations_leaflet_mapbox['mapbox_info'][$ct]['label']) ? $getlocations_leaflet_mapbox['mapbox_info'][$ct]['label'] : ''),
+      t('The name of the map, to be shown on selection lists')
+    );
+    $form['getlocations_leaflet_mapbox']['mapbox_info'][$ct]['key'] = getlocations_element_map_tf(
+      t('Key of map @n', array('@n' => $ct + 1)),
+      (isset($getlocations_leaflet_mapbox['mapbox_info'][$ct]['key']) ? $getlocations_leaflet_mapbox['mapbox_info'][$ct]['key'] : ''),
+      t('The identifier provided by <a target="_blank" href="@mapbox">MapBox</a>', array('@mapbox' => 'https://www.mapbox.com/'))
+    );
+  }
+
   $settings = getlocations_leaflet_defaults();
 
   $form['getlocations_leaflet_defaults'] = array(
@@ -2759,6 +2807,29 @@ function getlocations_leaflet_settings_validate($form, &$form_state) {
     }
     if (count($temp)) {
       $form_state['values']['getlocations_leaflet_cloudmade']['cloudmade_maps'] = $temp;
+    }
+  }
+
+  // dump empty mapbox
+  $mapnum = count($form_state['values']['getlocations_leaflet_mapbox']['mapbox_info']);
+  $emptyfound = FALSE;
+  for ($ct = 0; $ct < $mapnum; $ct++) {
+    if (empty($form_state['values']['getlocations_leaflet_mapbox']['mapbox_info'][$ct]['key']) || empty($form_state['values']['getlocations_leaflet_mapbox']['mapbox_info'][$ct]['label'])) {
+      unset($form_state['values']['getlocations_leaflet_mapbox']['mapbox_info'][$ct]);
+      $emptyfound = TRUE;
+    }
+  }
+  // reorder them in case some clown empties one before the last one
+  if ($emptyfound) {
+    $mapnum = count($form_state['values']['getlocations_leaflet_mapbox']['mapbox_info']);
+    $temp = array();
+    $ct = 0;
+    foreach ($form_state['values']['getlocations_leaflet_mapbox']['mapbox_info'] AS $k => $v) {
+      $temp[$ct] = $v;
+      $ct++;
+    }
+    if (count($temp)) {
+      $form_state['values']['getlocations_leaflet_mapbox']['mapbox_info'] = $temp;
     }
   }
 

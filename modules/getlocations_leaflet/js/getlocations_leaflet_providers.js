@@ -157,14 +157,10 @@
       }
     },
     MapBox: {
-      url: function (id) {
-        return 'http://{s}.tiles.mapbox.com/v3/' + id + '/{z}/{x}/{y}.png';
-      },
+      url: 'https://{s}.tiles.mapbox.com/v3/{mapid}/{z}/{x}/{y}.png',
       options: {
         attribution:
-          'Imagery from <a href="http://mapbox.com/about/maps/">MapBox</a> &mdash; ' +
-          'Map data {attribution.OpenStreetMap}',
-        subdomains: 'abcd'
+          '<a href="http://www.mapbox.com/about/maps/" target="_blank">Mapbox</a> &mdash; ' + 'Map data {attribution.OpenStreetMap}'
       }
     },
     Stamen: {
