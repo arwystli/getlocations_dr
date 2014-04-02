@@ -2574,14 +2574,23 @@ function getlocations_leaflet_settings_form() {
     $form['getlocations_leaflet_mapbox']['mapbox_info'][$ct]['label'] = getlocations_element_map_tf(
       t('Name of map @n', array('@n' => $ct + 1)),
       (isset($getlocations_leaflet_mapbox['mapbox_info'][$ct]['label']) ? $getlocations_leaflet_mapbox['mapbox_info'][$ct]['label'] : ''),
-      t('The name of the map, to be shown on selection lists')
+      t('The name of the map, to be shown on selection lists'),
+      40
     );
     $form['getlocations_leaflet_mapbox']['mapbox_info'][$ct]['key'] = getlocations_element_map_tf(
       t('Key of map @n', array('@n' => $ct + 1)),
       (isset($getlocations_leaflet_mapbox['mapbox_info'][$ct]['key']) ? $getlocations_leaflet_mapbox['mapbox_info'][$ct]['key'] : ''),
-      t('The identifier provided by <a target="_blank" href="@mapbox">MapBox</a>', array('@mapbox' => 'https://www.mapbox.com/'))
+      t('The identifier provided by <a target="_blank" href="@mapbox">MapBox</a>', array('@mapbox' => 'https://www.mapbox.com/')),
+      40
+    );
+    $form['getlocations_leaflet_mapbox']['mapbox_info'][$ct]['type'] = getlocations_element_dd(
+      t('Type of map @n', array('@n' => $ct + 1)),
+      (isset($getlocations_leaflet_mapbox['mapbox_info'][$ct]['type']) ? $getlocations_leaflet_mapbox['mapbox_info'][$ct]['type'] : 'base'),
+      array('base' => t('Base'), 'overlay' => t('Overlay'))
     );
   }
+  // for theme
+  $form['getlocations_leaflet_mapbox']['mapnum'] = array('#type' => 'value', '#value' => $mapnum);
 
   $settings = getlocations_leaflet_defaults();
 
@@ -3793,6 +3802,14 @@ function theme_getlocations_leaflet_settings_form($variables) {
   if (isset($form['getlocations_leaflet_defaults']['returnlink_comment_link'])) {
     $form['getlocations_leaflet_defaults']['returnlink_comment_link']['#prefix'] = '<div id="wrap-comment-link">';
     $form['getlocations_leaflet_defaults']['returnlink_comment_link']['#suffix'] = '</div>';
+  }
+
+  // mapbox
+  $mapnum = $form['getlocations_leaflet_mapbox']['mapnum']['#value'];
+  unset($form['getlocations_leaflet_mapbox']['mapnum']);
+  for ($ct = 0; $ct < $mapnum; $ct++) {
+    $form['getlocations_leaflet_mapbox']['mapbox_info'][$ct]['label']['#prefix'] = '<fieldset class="getlocations_fieldset form-wrapper"><legend><span class="fieldset-legend">' . t('MapBox map @n', array('@n' => $ct + 1)) . '</span></legend><div class="fieldset-wrapper">';
+    $form['getlocations_leaflet_mapbox']['mapbox_info'][$ct]['type']['#suffix'] = '</div></fieldset>';
   }
 
   $output .= drupal_render_children($form);
