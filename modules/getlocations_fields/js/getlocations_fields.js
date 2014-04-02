@@ -297,6 +297,7 @@
           cityfield_value = '';
           provincefield_value = '';
           countryfield_value = '';
+          countryfield_value_s = '';
           postal_codefield_value = '';
           postal_code_prefix_field_value = '';
           admin_area_level_1 = '';
@@ -333,6 +334,9 @@
             }
             else if (type == 'country') {
               countryfield_value = address_components[i].long_name;
+              if (address_components[i].short_name.length == 2) {
+                countryfield_value_s = address_components[i].short_name.toUpperCase();
+              }
             }
             else if (type == 'postal_code_prefix') {
               postal_code_prefix_field_value = address_components[i].long_name;
@@ -383,15 +387,21 @@
             $("#" + countryfield + k).val(countryfield_value);
           }
           else if ($("#" + countryfield + k).is("select")) {
-            $("#" + countryfield + k + " option").each( function(index) {
-              if (countryfield_value == $(this).text()) {
-                $("#" + countryfield + k).val($(this).val()).attr('selected', 'selected');
-              }
-              // fix 'The Netherlands' which is what google returns
-              if (countryfield_value == 'The Netherlands') {
-                $("#" + countryfield + k).val('NL').attr('selected', 'selected');
-              }
-            });
+            // give two letter code precedence
+            if (countryfield_value_s) {
+              $("#" + countryfield + k).val(countryfield_value_s).attr('selected', 'selected');
+            }
+            else {
+              $("#" + countryfield + k + " option").each( function(index) {
+                if (countryfield_value == $(this).text()) {
+                  $("#" + countryfield + k).val($(this).val()).attr('selected', 'selected');
+                }
+                // fix 'The Netherlands' which is what google returns
+                if (countryfield_value == 'The Netherlands') {
+                  $("#" + countryfield + k).val('NL').attr('selected', 'selected');
+                }
+              });
+            }
           }
         } // set_address_components
 
