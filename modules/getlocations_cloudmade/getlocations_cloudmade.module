@@ -120,3 +120,30 @@ function getlocations_cloudmade_settings_form() {
   return $form;
 }
 
+function getlocations_cloudmade_settings_validate($form_state) {
+
+  // we need to ensure that any empty cloudmade_maps are not saved
+  $mapnum = count($form_state['values']['getlocations_leaflet_cloudmade']['cloudmade_maps']);
+  $emptyfound = FALSE;
+  for ($ct = 0; $ct < $mapnum; $ct++) {
+    if (empty($form_state['values']['getlocations_leaflet_cloudmade']['cloudmade_maps'][$ct]['style_id'])) {
+      unset($form_state['values']['getlocations_leaflet_cloudmade']['cloudmade_maps'][$ct]);
+      $emptyfound = TRUE;
+    }
+  }
+  // reorder them in case some clown empties one before the last one
+  if ($emptyfound) {
+    $mapnum = count($form_state['values']['getlocations_leaflet_cloudmade']['cloudmade_maps']);
+    $temp = array();
+    $ct = 0;
+    foreach ($form_state['values']['getlocations_leaflet_cloudmade']['cloudmade_maps'] AS $k => $v) {
+      $temp[$ct] = $v;
+      $ct++;
+    }
+    if (count($temp)) {
+      $form_state['values']['getlocations_leaflet_cloudmade']['cloudmade_maps'] = $temp;
+    }
+  }
+
+  return $form_state;
+}
