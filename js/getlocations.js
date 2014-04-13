@@ -388,9 +388,7 @@ var getlocations_data = [];
           // make the map
           getlocations_map[key] = new google.maps.Map(document.getElementById("getlocations_map_canvas_" + key), mapOpts);
           // another way
-          //var map = new google.maps.Map($(element).get(0), mapOpts);
-          // Store a reference to the map object so other code can interact with it.
-          //getlocations_map[key] = map;
+          // getlocations_map[key] = new google.maps.Map($(element).get(0), mapOpts);
 
           // OpenStreetMap
           if (useOpenStreetMap) {
@@ -851,8 +849,7 @@ var getlocations_data = [];
     }
 
     // check for duplicates
-    var hash = lat + lon;
-    hash = hash.replace(".","").replace(",", "").replace("-","");
+    var hash = new String(lat + lon);
     if (getlocations_markers[mkey].coords[hash] == null) {
       getlocations_markers[mkey].coords[hash] = 1;
     }
