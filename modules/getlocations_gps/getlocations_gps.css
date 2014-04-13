@@ -1,0 +1,27 @@
+/*
+.leaflet-control-geocoder-throbber .leaflet-control-geocoder-icon {
+	background-image: url(images/throbber.gif);
+}
+*/
+
+.getlocations_gps_throbber {
+  margin-left: 4px;
+  background-image: url('images/throbber.gif');
+  background-position: 100% 2px;
+}
+
+
+.getlocations_gps_throbber_active {
+  background-position: 100% -18px;
+}
+.getlocations_gps_throbber_inactive {
+  background-position: 100% 2px;
+}
+
+/*
+.getlocations_gps_throbber_active {
+  background-image: url(throbber.gif);
+}
+  width: 34px;
+border: solid 1px red;
+*/

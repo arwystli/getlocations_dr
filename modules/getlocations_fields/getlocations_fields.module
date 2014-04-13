@@ -2518,6 +2518,13 @@ function getlocations_fields_defaults() {
     'highlight_fillopacity'     => $getlocations_defaults['highlight_fillopacity'],
     'highlight_radius'          => $getlocations_defaults['highlight_radius'],
     'getdirections_link'        => $getlocations_defaults['getdirections_link'],
+    'gps_button'                => 0,
+    'gps_button_label'          => $getlocations_defaults['gps_button_label'],
+    'gps_marker'                => $getlocations_defaults['gps_marker'],
+    'gps_marker_title'          => $getlocations_defaults['gps_marker_title'],
+    'gps_bubble'                => $getlocations_defaults['gps_bubble'],
+    'gps_geocode'               => $getlocations_defaults['gps_geocode'],
+    'gps_center'                => $getlocations_defaults['gps_center'],
   );
   foreach ($getlocations_defaults['kml_group'] AS $key => $layer) {
     $defaults['kml_group'][$key] = $layer;
@@ -2705,6 +2712,13 @@ function getlocations_fields_field_info_defaults() {
         'highlight_fillopacity'           => $getlocations_fields_defaults['highlight_fillopacity'],
         'highlight_radius'                => $getlocations_fields_defaults['highlight_radius'],
         'getdirections_link'              => $getlocations_fields_defaults['getdirections_link'],
+        'gps_button'                      => $getlocations_fields_defaults['gps_button'],
+        'gps_button_label'                => $getlocations_fields_defaults['gps_button_label'],
+        'gps_marker'                      => $getlocations_fields_defaults['gps_marker'],
+        'gps_marker_title'                => $getlocations_fields_defaults['gps_marker_title'],
+        'gps_bubble'                      => $getlocations_fields_defaults['gps_bubble'],
+        'gps_geocode'                     => $getlocations_fields_defaults['gps_geocode'],
+        'gps_center'                      => $getlocations_fields_defaults['gps_center'],
       ),
     ),
   );
@@ -2864,6 +2878,13 @@ function getlocations_fields_field_formatter_info_defaults() {
     'highlight_fillopacity'     => $getlocations_defaults['highlight_fillopacity'],
     'highlight_radius'          => $getlocations_defaults['highlight_radius'],
     'getdirections_link'        => $getlocations_defaults['getdirections_link'],
+    'gps_button'                => 0,
+    'gps_button_label'          => $getlocations_defaults['gps_button_label'],
+    'gps_marker'                => $getlocations_defaults['gps_marker'],
+    'gps_marker_title'          => $getlocations_defaults['gps_marker_title'],
+    'gps_bubble'                => $getlocations_defaults['gps_bubble'],
+    'gps_geocode'               => $getlocations_defaults['gps_geocode'],
+    'gps_center'                => $getlocations_defaults['gps_center'],
   );
 
   $fieldables = getlocations_get_fieldable_entity_types();

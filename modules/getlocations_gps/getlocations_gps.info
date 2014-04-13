@@ -1,0 +1,7 @@
+name = Getlocations Gps
+description = Provides a gps location on a map.
+core = 7.x
+package = "Location"
+php = 5
+dependencies[] = getlocations
+configure = admin/config/services/getlocations/gps

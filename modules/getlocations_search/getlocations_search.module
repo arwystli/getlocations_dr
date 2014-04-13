@@ -277,7 +277,7 @@ function getlocations_search_getmap($which = 'page') {
     'geojson_enable', 'geojson_data', 'geojson_options', 'nokeyboard', 'nodoubleclickzoom',
     'zoomcontrolposition', 'pancontrolposition', 'mapcontrolposition', 'scalecontrolposition', 'svcontrolposition',
     'highlight_enable', 'highlight_strokecolor', 'highlight_strokeopacity', 'highlight_strokeweight', 'highlight_fillcolor', 'highlight_fillopacity', 'highlight_radius',
-    'getdirections_link',
+    'getdirections_link', 'gps_button', 'gps_button_label', 'gps_marker', 'gps_marker_title', 'gps_bubble', 'gps_geocode', 'gps_center'
   );
 
   foreach ($keys AS $key) {
@@ -1086,6 +1086,13 @@ function getlocations_search_defaults() {
     'getdirections_link'        => $getlocations_defaults['getdirections_link'],
     'geocode_button_enable'     => 0,
     'reset_button_enable'       => 0,
+    'gps_button'                => 0,
+    'gps_button_label'          => $getlocations_defaults['gps_button_label'],
+    'gps_marker'                => $getlocations_defaults['gps_marker'],
+    'gps_marker_title'          => $getlocations_defaults['gps_marker_title'],
+    'gps_bubble'                => $getlocations_defaults['gps_bubble'],
+    'gps_geocode'               => $getlocations_defaults['gps_geocode'],
+    'gps_center'                => $getlocations_defaults['gps_center'],
   );
 
   $settings = variable_get('getlocations_search_defaults', $defaults);
