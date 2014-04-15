@@ -69,9 +69,9 @@ function getlocations_gps_menu() {
  * @return array $newdefaults
  *
  */
-function getlocations_gps_defaults($defaults = '') {
+function getlocations_gps_defaults($settings = '') {
 
-  $orig_getlocations_gps_defaults = array(
+  $getlocations_gps_defaults = array(
     'gps_button'       => 0, // checkbox
     'gps_button_label' => t('Show current position'), // tf
     'gps_marker'       => 'drupal',
@@ -81,36 +81,12 @@ function getlocations_gps_defaults($defaults = '') {
     'gps_center'       => 0, // checkbox
   );
 
-  if ($defaults) {
-
-    $getlocations_gps_defaults['gps_button'] = $defaults['gps_button'];
-    if ($defaults['gps_button_label']) {
-      $getlocations_gps_defaults['gps_button_label'] = $defaults['gps_button_label'];
-    }
-    if ($defaults['gps_marker']) {
-      $getlocations_gps_defaults['gps_marker'] = $defaults['gps_marker'];
-    }
-    if ($defaults['gps_marker_title']) {
-      $getlocations_gps_defaults['gps_marker_title'] = $defaults['gps_marker_title'];
-    }
-    if (isset($defaults['gps_bubble'])) {
-      $getlocations_gps_defaults['gps_bubble'] = $defaults['gps_bubble'];
-    }
-    if (isset($defaults['gps_geocode'])) {
-      $getlocations_gps_defaults['gps_geocode'] = $defaults['gps_geocode'];
-    }
-    if (isset($defaults['gps_center'])) {
-      $getlocations_gps_defaults['gps_center'] = $defaults['gps_center'];
-    }
+  if ($settings) {
+    $getlocations_gps_defaults = getlocations_adjust_vars($getlocations_gps_defaults, $settings);
   }
   else {
-    $getlocations_gps_defaults = $orig_getlocations_gps_defaults;
+    $getlocations_gps_defaults = variable_get('getlocations_gps_defaults', $getlocations_gps_defaults);
   }
-
-  $settings = variable_get('getlocations_gps_defaults', $orig_getlocations_gps_defaults);
-
-  #$getlocations_gps_defaults = getlocations_adjust_vars($getlocations_gps_defaults, $settings);
-  $getlocations_gps_defaults = getlocations_adjust_vars($settings, $getlocations_gps_defaults);
 
   return $getlocations_gps_defaults;
 }

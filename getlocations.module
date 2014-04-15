@@ -1202,6 +1202,13 @@ function getlocations_defaults($reset = FALSE) {
     'highlight_fillopacity'         => "0.35",
     'highlight_radius'              => 10,
     'getdirections_link'            => 0,
+    'gps_button'                    => 0,
+    'gps_button_label'              => '',
+    'gps_marker_title'              => '',
+    'gps_marker'                    => '',
+    'gps_bubble'                    => 0,
+    'gps_geocode'                   => 0,
+    'gps_center'                    => 0,
   );
 
   $fieldables = getlocations_get_fieldable_entity_types();
@@ -6190,8 +6197,8 @@ function theme_getlocations_show($variables) {
 
   // type class
   $class = '';
-  if ($type) {
-    $class = ' getlocations_' . $type;
+  if ($entity_type) {
+    $class = ' getlocations_' . $entity_type;
   }
 
   // wrap the map
