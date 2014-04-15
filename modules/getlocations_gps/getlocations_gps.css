@@ -1,16 +1,16 @@
-/*
-.leaflet-control-geocoder-throbber .leaflet-control-geocoder-icon {
-	background-image: url(images/throbber.gif);
-}
-*/
-
+/**
+ * @file getlocations_leaflet.css
+ * @author Bob Hutchinson http://drupal.org/user/52366
+ * @copyright GNU GPL
+ *
+ * getlocations_gps css.
+ *
+ */
 .getlocations_gps_throbber {
   margin-left: 4px;
   background-image: url('images/throbber.gif');
   background-position: 100% 2px;
 }
-
-
 .getlocations_gps_throbber_active {
   background-position: 100% -18px;
 }
@@ -18,10 +18,3 @@
   background-position: 100% 2px;
 }
 
-/*
-.getlocations_gps_throbber_active {
-  background-image: url(throbber.gif);
-}
-  width: 34px;
-border: solid 1px red;
-*/
