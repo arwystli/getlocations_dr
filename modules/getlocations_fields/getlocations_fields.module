@@ -1804,6 +1804,13 @@ function getlocations_fields_getmap_show($settings, $lls = '', $minmaxes = '') {
   $getlocations_defaults['highlight_fillopacity']     = $settings['highlight_fillopacity'];
   $getlocations_defaults['highlight_radius']          = $settings['highlight_radius'];
   $getlocations_defaults['getdirections_link']        = $settings['getdirections_link'];
+  $getlocations_defaults['gps_button']                = $settings['gps_button'];
+  $getlocations_defaults['gps_button_label']          = $settings['gps_button_label'];
+  $getlocations_defaults['gps_marker']                = $settings['gps_marker'];
+  $getlocations_defaults['gps_marker_title']          = $settings['gps_marker_title'];
+  $getlocations_defaults['gps_bubble']                = $settings['gps_bubble'];
+  $getlocations_defaults['gps_geocode']               = $settings['gps_geocode'];
+  $getlocations_defaults['gps_center']                = $settings['gps_center'];
 
   $fieldables = getlocations_get_fieldable_entity_types();
   foreach ($fieldables AS $entity_type) {
