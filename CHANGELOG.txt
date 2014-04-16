@@ -1,9 +1,86 @@
-commit 542fa1a
+commit b502a9a
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Apr 16 13:30:57 2014 +0100
+
+    added README to gps module
+
+modules/getlocations_gps/README.txt
+
+commit 185bad0
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Apr 16 13:30:02 2014 +0100
+
+    fixed fields map gps
+
+modules/getlocations_fields/getlocations_fields.module
+
+commit c2a22b2
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Tue Apr 15 10:18:05 2014 +0100
+
+    fixed defaults
+
+getlocations.module
+modules/getlocations_gps/getlocations_gps.module
+
+commit daea9f8
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Tue Apr 15 10:17:51 2014 +0100
+
+    cleaned up css
+
+modules/getlocations_gps/getlocations_gps.css
+
+commit 316545d
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Tue Apr 15 10:17:23 2014 +0100
+
+    added min js
+
+modules/getlocations_gps/js/getlocations_gps.min.js
+
+commit 12fed68
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sun Apr 13 18:30:14 2014 +0100
+
+    added getlocations_gps
+
+getlocations.module
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_gps/getlocations_gps.css
+modules/getlocations_gps/getlocations_gps.info
+modules/getlocations_gps/getlocations_gps.install
+modules/getlocations_gps/getlocations_gps.module
+modules/getlocations_gps/images/throbber.gif
+modules/getlocations_gps/js/getlocations_gps.js
+modules/getlocations_map/getlocations_map.module
+modules/getlocations_search/getlocations_search.module
+views/getlocations_plugin_style_map.inc
+
+commit 7b414df
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sun Apr 13 17:48:52 2014 +0100
+
+    reorganised display_options form
+
+getlocations.module
+
+commit 4c382e0
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sun Apr 13 17:47:42 2014 +0100
+
+    better hash var
+
+js/getlocations.js
+js/getlocations.min.js
+
+commit 74ccbeb
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Thu Apr 3 03:31:03 2014 +0100
 
     moved mapbox into own module
 
+CHANGELOG.txt
 modules/getlocations_cloudmade/getlocations_cloudmade.module
 modules/getlocations_leaflet/getlocations_leaflet.module
 modules/getlocations_mapbox/getlocations_mapbox.info
