@@ -322,7 +322,7 @@ var getlocations_leaflet_geocoder = [];
               var marker_type = vector.type;
 
               // check for duplicates
-              var hash = lat + lon;
+              var hash = new String(lat + lon);
               if (getlocations_leaflet_markers[key].coords[hash] == null) {
                 getlocations_leaflet_markers[key].coords[hash] = 1;
               }
