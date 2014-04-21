@@ -255,6 +255,21 @@ function getlocations_leaflet_library() {
     );
   }
 
+  if ($getlocations_leaflet_plugins['usermarker_enable']) {
+    $jsarr += array(
+      GETLOCATIONS_LEAFLET_PATH . '/plugins/usermarker/leaflet.usermarker.min.js' => array(
+        'type' => 'file',
+        'preprocess' => $aggr
+      ),
+    );
+    $cssarr += array(
+      GETLOCATIONS_LEAFLET_PATH . '/plugins/usermarker/leaflet.usermarker.min.css' => array(
+        'type' => 'file',
+        'media' => 'all',
+      ),
+    );
+  }
+
   $jsarr += array(
     $getlocations_leaflet_paths['getlocations_leaflet_providers_path'] => array(
       'type' => 'file',
@@ -715,6 +730,9 @@ function getlocations_leaflet_field_formatter_settings_summary($field, $instance
           $summary[] = t('Polylines clickable: Yes');
         }
       }
+      if ($settings['usermarker_enable']) {
+        $summary[] = t('GPS button: Yes');
+      }
 
       break;
 
@@ -1097,6 +1115,23 @@ function getlocations_leaflet_map_settings_do($map_settings, $defaults, $latlons
   }
   else {
     $map_settings['map_settings']['geocoder'] = FALSE;
+  }
+  // usermarker
+  if ($getlocations_leaflet_plugins['usermarker_enable']) {
+    $map_settings['map_settings']['usermarker'] = ($defaults['usermarker'] ? TRUE : FALSE);
+    $map_settings['map_settings']['usermarker_pulsing'] = ($defaults['usermarker_pulsing'] ? TRUE : FALSE);
+    $map_settings['map_settings']['usermarker_smallicon'] = ($defaults['usermarker_smallicon'] ? TRUE : FALSE);
+    $map_settings['map_settings']['usermarker_accuracy'] = ($defaults['usermarker_accuracy'] ? TRUE : FALSE);
+    $map_settings['map_settings']['usermarker_circle_stroke'] = ($defaults['usermarker_circle_stroke'] ? TRUE : FALSE);
+    $map_settings['map_settings']['usermarker_circle_strokecolor'] = $defaults['usermarker_circle_strokecolor'];
+    $map_settings['map_settings']['usermarker_circle_strokeopacity'] = $defaults['usermarker_circle_strokeopacity'];
+    $map_settings['map_settings']['usermarker_circle_strokeweight'] = $defaults['usermarker_circle_strokeweight'];
+    $map_settings['map_settings']['usermarker_circle_fillcolor'] = $defaults['usermarker_circle_fillcolor'];
+    $map_settings['map_settings']['usermarker_circle_fillopacity'] = $defaults['usermarker_circle_fillopacity'];
+    $map_settings['map_settings']['usermarker_button_label'] = $defaults['usermarker_button_label'];
+  }
+  else {
+    $map_settings['map_settings']['usermarker'] = FALSE;
   }
 
   if ($getlocations_leaflet_plugins['markercluster_enable']) {
@@ -1822,6 +1857,19 @@ function getlocations_leaflet_defaults() {
   $newdefaults['fullscreen_disable'] = 0;
   $newdefaults['styles'] = '';
 
+  // usermarker
+  $newdefaults['usermarker']           = 0;
+  $newdefaults['usermarker_pulsing']   = 0;
+  $newdefaults['usermarker_smallicon'] = 0;
+  $newdefaults['usermarker_accuracy']  = 0;
+  $newdefaults['usermarker_circle_stroke']        = 1;
+  $newdefaults['usermarker_circle_strokecolor']   = $getlocations_defaults['circles_strokecolor'];
+  $newdefaults['usermarker_circle_strokeopacity'] = $getlocations_defaults['circles_strokeopacity'];
+  $newdefaults['usermarker_circle_strokeweight']  = $getlocations_defaults['circles_strokeweight'];
+  $newdefaults['usermarker_circle_fillcolor']     = $getlocations_defaults['circles_fillcolor'];
+  $newdefaults['usermarker_circle_fillopacity']   = $getlocations_defaults['circles_fillopacity'];
+  $newdefaults['usermarker_button_label']         = t('Show current position');
+
   $settings = variable_get('getlocations_leaflet_defaults', '');
 
   $newdefaults['baselayers'] = (isset($settings['baselayers']) && ! empty($settings['baselayers']) ? $settings['baselayers'] : array('OpenStreetMap.Mapnik'));
@@ -1842,6 +1890,7 @@ function getlocations_leaflet_plugins() {
     'mouseposition_enable' => 0,
     'minimap_enable'       => 0,
     'geocoder_enable'      => 0,
+    'usermarker_enable'    => 0,
   );
   $settings = variable_get('getlocations_leaflet_plugins', $defaults);
   $return = getlocations_adjust_vars($defaults, $settings);
@@ -1987,6 +2036,115 @@ function getlocations_leaflet_display_options_form($defaults, $admin = FALSE) {
   }
   else {
     $form['geocoder'] = array('#type' => 'value', '#value' => 0);
+  }
+
+  // usermarker
+  if ($getlocations_leaflet_plugins['usermarker_enable']) {
+    $form['usermarker'] = getlocations_element_map_checkbox(
+      t('Usermarker'),
+      $defaults['usermarker'],
+      t('Show user position.')
+    );
+    $form['usermarker']['#suffix'] = '<div id="wrap-getlocations-usermarker">';
+
+    $form['usermarker_button_label'] = getlocations_element_map_tf(
+      t('GPS button label'),
+      $defaults['usermarker_button_label'],
+      '',
+      30,
+      30,
+      TRUE
+    );
+
+    $form['usermarker_pulsing'] = getlocations_element_map_checkbox(
+      t('Usermarker pulsing'),
+      $defaults['usermarker_pulsing']
+    );
+    $form['usermarker_smallicon'] = getlocations_element_map_checkbox(
+      t('Usermarker Small Icon'),
+      $defaults['usermarker_smallicon']
+    );
+    $form['usermarker_accuracy'] = getlocations_element_map_checkbox(
+      t('Usermarker accuracy'),
+      $defaults['usermarker_accuracy'],
+      t('Show Geolocation accuracy as a circle')
+    );
+    $form['usermarker_circle_stroke'] = getlocations_element_map_checkbox(
+      t('Accuracy circle stroke'),
+      $defaults['usermarker_circle_stroke'],
+      t('Show Geolocation accuracy circle with a border.')
+    );
+
+    // jquery_colorpicker
+    if (module_exists('jquery_colorpicker') && $defaults['jquery_colorpicker_enabled']) {
+      $form['usermarker_circle_strokecolor'] = array(
+        '#type' => 'jquery_colorpicker',
+        '#title' => t('Accuracy Circle line color'),
+        '#default_value' => preg_replace("/^#/", '', $defaults['usermarker_circle_strokecolor']),
+        '#description' => t('Click on the Colorpicker icon to select a color'),
+      );
+    }
+    else {
+      $form['usermarker_circle_strokecolor'] = getlocations_element_map_tf(
+        t('Accuracy Circle line color'),
+        $defaults['usermarker_circle_strokecolor'],
+        t('HTML hex, eg #FF0000.'),
+        10,
+        10,
+        TRUE
+      );
+    }
+
+    $form['usermarker_circle_strokeopacity'] = getlocations_element_map_tf(
+      t('Accuracy Circle line opacity'),
+      $defaults['usermarker_circle_strokeopacity'],
+      t('Must be between 0 and 1.'),
+      10,
+      10,
+      TRUE
+    );
+    $form['usermarker_circle_strokeweight'] = getlocations_element_map_tf(
+      t('Accuracy Circle line thickness'),
+      $defaults['usermarker_circle_strokeweight'],
+      t('Must be an integer.'),
+      10,
+      10,
+      TRUE
+    );
+
+    // jquery_colorpicker
+    if (module_exists('jquery_colorpicker') && $defaults['jquery_colorpicker_enabled']) {
+      $form['usermarker_circle_fillcolor'] = array(
+        '#type' => 'jquery_colorpicker',
+        '#title' => t('Accuracy Circle fill color'),
+        '#default_value' => preg_replace("/^#/", '', $defaults['usermarker_circle_fillcolor']),
+        '#description' => t('Click on the Colorpicker icon to select a color'),
+      );
+    }
+    else {
+      $form['usermarker_circle_fillcolor'] = getlocations_element_map_tf(
+        t('Accuracy Circle fill color'),
+        $defaults['usermarker_circle_fillcolor'],
+        t('HTML hex, eg #FF0000.'),
+        10,
+        10,
+        TRUE
+      );
+    }
+
+    $form['usermarker_circle_fillopacity'] = getlocations_element_map_tf(
+      t('Accuracy Circle fill opacity'),
+      $defaults['usermarker_circle_fillopacity'],
+      t('Must be between 0 and 1.'),
+      10,
+      10,
+      TRUE
+    );
+    $form['usermarker_circle_fillopacity']['#suffix'] = '</div>';
+
+  }
+  else {
+    $form['usermarker'] = array('#type' => 'value', '#value' => 0);
   }
 
   $form['layerControl'] = getlocations_element_map_checkbox(
@@ -2443,6 +2601,10 @@ function getlocations_leaflet_settings_form() {
   $form['getlocations_leaflet_plugins']['geocoder_enable'] = getlocations_element_map_checkbox(
     t('Enable Geocoder plugin'),
     $getlocations_leaflet_plugins['geocoder_enable']
+  );
+  $form['getlocations_leaflet_plugins']['usermarker_enable'] = getlocations_element_map_checkbox(
+    t('Enable Usermarker plugin'),
+    $getlocations_leaflet_plugins['usermarker_enable']
   );
 
   // mapbox
@@ -3599,6 +3761,20 @@ function theme_getlocations_leaflet_map($variables) {
   // show maplinks if enabled
   if ($show_maplinks) {
     $output .= '<div class="getlocations_leaflet_map_links" id="getlocations_leaflet_map_links_' . $mapid . '" ><ul></ul></div>';
+  }
+
+  // buttons
+  $buttons = array();
+
+  // usermarker
+  if (getlocations_is_mobile() && $map_settings['map_settings']['usermarker']) {
+    $buttons[] = '<input type="button" value="' . $map_settings['map_settings']['usermarker_button_label'] . '" id="getlocations_leaflet_gps_show_' . $mapid . '" class="form-submit"  /><div class="getlocations_leaflet_gps_throbber getlocations_leaflet_gps_throbber_inactive" id="getlocations_leaflet_gps_throbber_' . $mapid . '">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
+  }
+
+  if (count($buttons)) {
+    $output .= '<div class="getlocations_leaflet_map_buttons container-inline">';
+    $output .= implode('&nbsp;', $buttons);
+    $output .= '</div>';
   }
 
   return $output;

@@ -27,8 +27,6 @@
 }
 .getlocations_leaflet_map_wrapper_inner {
 }
-
-
 .getlocations_leaflet_canvas {
 }
 .getlocations_leaflet_canvas img {
@@ -48,4 +46,6 @@
 .getlocations_leaflet_map_links ul {
   list-style-type: none;
   margin-left: 0px;
+}
+.getlocations_leaflet_map_buttons {
 }

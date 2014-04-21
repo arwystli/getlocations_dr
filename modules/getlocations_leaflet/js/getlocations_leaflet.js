@@ -95,6 +95,13 @@ var getlocations_leaflet_geocoder = [];
         });
       }
 
+      function getlocations_leaflet_deactive_throbber(k) {
+        $("#getlocations_leaflet_gps_throbber_" + k).removeClass('getlocations_leaflet_gps_throbber_active');
+        $("#getlocations_leaflet_gps_throbber_" + k).addClass('getlocations_leaflet_gps_throbber_inactive');
+      }
+
+      // end functions
+
       // work over all class 'getlocations_leaflet_canvas'
       $(".getlocations_leaflet_canvas", context).once('getlocations-leaflet-processed', function(index, element) {
         var elemID = $(element).attr('id');
@@ -486,6 +493,55 @@ var getlocations_leaflet_geocoder = [];
                 bounds = L.latLngBounds(sw, ne).pad(0.1);
                 getlocations_leaflet_map[key].fitBounds(bounds, {reset: true});
             }
+          }
+
+          // Usermarker
+          if (map_settings.usermarker) {
+            var usermarker = null;
+            $("#getlocations_leaflet_gps_show_" + key).click( function() {
+              $("#getlocations_leaflet_gps_throbber_" + key).removeClass('getlocations_leaflet_gps_throbber_inactive');
+              $("#getlocations_leaflet_gps_throbber_" + key).addClass('getlocations_leaflet_gps_throbber_active');
+              if (usermarker) {
+                getlocations_leaflet_map[key].removeLayer(usermarker);
+                usermarker = null;
+              }
+              getlocations_leaflet_map[key].on("locationfound", function(location) {
+                if (! usermarker) {
+                  usermarker_opts = {
+                    pulsing: map_settings.usermarker_pulsing,
+                    smallIcon: map_settings.usermarker_smallicon,
+                    circleOpts: {
+                      stroke: map_settings.usermarker_circle_stroke,
+                      color: map_settings.usermarker_circle_strokecolor,
+                      weight: map_settings.usermarker_circle_strokeweight,
+                      opacity: map_settings.usermarker_circle_strokeopacity,
+                      fillOpacity: map_settings.usermarker_circle_fillopacity,
+                      fillColor: map_settings.usermarker_circle_fillcolor,
+                      clickable: false
+                    }
+                  };
+                  usermarker = L.userMarker(location.latlng, usermarker_opts).addTo(getlocations_leaflet_map[key]);
+                  usermarker.setLatLng(location.latlng);
+                  if (map_settings.usermarker_accuracy) {
+                    usermarker.setAccuracy(location.accuracy);
+                  }
+                }
+                getlocations_leaflet_deactive_throbber(key);
+              });
+              getlocations_leaflet_map[key].on("locationerror", function(error) {
+                getlocations_leaflet_deactive_throbber(key);
+                alert('Error: location failed. ' + error.message);
+              });
+
+              getlocations_leaflet_map[key].locate({
+                watch: false,
+                locate: true,
+                setView: true,
+                enableHighAccuracy: true
+              });
+
+            });
+
           }
 
         } // end is there really a map?
