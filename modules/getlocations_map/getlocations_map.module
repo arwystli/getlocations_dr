@@ -39,7 +39,9 @@ function getlocations_map_field_info() {
       'description' => t('Provide Getlocations Map.'),
       'default_formatter' => 'getlocations_map_default',
       'default_widget' => 'getlocations_map',
-      'settings' => array(),
+      'settings' => array(
+        'input_text' => 0,
+      ),
     )
   );
   return $info;
@@ -620,6 +622,7 @@ function getlocations_map_field_widget_form(&$form, &$form_state, $field, $insta
       }
 
       $cardinality = $field['cardinality'];
+      $settings = $field['settings'];
       // Wrap in a fieldset for single fields
       if ($cardinality == 1) {
         $element['#type'] = 'fieldset';
@@ -630,19 +633,30 @@ function getlocations_map_field_widget_form(&$form, &$form_state, $field, $insta
       if (! empty($fieldnames)) {
         $element['#delta'] = $delta;
         $dval = (isset($items[$delta]['locative_field_name']) ? $items[$delta]['locative_field_name'] : (isset($instance['default_value'][$delta]['locative_field_name']) ? $instance['default_value'][$delta]['locative_field_name'] : ''));
-        // items only see which field, no choice
-        if ($active && $dval) {
-          $element['locative_field_name'] = array('#type' => 'value', '#value' => $dval);
-          $element['locative_field_name_markup'] = array('#markup' => '<p>' . t('Locative data taken from !f', array('!f' => $fieldnames[$dval])) . '</p>');
-         }
-        else {
+        if ($active && module_exists('views_bulk_operations') && isset($settings['input_text']) && $settings['input_text']) {
           $element['locative_field_name'] = array(
-            '#type' => 'select',
+            '#type' => 'textfield',
             '#title' => t('Location Field'),
-            '#options' => $fieldnames,
             '#description' => t('Field to take locative data from'),
             '#default_value' => $dval,
+            '#size' => 30,
           );
+        }
+        else {
+          // items only see which field, no choice
+          if ($active && $dval) {
+            $element['locative_field_name'] = array('#type' => 'value', '#value' => $dval);
+            $element['locative_field_name_markup'] = array('#markup' => '<p>' . t('Locative data taken from !f', array('!f' => $fieldnames[$dval])) . '</p>');
+          }
+          else {
+            $element['locative_field_name'] = array(
+              '#type' => 'select',
+              '#title' => t('Location Field'),
+              '#options' => $fieldnames,
+              '#description' => t('Field to take locative data from'),
+              '#default_value' => $dval,
+            );
+          }
         }
       }
       else {
@@ -827,6 +841,58 @@ function getlocations_map_link_formatter_defaults() {
       'page' => t('Page title'),
     ),
   );
+}
+
+/**
+ * Implements hook_field_settings_form().
+ * Add settings to a field settings form.
+ *
+ * Invoked from field_ui_field_settings_form() to allow the module defining the
+ * field to add global settings (i.e. settings that do not depend on the bundle
+ * or instance) to the field settings form. If the field already has data, only
+ * include settings that are safe to change.
+ *
+ * @todo: Only the field type module knows which settings will affect the
+ * field's schema, but only the field storage module knows what schema
+ * changes are permitted once a field already has data. Probably we need an
+ * easy way for a field type module to ask whether an update to a new schema
+ * will be allowed without having to build up a fake $prior_field structure
+ * for hook_field_update_forbid().
+ *
+ * @param $field
+ *   The field structure being configured.
+ * @param $instance
+ *   The instance structure being configured.
+ * @param $has_data
+ *   TRUE if the field already has data, FALSE if not.
+ *
+ * @return
+ *   The form definition for the field settings.
+ */
+function getlocations_map_field_settings_form($field, $instance, $has_data) {
+  $settings = $field['settings'];
+  if (empty($settings)) {
+    $settings = getlocations_map_field_info();
+  }
+
+  $form = array();
+
+  // input_text
+  if (module_exists('views_bulk_operations')) {
+    $form['input_text'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Use a textfield'),
+      '#description' => t('Select this setting if you intend to use VBO to update data.'),
+      '#default_value' => (isset($settings['input_text']) ? $settings['input_text'] : 0),
+      '#return_value' => 1,
+    );
+  }
+  else {
+    $form['input_text'] = array('#type' => 'value', '#value' => 0);
+  }
+
+  return $form;
+
 }
 
 /**
