@@ -196,7 +196,7 @@ function getlocations_settings_form() {
     t('Use Cluster manager. Switching this off will use no manager.')
   );
 
-  if (file_exists(GETLOCATIONS_PATH . '/getlocations.markerclusterer_override.inc')) {
+  if (file_exists(GETLOCATIONS_PATH . '/getlocations.markercluster_override.inc')) {
     module_load_include('inc', 'getlocations', 'getlocations.markercluster_override');
   }
   else {

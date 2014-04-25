@@ -1,9 +1,53 @@
-commit b502a9a
+commit b6385bb
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Fri Apr 25 18:23:24 2014 +0100
+
+    fixed markercluster path bug
+
+getlocations.admin.inc
+modules/getlocations_search/getlocations_search.admin.inc
+
+commit fde2e34
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Fri Apr 25 18:22:54 2014 +0100
+
+    added vbo awareness
+
+modules/getlocations_map/getlocations_map.module
+
+commit c33933d
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Mon Apr 21 17:00:40 2014 +0100
+
+    added usermarker plugin to leaflet
+
+modules/getlocations_leaflet/getlocations_leaflet.css
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/js/getlocations_leaflet.js
+modules/getlocations_leaflet/js/getlocations_leaflet.min.js
+modules/getlocations_leaflet/plugins/usermarker/img/bluedot.png
+modules/getlocations_leaflet/plugins/usermarker/img/throbber.gif
+modules/getlocations_leaflet/plugins/usermarker/leaflet.usermarker.css
+modules/getlocations_leaflet/plugins/usermarker/leaflet.usermarker.js
+modules/getlocations_leaflet/plugins/usermarker/leaflet.usermarker.min.css
+modules/getlocations_leaflet/plugins/usermarker/leaflet.usermarker.min.js
+
+commit 3fbef9b
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Mon Apr 21 14:09:32 2014 +0100
+
+    fixed hash variable
+
+modules/getlocations_leaflet/js/getlocations_leaflet.js
+modules/getlocations_leaflet/js/getlocations_leaflet.min.js
+
+commit 69f12cd
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Wed Apr 16 13:30:57 2014 +0100
 
     added README to gps module
 
+CHANGELOG.txt
 modules/getlocations_gps/README.txt
 
 commit 185bad0
