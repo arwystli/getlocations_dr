@@ -354,6 +354,21 @@
         }
       });
 
+      if ($("input[id$=usermarker]").attr('checked')) {
+       $("#wrap-getlocations-usermarker").show();
+      }
+      else {
+        $("#wrap-getlocations-usermarker").hide();
+      }
+      $("input[id$=usermarker]").change(function() {
+        if ($(this).attr('checked')) {
+          $("#wrap-getlocations-usermarker").show();
+        }
+        else {
+          $("#wrap-getlocations-usermarker").hide();
+        }
+      });
+
     }
   };
 }(jQuery));
