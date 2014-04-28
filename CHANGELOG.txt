@@ -1,9 +1,27 @@
-commit b6385bb
+commit bb8e456
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Mon Apr 28 23:00:02 2014 +0100
+
+    vbo support
+
+modules/getlocations_leaflet/getlocations_leaflet.module
+
+commit adbe44f
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Mon Apr 28 22:59:32 2014 +0100
+
+    formatting for usermarker
+
+modules/getlocations_leaflet/js/getlocations_leaflet_formatter.js
+modules/getlocations_leaflet/js/getlocations_leaflet_formatter.min.js
+
+commit 233fcaa
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Fri Apr 25 18:23:24 2014 +0100
 
     fixed markercluster path bug
 
+CHANGELOG.txt
 getlocations.admin.inc
 modules/getlocations_search/getlocations_search.admin.inc
 
