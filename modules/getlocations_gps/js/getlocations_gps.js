@@ -150,7 +150,7 @@
                   }
                 },
                 function(error) {
-                  msg = Drupal.t("Sorry, I couldn't find your location using the browser") + ' ' + Drupal.getlocations.geolocationErrorMessages(error.code) + ".";
+                  msg = Drupal.t("Sorry, I couldn't find your location using the browser") + ' ' + Drupal.getlocations.geolocationErrorMessages(error) + ".";
                   alert(msg);
                 },
                 {

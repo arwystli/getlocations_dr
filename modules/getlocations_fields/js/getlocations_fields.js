@@ -594,7 +594,7 @@
               //$(statusdiv).html(statusmsg);
             },
             function(error) {
-              statusmsg = Drupal.t("Sorry, I couldn't find your location using the browser") + ' ' + Drupal.getlocations.geolocationErrorMessages(error.code) + ".";
+              statusmsg = Drupal.t("Sorry, I couldn't find your location using the browser") + ' ' + Drupal.getlocations.geolocationErrorMessages(error) + ".";
               $(statusdiv).html(statusmsg);
             }, {maximumAge:10000}
           );

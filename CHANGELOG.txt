@@ -1,9 +1,24 @@
-commit bb8e456
+commit e97dd7d
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sun May 11 23:23:43 2014 +0100
+
+    better geolocation availability
+
+getlocations.module
+js/getlocations.js
+js/getlocations.min.js
+modules/getlocations_fields/js/getlocations_fields.js
+modules/getlocations_fields/js/getlocations_fields.min.js
+modules/getlocations_gps/js/getlocations_gps.js
+modules/getlocations_gps/js/getlocations_gps.min.js
+
+commit 6656014
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Mon Apr 28 23:00:02 2014 +0100
 
     vbo support
 
+CHANGELOG.txt
 modules/getlocations_leaflet/getlocations_leaflet.module
 
 commit adbe44f

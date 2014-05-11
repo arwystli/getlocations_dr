@@ -1189,13 +1189,23 @@ var getlocations_data = [];
     return errstr;
   };
 
-  Drupal.getlocations.geolocationErrorMessages = function(errcode) {
-    var codes = [
-      Drupal.t("due to an unknown error"),
-      Drupal.t("because you didn't give me permission"),
-      Drupal.t("because your browser couldn't determine your location"),
-      Drupal.t("because it was taking too long to determine your location")];
-    return codes[errcode];
+  Drupal.getlocations.geolocationErrorMessages = function(error) {
+    var ret = '';
+    switch(error.code) {
+      case error.PERMISSION_DENIED:
+        ret = Drupal.t("because you didn't give me permission");
+        break;
+      case error.POSITION_UNAVAILABLE:
+        ret = Drupal.t("because your browser couldn't determine your location");
+        break;
+      case error.TIMEOUT:
+        ret = Drupal.t("because it was taking too long to determine your location");
+        break;
+      case error.UNKNOWN_ERROR:
+        ret = Drupal.t("due to an unknown error");
+        break;
+    }
+    return ret;
   };
 
 }(jQuery));

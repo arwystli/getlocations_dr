@@ -1209,6 +1209,7 @@ function getlocations_defaults($reset = FALSE) {
     'gps_bubble'                    => 0,
     'gps_geocode'                   => 0,
     'gps_center'                    => 0,
+    'geolocation_mobile_check'      => 1,
   );
 
   $fieldables = getlocations_get_fieldable_entity_types();
@@ -3486,6 +3487,14 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
     // getlocations_gps
     if (module_exists('getlocations_gps')) {
       $form += getlocations_gps_map_display_options_form($defaults);
+
+      $form['geolocation_mobile_check'] = array(
+        '#type' => 'checkbox',
+        '#title' => t('Enable check for mobiles'),
+        '#default_value' => $defaults['geolocation_mobile_check'],
+        '#return_value' => 1,
+        '#description' => t('Enable geolocation for mobile devices only.'),
+      );
     }
 
     $form['sv_show'] = getlocations_element_map_checkbox(
@@ -6277,7 +6286,8 @@ function theme_getlocations_show($variables) {
   }
 
   // getlocations_gps
-  if (getlocations_is_mobile() && module_exists('getlocations_gps') && isset($defaults['gps_button']) && $defaults['gps_button']) {
+  $geolocation_mobile_check = ($defaults['geolocation_mobile_check'] ? FALSE : TRUE);
+  if (getlocations_is_mobile($geolocation_mobile_check) && module_exists('getlocations_gps') && isset($defaults['gps_button']) && $defaults['gps_button']) {
     $buttons[] = '<input type="button" value="' . $defaults['gps_button_label'] . '" id="getlocations_gps_show_' . $mapid . '" class="form-submit"  /><div class="getlocations_gps_throbber getlocations_gps_throbber_inactive" id="getlocations_gps_throbber_' . $mapid . '">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
   }
 
