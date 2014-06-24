@@ -1483,26 +1483,40 @@ function getlocations_fields_field_widget_form(&$form, &$form_state, $field, $in
       }
 
       // hidden fields, these are filled in by jQuery
+      if (isset($items[$delta]['glid']) && $items[$delta]['glid'] > 0 ) {
+        $d_mapzoom = (isset($items[$delta]['mapzoom']) ? $items[$delta]['mapzoom'] : (isset($instance['default_value'][$delta]['mapzoom']) ? $instance['default_value'][$delta]['mapzoom'] : $settings['zoom']));
+        $d_map_maptype = (isset($items[$delta]['map_maptype']) ? $items[$delta]['map_maptype'] : (isset($instance['default_value'][$delta]['map_maptype']) ? $instance['default_value'][$delta]['map_maptype'] : $settings['maptype']));
+        $d_sv_heading = (isset($items[$delta]['sv_heading']) ? $items[$delta]['sv_heading'] : (isset($instance['default_value'][$delta]['sv_heading']) ? $instance['default_value'][$delta]['sv_heading'] : $settings['sv_heading']));
+        $d_sv_zoom = (isset($items[$delta]['sv_zoom']) ? $items[$delta]['sv_zoom'] : (isset($instance['default_value'][$delta]['sv_zoom']) ? $instance['default_value'][$delta]['sv_zoom'] : $settings['sv_zoom']));
+        $d_sv_pitch = (isset($items[$delta]['sv_pitch']) ? $items[$delta]['sv_pitch'] : (isset($instance['default_value'][$delta]['sv_pitch']) ? $instance['default_value'][$delta]['sv_pitch'] : $settings['sv_pitch']));
+      }
+      else {
+        $d_mapzoom = $settings['zoom'];
+        $d_map_maptype = $settings['maptype'];
+        $d_sv_heading = $settings['sv_heading'];
+        $d_sv_zoom = $settings['sv_zoom'];
+        $d_sv_pitch = $settings['sv_pitch'];
+      }
       $element['mapzoom'] = array(
         '#type' => 'textfield',
-        '#default_value' => (isset($items[$delta]['mapzoom']) ? $items[$delta]['mapzoom'] : (isset($instance['default_value'][$delta]['mapzoom']) ? $instance['default_value'][$delta]['mapzoom'] : '')),
+        '#default_value' => $d_mapzoom,
         '#prefix' => '<div class="js-hide">',
       );
       $element['map_maptype'] = array(
         '#type' => 'textfield',
-        '#default_value' => (isset($items[$delta]['map_maptype']) ? $items[$delta]['map_maptype'] : (isset($instance['default_value'][$delta]['map_maptype']) ? $instance['default_value'][$delta]['map_maptype'] : 'Map')),
+        '#default_value' => $d_map_maptype,
       );
       $element['sv_heading'] = array(
         '#type' => 'textfield',
-        '#default_value' => (isset($items[$delta]['sv_heading']) ? $items[$delta]['sv_heading'] : (isset($instance['default_value'][$delta]['sv_heading']) ? $instance['default_value'][$delta]['sv_heading'] : '')),
+        '#default_value' => $d_sv_heading,
       );
       $element['sv_zoom'] = array(
         '#type' => 'textfield',
-        '#default_value' => (isset($items[$delta]['sv_zoom']) ? $items[$delta]['sv_zoom'] : (isset($instance['default_value'][$delta]['sv_zoom']) ? $instance['default_value'][$delta]['sv_zoom'] : '')),
+        '#default_value' => $d_sv_zoom,
       );
       $element['sv_pitch'] = array(
         '#type' => 'textfield',
-        '#default_value' => (isset($items[$delta]['sv_pitch']) ? $items[$delta]['sv_pitch'] : (isset($instance['default_value'][$delta]['sv_pitch']) ? $instance['default_value'][$delta]['sv_pitch'] : '')),
+        '#default_value' => $d_sv_pitch,
         '#suffix' => '</div>',
       );
 
