@@ -906,6 +906,7 @@ var getlocations_data = [];
       map: map,
       position: p,
       title: title,
+      clickable: (gs.markeraction > 0 ? true : false),
       optimized: false
     });
 
@@ -998,8 +999,10 @@ var getlocations_data = [];
 
     // we only have one marker
     if (gs.datanum == 1) {
-      map.setCenter(p);
-      map.setZoom(gs.nodezoom);
+      if (gs.pansetting > 0) {
+        map.setCenter(p);
+        map.setZoom(gs.nodezoom);
+      }
       // show_bubble_on_one_marker
       if (gs.show_bubble_on_one_marker && (gs.useInfoWindow || gs.useInfoBubble)) {
         google.maps.event.trigger(m, 'click');
