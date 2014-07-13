@@ -29,9 +29,12 @@ function getlocations_uninstall() {
  * Implements hook_enable().
  */
 function getlocations_enable() {
-
-  drupal_set_message(st('Thank you for installing Getlocations. To set it up please visit the <a href="@url">configuration page</a>.', array('@url' => url('admin/config/services/getlocations'))), 'status');
-
+  if (drupal_is_cli()) {
+    return;
+  }
+  if ((isset($_GET) && $_GET['q'] == 'admin/modules') || (isset($_REQUEST['overlay']) && $_REQUEST['overlay'] == 'admin/modules')) {
+    drupal_set_message(st('Thank you for installing Getlocations. To set it up please visit the <a href="@url">configuration page</a>.', array('@url' => url('admin/config/services/getlocations'))), 'status');
+  }
 }
 
 function getlocations_update_7100() {
