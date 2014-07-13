@@ -769,8 +769,11 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
     $query['libraries'] = implode(',', $libraries);
   }
 
-  global $is_https;
-  $scheme = ($is_https ? 'https' : 'http');
+  if (! isset($defaults['is_https']) || ! $defaults['is_https']) {
+    global $is_https;
+    $defaults['is_https'] = $is_https;
+  }
+  $scheme = ($defaults['is_https'] ? 'https' : 'http');
   $gmapdomain = "maps.googleapis.com/maps/api/js";
   $gmaplink = url($scheme . '://' . $gmapdomain, array('query' => $query));
   if (!stristr($current_js, $scheme . '://' . $gmapdomain)) {
@@ -1022,6 +1025,7 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
  *   Returns the current settings
  */
 function getlocations_defaults($reset = FALSE) {
+  global $is_https;
   $module = getlocations_get_current_supported_module();
   $defaults = array(
     'api_version'                   => 3,
@@ -1210,6 +1214,7 @@ function getlocations_defaults($reset = FALSE) {
     'gps_geocode'                   => 0,
     'gps_center'                    => 0,
     'geolocation_mobile_check'      => 1,
+    'is_https'                      => ($is_https ? 1 : 0),
   );
 
   $fieldables = getlocations_get_fieldable_entity_types();
@@ -2300,7 +2305,7 @@ function getlocations_get_path_from_entity_type($entity_type) {
  *
  */
 function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $inputmap = FALSE, $extcontrol = '') {
-  global $language, $is_https;
+  global $language;
   $lla = explode(',', $defaults['latlong']);
   $lat = $lla[0];
   $lng = $lla[1];
@@ -2375,7 +2380,7 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
       'places'                    => $defaults['places'],
       'search_places'             => $defaults['search_places'],
       'getdirections_enabled'     => $defaults['getdirections_enabled'],
-      'is_https'                  => ($is_https ? 1 : 0),
+      'is_https'                  => $defaults['is_https'],
       'geojson_enable'            => $defaults['geojson_enable'],
       'nokeyboard'                => $defaults['nokeyboard'],
       'nodoubleclickzoom'         => $defaults['nodoubleclickzoom'],
@@ -3479,6 +3484,11 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
     else {
       $form['jquery_colorpicker_enabled'] = array('#type' => 'value', '#value' => 0);
     }
+
+    $form['is_https'] = getlocations_element_map_checkbox(
+      t('Force https maps'),
+      $defaults['is_https']
+    );
 
   }
 
