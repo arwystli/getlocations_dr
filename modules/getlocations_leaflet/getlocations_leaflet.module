@@ -270,6 +270,15 @@ function getlocations_leaflet_library() {
     );
   }
 
+  if ($getlocations_leaflet_plugins['bouncemarker_enable']) {
+    $jsarr += array(
+      GETLOCATIONS_LEAFLET_PATH . '/plugins/bouncemarker/bouncemarker.min.js' => array(
+        'type' => 'file',
+        'preprocess' => $aggr
+      ),
+    );
+  }
+
   $jsarr += array(
     $getlocations_leaflet_paths['getlocations_leaflet_providers_path'] => array(
       'type' => 'file',
@@ -735,6 +744,9 @@ function getlocations_leaflet_field_formatter_settings_summary($field, $instance
       if ($settings['usermarker_enable']) {
         $summary[] = t('GPS button: Yes');
       }
+      if ($settings['bouncemarker_enable']) {
+        $summary[] = t('Bounce markers: Yes');
+      }
 
       break;
 
@@ -1149,6 +1161,13 @@ function getlocations_leaflet_map_settings_do($map_settings, $defaults, $latlons
   }
   else {
     $map_settings['map_settings']['usermarker'] = FALSE;
+  }
+
+  // bouncemarker
+  if ($getlocations_leaflet_plugins['bouncemarker_enable']) {
+    $map_settings['map_settings']['bouncemarker'] = ($defaults['bouncemarker'] ? TRUE : FALSE);
+    $map_settings['map_settings']['bouncemarker_duration'] = $defaults['bouncemarker_duration'];
+    $map_settings['map_settings']['bouncemarker_height'] = $defaults['bouncemarker_height'];
   }
 
   if ($getlocations_leaflet_plugins['markercluster_enable']) {
@@ -1948,6 +1967,11 @@ function getlocations_leaflet_defaults() {
   $newdefaults['usermarker_circle_fillopacity']   = $getlocations_defaults['circles_fillopacity'];
   $newdefaults['usermarker_button_label']         = t('Show current position');
 
+  // bouncemarker
+  $newdefaults['bouncemarker']          = 0;
+  $newdefaults['bouncemarker_duration'] = 1000;
+  $newdefaults['bouncemarker_height']   = '';
+
   $settings = variable_get('getlocations_leaflet_defaults', '');
 
   $newdefaults['baselayers'] = (isset($settings['baselayers']) && ! empty($settings['baselayers']) ? $settings['baselayers'] : array('OpenStreetMap.Mapnik'));
@@ -1969,6 +1993,7 @@ function getlocations_leaflet_plugins() {
     'minimap_enable'       => 0,
     'geocoder_enable'      => 0,
     'usermarker_enable'    => 0,
+    'bouncemarker_enable'  => 0,
   );
   $settings = variable_get('getlocations_leaflet_plugins', $defaults);
   $return = getlocations_adjust_vars($defaults, $settings);
@@ -2248,6 +2273,37 @@ function getlocations_leaflet_display_options_form($defaults, $admin = FALSE) {
   }
   else {
     $form['usermarker'] = array('#type' => 'value', '#value' => 0);
+  }
+
+  // bouncemarker
+  if ($getlocations_leaflet_plugins['bouncemarker_enable']) {
+    $form['bouncemarker'] = getlocations_element_map_checkbox(
+      t('Bounce markers'),
+      $defaults['bouncemarker'],
+      t('Bounce markers on adding to the map.')
+    );
+    $form['bouncemarker']['#suffix'] = '<div id="wrap-getlocations-bouncemarker">';
+
+    $form['bouncemarker_duration'] = getlocations_element_map_tf(
+      t('Bouncemarker duration'),
+      $defaults['bouncemarker_duration'],
+      t('Must be a number, in milliseconds.'),
+      10,
+      10,
+      TRUE
+    );
+    $form['bouncemarker_height'] = getlocations_element_map_tf(
+      t('Bouncemarker height'),
+      $defaults['bouncemarker_height'],
+      t('A number, in pixels. If left empty will drop from the top of the map.'),
+      10,
+      10,
+      FALSE
+    );
+    $form['bouncemarker_height']['#suffix'] = '</div>';
+  }
+  else {
+    $form['bouncemarker'] = array('#type' => 'value', '#value' => 0);
   }
 
   $form['layerControl'] = getlocations_element_map_checkbox(
@@ -2708,6 +2764,10 @@ function getlocations_leaflet_settings_form() {
   $form['getlocations_leaflet_plugins']['usermarker_enable'] = getlocations_element_map_checkbox(
     t('Enable Usermarker plugin'),
     $getlocations_leaflet_plugins['usermarker_enable']
+  );
+  $form['getlocations_leaflet_plugins']['bouncemarker_enable'] = getlocations_element_map_checkbox(
+    t('Enable Bouncemarker plugin'),
+    $getlocations_leaflet_plugins['bouncemarker_enable']
   );
 
   // mapbox

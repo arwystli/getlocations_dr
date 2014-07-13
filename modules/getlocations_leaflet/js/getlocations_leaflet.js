@@ -423,6 +423,16 @@ var getlocations_leaflet_geocoder = [];
               else {
                 Marker.options.clickable = false;
               }
+
+              // bounce marker
+              if (map_settings.bouncemarker) {
+                Marker.options.bounceOnAdd = true;
+                Marker.options.bounceOnAddDuration = map_settings.bouncemarker_duration;
+                if (map_settings.bouncemarker_height) {
+                  Marker.options.bounceOnAddHeight = map_settings.bouncemarker_height;
+                }
+              }
+
               // add the marker to the group(s)
               if (map_settings.category_showhide_buttons && cat) {
                 for (var c in categories) {

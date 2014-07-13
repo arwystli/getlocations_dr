@@ -368,7 +368,23 @@
           $("#wrap-getlocations-usermarker").hide();
         }
       });
+////
+      if ($("input[id$=bouncemarker]").attr('checked')) {
+       $("#wrap-getlocations-bouncemarker").show();
+      }
+      else {
+        $("#wrap-getlocations-bouncemarker").hide();
+      }
+      $("input[id$=bouncemarker]").change(function() {
+        if ($(this).attr('checked')) {
+          $("#wrap-getlocations-bouncemarker").show();
+        }
+        else {
+          $("#wrap-getlocations-bouncemarker").hide();
+        }
+      });
 
+////
     }
   };
 }(jQuery));
