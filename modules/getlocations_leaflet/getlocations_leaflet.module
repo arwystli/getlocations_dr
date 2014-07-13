@@ -1081,6 +1081,10 @@ function getlocations_leaflet_map_settings_do($map_settings, $defaults, $latlons
   $map_settings['map_opts']['fadeAnimation']      = ($defaults['fadeAnimation'] ? TRUE : FALSE);
   $map_settings['map_opts']['zoomAnimation']      = ($defaults['zoomAnimation'] ? TRUE : FALSE);
   $map_settings['map_opts']['closePopupOnClick']  = ($defaults['closePopupOnClick'] ? TRUE : FALSE);
+  $map_settings['map_opts']['boxZoom']            = ($defaults['boxZoom'] ? TRUE : FALSE);
+  $map_settings['map_opts']['tap']                = ($defaults['tap'] ? TRUE : FALSE);
+  $map_settings['map_opts']['tapTolerance']       = $defaults['tapTolerance'];
+  $map_settings['map_opts']['bounceAtZoomLimits'] = ($defaults['bounceAtZoomLimits'] ? TRUE : FALSE);
 
   $getlocations_leaflet_plugins = getlocations_leaflet_plugins();
   if ($getlocations_leaflet_plugins['fullscreen_enable']) {
@@ -1474,12 +1478,16 @@ function getlocations_leaflet_getlocations_leaflet_map_info() {
         'touchZoom'                  => TRUE,
         'scrollWheelZoom'            => TRUE,
         'doubleClickZoom'            => TRUE,
+        'boxZoom'                    => TRUE,
+        'tap'                        => TRUE,
+        'tapTolerance'               => 15,
         'zoomControl'                => TRUE,
         'attributionControl'         => TRUE,
         'trackResize'                => TRUE,
         'fadeAnimation'              => TRUE,
         'zoomAnimation'              => TRUE,
         'closePopupOnClick'          => TRUE,
+        'bounceAtZoomLimits'         => TRUE,
         'layerControl'               => TRUE,
         'minZoom'                    => 0,
         'maxZoom'                    => 18,
@@ -1823,6 +1831,10 @@ function getlocations_leaflet_defaults() {
   }
   $newdefaults['map_marker']         = $getlocations_defaults['map_marker'];
   $newdefaults['touchZoom']          = 1;
+  $newdefaults['boxZoom']            = 1;
+  $newdefaults['tap']                = 1;
+  $newdefaults['tapTolerance']       = 15;
+  $newdefaults['bounceAtZoomLimits'] = 1;
   $newdefaults['attributionControl'] = 1;
   $newdefaults['trackResize']        = 1;
   $newdefaults['fadeAnimation']      = 1;
@@ -2019,6 +2031,31 @@ function getlocations_leaflet_display_options_form($defaults, $admin = FALSE) {
     t('DoubleClick Zoom'),
     $defaults['doubleClickZoom'],
     t('Enable DoubleClick Zooming.')
+  );
+
+  $form['boxZoom'] = getlocations_element_map_checkbox(
+    t('Box Zoom'),
+    $defaults['boxZoom'],
+    t('Enable Box Zooming.')
+  );
+
+  $form['tap'] = getlocations_element_map_checkbox(
+    t('Tap'),
+    $defaults['tap'],
+    t('Enable Tap. Applies to touchscreens.')
+  );
+
+  $form['tapTolerance'] = getlocations_element_map_tf(
+    t('Tap Tolerance'),
+    $defaults['tapTolerance'],
+    t('Set tap tolerance.'),
+    5
+  );
+
+  $form['bounceAtZoomLimits'] = getlocations_element_map_checkbox(
+    t('bounce At Zoom Limits'),
+    $defaults['bounceAtZoomLimits'],
+    t('Enable bounce At Zoom Limits.')
   );
 
   $form['scaleControl'] = getlocations_element_map_checkbox(
