@@ -177,8 +177,8 @@ function drush_getlocations_geojson() {
     drush_tarball_extract($filename);
 
     // Change the directory name to "GeoJSON" if needed.
-    if (is_dir('GeoJSON-to-Google-Maps-master')) {
-      drush_move_dir('GeoJSON-to-Google-Maps-master', $dirname, TRUE);
+    if (is_dir('geojson-google-maps-master')) {
+      drush_move_dir('geojson-google-maps-master', $dirname, TRUE);
     }
   }
 
