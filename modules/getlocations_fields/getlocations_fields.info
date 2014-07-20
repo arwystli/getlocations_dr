@@ -12,6 +12,9 @@ files[] = handlers/getlocations_fields_handler_argument_city.inc
 files[] = handlers/getlocations_fields_handler_argument_glid.inc
 
 files[] = handlers/getlocations_fields_handler_field_coordinates.inc
+
+files[] = handlers/getlocations_fields_handler_field_wkt.inc
+
 files[] = handlers/getlocations_fields_handler_field_country.inc
 files[] = handlers/getlocations_fields_handler_field_distance.inc
 files[] = handlers/getlocations_fields_handler_field_latitude.inc

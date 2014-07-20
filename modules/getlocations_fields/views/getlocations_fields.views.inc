@@ -257,6 +257,16 @@ function getlocations_fields_views_data() {
       'click sortable' => FALSE,
     ),
   );
+  // wkt
+  $data['getlocations_fields']['wkt'] = array(
+    'title' => t('Wkt'),
+    'help' => t("The coordinates of the selected location in WKT format."),
+    'field' => array(
+      'field' => 'latitude', // The handler adds the longitude.
+      'handler' => 'getlocations_fields_handler_field_wkt',
+      'click sortable' => FALSE,
+    ),
+  );
   // distance
   $data['getlocations_fields']['distance'] = array(
     'title' => t('Distance'),
