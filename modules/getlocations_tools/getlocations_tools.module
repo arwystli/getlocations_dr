@@ -32,15 +32,28 @@ function getlocations_tools_menu() {
     'page arguments' => array('getlocations_tools_export_form'),
     'access arguments' => array('administer site configuration'),
     'type' => MENU_LOCAL_TASK,
-    'weight' => 5,
+    'weight' => 8,
   );
+
+  // opl
+  if (module_exists('openlayers')) {
+    $items[GETLOCATIONS_ADMIN_PATH . '/export_opl'] = array(
+      'title' => 'Export Opl',
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('getlocations_tools_export_opl_form'),
+      'access arguments' => array('administer site configuration'),
+      'type' => MENU_LOCAL_TASK,
+      'weight' => 10,
+    );
+  }
+
   $items[GETLOCATIONS_ADMIN_PATH . '/import'] = array(
     'title' => 'Import',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('getlocations_tools_import_form'),
     'access arguments' => array('administer site configuration'),
     'type' => MENU_LOCAL_TASK,
-    'weight' => 6,
+    'weight' => 12,
   );
   return $items;
 }
@@ -306,6 +319,145 @@ function getlocations_tools_import_form_submit($form, &$form_state) {
   }
   drupal_set_message($msg);
 }
+
+/**
+ * export getlocations markers to Openlayers
+ */
+function getlocations_tools_export_opl_form($form, &$form_state) {
+
+  $form = array();
+  // list all the marker sets
+
+  $icons = getlocations_get_icondata();
+  $data = array();
+  $files = array();
+  $machine_names = array();
+  $display_names = array();
+  $positions = array();
+  $iconct = 0;
+  foreach (array_keys($icons) AS $path) {
+    if (preg_match("~^/.*/$~", $path)) {
+      continue;
+    }
+    $files = $icons[$path]['f'];
+    $widths = $icons[$path]['w'];
+    $heights = $icons[$path]['h'];
+    $machine_names = $icons[$path]['i'][0][0][0];
+    $display_names = $icons[$path]['i'][0][0][1];
+    $positions     = $icons[$path]['i'][0][0][2];
+    $newpositions = array();
+    foreach ($positions AS $pos) {
+      if (isset($pos[0])) {
+        $newpositions[] = $pos[0];
+      }
+    }
+    $adj = 0;
+    $w = $widths[0];
+    $h = $heights[0];
+    foreach ($newpositions AS $pos) {
+      // no shadow
+      if ($pos < 1) {
+        $adj = 1;
+      }
+      // skip this
+      if ($files[$pos] == 'shadow.png') {
+        continue;
+      }
+      $data[$iconct]['path'] = $path . $files[$pos];
+      $data[$iconct]['machine_name'] = $machine_names[$pos + $adj];
+      $data[$iconct]['display_name'] = $display_names[$pos + $adj];
+      if (isset($widths[$pos]) && $widths[$pos]) {
+        $w = $widths[$pos];
+      }
+      $data[$iconct]['width'] = $w;
+
+      if (isset($heights[$pos]) && $heights[$pos]) {
+        $h = $heights[$pos];
+      }
+      $data[$iconct]['height'] = $h;
+
+      $iconct++;
+    }
+  }
+
+  // build the output
+  $template = getlocations_tools_opl_template();
+  $s = array(
+    '/__TITLE__/',
+    '/__NAME__/',
+    '/__FULL_TITLE__/',
+    '/__DESC__/',
+    '/__PATH__/',
+    '/__RADIUS__/',
+    '/__WIDTH__/',
+    '/__HEIGHT__/'
+  );
+
+  $output = '';
+  foreach ($data AS $iconct => $value) {
+    $value['machine_name'] = preg_replace("/\s+/", '_', $value['machine_name']);
+    $value['machine_name'] = preg_replace("/-/", '_', $value['machine_name']);
+    $value['machine_name'] = strtolower($value['machine_name']);
+    $t = $template;
+    $r = array(
+      $value['display_name'],
+      'getlocations_marker_' . $iconct . '_' . $value['machine_name'],
+      'Getlocations marker no:' . $iconct . ' ' . $value['display_name'],
+      'Marker provided by the getlocations module',
+      $value['path'],
+      intval($value['width'] / 2),
+      $value['width'],
+      $value['height']
+    );
+    $t = preg_replace($s, $r, $t);
+    $output .= $t . "\n";
+  }
+
+  $form['getlocations_tools_export_opl_output'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Export getlocations markers in openlayers format'),
+    '#description' => t('The Openlayers styles import facility can only handle one marker at a time so use copy and paste to import the markers you want.'),
+    '#default_value' => $output,
+    '#rows' => 20,
+  );
+
+    return $form;
+
+}
+
+#function getlocations_tools_export_opl_form_submit($form, &$form_state) {
+#}
+
+function getlocations_tools_opl_template() {
+
+  $template = '/* getlocations marker __TITLE__ */' . "\n";
+  $template .= '$openlayers_styles = new stdClass();' . "\n";
+  $template .= '$openlayers_styles->disabled = FALSE; /* Edit this to true to make a default openlayers_styles disabled initially */' . "\n";
+  $template .= '$openlayers_styles->api_version = 1;' . "\n";
+  $template .= '$openlayers_styles->name = ' . "'__NAME__';" . "\n";
+  $template .= '$openlayers_styles->title = ' . "'__FULL_TITLE__';" . "\n";
+  $template .= '$openlayers_styles->description = ' . "'__DESC__';" . "\n";
+  $template .= '$openlayers_styles->data = array(' . "\n";
+  $template .= "  'externalGraphic' => '__PATH__'," . "\n";
+  $template .= "  'pointRadius' => '__RADIUS__'," . "\n";
+  $template .= "  'fillColor' => '#FFFFFF'," . "\n";
+  $template .= "  'strokeColor' => '#FFFFFF'," . "\n";
+  $template .= "  'strokeWidth' => 1," . "\n";
+  $template .= "  'fillOpacity' => 1," . "\n";
+  $template .= "  'strokeOpacity' => 1," . "\n";
+  $template .= "  'strokeLinecap' => 'round'," . "\n";
+  $template .= "  'strokeDashstyle' => 'solid'," . "\n";
+  $template .= "  'graphicWidth' => __WIDTH__," . "\n";
+  $template .= "  'graphicHeight' => __HEIGHT__," . "\n";
+  $template .= "  'graphicOpacity' => 1," . "\n";
+  $template .= "  'graphicXOffset' => -__RADIUS__," . "\n";
+  $template .= "  'graphicYOffset' => -__HEIGHT__," . "\n";
+  $template .= "  'graphicName' => '__TITLE__'," . "\n";
+  $template .= "  'labelAlign' => 'cm'," . "\n";
+  $template .= ');' . "\n";
+  return $template;
+}
+
 
 function getlocations_tools_get_options() {
   $opts = array(0 => t('None'));

@@ -57,7 +57,7 @@ function getlocations_gps_menu() {
     'page arguments' => array('getlocations_gps_settings_form'),
     'access arguments' => array('administer site configuration'),
     'type' => MENU_LOCAL_TASK,
-    'weight' => 7,
+    'weight' => 14,
   );
 
   return $items;
