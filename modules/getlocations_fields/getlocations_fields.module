@@ -257,6 +257,11 @@ function getlocations_fields_field_update($entity_type, $entity, $field, $instan
 
   $settings['display_settings'] = getlocations_fields_get_display_settings($instance['display']['default']['settings']);
 
+  $mode = 'update';
+  if ($entity->revision && ($entity->nid !== $entity->vid) ) {
+    $mode = 'insert';
+  }
+
   if (!empty($items)) {
 
     $criteria = array();
@@ -274,7 +279,7 @@ function getlocations_fields_field_update($entity_type, $entity, $field, $instan
           }
         }
       }
-      $items = getlocations_fields_save_locations($items, $criteria, $settings, 'update');
+      $items = getlocations_fields_save_locations($items, $criteria, $settings, $mode);
     }
   }
 
