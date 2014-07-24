@@ -1972,6 +1972,10 @@ function getlocations_leaflet_defaults() {
   $newdefaults['bouncemarker_duration'] = 1000;
   $newdefaults['bouncemarker_height']   = '';
 
+  // custom content
+  $newdefaults['custom_content_enable'] = 0;
+  $newdefaults['custom_content_source'] = '';
+
   $settings = variable_get('getlocations_leaflet_defaults', '');
 
   $newdefaults['baselayers'] = (isset($settings['baselayers']) && ! empty($settings['baselayers']) ? $settings['baselayers'] : array('OpenStreetMap.Mapnik'));
