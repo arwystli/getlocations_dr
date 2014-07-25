@@ -713,6 +713,11 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
   }
   $query['sensor'] = (getlocations_is_mobile() ? 'true' : 'false');
 
+  $map_version = variable_get('getlocations_map_version', '');
+  if($map_version) {
+    $query['v'] = $map_version;
+  }
+
   if (isset($language->language)) {
     $query['language'] = $language->language;
   }
@@ -1029,6 +1034,7 @@ function getlocations_defaults($reset = FALSE) {
   $module = getlocations_get_current_supported_module();
   $defaults = array(
     'api_version'                   => 3,
+    'map_version'                   => '',
     'width'                         => '300px',
     'height'                        => '200px',
     'zoom'                          => 3,

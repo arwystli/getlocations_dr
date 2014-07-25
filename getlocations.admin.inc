@@ -87,6 +87,24 @@ function getlocations_settings_form() {
     FALSE
   );
 
+  // map version
+  $map_version = variable_get('getlocations_map_version', '');
+  $form['map_version'] =  array(
+    '#type' => 'fieldset',
+    '#title' => t('Google Map version'),
+    '#description' => t('The map version is normally provided automatically, only use this if you wish to override it.'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  $form['map_version']['getlocations_map_version'] = getlocations_element_map_tf(
+    t('Google maps version number'),
+    $map_version,
+    '',
+    5,
+    10,
+    FALSE
+  );
+
   // preview
   $form['getlocations_preview'] = array(
     '#type' => 'fieldset',
