@@ -2761,8 +2761,13 @@ function getlocations_leaflet_settings_form() {
     )
   );
   $leaflet_libraries_installed = (libraries_get_path('leaflet') ? TRUE : FALSE);
+  $leaflet_version = '';
   if ($leaflet_libraries_installed) {
     $desc = t('The Leaflet Library is installed at !p.', array('!p' => libraries_get_path('leaflet')));
+    $leaflet_version = getlocations_leaflet_library_version();
+    if ($leaflet_version) {
+      $desc .= '&nbsp;' . t('Using version !v', array('!v' => $leaflet_version));
+    }
   }
   elseif( $getlocations_leaflet_cdn['enable']) {
     $desc = t('The Leaflet library is being hosted on CDN.');
@@ -3936,7 +3941,19 @@ function getlocations_leaflet_awesome_marker_get($defaults, $prefix = '') {
   return array('data' => $vicon, 'type' => $awesome_icon_type);
 }
 
+function getlocations_leaflet_library_version() {
 
+  $version = '';
+  $file = libraries_get_path('leaflet') . '/leaflet.js';
+  if (file_exists($file)) {
+    $contents = file_get_contents($file);
+    $regex = '/version="(\d+\.\d+\.\d+)"/';
+    if (preg_match($regex, $contents, $m)) {
+      $version = $m[1];
+    }
+  }
+  return $version;
+}
 
 /**
  * Implements hook_theme().
