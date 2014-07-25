@@ -72,20 +72,42 @@ function getlocations_leaflet_library() {
     'title' => 'Leaflet',
     'website' => 'http://leafletjs.com',
     'version' => '0.7',
-    'js' => array(
+  );
+  // getlocations_leaflet_cdn
+  $getlocations_leaflet_cdn = variable_get('getlocations_leaflet_cdn', array(
+      'enable' => 0,
+      'js' => '',
+      'css' => ''
+    )
+  );
+  if ($getlocations_leaflet_cdn['enable']) {
+    $libraries['leaflet']['js'] = array(
+      $getlocations_leaflet_cdn['js'] => array(
+        'type' => 'external',
+      ),
+    );
+    $libraries['leaflet']['css'] = array(
+      $getlocations_leaflet_cdn['css'] => array(
+        'type' => 'external',
+        'media' => 'all',
+      )
+    );
+  }
+  else {
+    $libraries['leaflet']['js'] = array(
       libraries_get_path('leaflet') . '/leaflet.js' => array(
         'type' => 'file',
         'group' => JS_LIBRARY,
         'preprocess' => $aggr
       ),
-    ),
-    'css' => array(
+    );
+    $libraries['leaflet']['css'] = array(
       libraries_get_path('leaflet') . '/leaflet.css' => array(
         'type' => 'file',
         'media' => 'all',
       ),
-    ),
-  );
+    );
+  }
 
   $getlocations_leaflet_paths = getlocations_leaflet_paths_get();
   $getlocations_leaflet_plugins = getlocations_leaflet_plugins();
@@ -2731,15 +2753,64 @@ function getlocations_leaflet_settings_form() {
     t('Include the marker cache when the Drupal cache is flushed.')
   );
 
-  // preview
-  $form['getlocations_leaflet_preview'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Getlocations Leaflet Preview'),
-    '#description' => t('A preview of the current map settings.') . '<br />' . t('You can adjust the default Map center and Zoom by changing the map.') . '<br />' . t('For all other changes use the form. Remember to Save configuration when you are done.'),
-    // This will store all the defaults in one variable.
-    '#tree' => FALSE,
+  // getlocations_leaflet_cdn
+  $getlocations_leaflet_cdn = variable_get('getlocations_leaflet_cdn', array(
+      'enable' => 0,
+      'js' => '',
+      'css' => ''
+    )
   );
-  $form['getlocations_leaflet_preview']['preview_map'] = array('#markup' => '');
+  $leaflet_libraries_installed = (libraries_get_path('leaflet') ? TRUE : FALSE);
+  if ($leaflet_libraries_installed) {
+    $desc = t('The Leaflet Library is installed at !p.', array('!p' => libraries_get_path('leaflet')));
+  }
+  elseif( $getlocations_leaflet_cdn['enable']) {
+    $desc = t('The Leaflet library is being hosted on CDN.');
+  }
+  else {
+    $desc = '<span class="error">' . t('The Leaflet library is NOT installed.') . '</span>';
+  }
+  $desc .= '<br />' . t('For details on the Leaflet library please see !u', array('!u' => l(t('leafletjs.com'), 'http://leafletjs.com/', array('attributes' => array('target' => '_blank')))));
+  $desc .= '<br />' . t('Please read the README.txt included with getlocations_leaflet.');
+  $form['getlocations_leaflet_cdn'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Leaflet Library'),
+    '#description' => $desc,
+    '#collapsible' => TRUE,
+    '#collapsed' => ($leaflet_libraries_installed || ($getlocations_leaflet_cdn['enable'] && $getlocations_leaflet_cdn['js'] && $getlocations_leaflet_cdn['css']) ? TRUE : FALSE),
+    // This will store all the defaults in one variable.
+    '#tree' => TRUE,
+  );
+  $form['getlocations_leaflet_cdn']['enable'] = getlocations_element_map_checkbox(
+    t('Enable CDN'),
+    $getlocations_leaflet_cdn['enable']
+  );
+  $form['getlocations_leaflet_cdn']['js'] = getlocations_element_map_tf(
+    t('Leaflet library javascript URL'),
+    $getlocations_leaflet_cdn['js'],
+    t('The full URL to the Leaflet javascript library.'),
+    80,
+    128
+  );
+  $form['getlocations_leaflet_cdn']['css'] = getlocations_element_map_tf(
+    t('Leaflet library CSS URL'),
+    $getlocations_leaflet_cdn['css'],
+    t('The full URL to the Leaflet css library.'),
+    80,
+    128
+  );
+
+  if ($leaflet_libraries_installed || ($getlocations_leaflet_cdn['enable'] && $getlocations_leaflet_cdn['js'] && $getlocations_leaflet_cdn['css'])) {
+    // preview
+    $form['getlocations_leaflet_preview'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Getlocations Leaflet Preview'),
+      '#description' => t('A preview of the current map settings.') . '<br />' . t('You can adjust the default Map center and Zoom by changing the map.') . '<br />' . t('For all other changes use the form. Remember to Save configuration when you are done.'),
+      // This will store all the defaults in one variable.
+      '#tree' => FALSE,
+    );
+    $form['getlocations_leaflet_preview']['preview_map'] = array('#markup' => '');
+  }
 
   // plugins
   $getlocations_leaflet_plugins = getlocations_leaflet_plugins();
@@ -3017,6 +3088,13 @@ function getlocations_leaflet_settings_validate($form, &$form_state) {
   }
   elseif ($reset == 2) {
     $form_state['values']['getlocations_leaflet_paths'] = getlocations_leaflet_paths_get(FALSE, TRUE);
+  }
+
+  // getlocations_leaflet_cdn
+  if ($form_state['values']['getlocations_leaflet_cdn']['enable']) {
+    if (empty($form_state['values']['getlocations_leaflet_cdn']['js']) || empty($form_state['values']['getlocations_leaflet_cdn']['css'])) {
+      form_set_error('getlocations_leaflet_cdn][enable', t('You must supply a valid css and js URL.'));
+    }
   }
 
   // cloudmade
@@ -4096,7 +4174,9 @@ function theme_getlocations_leaflet_settings_form($variables) {
     )
   );
 
-  $form['getlocations_leaflet_preview']['preview_map']['#markup'] = '<div id="getlocations_leaflet_preview_map">' . $preview_map . '</div>';
+  if (isset($form['getlocations_leaflet_preview']['preview_map']['#markup'])) {
+    $form['getlocations_leaflet_preview']['preview_map']['#markup'] = '<div id="getlocations_leaflet_preview_map">' . $preview_map . '</div>';
+  }
 
   $output .= drupal_render_children($form);
   return $output;
