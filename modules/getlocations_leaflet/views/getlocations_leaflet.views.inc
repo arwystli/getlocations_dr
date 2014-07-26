@@ -86,10 +86,16 @@ function template_preprocess_getlocations_leaflet_view_map(&$variables) {
             $query->fields('t', array('entity_type', 'bundle', 'entity_id'));
             $query->condition('t.' . $col, $location['glid']);
             $row = $query->execute()->fetchObject();
-            $location['entity_type'] = $row->entity_type;
-            $entity_type_found = $row->entity_type;
-            $location['bundle'] = $row->bundle;
-            $location['entity_id'] = $row->entity_id;
+            if ($row) {
+              $location['entity_type'] = $row->entity_type;
+              $entity_type_found = $row->entity_type;
+              $location['bundle'] = $row->bundle;
+              $location['entity_id'] = $row->entity_id;
+            }
+            else {
+              unset($locations[$key]);
+              continue;
+            }
           }
         }
         else {

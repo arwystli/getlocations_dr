@@ -2296,6 +2296,9 @@ function getlocations_fields_load_location($glid) {
       $location['bundle'] = $entity_info['bundle'];
 
       $entity_get_info = entity_get_info($location['entity_type']);
+      if (! isset($entity_get_info['entity keys']['id'])) {
+        return;
+      }
       $location['entity_key']  = $entity_get_info['entity keys']['id'];
 
       // figure out the marker

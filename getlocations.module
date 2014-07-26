@@ -6336,8 +6336,11 @@ function theme_getlocations_show($variables) {
  */
 function theme_getlocations_adinfo($variables) {
   $location = $variables['location'];
-  $output = '';
+  if (! isset($location['entity_type'])) {
+    return;
+  }
 
+  $output = '';
   $output .= '<div class="location vcard">';
 
   // this logic gives the location name field precedence over the entity title
@@ -6347,6 +6350,9 @@ function theme_getlocations_adinfo($variables) {
   $l =  FALSE;
   // build a link
   $entity_get_info = entity_get_info($location['entity_type']);
+  if (! isset($entity_get_info['load hook'])) {
+    return;
+  }
   $load_hook = $entity_get_info['load hook'];
   $object = $load_hook($location['entity_id']);
   if (isset($entity_get_info['uri callback'])) {
