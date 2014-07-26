@@ -4147,51 +4147,51 @@ function theme_getlocations_leaflet_settings_form($variables) {
   }
 
   // preview leaflet
-  $links = array();
-  $nodezoom = FALSE;
-  $iconlist = array();
+  if (isset($form['getlocations_leaflet_preview']['preview_map']['#markup'])) {
+    $links = array();
+    $nodezoom = FALSE;
+    $iconlist = array();
 
-  $getlocations_leaflet_defaults = getlocations_leaflet_defaults();
-  $map_settings = getlocations_leaflet_map_get_info('Getlocations OSM');
-  $map_settings = getlocations_leaflet_get_map_layers($map_settings);
-  if (! empty($getlocations_leaflet_defaults['baselayers'])) {
-    $map_layers = array();
-    foreach ($getlocations_leaflet_defaults['baselayers'] AS $k => $v) {
-      if (isset($map_settings['map_layers'][$k]) && $getlocations_leaflet_defaults['baselayers'][$k]) {
-        $map_layers[$k] = $map_settings['map_layers'][$k];
+    $getlocations_leaflet_defaults = getlocations_leaflet_defaults();
+    $map_settings = getlocations_leaflet_map_get_info('Getlocations OSM');
+    $map_settings = getlocations_leaflet_get_map_layers($map_settings);
+    if (! empty($getlocations_leaflet_defaults['baselayers'])) {
+      $map_layers = array();
+      foreach ($getlocations_leaflet_defaults['baselayers'] AS $k => $v) {
+        if (isset($map_settings['map_layers'][$k]) && $getlocations_leaflet_defaults['baselayers'][$k]) {
+          $map_layers[$k] = $map_settings['map_layers'][$k];
+        }
+      }
+      if (! empty($map_layers)) {
+        $map_settings['map_layers'] = $map_layers;
       }
     }
-    if (! empty($map_layers)) {
-      $map_settings['map_layers'] = $map_layers;
-    }
-  }
-  $ll = explode(',', $getlocations_leaflet_defaults['latlong']);
-  $map_settings['map_opts']['center'] = array($ll[0], $ll[1]);
-  $map_settings['map_opts']['zoom'] = $getlocations_leaflet_defaults['zoom'];
-  $mapid = getlocations_setup_map('', FALSE, FALSE, TRUE);
-  $latlons = array();
-  $minmaxes = array();
-  $map_settings['map_settings']['dragging'] = TRUE;
-  // add in some more
-  $map_settings = getlocations_leaflet_map_settings_do($map_settings, $getlocations_leaflet_defaults, $latlons, $mapid);
-  $map_settings['map_settings']['nodezoom'] = ($nodezoom ? $nodezoom : FALSE);
-  $map_settings['map_settings']['minmaxes'] = (empty($minmaxes) ? FALSE : implode(',', $minmaxes));
-  $map_settings['icons'] = $iconlist;
-  $map_settings['datanum'] = 0;
-  $map_settings['latlons'] = $latlons;
-  $map_settings['extcontrol'] = 'preview_map';
+    $ll = explode(',', $getlocations_leaflet_defaults['latlong']);
+    $map_settings['map_opts']['center'] = array($ll[0], $ll[1]);
+    $map_settings['map_opts']['zoom'] = $getlocations_leaflet_defaults['zoom'];
+    $mapid = getlocations_setup_map('', FALSE, FALSE, TRUE);
+    $latlons = array();
+    $minmaxes = array();
+    $map_settings['map_settings']['dragging'] = TRUE;
+    // add in some more
+    $map_settings = getlocations_leaflet_map_settings_do($map_settings, $getlocations_leaflet_defaults, $latlons, $mapid);
+    $map_settings['map_settings']['nodezoom'] = ($nodezoom ? $nodezoom : FALSE);
+    $map_settings['map_settings']['minmaxes'] = (empty($minmaxes) ? FALSE : implode(',', $minmaxes));
+    $map_settings['icons'] = $iconlist;
+    $map_settings['datanum'] = 0;
+    $map_settings['latlons'] = $latlons;
+    $map_settings['extcontrol'] = 'preview_map';
 
-  drupal_add_library('getlocations_leaflet', 'getlocations-leaflet');
-  $preview_map = theme('getlocations_leaflet_map', array(
-      'width' => $getlocations_leaflet_defaults['width'],
-      'height' => $getlocations_leaflet_defaults['height'],
-      'map_settings' => $map_settings,
-      'mapid' => $mapid,
-      'links' => $links
-    )
-  );
+    drupal_add_library('getlocations_leaflet', 'getlocations-leaflet');
+    $preview_map = theme('getlocations_leaflet_map', array(
+        'width' => $getlocations_leaflet_defaults['width'],
+        'height' => $getlocations_leaflet_defaults['height'],
+        'map_settings' => $map_settings,
+        'mapid' => $mapid,
+        'links' => $links
+      )
+    );
 
-  if (isset($form['getlocations_leaflet_preview']['preview_map']['#markup'])) {
     $form['getlocations_leaflet_preview']['preview_map']['#markup'] = '<div id="getlocations_leaflet_preview_map">' . $preview_map . '</div>';
   }
 
