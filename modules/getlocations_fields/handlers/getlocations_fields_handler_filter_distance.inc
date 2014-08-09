@@ -142,6 +142,8 @@ class getlocations_fields_handler_filter_distance extends views_handler_filter {
           );
           drupal_add_js($settings, 'setting');
         }
+        $getlocations_defaults = getlocations_defaults();
+        getlocations_setup_js($getlocations_defaults, TRUE);
         $getlocations_fields_paths = getlocations_fields_paths_get();
         $form['#attached']['js'] = array($getlocations_fields_paths['getlocations_fields_search_views_path']);
 
