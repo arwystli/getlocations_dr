@@ -97,7 +97,7 @@ class getlocations_fields_handler_field_distance extends views_handler_field {
 
     $this->ensure_my_table();
 
-    if (! empty($coordinates)) {
+    if (! empty($coordinates) && $coordinates['latitude'] && $coordinates['longitude']) {
 
       $lat = $coordinates['latitude'];
       $lon = $coordinates['longitude'];

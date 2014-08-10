@@ -265,7 +265,7 @@ class getlocations_fields_handler_filter_distance extends views_handler_filter {
     $options = array_merge($this->options, $this->options['value'], $this->value);
     $coordinates = getlocations_fields_views_proximity_get_reference_location($this->view, $options);
     // If we don't have any coordinates or distance, there's nothing to filter by, so don't modify the query at all.
-    if (empty($coordinates) || empty($this->value['search_distance'])) {
+    if (empty($coordinates) || ! $coordinates['latitude'] || ! $coordinates['longitude'] || empty($this->value['search_distance'])) {
       return;
     }
 
