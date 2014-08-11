@@ -92,19 +92,25 @@ class getlocations_fields_handler_field_distance extends views_handler_field {
 
   function query() {
 
-    $coordinates = getlocations_fields_views_proximity_get_reference_location($this->view, $this->options);
+    // Google Autocomplete data needs to be transferred to options
+    if ($this->options['origin'] == 'search' && isset($this->view->exposed_data['distance']) && $this->view->exposed_data['distance']['latitude'] && $this->view->exposed_data['distance']['longitude']) {
+      $this->options['latitude'] = $this->view->exposed_data['distance']['latitude'];
+      $this->options['longitude'] = $this->view->exposed_data['distance']['longitude'];
 
+      // not sure about this, it attempts to sync distance units, seems to work.
+      $this->options['units'] = $this->view->exposed_data['distance']['search_units'];
+
+    }
+
+    $coordinates = getlocations_fields_views_proximity_get_reference_location($this->view, $this->options);
 
     $this->ensure_my_table();
 
     if (! empty($coordinates) && $coordinates['latitude'] && $coordinates['longitude']) {
-
-      $lat = $coordinates['latitude'];
-      $lon = $coordinates['longitude'];
-      $this->field_alias = $this->query->add_field(NULL, getlocations_earth_distance_sql($lat, $lon, $this->table_alias), $this->table_alias . '_' . $this->field);
+      $this->field_alias = $this->query->add_field(NULL, getlocations_earth_distance_sql($coordinates['latitude'], $coordinates['longitude'], $this->table_alias), $this->table_alias . '_' . $this->field);
     }
-    else {
-      $this->field_alias = $this->query->add_field(NULL, "'Unknown'", $this->table_alias . '_' . $this->field);
-    }
+    #else {
+    #  $this->field_alias = $this->query->add_field(NULL, "'Unknown'", $this->table_alias . '_' . $this->field);
+    #}
   }
 }

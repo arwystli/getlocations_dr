@@ -71,6 +71,13 @@ class getlocations_fields_handler_sort_distance extends views_handler_sort {
   }
 
   function query() {
+
+    // Google Autocomplete data needs to be transferred to options
+    if ($this->options['origin'] == 'search' && isset($this->view->exposed_data['distance']) && $this->view->exposed_data['distance']['latitude'] && $this->view->exposed_data['distance']['longitude']) {
+      $this->options['latitude'] = $this->view->exposed_data['distance']['latitude'];
+      $this->options['longitude'] = $this->view->exposed_data['distance']['longitude'];
+    }
+
     $coordinates = getlocations_fields_views_proximity_get_reference_location($this->view, $this->options);
 
     $this->ensure_my_table();
@@ -94,15 +101,12 @@ class getlocations_fields_handler_sort_distance extends views_handler_sort {
       }
     }
 
-    if (empty($coordinates)) {
-      // We don't know the distance.
-      // Therefore, we don't need to sort on it.
-    }
-    else {
-      // This is done exactly the same as the field version.
-      // Views is ok with us redefining the formula for a field.
-      // If ANYTHING differs in the configuration, we will use a new alias.
+    if (! empty($coordinates) && $coordinates['latitude'] && $coordinates['longitude']) {
+      //  // This is done exactly the same as the field version.
+      //  // Views is ok with us redefining the formula for a field.
+      //  // If ANYTHING differs in the configuration, we will use a new alias.
       $this->query->add_orderby(NULL, getlocations_earth_distance_sql($coordinates['latitude'], $coordinates['longitude'], $this->table_alias), $this->options['order'], $alias);
     }
+
   }
 }
