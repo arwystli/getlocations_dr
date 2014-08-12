@@ -145,6 +145,7 @@ var getlocations_data = [];
           // mobiles
           global_settings.is_mobile = setting.is_mobile;
           global_settings.show_maplinks = setting.show_maplinks;
+          global_settings.show_search_distance = setting.show_search_distance;
 
           // streetview overlay settings
           global_settings.sv_showfirst              = (setting.sv_showfirst ? true : false);
@@ -939,15 +940,27 @@ var getlocations_data = [];
                 qs.lid = lid;
                 qs.key = lidkey;
                 qs.gdlink = gs.getdirections_link;
+                var slat = false;
+                var slon = false;
+                var sunit = false;
                 if (gs.show_distance) {
+                  // getlocations_search module
                   if ($("#getlocations_search_slat_" + mkey).is('div')) {
                     var slat = $("#getlocations_search_slat_" + mkey).html();
                     var slon = $("#getlocations_search_slon_" + mkey).html();
                     var sunit = $("#getlocations_search_sunit_" + mkey).html();
-                    if (slat && slon) {
-                      qs.sdist = sunit + '|' + slat + '|' + slon;
-                    }
                   }
+                }
+                else if (gs.show_search_distance) {
+                  // getlocations_fields distance views filter and field
+                  if ($("#getlocations_fields_search_views_search_wrapper_" + mkey).is('div')) {
+                    var slat = $("#getlocations_fields_search_views_search_latitude_" + mkey).html();
+                    var slon = $("#getlocations_fields_search_views_search_longitude_" + mkey).html();
+                    var sunit = $("#getlocations_fields_search_views_search_units_" + mkey).html();
+                  }
+                }
+                if (slat && slon) {
+                  qs.sdist = sunit + '|' + slat + '|' + slon;
                 }
 
                 $.get(gs.info_path, qs, function(data) {

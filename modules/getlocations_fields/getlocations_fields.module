@@ -728,6 +728,12 @@ function getlocations_fields_field_formatter_settings_form($field, $instance, $v
       t('Include a link to the Getdirections page in InfoBubble/InfoWindow.')
     );
   }
+  // show_search_distance
+  $element['show_search_distance'] = getlocations_element_map_checkbox(
+    t('Show search distance'),
+    $settings['show_search_distance'],
+    t('Show search distance from origin where relevant. Applies to Views using a distance filter.')
+  );
 
   // streetview overlay settings
   $element += getlocations_fields_sv_control_form($settings);
@@ -1823,6 +1829,7 @@ function getlocations_fields_getmap_show($settings, $lls = '', $minmaxes = '') {
   $getlocations_defaults['highlight_fillopacity']     = $settings['highlight_fillopacity'];
   $getlocations_defaults['highlight_radius']          = $settings['highlight_radius'];
   $getlocations_defaults['getdirections_link']        = $settings['getdirections_link'];
+  $getlocations_defaults['show_search_distance']      = $settings['show_search_distance'];
   $getlocations_defaults['gps_button']                = $settings['gps_button'];
   $getlocations_defaults['gps_button_label']          = $settings['gps_button_label'];
   $getlocations_defaults['gps_marker']                = $settings['gps_marker'];
@@ -2547,6 +2554,7 @@ function getlocations_fields_defaults() {
     'highlight_fillopacity'     => $getlocations_defaults['highlight_fillopacity'],
     'highlight_radius'          => $getlocations_defaults['highlight_radius'],
     'getdirections_link'        => $getlocations_defaults['getdirections_link'],
+    'show_search_distance'      => $getlocations_defaults['show_search_distance'],
     'gps_button'                => 0,
     'gps_button_label'          => $getlocations_defaults['gps_button_label'],
     'gps_marker'                => $getlocations_defaults['gps_marker'],
@@ -2741,6 +2749,7 @@ function getlocations_fields_field_info_defaults() {
         'highlight_fillopacity'           => $getlocations_fields_defaults['highlight_fillopacity'],
         'highlight_radius'                => $getlocations_fields_defaults['highlight_radius'],
         'getdirections_link'              => $getlocations_fields_defaults['getdirections_link'],
+        'show_search_distance'            => $getlocations_fields_defaults['show_search_distance'],
         'gps_button'                      => $getlocations_fields_defaults['gps_button'],
         'gps_button_label'                => $getlocations_fields_defaults['gps_button_label'],
         'gps_marker'                      => $getlocations_fields_defaults['gps_marker'],
@@ -2907,6 +2916,7 @@ function getlocations_fields_field_formatter_info_defaults() {
     'highlight_fillopacity'     => $getlocations_defaults['highlight_fillopacity'],
     'highlight_radius'          => $getlocations_defaults['highlight_radius'],
     'getdirections_link'        => $getlocations_defaults['getdirections_link'],
+    'show_search_distance'      => $getlocations_defaults['show_search_distance'],
     'gps_button'                => 0,
     'gps_button_label'          => $getlocations_defaults['gps_button_label'],
     'gps_marker'                => $getlocations_defaults['gps_marker'],

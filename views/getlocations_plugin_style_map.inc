@@ -198,6 +198,8 @@ class getlocations_plugin_style_map extends views_plugin_style {
     $options['gps_geocode']      = array('default' => $getlocations_defaults['gps_geocode']);
     $options['gps_center']       = array('default' => $getlocations_defaults['gps_center']);
 
+    $options['show_search_distance']       = array('default' => $getlocations_defaults['show_search_distance']);
+
     $fieldables = getlocations_get_fieldable_entity_types();
     foreach ($fieldables AS $entity_type) {
       $options[$entity_type . '_map_marker'] = array('default' => $getlocations_defaults[$entity_type . '_map_marker']);
@@ -294,6 +296,13 @@ class getlocations_plugin_style_map extends views_plugin_style {
         t('Include a link to the Getdirections page in InfoBubble/InfoWindow.')
       );
     }
+
+    // show_search_distance
+    $form['show_search_distance'] = getlocations_element_map_checkbox(
+      t('Show search distance'),
+      $this->options['show_search_distance'],
+      t('Show search distance from origin where relevant. Applies to Views using a distance filter.')
+    );
 
     // categories
     $term_reference_fields = getlocations_get_term_reference_fields();

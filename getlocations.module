@@ -1221,6 +1221,7 @@ function getlocations_defaults($reset = FALSE) {
     'gps_center'                    => 0,
     'geolocation_mobile_check'      => 1,
     'is_https'                      => ($is_https ? 1 : 0),
+    'show_search_distance'          => 0,
   );
 
   $fieldables = getlocations_get_fieldable_entity_types();
@@ -2466,6 +2467,7 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
     $settings[$mapid]['highlight_radius']        = $defaults['highlight_radius'];
   }
   $settings[$mapid]['getdirections_link']        = $defaults['getdirections_link'];
+  $settings[$mapid]['show_search_distance']      = $defaults['show_search_distance'];
 
   drupal_add_js(array('getlocations' => $settings), 'setting');
 
@@ -6242,6 +6244,15 @@ function theme_getlocations_show($variables) {
   $output .= "\n" . '<script type="text/javascript">' . "\n" . '<!--//--><![CDATA[//><!--' . "\n";
   $output .= 'getlocations_data["' . $mapid . '"] = ' . $localdata . ';' . "\n";
   $output .= '//--><!]]>' . "\n" . '</script>' . "\n";
+
+  // show_search_distance
+  if (isset($defaults['search_dist_info'])) {
+    $output .= '<div id="getlocations_fields_search_views_search_wrapper_' . $mapid . '" class="js-hide">';
+    $output .= '<div id="getlocations_fields_search_views_search_units_' . $mapid . '">' . $defaults['search_dist_info']['search_units'] . '</div>';
+    $output .= '<div id="getlocations_fields_search_views_search_latitude_' . $mapid . '">' . $defaults['search_dist_info']['latitude'] . '</div>';
+    $output .= '<div id="getlocations_fields_search_views_search_longitude_' . $mapid . '">' . $defaults['search_dist_info']['longitude'] . '</div>';
+    $output .= '</div>';
+  }
 
   // show maplinks if enabled
   if ($defaults['show_maplinks']) {

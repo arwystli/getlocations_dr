@@ -176,6 +176,13 @@ function getlocations_settings_form() {
     );
   }
 
+  // show_search_distance
+  $form['getlocations_default']['show_search_distance'] = getlocations_element_map_checkbox(
+    t('Show search distance'),
+    $getlocations_defaults['show_search_distance'],
+    t('Show search distance from origin where relevant. Applies to Views using a distance filter.')
+  );
+
   $form['getlocations_default']['preload_data'] = getlocations_element_map_checkbox(
     t('Preload marker data'),
     $getlocations_defaults['preload_data'],
