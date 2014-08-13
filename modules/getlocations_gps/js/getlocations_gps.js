@@ -128,6 +128,7 @@
                         }
                       }
                       else {
+                        deactive_throbber(key);
                         var prm = {'!b': Drupal.getlocations.getGeoErrCode(status) };
                         var msg = Drupal.t('Geocode was not successful for the following reason: !b', prm);
                         alert(msg);
@@ -150,6 +151,7 @@
                   }
                 },
                 function(error) {
+                  deactive_throbber(key);
                   msg = Drupal.t("Sorry, I couldn't find your location using the browser") + ' ' + Drupal.getlocations.geolocationErrorMessages(error) + ".";
                   alert(msg);
                 },
