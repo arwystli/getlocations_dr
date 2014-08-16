@@ -132,6 +132,14 @@ class getlocations_fields_handler_filter_distance extends views_handler_filter {
       $form['settings']['country']['#dependency'] = array('edit-options-origin' => array('search'));
       $form['settings']['country']['#suffix'] = '</div>';
 
+      $getlocations_fields_paths = getlocations_fields_paths_get();
+      $getlocations_paths = getlocations_paths_get();
+
+      $form['#attached']['js'] = array(
+        $getlocations_fields_paths['getlocations_fields_search_views_path'] => array('type' => 'file', 'weight' => 20),
+        $getlocations_paths['getlocations_geo_path'] =>  array('type' => 'file', 'weight' => 21)
+      );
+
       if ($this->options['origin'] == 'search') {
         if (isset($this->options['settings'])) {
           $settings = array(
@@ -144,9 +152,6 @@ class getlocations_fields_handler_filter_distance extends views_handler_filter {
         }
         $getlocations_defaults = getlocations_defaults();
         getlocations_setup_js($getlocations_defaults, TRUE);
-        $getlocations_fields_paths = getlocations_fields_paths_get();
-        $form['#attached']['js'] = array($getlocations_fields_paths['getlocations_fields_search_views_path']);
-
       }
 
     }
@@ -200,7 +205,11 @@ class getlocations_fields_handler_filter_distance extends views_handler_filter {
 
     $form['value']['search_units'] = getlocations_element_distance_unit($this->value['search_units']);
     $form['value']['search_distance'] = getlocations_element_search_distance($this->value['search_distance']);
-
+    $form['value']['search_operator'] = array(
+      '#type' => 'hidden',
+      '#value' => $this->options['operator'],
+      '#attributes' => array('id' => array('views_search_operator')),
+    );
   }
 
   function exposed_form(&$form, &$form_state) {

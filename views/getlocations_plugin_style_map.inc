@@ -198,7 +198,20 @@ class getlocations_plugin_style_map extends views_plugin_style {
     $options['gps_geocode']      = array('default' => $getlocations_defaults['gps_geocode']);
     $options['gps_center']       = array('default' => $getlocations_defaults['gps_center']);
 
-    $options['show_search_distance']       = array('default' => $getlocations_defaults['show_search_distance']);
+    $options['show_search_distance']                = array('default' => $getlocations_defaults['show_search_distance']);
+    $options['views_search_marker_enable']          = array('default' => $getlocations_defaults['views_search_marker_enable']);
+    $options['views_search_marker']                 = array('default' => $getlocations_defaults['views_search_marker']);
+    $options['views_search_marker_toggle']          = array('default' => $getlocations_defaults['views_search_marker_toggle']);
+    $options['views_search_marker_toggle_active']   = array('default' => $getlocations_defaults['views_search_marker_toggle_active']);
+    $options['views_search_radshape_enable']        = array('default' => $getlocations_defaults['views_search_radshape_enable']);
+    $options['views_search_radshape_strokecolor']   = array('default' => $getlocations_defaults['views_search_radshape_strokecolor']);
+    $options['views_search_radshape_strokeopacity'] = array('default' => $getlocations_defaults['views_search_radshape_strokeopacity']);
+    $options['views_search_radshape_strokeweight']  = array('default' => $getlocations_defaults['views_search_radshape_strokeweight']);
+    $options['views_search_radshape_fillcolor']     = array('default' => $getlocations_defaults['views_search_radshape_fillcolor']);
+    $options['views_search_radshape_fillopacity']   = array('default' => $getlocations_defaults['views_search_radshape_fillopacity']);
+    $options['views_search_radshape_toggle']        = array('default' => $getlocations_defaults['views_search_radshape_toggle']);
+    $options['views_search_radshape_toggle_active'] = array('default' => $getlocations_defaults['views_search_radshape_toggle_active']);
+    $options['views_search_center']                 = array('default' => $getlocations_defaults['views_search_center']);
 
     $fieldables = getlocations_get_fieldable_entity_types();
     foreach ($fieldables AS $entity_type) {
@@ -297,12 +310,8 @@ class getlocations_plugin_style_map extends views_plugin_style {
       );
     }
 
-    // show_search_distance
-    $form['show_search_distance'] = getlocations_element_map_checkbox(
-      t('Show search distance'),
-      $this->options['show_search_distance'],
-      t('Show search distance from origin where relevant. Applies to Views using a distance filter.')
-    );
+    // views_search_marker etc
+    $form += getlocations_fields_views_search_form($this->options);
 
     // categories
     $term_reference_fields = getlocations_get_term_reference_fields();

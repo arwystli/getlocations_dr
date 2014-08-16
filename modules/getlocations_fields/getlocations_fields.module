@@ -728,12 +728,9 @@ function getlocations_fields_field_formatter_settings_form($field, $instance, $v
       t('Include a link to the Getdirections page in InfoBubble/InfoWindow.')
     );
   }
-  // show_search_distance
-  $element['show_search_distance'] = getlocations_element_map_checkbox(
-    t('Show search distance'),
-    $settings['show_search_distance'],
-    t('Show search distance from origin where relevant. Applies to Views using a distance filter.')
-  );
+
+  // views_search_marker etc
+  $element += getlocations_fields_views_search_form($settings);
 
   // streetview overlay settings
   $element += getlocations_fields_sv_control_form($settings);
@@ -1830,6 +1827,19 @@ function getlocations_fields_getmap_show($settings, $lls = '', $minmaxes = '') {
   $getlocations_defaults['highlight_radius']          = $settings['highlight_radius'];
   $getlocations_defaults['getdirections_link']        = $settings['getdirections_link'];
   $getlocations_defaults['show_search_distance']      = $settings['show_search_distance'];
+  $getlocations_defaults['views_search_marker_enable']          = $settings['views_search_marker_enable'];
+  $getlocations_defaults['views_search_marker']                 = $settings['views_search_marker'];
+  $getlocations_defaults['views_search_marker_toggle']          = $settings['views_search_marker_toggle'];
+  $getlocations_defaults['views_search_marker_toggle_active']   = $settings['views_search_marker_toggle_active'];
+  $getlocations_defaults['views_search_radshape_enable']        = $settings['views_search_radshape_enable'];
+  $getlocations_defaults['views_search_radshape_strokecolor']   = $settings['views_search_radshape_strokecolor'];
+  $getlocations_defaults['views_search_radshape_strokeopacity'] = $settings['views_search_radshape_strokeopacity'];
+  $getlocations_defaults['views_search_radshape_strokeweight']  = $settings['views_search_radshape_strokeweight'];
+  $getlocations_defaults['views_search_radshape_fillcolor']     = $settings['views_search_radshape_fillcolor'];
+  $getlocations_defaults['views_search_radshape_fillopacity']   = $settings['views_search_radshape_fillopacity'];
+  $getlocations_defaults['views_search_radshape_toggle']        = $settings['views_search_radshape_toggle'];
+  $getlocations_defaults['views_search_radshape_toggle_active'] = $settings['views_search_radshape_toggle_active'];
+  $getlocations_defaults['views_search_center']                 = $settings['views_search_center'];
   $getlocations_defaults['gps_button']                = $settings['gps_button'];
   $getlocations_defaults['gps_button_label']          = $settings['gps_button_label'];
   $getlocations_defaults['gps_marker']                = $settings['gps_marker'];
@@ -2555,6 +2565,19 @@ function getlocations_fields_defaults() {
     'highlight_radius'          => $getlocations_defaults['highlight_radius'],
     'getdirections_link'        => $getlocations_defaults['getdirections_link'],
     'show_search_distance'      => $getlocations_defaults['show_search_distance'],
+    'views_search_marker_enable'           => $getlocations_defaults['views_search_marker_enable'],
+    'views_search_marker'                  => $getlocations_defaults['views_search_marker'],
+    'views_search_marker_toggle'           => $getlocations_defaults['views_search_marker_toggle'],
+    'views_search_marker_toggle_active'    => $getlocations_defaults['views_search_marker_toggle_active'],
+    'views_search_radshape_enable'         => $getlocations_defaults['views_search_radshape_enable'],
+    'views_search_radshape_strokecolor'    => $getlocations_defaults['views_search_radshape_strokecolor'],
+    'views_search_radshape_strokeopacity'  => $getlocations_defaults['views_search_radshape_strokeopacity'],
+    'views_search_radshape_strokeweight'   => $getlocations_defaults['views_search_radshape_strokeweight'],
+    'views_search_radshape_fillcolor'      => $getlocations_defaults['views_search_radshape_fillcolor'],
+    'views_search_radshape_fillopacity'    => $getlocations_defaults['views_search_radshape_fillopacity'],
+    'views_search_radshape_toggle'         => $getlocations_defaults['views_search_radshape_toggle'],
+    'views_search_radshape_toggle_active'  => $getlocations_defaults['views_search_radshape_toggle_active'],
+    'views_search_center'                  => $getlocations_defaults['views_search_center'],
     'gps_button'                => 0,
     'gps_button_label'          => $getlocations_defaults['gps_button_label'],
     'gps_marker'                => $getlocations_defaults['gps_marker'],
@@ -2750,6 +2773,19 @@ function getlocations_fields_field_info_defaults() {
         'highlight_radius'                => $getlocations_fields_defaults['highlight_radius'],
         'getdirections_link'              => $getlocations_fields_defaults['getdirections_link'],
         'show_search_distance'            => $getlocations_fields_defaults['show_search_distance'],
+        'views_search_marker_enable'           => $getlocations_fields_defaults['views_search_marker_enable'],
+        'views_search_marker'                  => $getlocations_fields_defaults['views_search_marker'],
+        'views_search_marker_toggle'           => $getlocations_fields_defaults['views_search_marker_toggle'],
+        'views_search_marker_toggle_active'    => $getlocations_fields_defaults['views_search_marker_toggle_active'],
+        'views_search_radshape_enable'         => $getlocations_fields_defaults['views_search_radshape_enable'],
+        'views_search_radshape_strokecolor'    => $getlocations_fields_defaults['views_search_radshape_strokecolor'],
+        'views_search_radshape_strokeopacity'  => $getlocations_fields_defaults['views_search_radshape_strokeopacity'],
+        'views_search_radshape_strokeweight'   => $getlocations_fields_defaults['views_search_radshape_strokeweight'],
+        'views_search_radshape_fillcolor'      => $getlocations_fields_defaults['views_search_radshape_fillcolor'],
+        'views_search_radshape_fillopacity'    => $getlocations_fields_defaults['views_search_radshape_fillopacity'],
+        'views_search_radshape_toggle'         => $getlocations_fields_defaults['views_search_radshape_toggle'],
+        'views_search_radshape_toggle_active'  => $getlocations_fields_defaults['views_search_radshape_toggle_active'],
+        'views_search_center'                  => $getlocations_fields_defaults['views_search_center'],
         'gps_button'                      => $getlocations_fields_defaults['gps_button'],
         'gps_button_label'                => $getlocations_fields_defaults['gps_button_label'],
         'gps_marker'                      => $getlocations_fields_defaults['gps_marker'],
@@ -2917,6 +2953,19 @@ function getlocations_fields_field_formatter_info_defaults() {
     'highlight_radius'          => $getlocations_defaults['highlight_radius'],
     'getdirections_link'        => $getlocations_defaults['getdirections_link'],
     'show_search_distance'      => $getlocations_defaults['show_search_distance'],
+    'views_search_marker_enable'           => $getlocations_defaults['views_search_marker_enable'],
+    'views_search_marker'                  => $getlocations_defaults['views_search_marker'],
+    'views_search_marker_toggle'           => $getlocations_defaults['views_search_marker_toggle'],
+    'views_search_marker_toggle_active'    => $getlocations_defaults['views_search_marker_toggle_active'],
+    'views_search_radshape_enable'         => $getlocations_defaults['views_search_radshape_enable'],
+    'views_search_radshape_strokecolor'    => $getlocations_defaults['views_search_radshape_strokecolor'],
+    'views_search_radshape_strokeopacity'  => $getlocations_defaults['views_search_radshape_strokeopacity'],
+    'views_search_radshape_strokeweight'   => $getlocations_defaults['views_search_radshape_strokeweight'],
+    'views_search_radshape_fillcolor'      => $getlocations_defaults['views_search_radshape_fillcolor'],
+    'views_search_radshape_fillopacity'    => $getlocations_defaults['views_search_radshape_fillopacity'],
+    'views_search_radshape_toggle'         => $getlocations_defaults['views_search_radshape_toggle'],
+    'views_search_radshape_toggle_active'  => $getlocations_defaults['views_search_radshape_toggle_active'],
+    'views_search_center'                  => $getlocations_defaults['views_search_center'],
     'gps_button'                => 0,
     'gps_button_label'          => $getlocations_defaults['gps_button_label'],
     'gps_marker'                => $getlocations_defaults['gps_marker'],

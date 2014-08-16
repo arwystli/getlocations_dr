@@ -176,12 +176,16 @@ function getlocations_settings_form() {
     );
   }
 
-  // show_search_distance
-  $form['getlocations_default']['show_search_distance'] = getlocations_element_map_checkbox(
-    t('Show search distance'),
-    $getlocations_defaults['show_search_distance'],
-    t('Show search distance from origin where relevant. Applies to Views using a distance filter.')
-  );
+  // views_search options
+  if (module_exists('getlocations_fields') && module_exists('views')) {
+    $form['getlocations_default'] += getlocations_fields_views_search_form($getlocations_defaults);
+  }
+  else {
+    $form['getlocations_default']['show_search_distance'] = array('#type' => 'value', '#value' => 0);
+    $form['getlocations_default']['views_search_marker_enable'] = array('#type' => 'value', '#value' => 0);
+    $form['getlocations_default']['views_search_radshape_enable'] = array('#type' => 'value', '#value' => 0);
+    $form['getlocations_default']['views_search_center'] = array('#type' => 'value', '#value' => 0);
+  }
 
   $form['getlocations_default']['preload_data'] = getlocations_element_map_checkbox(
     t('Preload marker data'),

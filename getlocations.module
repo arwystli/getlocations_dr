@@ -1222,6 +1222,19 @@ function getlocations_defaults($reset = FALSE) {
     'geolocation_mobile_check'      => 1,
     'is_https'                      => ($is_https ? 1 : 0),
     'show_search_distance'          => 0,
+    'views_search_marker_enable'           => 0,
+    'views_search_marker'                  => 'drupal',
+    'views_search_marker_toggle'           => 0,
+    'views_search_marker_toggle_active'    => 0,
+    'views_search_radshape_enable'         => 0,
+    'views_search_radshape_strokecolor'    => '#FF0000',
+    'views_search_radshape_strokeopacity'  => '0.8',
+    'views_search_radshape_strokeweight'   => '3',
+    'views_search_radshape_fillcolor'      => '#FF0000',
+    'views_search_radshape_fillopacity'    => '0.35',
+    'views_search_radshape_toggle'         => 0,
+    'views_search_radshape_toggle_active'  => 0,
+    'views_search_center'                  => 0,
   );
 
   $fieldables = getlocations_get_fieldable_entity_types();
@@ -2468,6 +2481,21 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
   }
   $settings[$mapid]['getdirections_link']        = $defaults['getdirections_link'];
   $settings[$mapid]['show_search_distance']      = $defaults['show_search_distance'];
+  $settings[$mapid]['views_search_marker_enable']            = $defaults['views_search_marker_enable'];
+  $settings[$mapid]['views_search_radshape_enable']          = $defaults['views_search_radshape_enable'];
+  $settings[$mapid]['views_search_center']                   = $defaults['views_search_center'];
+  if ($defaults['views_search_marker_enable'] || $defaults['views_search_radshape_enable']) {
+    $settings[$mapid]['views_search_marker']                 = $defaults['views_search_marker'];
+    $settings[$mapid]['views_search_marker_toggle']          = $defaults['views_search_marker_toggle'];
+    $settings[$mapid]['views_search_marker_toggle_active']   = $defaults['views_search_marker_toggle_active'];
+    $settings[$mapid]['views_search_radshape_strokecolor']   = $defaults['views_search_radshape_strokecolor'];
+    $settings[$mapid]['views_search_radshape_strokeopacity'] = $defaults['views_search_radshape_strokeopacity'];
+    $settings[$mapid]['views_search_radshape_strokeweight']  = $defaults['views_search_radshape_strokeweight'];
+    $settings[$mapid]['views_search_radshape_fillcolor']     = $defaults['views_search_radshape_fillcolor'];
+    $settings[$mapid]['views_search_radshape_fillopacity']   = $defaults['views_search_radshape_fillopacity'];
+    $settings[$mapid]['views_search_radshape_toggle']        = $defaults['views_search_radshape_toggle'];
+    $settings[$mapid]['views_search_radshape_toggle_active'] = $defaults['views_search_radshape_toggle_active'];
+  }
 
   drupal_add_js(array('getlocations' => $settings), 'setting');
 
@@ -6246,11 +6274,12 @@ function theme_getlocations_show($variables) {
   $output .= '//--><!]]>' . "\n" . '</script>' . "\n";
 
   // show_search_distance
-  if (isset($defaults['search_dist_info'])) {
+  if (module_exists('getlocations_fields') && isset($defaults['search_dist_info'])) {
     $output .= '<div id="getlocations_fields_search_views_search_wrapper_' . $mapid . '" class="js-hide">';
     $output .= '<div id="getlocations_fields_search_views_search_units_' . $mapid . '">' . $defaults['search_dist_info']['search_units'] . '</div>';
     $output .= '<div id="getlocations_fields_search_views_search_latitude_' . $mapid . '">' . $defaults['search_dist_info']['latitude'] . '</div>';
     $output .= '<div id="getlocations_fields_search_views_search_longitude_' . $mapid . '">' . $defaults['search_dist_info']['longitude'] . '</div>';
+    $output .= '<div id="getlocations_fields_search_views_search_distance_meters_' . $mapid . '">' . getlocations_convert_distance_to_meters($defaults['search_dist_info']['search_distance'], $defaults['search_dist_info']['search_units']) . '</div>';
     $output .= '</div>';
   }
 
@@ -6280,6 +6309,14 @@ function theme_getlocations_show($variables) {
     if ($defaults['weather_cloud']) {
       $buttons[] = '<input type="button" value="' . t('Clouds !t', array('!t' => ($defaults['weather_cloud_state'] ? t('Off') : t('On')))) . '" id="getlocations_toggleCloud_' . $mapid . '" class="form-submit" />';
     }
+  }
+
+  // views_search_marker
+  if ($defaults['views_search_marker_enable'] && $defaults['views_search_marker_toggle']) {
+    $buttons[] = '<input type="button" value="' . t('Search marker !t', array('!t' => ($defaults['views_search_marker_toggle_active'] ? t('Off') : t('On')))) . '" id="getlocations_toggleSearchMarker_' . $mapid . '" class="form-submit" />';
+  }
+  if ($defaults['views_search_radshape_enable'] && $defaults['views_search_radshape_toggle']) {
+    $buttons[] = '<input type="button" value="' . t('Search area !t', array('!t' => ($defaults['views_search_radshape_toggle_active'] ? t('Off') : t('On')))) . '" id="getlocations_toggleSearchArea_' . $mapid . '" class="form-submit" />';
   }
 
   // categories
