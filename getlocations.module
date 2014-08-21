@@ -6312,11 +6312,13 @@ function theme_getlocations_show($variables) {
   }
 
   // views_search_marker
-  if ($defaults['views_search_marker_enable'] && $defaults['views_search_marker_toggle']) {
-    $buttons[] = '<input type="button" value="' . t('Search marker !t', array('!t' => ($defaults['views_search_marker_toggle_active'] ? t('Off') : t('On')))) . '" id="getlocations_toggleSearchMarker_' . $mapid . '" class="form-submit" />';
-  }
-  if ($defaults['views_search_radshape_enable'] && $defaults['views_search_radshape_toggle']) {
-    $buttons[] = '<input type="button" value="' . t('Search area !t', array('!t' => ($defaults['views_search_radshape_toggle_active'] ? t('Off') : t('On')))) . '" id="getlocations_toggleSearchArea_' . $mapid . '" class="form-submit" />';
+  if (module_exists('getlocations_fields') && isset($defaults['search_dist_info'])) {
+    if ($defaults['views_search_marker_enable'] && $defaults['views_search_marker_toggle']) {
+      $buttons[] = '<input type="button" value="' . t('Search marker !t', array('!t' => ($defaults['views_search_marker_toggle_active'] ? t('Off') : t('On')))) . '" id="getlocations_toggleSearchMarker_' . $mapid . '" class="form-submit" />';
+    }
+    if ($defaults['views_search_radshape_enable'] && $defaults['views_search_radshape_toggle']) {
+      $buttons[] = '<input type="button" value="' . t('Search area !t', array('!t' => ($defaults['views_search_radshape_toggle_active'] ? t('Off') : t('On')))) . '" id="getlocations_toggleSearchArea_' . $mapid . '" class="form-submit" />';
+    }
   }
 
   // categories

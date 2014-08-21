@@ -17,6 +17,7 @@ var getlocations_leaflet_data = [];
 var getlocations_leaflet_geocoder = [];
 
 (function ($) {
+  Drupal.getlocations_leaflet = {};
   Drupal.behaviors.getlocations_leaflet = {
     attach: function (context, settings) {
 
@@ -325,113 +326,13 @@ var getlocations_leaflet_geocoder = [];
               var vector        = latlon[7];
               var markeraction  = latlon[8];
               var cat           = latlon[9];
-              var vicon = vector.data;
-              var marker_type = vector.type;
-
-              // check for duplicates
-              var hash = new String(lat + lon);
-              if (getlocations_leaflet_markers[key].coords[hash] == null) {
-                getlocations_leaflet_markers[key].coords[hash] = 1;
-              }
-              else {
-                // we have a duplicate
-                // 10000 constrains the max, 0.0001 constrains the min distance
-                var m1 = (Math.random() /10000) + 0.0001;
-                // randomise the operator
-                var m2 = Math.random();
-                if (m2 > 0.5) {
-                  lat = parseFloat(lat) + m1;
-                }
-                else {
-                  lat = parseFloat(lat) - m1;
-                }
-                m1 = (Math.random() /10000) + 0.0001;
-                m2 = Math.random();
-                if (m2 > 0.5) {
-                  lon = parseFloat(lon) + m1;
-                }
-                else {
-                  lon = parseFloat(lon) - m1;
-                }
-              }
-
-              // make markers
-              var latLng = L.latLng(lat, lon);
-
               var icon = '';
               if (markername) {
                 icon = icons[markername];
               }
-              if (icon || (vicon && map_settings.awesome)) {
-                if (vicon && map_settings.awesome) {
-                  // icon only
-                  if (marker_type == 'i') {
-                    var px = parseInt(vicon.px);
-                    var diopts = {className: 'getlocations-leaflet-div-icon', iconSize: [px, px], html: vicon.html};
-                    var thisVicon = L.divIcon(diopts);
-                  }
-                  else {
-                    var thisVicon = L.AwesomeMarkers.icon(vicon);
-                  }
-                  var Marker = L.marker(latLng, {icon: thisVicon});
 
-                }
-                else if (icon) {
-                  var thisIcon = L.icon({iconUrl: icon.iconUrl});
-                  // override applicable marker defaults
-                  if (icon.iconSize) {
-                    thisIcon.options.iconSize = L.point(parseInt(icon.iconSize.x, 10), parseInt(icon.iconSize.y, 10));
-                  }
-                  if (icon.iconAnchor) {
-                    thisIcon.options.iconAnchor = L.point(parseFloat(icon.iconAnchor.x, 10), parseFloat(icon.iconAnchor.y, 10));
-                  }
-                  if (icon.popupAnchor) {
-                    thisIcon.options.popupAnchor = L.point(parseFloat(icon.popupAnchor.x, 10), parseFloat(icon.popupAnchor.y, 10));
-                  }
-                  if (icon.shadowUrl !== undefined) {
-                    thisIcon.options.shadowUrl = icon.shadowUrl;
-                    if (icon.shadowSize) {
-                      thisIcon.options.shadowSize = L.point(parseInt(icon.shadowSize.x, 10), parseInt(icon.shadowSize.y, 10));
-                    }
-                    if (icon.shadowAnchor) {
-                      thisIcon.options.shadowAnchor = L.point(parseInt(icon.shadowAnchor.x, 10), parseInt(icon.shadowAnchor.y, 10));
-                    }
-                  }
-                  Marker = L.marker(latLng, {icon: thisIcon});
-                }
-
-              }
-              else {
-                // default leaflet marker
-                Marker = L.marker(latLng);
-              }
-
-              // tooltip
-              if (title) {
-                Marker.options.title = title;
-              }
-
-              // markeraction
-              if (markeraction && markeraction.type && markeraction.data) {
-                if (markeraction.type == 'popup') {
-                  Marker.bindPopup(markeraction.data);
-                }
-                else if (markeraction.type == 'link') {
-                  getlocations_leaflet_do_link(Marker, markeraction.data);
-                }
-              }
-              else {
-                Marker.options.clickable = false;
-              }
-
-              // bounce marker
-              if (map_settings.bouncemarker) {
-                Marker.options.bounceOnAdd = true;
-                Marker.options.bounceOnAddDuration = map_settings.bouncemarker_duration;
-                if (map_settings.bouncemarker_height) {
-                  Marker.options.bounceOnAddHeight = map_settings.bouncemarker_height;
-                }
-              }
+              // get the marker
+              Marker = Drupal.getlocations_leaflet.makeMarker(map_settings, lat, lon, entity_key, entity_id, glid, title, icon, vector, markeraction, cat, key);
 
               // add the marker to the group(s)
               if (map_settings.category_showhide_buttons && cat) {
@@ -558,4 +459,126 @@ var getlocations_leaflet_geocoder = [];
       }); // end once
     } // end attach
   }; // end behaviors
+
+
+  // external functions
+  Drupal.getlocations_leaflet.makeMarker = function(gs, lat, lon, entity_key, entity_id, glid, title, icon, vector, markeraction, cat, mkey) {
+
+    // categories
+    if (cat) {
+      getlocations_leaflet_markers[mkey].cat[glid] = cat;
+    }
+
+    var vicon = false;
+    if (typeof(vector.data) !== undefined) {
+      vicon = vector.data;
+      var marker_type = vector.type;
+    }
+
+    // check for duplicates
+    var hash = new String(lat + lon);
+    if (getlocations_leaflet_markers[mkey].coords[hash] == null) {
+      getlocations_leaflet_markers[mkey].coords[hash] = 1;
+    }
+    else {
+      // we have a duplicate
+      // 10000 constrains the max, 0.0001 constrains the min distance
+      m1 = (Math.random() /10000) + 0.0001;
+      // randomise the operator
+      m2 = Math.random();
+      if (m2 > 0.5) {
+        lat = parseFloat(lat) + m1;
+      }
+      else {
+        lat = parseFloat(lat) - m1;
+      }
+      m1 = (Math.random() /10000) + 0.0001;
+      m2 = Math.random();
+      if (m2 > 0.5) {
+        lon = parseFloat(lon) + m1;
+      }
+      else {
+        lon = parseFloat(lon) - m1;
+      }
+    }
+
+    // make markers
+    var latLng = L.latLng(lat, lon);
+    var Marker = {};
+
+    if (icon || (vicon && gs.awesome)) {
+      if (vicon && gs.awesome) {
+        // icon only
+        if (marker_type == 'i') {
+          var px = parseInt(vicon.px);
+          var diopts = {className: 'getlocations-leaflet-div-icon', iconSize: [px, px], html: vicon.html};
+          var thisVicon = L.divIcon(diopts);
+        }
+        else {
+          var thisVicon = L.AwesomeMarkers.icon(vicon);
+        }
+        var Marker = L.marker(latLng, {icon: thisVicon});
+
+      }
+      else if (icon) {
+        var thisIcon = L.icon({iconUrl: icon.iconUrl});
+        // override applicable marker defaults
+        if (icon.iconSize) {
+          thisIcon.options.iconSize = L.point(parseInt(icon.iconSize.x, 10), parseInt(icon.iconSize.y, 10));
+        }
+        if (icon.iconAnchor) {
+          thisIcon.options.iconAnchor = L.point(parseFloat(icon.iconAnchor.x, 10), parseFloat(icon.iconAnchor.y, 10));
+        }
+        if (icon.popupAnchor) {
+          thisIcon.options.popupAnchor = L.point(parseFloat(icon.popupAnchor.x, 10), parseFloat(icon.popupAnchor.y, 10));
+        }
+        if (icon.shadowUrl !== undefined) {
+          thisIcon.options.shadowUrl = icon.shadowUrl;
+          if (icon.shadowSize) {
+            thisIcon.options.shadowSize = L.point(parseInt(icon.shadowSize.x, 10), parseInt(icon.shadowSize.y, 10));
+          }
+          if (icon.shadowAnchor) {
+            thisIcon.options.shadowAnchor = L.point(parseInt(icon.shadowAnchor.x, 10), parseInt(icon.shadowAnchor.y, 10));
+          }
+        }
+        Marker = L.marker(latLng, {icon: thisIcon});
+      }
+    }
+    else {
+      // default leaflet marker
+      Marker = L.marker(latLng);
+    }
+
+    if (title) {
+      Marker.options.title = title;
+    }
+
+    // markeraction
+    if (markeraction && markeraction.type && markeraction.data) {
+      if (markeraction.type == 'popup') {
+        Marker.bindPopup(markeraction.data);
+      }
+      else if (markeraction.type == 'link') {
+        Marker.on('click', function() {
+          window.location = markeraction.data;
+        });
+      }
+    }
+    else {
+      Marker.options.clickable = false;
+    }
+
+    // bounce marker
+    if (gs.bouncemarker) {
+      Marker.options.bounceOnAdd = true;
+      Marker.options.bounceOnAddDuration = gs.bouncemarker_duration;
+      if (gs.bouncemarker_height) {
+        Marker.options.bounceOnAddHeight = gs.bouncemarker_height;
+      }
+    }
+
+    return Marker;
+  };
+
+
 })(jQuery);

@@ -9,6 +9,11 @@
  */
 
 (function ($) {
+
+  if ( typeof(Drupal.getlocations) == 'undefined') {
+    Drupal.getlocations = {};
+  }
+
   Drupal.getlocations.geo = {};
   Drupal.getlocations.geo.EARTH_RADIUS_SEMIMAJOR = 6378137.0;
   Drupal.getlocations.geo.EARTH_RADIUS_SEMIMINOR = (6378137.0*(1-(1/298.257223563)));

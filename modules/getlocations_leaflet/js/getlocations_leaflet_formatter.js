@@ -368,7 +368,7 @@
           $("#wrap-getlocations-usermarker").hide();
         }
       });
-////
+
       if ($("input[id$=bouncemarker]").attr('checked')) {
        $("#wrap-getlocations-bouncemarker").show();
       }
@@ -384,7 +384,42 @@
         }
       });
 
-////
+      // search marker
+      if ($("#edit-getlocations-leaflet-defaults-views-search-marker-enable").is('input')) {
+        if ($("#edit-getlocations-leaflet-defaults-views-search-marker-enable").attr('checked')) {
+          $("#wrap-getlocations-views-search-marker").show();
+        }
+        else {
+          $("#wrap-getlocations-views-search-marker").hide();
+        }
+        $("#edit-getlocations-leaflet-defaults-views-search-marker-enable").change(function() {
+          if ($(this).attr('checked')) {
+            $("#wrap-getlocations-views-search-marker").show();
+          }
+          else {
+            $("#wrap-getlocations-views-search-marker").hide();
+          }
+        });
+      }
+
+      // search area shape
+      if ($("#edit-getlocations-leaflet-defaults-views-search-radshape-enable").is('input')) {
+        if ($("#edit-getlocations-leaflet-defaults-views-search-radshape-enable").attr('checked')) {
+          $("#wrap-getlocations-views-search-radshape").show();
+        }
+        else {
+          $("#wrap-getlocations-views-search-radshape").hide();
+        }
+        $("#edit-getlocations-leaflet-defaults-views-search-radshape-enable").change(function() {
+          if ($(this).attr('checked')) {
+            $("#wrap-getlocations-views-search-radshape").show();
+          }
+          else {
+            $("#wrap-getlocations-views-search-radshape").hide();
+          }
+        });
+      }
+
     }
   };
 }(jQuery));

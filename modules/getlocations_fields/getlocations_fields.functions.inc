@@ -541,7 +541,7 @@ function getlocations_fields_smart_ip_get() {
  *   Returns form
  *
  */
-function getlocations_fields_views_search_form($defaults) {
+function getlocations_fields_views_search_form($defaults, $leaflet = FALSE) {
 
   $form = array();
     // show_search_distance
@@ -563,13 +563,44 @@ function getlocations_fields_views_search_form($defaults) {
       t('Show search marker on origin where relevant. Applies to Views using a distance filter.')
     );
     $form['views_search_marker_enable']['#suffix'] = '<div id="wrap-getlocations-views-search-marker">';
-    $markers = getlocations_get_marker_titles();
-    $form['views_search_marker'] = getlocations_element_map_marker(
-      t('Search Map marker'),
-      $markers,
-      $defaults['views_search_marker'],
-      ''
-    );
+
+    if ($leaflet) {
+      // TODO TEST THIS
+      if ($defaults['awesome'] && $defaults['marker_type'] == 'fa') {
+        $labels = array(
+          'awesome_icon' => t('Search Awesome icon'),
+          'awesome_icon_color' => t('Search Awesome icon color'),
+          'awesome_marker_color' => t('Search Awesome marker color'),
+          'awesome_title' => t('Search Awesome Fonts icon settings'),
+          'awesome_icon_spin' => t('Search Awesome icon spin'),
+          'awesome_icon_size' => t('Search Awesome icon size'),
+          'awesome_icon_type' => t('Search Awesome icon type'),
+          'awesome_icon_flip' => t('Search Awesome icon flip and rotate'),
+        );
+        $prefix = 'search';
+        $form += getlocations_leaflet_awesome_markers_elements_get($defaults, $labels, $prefix);
+      }
+      else {
+        // getlocations markers
+        $markers = getlocations_get_marker_titles();
+        $form['views_search_marker'] = getlocations_element_map_marker(
+          t('Search Map marker'),
+          $markers,
+          $defaults['views_search_marker'],
+          ''
+        );
+      }
+    }
+    else {
+      $markers = getlocations_get_marker_titles();
+      $form['views_search_marker'] = getlocations_element_map_marker(
+        t('Search Map marker'),
+        $markers,
+        $defaults['views_search_marker'],
+        ''
+      );
+    }
+
     $form['views_search_marker_toggle'] = getlocations_element_map_checkbox(
       t('Enable Search Marker toggle button'),
       $defaults['views_search_marker_toggle'],
