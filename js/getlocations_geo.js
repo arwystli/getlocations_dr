@@ -16,8 +16,8 @@
 
   Drupal.getlocations.geo = {};
   Drupal.getlocations.geo.EARTH_RADIUS_SEMIMAJOR = 6378137.0;
-  Drupal.getlocations.geo.EARTH_RADIUS_SEMIMINOR = (6378137.0*(1-(1/298.257223563)));
-  //Drupal.getlocations.geo.EARTH_FLATTENING = (1/298.257223563);
+  Drupal.getlocations.geo.EARTH_FLATTENING = (1/298.257223563);
+  Drupal.getlocations.geo.EARTH_RADIUS_SEMIMINOR = (Drupal.getlocations.geo.EARTH_RADIUS_SEMIMAJOR * (1 - Drupal.getlocations.geo.EARTH_FLATTENING));
   //Drupal.getlocations.geo.EARTH_ECCENTRICITY_SQ = (2*(1/298.257223563)-Math.pow((1/298.257223563), 2));
 
   /**
@@ -212,7 +212,7 @@
       'yd': 0.9144,
       'nmi': 1852.0
     };
-    if (units[distance_unit] === "undefined") {
+    if (units[distance_unit] === undefined) {
       distance_unit = 'km';
     }
     var conv = units[distance_unit];
@@ -238,7 +238,7 @@
       'yd': 1.093613298,
       'nmi': 0.000539957
     };
-    if (units[distance_unit] === "undefined") {
+    if (units[distance_unit] === undefined) {
       distance_unit = 'km';
     }
     var conv = units[distance_unit];

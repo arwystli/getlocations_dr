@@ -269,7 +269,7 @@
               }
               $("#getlocations_leaflet_toggleSearchMarker_" + key).attr('disabled', true);
             }
-
+            // do some setup
             if (gset.map_settings.views_search_radshape_enable) {
               var leafletviewssearchshapetoggleState = [];
               leafletviewssearchshapetoggleState[key] = true;
@@ -278,7 +278,6 @@
               }
               $("#getlocations_leaflet_toggleSearchArea_" + key).attr('disabled', true);
             }
-
             // views_search_marker and views_search_radshape_enable
             var slat = false;
             var slon = false;
@@ -290,19 +289,19 @@
               distance_meters = $("#getlocations_fields_search_views_search_distance_meters_" + key).html();
             }
             if (slat && slon && distance_meters) {
-
               var latLng = L.latLng(parseFloat(slat), parseFloat(slon));
               var lats = Drupal.getlocations.geo.earth_latitude_range(slat, slon, distance_meters);
               var lngs = Drupal.getlocations.geo.earth_longitude_range(slat, slon, distance_meters);
+              var sw = L.latLng(parseFloat(lats[0]), parseFloat(lngs[0])), ne = L.latLng(parseFloat(lats[1]), parseFloat(lngs[1]));
               var searchLayer = L.layerGroup();
               // views_search_marker
               if (gset.map_settings.views_search_marker_enable) {
                 var icon = (gset.map_settings.views_search_marker_info ? gset.map_settings.views_search_marker_info : false);
+                var title = Drupal.t('Search Center');
                 // make a leaflet marker gset.views_search_marker
                 var searchMarker = {};
-                searchMarker[key] = Drupal.getlocations_leaflet.makeMarker(gset.map_settings, slat, slon, '', '', 0, Drupal.t('Search Center'), icon, false, 0, '', key);
+                searchMarker[key] = Drupal.getlocations_leaflet.makeMarker(gset.map_settings, slat, slon, '', '', 0, title , icon, false, 0, '', key);
                 searchLayer.addLayer(searchMarker[key]);
-
                 // initial setting
                 if (gset.map_settings.views_search_marker_toggle) {
                   if (gset.map_settings.views_search_marker_toggle_active) {
@@ -335,7 +334,6 @@
                   searchLayer.addLayer(searchMarker[key]);
                 }
               }
-
               // views_search_radshape
               if (gset.map_settings.views_search_radshape_enable) {
                 if ( $("#views_search_operator").is('input')) {
@@ -366,10 +364,7 @@
                   }
                   else if (op == 'mbr') {
                     // rectangle
-                    var mcoords = [];
-                    mcoords[0] = L.latLng(parseFloat(lats[0]), parseFloat(lngs[0]));
-                    mcoords[1] = L.latLng(parseFloat(lats[1]), parseFloat(lngs[1]));
-                    var bounds = new L.LatLngBounds(mcoords[0], mcoords[1]);
+                    var bounds = new L.LatLngBounds(sw, ne);
                     rShape[key] = new L.Rectangle(bounds, shapeOpts);
                     searchLayer.addLayer(rShape[key]);
                     done = true;
@@ -413,16 +408,13 @@
                   }
                 }
               }
-
+              // add to the map
               if (gset.map_settings.views_search_marker_enable || gset.map_settings.views_search_radshape_enable) {
                 getlocations_leaflet_map[key].addLayer(searchLayer);
               }
-
               // views_search_center
               if (gset.map_settings.views_search_center) {
-                var sw = L.latLng(parseFloat(lats[0]), parseFloat(lngs[0])),
-                  ne = L.latLng(parseFloat(lats[1]), parseFloat(lngs[1])),
-                  bounds = L.latLngBounds(sw, ne).pad(0.1);
+                var bounds = L.latLngBounds(sw, ne).pad(0.1);
                   getlocations_leaflet_map[key].fitBounds(bounds, {reset: true});
               }
             } // end if slat && slon
