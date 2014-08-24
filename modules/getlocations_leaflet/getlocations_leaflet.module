@@ -1285,6 +1285,15 @@ function getlocations_leaflet_map_settings_do($map_settings, $defaults, $latlons
   $map_settings['map_settings']['default_layer_name'] = $defaults['default_baselayer'];
   $map_settings['map_settings']['default_layer_label'] = $ml['map_layers'][$defaults['default_baselayer']]['label'];
 
+  // if only one has been selected
+  if (isset($map_settings['map_layers']) && count($map_settings['map_layers']) == 1) {
+    $map_keys = array_keys($map_settings['map_layers']);
+    if ($map_settings['map_layers'][$map_keys[0]]['type'] == 'base') {
+      $map_settings['map_settings']['default_layer_name'] = $map_keys[0];
+      $map_settings['map_settings']['default_layer_label'] = $map_settings['map_layers'][$map_keys[0]]['label'];
+    }
+  }
+
   // Scale
   $map_settings['map_settings']['scaleControl'] = ($defaults['scaleControl'] ? TRUE : FALSE);
   $map_settings['map_settings']['scalecontrolposition'] = $defaults['scalecontrolposition'];
