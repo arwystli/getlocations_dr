@@ -370,7 +370,7 @@
       });
 
       if ($("input[id$=bouncemarker]").attr('checked')) {
-       $("#wrap-getlocations-bouncemarker").show();
+        $("#wrap-getlocations-bouncemarker").show();
       }
       else {
         $("#wrap-getlocations-bouncemarker").hide();
@@ -381,6 +381,21 @@
         }
         else {
           $("#wrap-getlocations-bouncemarker").hide();
+        }
+      });
+
+      if ($("input[id$=magnifyingglass]").attr('checked')) {
+        $("#wrap-getlocations-magnifyingglass").show();
+      }
+      else {
+        $("#wrap-getlocations-magnifyingglass").hide();
+      }
+      $("input[id$=magnifyingglass]").change(function() {
+        if ($(this).attr('checked')) {
+          $("#wrap-getlocations-magnifyingglass").show();
+        }
+        else {
+          $("#wrap-getlocations-magnifyingglass").hide();
         }
       });
 

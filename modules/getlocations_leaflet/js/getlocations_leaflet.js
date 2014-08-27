@@ -168,6 +168,26 @@ var getlocations_leaflet_geocoder = [];
             getlocations_leaflet_map[key].addControl(L.control.fullscreen(fsopts));
           }
 
+          // magnifying glass
+          if (map_settings.magnifyingglass) {
+            var la =  L.tileLayer.provider(map_settings.default_layer_name);
+            var magOpts = {
+              zoomOffset: parseInt(map_settings.magnifyingglasszoomoffset),
+              radius: parseInt(map_settings.magnifyingglassradius),
+              fixedPosition: false,
+              latLng: [0, 0],
+              fixedZoom: -1,
+              layers: [L.tileLayer(la._url, la.options)]
+            };
+            var magnifyingGlass = L.magnifyingGlass(magOpts);
+            var magControlOpts = {
+              forceSeparateButton: false,
+              title: Drupal.t('Magnifying Glass'),
+              position: (map_settings.magnifyingglasscontrolposition ? map_settings.magnifyingglasscontrolposition : 'topleft')
+            };
+            getlocations_leaflet_map[key].addControl(L.control.magnifyingglass(magnifyingGlass, magControlOpts));
+          }
+
           // pancontrol
           if (map_settings.leaflet_pancontrol) {
             var popts = {};
@@ -280,6 +300,7 @@ var getlocations_leaflet_geocoder = [];
             getlocations_leaflet_geocoder[key] = L.Control.geocoder(geo_opts);
             getlocations_leaflet_map[key].addControl(getlocations_leaflet_geocoder[key]);
           }
+
 
           // latlons data
           if (datanum > 0) {

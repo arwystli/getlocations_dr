@@ -301,6 +301,30 @@ function getlocations_leaflet_library() {
     );
   }
 
+  if ($getlocations_leaflet_plugins['magnifyingglass_enable']) {
+    $jsarr += array(
+      GETLOCATIONS_LEAFLET_PATH . '/plugins/magnifyingglass/leaflet.magnifyingglass.min.js' => array(
+        'type' => 'file',
+        'preprocess' => $aggr
+      ),
+      GETLOCATIONS_LEAFLET_PATH . '/plugins/magnifyingglass/Control.MagnifyingGlass.min.js' => array(
+        'type' => 'file',
+        'preprocess' => $aggr
+      ),
+    );
+    $cssarr += array(
+      GETLOCATIONS_LEAFLET_PATH . '/plugins/magnifyingglass/leaflet.magnifyingglass.min.css' => array(
+        'type' => 'file',
+        'media' => 'all',
+      ),
+      GETLOCATIONS_LEAFLET_PATH . '/plugins/magnifyingglass/Control.MagnifyingGlass.min.css' => array(
+        'type' => 'file',
+        'media' => 'all',
+      ),
+    );
+
+  }
+
   $jsarr += array(
     $getlocations_leaflet_paths['getlocations_leaflet_providers_path'] => array(
       'type' => 'file',
@@ -769,6 +793,9 @@ function getlocations_leaflet_field_formatter_settings_summary($field, $instance
       if ($settings['bouncemarker_enable']) {
         $summary[] = t('Bounce markers: Yes');
       }
+      if ($settings['magnifyingglass_enable']) {
+        $summary[] = t('Magnifying Glass: Yes');
+      }
 
       break;
 
@@ -1199,6 +1226,17 @@ function getlocations_leaflet_map_settings_do($map_settings, $defaults, $latlons
     $map_settings['map_settings']['markercluster']  = FALSE;
   }
 
+  if ($getlocations_leaflet_plugins['magnifyingglass_enable']) {
+    $map_settings['map_settings']['magnifyingglass']  = ($defaults['magnifyingglass'] ? TRUE : FALSE);
+    $map_settings['map_settings']['magnifyingglasscontrolposition'] = $defaults['magnifyingglasscontrolposition'];
+    $map_settings['map_settings']['magnifyingglassradius'] = $defaults['magnifyingglassradius'];
+    $map_settings['map_settings']['magnifyingglasszoomoffset'] = $defaults['magnifyingglasszoomoffset'];
+    #$map_settings['map_settings']['magnifyingglasstitle'] = $defaults['magnifyingglasstitle'];
+  }
+  else {
+    $map_settings['map_settings']['magnifyingglass']  = FALSE;
+  }
+
   if ($getlocations_leaflet_plugins['pancontrol_enable']) {
     $map_settings['map_settings']['leaflet_pancontrol'] = ($defaults['pancontrol'] ? TRUE : FALSE);
   }
@@ -1284,15 +1322,6 @@ function getlocations_leaflet_map_settings_do($map_settings, $defaults, $latlons
   $ml = getlocations_leaflet_map_get_info('Getlocations OSM');
   $map_settings['map_settings']['default_layer_name'] = $defaults['default_baselayer'];
   $map_settings['map_settings']['default_layer_label'] = $ml['map_layers'][$defaults['default_baselayer']]['label'];
-
-  // if only one has been selected
-  if (isset($map_settings['map_layers']) && count($map_settings['map_layers']) == 1) {
-    $map_keys = array_keys($map_settings['map_layers']);
-    if ($map_settings['map_layers'][$map_keys[0]]['type'] == 'base') {
-      $map_settings['map_settings']['default_layer_name'] = $map_keys[0];
-      $map_settings['map_settings']['default_layer_label'] = $map_settings['map_layers'][$map_keys[0]]['label'];
-    }
-  }
 
   // Scale
   $map_settings['map_settings']['scaleControl'] = ($defaults['scaleControl'] ? TRUE : FALSE);
@@ -2037,6 +2066,13 @@ function getlocations_leaflet_defaults() {
   $newdefaults['bouncemarker_duration'] = 1000;
   $newdefaults['bouncemarker_height']   = '';
 
+  // magnifyingglass
+  $newdefaults['magnifyingglass'] = 0;
+  $newdefaults['magnifyingglasscontrolposition'] = '';
+  $newdefaults['magnifyingglassradius'] = 100;
+  $newdefaults['magnifyingglasszoomoffset'] = 3;
+  #$newdefaults['magnifyingglasstitle'] = t('Toggle Magnifying Glass');
+
   // custom content
   $newdefaults['custom_content_enable'] = 0;
   $newdefaults['custom_content_source'] = '';
@@ -2063,6 +2099,7 @@ function getlocations_leaflet_plugins() {
     'geocoder_enable'      => 0,
     'usermarker_enable'    => 0,
     'bouncemarker_enable'  => 0,
+    'magnifyingglass_enable' => 0,
   );
   $settings = variable_get('getlocations_leaflet_plugins', $defaults);
   $return = getlocations_adjust_vars($defaults, $settings);
@@ -2373,6 +2410,42 @@ function getlocations_leaflet_display_options_form($defaults, $admin = FALSE) {
   }
   else {
     $form['bouncemarker'] = array('#type' => 'value', '#value' => 0);
+  }
+
+  // Magnifying Glass
+  if ($getlocations_leaflet_plugins['magnifyingglass_enable']) {
+    $form['magnifyingglass'] = getlocations_element_map_checkbox(
+      t('Magnifying Glass'),
+      $defaults['magnifyingglass'],
+      t('Magnifying Glass on the map.')
+    );
+    $form['magnifyingglass']['#suffix'] = '<div id="wrap-getlocations-magnifyingglass">';
+
+    $form['magnifyingglasscontrolposition'] = getlocations_element_dd(
+      t('Position of Magnifying Glass Control'),
+      $defaults['magnifyingglasscontrolposition'],
+      $controlpositions
+    );
+    $form['magnifyingglassradius'] = getlocations_element_map_tf(
+      t('Magnifying Glass Radius'),
+      $defaults['magnifyingglassradius'],
+      '',
+      10,
+      10,
+      TRUE
+    );
+    $form['magnifyingglasszoomoffset'] = getlocations_element_map_tf(
+      t('Magnifying Glass Zoom Offset'),
+      $defaults['magnifyingglasszoomoffset'],
+      '',
+      10,
+      10,
+      TRUE
+    );
+    $form['magnifyingglasszoomoffset']['#suffix'] = '</div>';
+  }
+  else {
+    $form['magnifyingglass'] = array('#type' => 'value', '#value' => 0);
   }
 
   $form['layerControl'] = getlocations_element_map_checkbox(
@@ -2912,6 +2985,10 @@ function getlocations_leaflet_settings_form() {
   $form['getlocations_leaflet_plugins']['bouncemarker_enable'] = getlocations_element_map_checkbox(
     t('Enable Bouncemarker plugin'),
     $getlocations_leaflet_plugins['bouncemarker_enable']
+  );
+  $form['getlocations_leaflet_plugins']['magnifyingglass_enable'] = getlocations_element_map_checkbox(
+    t('Enable Magnifying Glass plugin'),
+    $getlocations_leaflet_plugins['magnifyingglass_enable']
   );
 
   // mapbox
