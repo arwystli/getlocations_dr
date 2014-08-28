@@ -399,6 +399,21 @@
         }
       });
 
+      if ($("input[id$=terminator]").attr('checked')) {
+        $("#wrap-getlocations-terminator").show();
+      }
+      else {
+        $("#wrap-getlocations-terminator").hide();
+      }
+      $("input[id$=terminator]").change(function() {
+        if ($(this).attr('checked')) {
+          $("#wrap-getlocations-terminator").show();
+        }
+        else {
+          $("#wrap-getlocations-terminator").hide();
+        }
+      });
+
       // search marker
       if ($("#edit-getlocations-leaflet-defaults-views-search-marker-enable").is('input')) {
         if ($("#edit-getlocations-leaflet-defaults-views-search-marker-enable").attr('checked')) {

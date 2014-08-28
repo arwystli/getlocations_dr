@@ -225,6 +225,39 @@ var getlocations_leaflet_geocoder = [];
             L.graticule(gropts).addTo(getlocations_leaflet_map[key]);
           }
 
+          // Terminator or Day/Night
+          if (map_settings.terminator) {
+            if (! map_settings.terminator_strokecolor.match(/^#/)) {
+              map_settings.terminator_strokecolor = '#' + map_settings.terminator_strokecolor;
+            }
+            if (! map_settings.terminator_fillcolor.match(/^#/)) {
+              map_settings.terminator_fillcolor = '#' + map_settings.terminator_fillcolor;
+            }
+            var terminatorOpts = {
+              color: map_settings.terminator_strokecolor,
+              opacity: map_settings.terminator_strokeopacity,
+              weight: parseInt(map_settings.terminator_strokeweight),
+              fillColor: map_settings.terminator_fillcolor ,
+              fillOpacity: map_settings.terminator_fillopacity,
+              resolution: 2
+            };
+            var terminator = L.terminator(terminatorOpts);
+            if (map_settings.terminator_showbtn) {
+              var termctlOpts = {
+                forceSeparateButton: false,
+                title: Drupal.t('Day/Night'),
+                position: (map_settings.terminator_position ? map_settings.terminator_position : 'topleft')
+              };
+              getlocations_leaflet_map[key].addControl(L.control.terminator(terminator, termctlOpts));
+              if (map_settings.terminator_on) {
+                terminator.addTo(getlocations_leaflet_map[key]);
+              }
+            }
+            else {
+              terminator.addTo(getlocations_leaflet_map[key]);
+            }
+          }
+
           // Zoom control
           if (map_settings.zoomControl) {
             var zoomopts = {};
@@ -300,7 +333,6 @@ var getlocations_leaflet_geocoder = [];
             getlocations_leaflet_geocoder[key] = L.Control.geocoder(geo_opts);
             getlocations_leaflet_map[key].addControl(getlocations_leaflet_geocoder[key]);
           }
-
 
           // latlons data
           if (datanum > 0) {
