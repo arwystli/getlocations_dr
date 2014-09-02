@@ -1,9 +1,68 @@
-commit dedd8dd
+commit fd5c62b
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Tue Sep 2 15:01:38 2014 +0100
+
+    added README
+
+modules/getlocations_leaflet/plugins/README.txt
+
+commit bf16d72
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Thu Aug 28 10:20:07 2014 +0100
+
+    added terminator to leaflet
+
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/js/getlocations_leaflet.js
+modules/getlocations_leaflet/js/getlocations_leaflet.min.js
+modules/getlocations_leaflet/js/getlocations_leaflet_formatter.js
+modules/getlocations_leaflet/js/getlocations_leaflet_formatter.min.js
+modules/getlocations_leaflet/plugins/terminator/Control.Terminator.js
+modules/getlocations_leaflet/plugins/terminator/Control.Terminator.min.js
+modules/getlocations_leaflet/plugins/terminator/L.Terminator.js
+modules/getlocations_leaflet/plugins/terminator/L.Terminator.min.js
+modules/getlocations_leaflet/plugins/terminator/LICENSE
+modules/getlocations_leaflet/plugins/terminator/README.md
+modules/getlocations_leaflet/plugins/terminator/terminator-icon.png
+modules/getlocations_leaflet/plugins/terminator/terminator.css
+modules/getlocations_leaflet/plugins/terminator/terminator.min.css
+
+commit 851802c
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Aug 27 08:32:24 2014 +0100
+
+    added Magnifying glass to leaflet
+
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/js/getlocations_leaflet.js
+modules/getlocations_leaflet/js/getlocations_leaflet.min.js
+modules/getlocations_leaflet/js/getlocations_leaflet_formatter.js
+modules/getlocations_leaflet/js/getlocations_leaflet_formatter.min.js
+modules/getlocations_leaflet/plugins/magnifyingglass/Control.MagnifyingGlass.css
+modules/getlocations_leaflet/plugins/magnifyingglass/Control.MagnifyingGlass.js
+modules/getlocations_leaflet/plugins/magnifyingglass/Control.MagnifyingGlass.min.css
+modules/getlocations_leaflet/plugins/magnifyingglass/Control.MagnifyingGlass.min.js
+modules/getlocations_leaflet/plugins/magnifyingglass/leaflet.magnifyingglass.css
+modules/getlocations_leaflet/plugins/magnifyingglass/leaflet.magnifyingglass.js
+modules/getlocations_leaflet/plugins/magnifyingglass/leaflet.magnifyingglass.min.css
+modules/getlocations_leaflet/plugins/magnifyingglass/leaflet.magnifyingglass.min.js
+modules/getlocations_leaflet/plugins/magnifyingglass/magnifying-glass-icon.png
+
+commit 03d5635
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sun Aug 24 15:29:30 2014 +0100
+
+    fixed map selection bug in leaflet
+
+modules/getlocations_leaflet/getlocations_leaflet.module
+
+commit 785f207
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Sat Aug 23 09:25:46 2014 +0100
 
     cleanup code
 
+CHANGELOG.txt
 js/getlocations_geo.js
 js/getlocations_geo.min.js
 modules/getlocations_fields/js/getlocations_fields_search_views.js
