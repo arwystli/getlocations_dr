@@ -1393,6 +1393,7 @@ function getlocations_leaflet_map_settings_do($map_settings, $defaults, $latlons
   $map_settings['map_settings']['views_search_radshape_toggle'] = $defaults['views_search_radshape_toggle'];
   $map_settings['map_settings']['views_search_radshape_toggle_active'] = $defaults['views_search_radshape_toggle_active'];
   $map_settings['map_settings']['views_search_center'] = $defaults['views_search_center'];
+  $map_settings['map_settings']['geolocation_mobile_check'] = $defaults['geolocation_mobile_check'];
 
   $getlocations_leaflet_paths = getlocations_leaflet_paths_get();
   // shapes
@@ -1969,6 +1970,7 @@ function getlocations_leaflet_defaults() {
     'views_search_radshape_toggle'         => $getlocations_defaults['views_search_radshape_toggle'],
     'views_search_radshape_toggle_active'  => $getlocations_defaults['views_search_radshape_toggle_active'],
     'views_search_center'                  => $getlocations_defaults['views_search_center'],
+    'geolocation_mobile_check'             => $getlocations_defaults['geolocation_mobile_check'],
   );
 
   $fieldables = getlocations_get_fieldable_entity_types();
@@ -4355,7 +4357,8 @@ function theme_getlocations_leaflet_map($variables) {
   $buttons = array();
 
   // usermarker
-  if (getlocations_is_mobile() && $map_settings['map_settings']['usermarker']) {
+  $geolocation_mobile_check = ($map_settings['map_settings']['geolocation_mobile_check'] ? FALSE : TRUE);
+  if (getlocations_is_mobile($geolocation_mobile_check) && $map_settings['map_settings']['usermarker']) {
     $buttons[] = '<input type="button" value="' . $map_settings['map_settings']['usermarker_button_label'] . '" id="getlocations_leaflet_gps_show_' . $mapid . '" class="form-submit"  /><div class="getlocations_leaflet_gps_throbber getlocations_leaflet_gps_throbber_inactive" id="getlocations_leaflet_gps_throbber_' . $mapid . '">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
   }
   // views_search_marker
