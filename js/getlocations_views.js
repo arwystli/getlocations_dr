@@ -446,6 +446,24 @@
         });
       }
 
+      // gps button
+      if ($("#edit-style-options-gps-button").is('input')) {
+        if ($("#edit-style-options-gps-button").attr('checked')) {
+          $("#wrap-getlocations-gps-button").show();
+        }
+        else {
+          $("#wrap-getlocations-gps-button").hide();
+        }
+        $("#edit-style-options-gps-button").change(function() {
+          if ($(this).attr('checked')) {
+            $("#wrap-getlocations-gps-button").show();
+          }
+          else {
+            $("#wrap-getlocations-gps-button").hide();
+          }
+        });
+      }
+
       // search marker
       if ($("#edit-style-options-views-search-marker-enable").is('input')) {
         if ($("#edit-style-options-views-search-marker-enable").attr('checked')) {

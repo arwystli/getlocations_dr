@@ -253,6 +253,8 @@ function getlocations_gps_map_display_options_form($defaults) {
     t('Show GPS button'),
     $defaults['gps_button']
   );
+  $form['gps_button']['#suffix'] = '<div id="wrap-getlocations-gps-button">';
+
   $form['gps_button_label'] = getlocations_element_map_tf(
     t('GPS button label'),
     $defaults['gps_button_label'],
@@ -293,6 +295,7 @@ function getlocations_gps_map_display_options_form($defaults) {
     t('Center the GPS marker on the map'),
     $defaults['gps_center']
   );
+  $form['gps_center']['#suffix'] = '</div>';
 
   return $form;
 }
