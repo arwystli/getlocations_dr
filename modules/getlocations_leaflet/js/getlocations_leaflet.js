@@ -222,7 +222,13 @@ var getlocations_leaflet_geocoder = [];
             if (map_settings.graticule_interval) {
               gropts.interval = parseInt(map_settings.graticule_interval);
             }
-            L.graticule(gropts).addTo(getlocations_leaflet_map[key]);
+            var graticule = L.graticule(gropts);
+
+            if (map_settings.graticule_layercontrol && ! map_settings.graticule_state) {
+            }
+            else {
+              graticule.addTo(getlocations_leaflet_map[key]);
+            }
           }
 
           // Terminator or Day/Night
@@ -430,6 +436,11 @@ var getlocations_leaflet_geocoder = [];
             }
             else if (map_settings.layercontrol_mark_ov) {
               getlocations_leaflet_overlays[key][map_settings.layercontrol_mark_ov_label] = Markers['loc'];
+            }
+
+            // adding graticule to overlay switches
+            if (map_settings.graticule && map_settings.graticule_layercontrol ) {
+              getlocations_leaflet_overlays[key][map_settings.graticule_ov_label] = graticule;
             }
 
           } // end datanum > 0

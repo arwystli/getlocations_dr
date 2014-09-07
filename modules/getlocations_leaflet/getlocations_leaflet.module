@@ -1184,6 +1184,9 @@ function getlocations_leaflet_map_settings_do($map_settings, $defaults, $latlons
     $map_settings['map_settings']['graticule_opacity'] = $defaults['graticule_opacity'];
     $map_settings['map_settings']['graticule_weight'] = $defaults['graticule_weight'];
     $map_settings['map_settings']['graticule_interval'] = $defaults['graticule_interval'];
+    $map_settings['map_settings']['graticule_layercontrol'] = $defaults['graticule_layercontrol'];
+    $map_settings['map_settings']['graticule_ov_label'] = $defaults['graticule_ov_label'];
+    $map_settings['map_settings']['graticule_state'] = $defaults['graticule_state'];
   }
   else {
     $map_settings['map_settings']['graticule'] = FALSE;
@@ -2023,6 +2026,9 @@ function getlocations_leaflet_defaults() {
   $newdefaults['graticule_opacity']          = 1;
   $newdefaults['graticule_weight']           = 1;
   $newdefaults['graticule_interval']         = 20;
+  $newdefaults['graticule_layercontrol']      = 0;
+  $newdefaults['graticule_ov_label']          = t('Graticule');
+  $newdefaults['graticule_state']             = 1;
   $newdefaults['pancontrol']                 = 0;
   $newdefaults['pancontrolposition']         = '';
   $newdefaults['zoomslider']                 = 0;
@@ -2814,7 +2820,23 @@ function getlocations_leaflet_display_options_form($defaults, $admin = FALSE) {
       '',
       5
     );
-    $form['graticule_interval']['#suffix'] = '</div>';
+    $form['graticule_layercontrol'] = getlocations_element_map_checkbox(
+      t('Graticule in Layercontrol'),
+      $defaults['graticule_layercontrol'],
+      t('Enable Graticule switch in the layercontrol.')
+    );
+    $form['graticule_state'] = getlocations_element_map_checkbox(
+      t('Graticule initial state in Layercontrol'),
+      $defaults['graticule_state'],
+      t('Initial state of Graticule switch in the layercontrol.')
+    );
+    $form['graticule_ov_label'] = getlocations_element_map_tf(
+      t('Layer Control Graticule Overlay Label'),
+      $defaults['graticule_ov_label'],
+      t('The label to display on the Layer Control.'),
+      20
+    );
+    $form['graticule_ov_label']['#suffix'] = '</div>';
   }
   else {
     $form['graticule'] = array('#type' => 'value', '#value' => 0);
