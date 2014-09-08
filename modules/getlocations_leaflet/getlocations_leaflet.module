@@ -145,6 +145,16 @@ function getlocations_leaflet_library() {
         'type' => 'file',
         'preprocess' => $aggr
       ),
+      GETLOCATIONS_LEAFLET_PATH . '/plugins/graticule/Control.Graticule.min.js' => array(
+        'type' => 'file',
+        'preprocess' => $aggr
+      ),
+    );
+    $cssarr += array(
+      GETLOCATIONS_LEAFLET_PATH . '/plugins/graticule/graticule.min.css' => array(
+        'type' => 'file',
+        'media' => 'all',
+      ),
     );
   }
 
@@ -1184,8 +1194,9 @@ function getlocations_leaflet_map_settings_do($map_settings, $defaults, $latlons
     $map_settings['map_settings']['graticule_opacity'] = $defaults['graticule_opacity'];
     $map_settings['map_settings']['graticule_weight'] = $defaults['graticule_weight'];
     $map_settings['map_settings']['graticule_interval'] = $defaults['graticule_interval'];
-    $map_settings['map_settings']['graticule_layercontrol'] = $defaults['graticule_layercontrol'];
     $map_settings['map_settings']['graticule_ov_label'] = $defaults['graticule_ov_label'];
+    $map_settings['map_settings']['graticule_position'] = $defaults['graticule_position'];
+    $map_settings['map_settings']['graticule_show'] = $defaults['graticule_show'];
     $map_settings['map_settings']['graticule_state'] = $defaults['graticule_state'];
   }
   else {
@@ -1270,8 +1281,10 @@ function getlocations_leaflet_map_settings_do($map_settings, $defaults, $latlons
     $map_settings['map_settings']['terminator_fillcolor']  = $defaults['terminator_fillcolor'];
     $map_settings['map_settings']['terminator_fillopacity']  = $defaults['terminator_fillopacity'];
     $map_settings['map_settings']['terminator_position']  = $defaults['terminator_position'];
-    $map_settings['map_settings']['terminator_showbtn']  = $defaults['terminator_showbtn'];
-    $map_settings['map_settings']['terminator_on']  = $defaults['terminator_on'];
+    $map_settings['map_settings']['terminator_show']  = $defaults['terminator_show'];
+    $map_settings['map_settings']['terminator_state']  = $defaults['terminator_state'];
+    $map_settings['map_settings']['terminator_label']  = $defaults['terminator_label'];
+
   }
   else {
     $map_settings['map_settings']['terminator']  = FALSE;
@@ -2021,13 +2034,14 @@ function getlocations_leaflet_defaults() {
   $newdefaults['fullscreenposition']         = '';
   $newdefaults['markeraction']               = '';
   $newdefaults['markercluster']              = 0;
-  $newdefaults['graticule']                  = 0;
-  $newdefaults['graticule_color']            = '#333';
-  $newdefaults['graticule_opacity']          = 1;
-  $newdefaults['graticule_weight']           = 1;
-  $newdefaults['graticule_interval']         = 20;
-  $newdefaults['graticule_layercontrol']      = 0;
+  $newdefaults['graticule']                   = 0;
+  $newdefaults['graticule_color']             = '#333';
+  $newdefaults['graticule_opacity']           = 1;
+  $newdefaults['graticule_weight']            = 1;
+  $newdefaults['graticule_interval']          = 20;
   $newdefaults['graticule_ov_label']          = t('Graticule');
+  $newdefaults['graticule_show']              = 0;
+  $newdefaults['graticule_position']          = '';
   $newdefaults['graticule_state']             = 1;
   $newdefaults['pancontrol']                 = 0;
   $newdefaults['pancontrolposition']         = '';
@@ -2125,8 +2139,9 @@ function getlocations_leaflet_defaults() {
   $newdefaults['terminator_fillcolor']     = '#000000';
   $newdefaults['terminator_fillopacity']   = '0.5';
   $newdefaults['terminator_position']   = '';
-  $newdefaults['terminator_showbtn']   = 1;
-  $newdefaults['terminator_on']   = 1;
+  $newdefaults['terminator_show']   = 0;
+  $newdefaults['terminator_state']   = 1;
+  $newdefaults['terminator_label']   = t('Day/Night');
 
   // custom content
   $newdefaults['custom_content_enable'] = 0;
@@ -2574,22 +2589,29 @@ function getlocations_leaflet_display_options_form($defaults, $admin = FALSE) {
       10,
       TRUE
     );
-    $form['terminator_showbtn'] = getlocations_element_map_checkbox(
-      t('Show Day/Night button'),
-      $defaults['terminator_showbtn'],
-      t('Show Day and Night button on the map.')
+    $form['terminator_show'] = getlocations_element_dd(
+      t('Terminator show options'),
+      $defaults['terminator_show'],
+      array( 0 => t('Always show'), 1 => t('Checkbox on Layercontrol'), 2 => t('Button on the map'))
     );
     $form['terminator_position'] = getlocations_element_dd(
       t('Position of Day/Night Control'),
       $defaults['terminator_position'],
       $controlpositions
     );
-    $form['terminator_on'] = getlocations_element_map_checkbox(
+    $form['terminator_state'] = getlocations_element_map_checkbox(
       t('Day/Night Initial state'),
-      $defaults['terminator_on'],
+      $defaults['terminator_state'],
       t('Day and Night on  or off initially.')
     );
-    $form['terminator_on']['#suffix'] = '</div>';
+
+    $form['terminator_label'] = getlocations_element_map_tf(
+      t('Terminator Label'),
+      $defaults['terminator_label'],
+      t('The label to display on the Layer Control or Tooltip.'),
+      20
+    );
+    $form['terminator_label']['#suffix'] = '</div>';
   }
   else {
     $form['terminator'] = array('#type' => 'value', '#value' => 0);
@@ -2758,6 +2780,17 @@ function getlocations_leaflet_display_options_form($defaults, $admin = FALSE) {
   );
 
   // plugins
+  if ($getlocations_leaflet_plugins['markercluster_enable']) {
+    $form['markercluster'] = getlocations_element_map_checkbox(
+      t('Marker Cluster'),
+      $defaults['markercluster'],
+      t('Enable markercluster on the map.')
+    );
+  }
+  else {
+    $form['markercluster'] = array('#type' => 'value', '#value' => 0);
+  }
+
   if ($getlocations_leaflet_plugins['fullscreen_enable']) {
     // fullscreen
     $form['fullscreen'] = getlocations_element_map_checkbox(
@@ -2778,16 +2811,6 @@ function getlocations_leaflet_display_options_form($defaults, $admin = FALSE) {
     $form['fullscreenposition'] = array('#type' => 'value', '#value' => $defaults['fullscreenposition']);
   }
 
-  if ($getlocations_leaflet_plugins['markercluster_enable']) {
-    $form['markercluster'] = getlocations_element_map_checkbox(
-      t('Marker Cluster'),
-      $defaults['markercluster'],
-      t('Enable markercluster on the map.')
-    );
-  }
-  else {
-    $form['markercluster'] = array('#type' => 'value', '#value' => 0);
-  }
   if ($getlocations_leaflet_plugins['graticule_enable']) {
     $form['graticule'] = getlocations_element_map_checkbox(
       t('Graticule'),
@@ -2820,20 +2843,25 @@ function getlocations_leaflet_display_options_form($defaults, $admin = FALSE) {
       '',
       5
     );
-    $form['graticule_layercontrol'] = getlocations_element_map_checkbox(
-      t('Graticule in Layercontrol'),
-      $defaults['graticule_layercontrol'],
-      t('Enable Graticule switch in the layercontrol.')
+    $form['graticule_show'] = getlocations_element_dd(
+      t('Graticule show options'),
+      $defaults['graticule_show'],
+      array( 0 => t('Always show'), 1 => t('Checkbox on Layercontrol'), 2 => t('Button on the map'))
+    );
+    $form['graticule_position'] = getlocations_element_dd(
+      t('Position of Graticule Control'),
+      $defaults['graticule_position'],
+      $controlpositions
     );
     $form['graticule_state'] = getlocations_element_map_checkbox(
-      t('Graticule initial state in Layercontrol'),
+      t('Graticule initial state'),
       $defaults['graticule_state'],
-      t('Initial state of Graticule switch in the layercontrol.')
+      t('Initial state of Graticule.')
     );
     $form['graticule_ov_label'] = getlocations_element_map_tf(
-      t('Layer Control Graticule Overlay Label'),
+      t('Graticule Label'),
       $defaults['graticule_ov_label'],
-      t('The label to display on the Layer Control.'),
+      t('The label to display on the Layer Control or Tooltip.'),
       20
     );
     $form['graticule_ov_label']['#suffix'] = '</div>';
@@ -4414,8 +4442,8 @@ function theme_getlocations_leaflet_map($variables) {
  */
 function theme_getlocations_leaflet_plugin_style_options_form($variables) {
   $form = $variables['form'];
+  $form = getlocations_leaflet_display_options_fieldsets($form);
   $output = '';
-
   $output .= drupal_render_children($form);
   return $output;
 }
@@ -4512,8 +4540,98 @@ function theme_getlocations_leaflet_settings_form($variables) {
 
 function theme_getlocations_leaflet_display_options_form($variables) {
   $form = $variables['form'];
+  $form = getlocations_leaflet_display_options_fieldsets($form);
   $output = '';
   $output .= drupal_render_children($form);
   return $output;
+}
+
+function getlocations_leaflet_display_options_fieldsets($form) {
+
+  if (isset($form['zoomControl']) && $form['zoomControl']['#type'] !== 'value') {
+    $form['zoomControl']['#prefix'] = '<fieldset class="collapsible getlocations_fieldset form-wrapper"><legend><span class="fieldset-legend">' . t('Zoom Control') . '</span></legend><div class="fieldset-wrapper">';
+    $tsuf = $form['zoomcontrolposition']['#suffix'];
+    $form['zoomcontrolposition']['#suffix'] = $tsuf . '</div></fieldset>';
+  }
+
+  if (isset($form['scaleControl']) && $form['scaleControl']['#type'] !== 'value') {
+    $form['scaleControl']['#prefix'] = '<fieldset class="collapsible getlocations_fieldset form-wrapper"><legend><span class="fieldset-legend">' . t('Scale Control') . '</span></legend><div class="fieldset-wrapper">';
+    $tsuf = $form['scalecontrolposition']['#suffix'];
+    $form['scalecontrolposition']['#suffix'] = $tsuf . '</div></fieldset>';
+  }
+
+  if (isset($form['attributionControl']) && $form['attributionControl']['#type'] !== 'value') {
+    $form['attributionControl']['#prefix'] = '<fieldset class="collapsible getlocations_fieldset form-wrapper"><legend><span class="fieldset-legend">' . t('Attribution Control') . '</span></legend><div class="fieldset-wrapper">';
+    $tsuf = $form['attributioncontrolposition']['#suffix'];
+    $form['attributioncontrolposition']['#suffix'] = $tsuf . '</div></fieldset>';
+  }
+
+  if (isset($form['geocoder']) && $form['geocoder']['#type'] !== 'value') {
+    $form['geocoder']['#prefix'] = '<fieldset class="collapsible getlocations_fieldset form-wrapper"><legend><span class="fieldset-legend">' . t('Geocoder') . '</span></legend><div class="fieldset-wrapper">';
+    $tsuf = $form['geocodercollapsed']['#suffix'];
+    $form['geocodercollapsed']['#suffix'] = $tsuf . '</div></fieldset>';
+  }
+
+  if (isset($form['usermarker']) && $form['usermarker']['#type'] !== 'value') {
+    $form['usermarker']['#prefix'] = '<fieldset class="collapsible getlocations_fieldset form-wrapper"><legend><span class="fieldset-legend">' . t('User marker') . '</span></legend><div class="fieldset-wrapper">';
+    $tsuf = $form['usermarker_circle_fillopacity']['#suffix'];
+    $form['usermarker_circle_fillopacity']['#suffix'] = $tsuf . '</div></fieldset>';
+  }
+
+  if (isset($form['bouncemarker']) && $form['bouncemarker']['#type'] !== 'value') {
+    $form['bouncemarker']['#prefix'] = '<fieldset class="collapsible getlocations_fieldset form-wrapper"><legend><span class="fieldset-legend">' . t('Bounce marker') . '</span></legend><div class="fieldset-wrapper">';
+    $tsuf = $form['bouncemarker_height']['#suffix'];
+    $form['bouncemarker_height']['#suffix'] = $tsuf . '</div></fieldset>';
+  }
+
+  if (isset($form['magnifyingglass']) && $form['magnifyingglass']['#type'] !== 'value') {
+    $form['magnifyingglass']['#prefix'] = '<fieldset class="collapsible getlocations_fieldset form-wrapper"><legend><span class="fieldset-legend">' . t('Magnifying Glass') . '</span></legend><div class="fieldset-wrapper">';
+    $tsuf = $form['magnifyingglasszoomoffset']['#suffix'];
+    $form['magnifyingglasszoomoffset']['#suffix'] = $tsuf . '</div></fieldset>';
+  }
+
+  if (isset($form['terminator']) && $form['terminator']['#type'] !== 'value' ) {
+    $form['terminator']['#prefix'] = '<fieldset class="collapsible getlocations_fieldset form-wrapper"><legend><span class="fieldset-legend">' . t('Day/Night Layer') . '</span></legend><div class="fieldset-wrapper">';
+    $tsuf = $form['terminator_label']['#suffix'];
+    $form['terminator_label']['#suffix'] = $tsuf . '</div></fieldset>';
+  }
+
+  if (isset($form['layerControl']) && $form['layerControl']['#type'] !== 'value' ) {
+    $form['layerControl']['#prefix'] = '<fieldset class="collapsible getlocations_fieldset form-wrapper"><legend><span class="fieldset-legend">' . t('Layer Control') . '</span></legend><div class="fieldset-wrapper">';
+    $tsuf = $form['layercontrolposition']['#suffix'];
+    $form['layercontrolposition']['#suffix'] = $tsuf . '</div></fieldset>';
+  }
+
+  if (isset($form['fullscreen']) && $form['fullscreen']['#type'] !== 'value' ) {
+    $form['fullscreen']['#prefix'] = '<fieldset class="collapsible getlocations_fieldset form-wrapper"><legend><span class="fieldset-legend">' . t('Fullscreen Control') . '</span></legend><div class="fieldset-wrapper">';
+    $tsuf = $form['fullscreenposition']['#suffix'];
+    $form['fullscreenposition']['#suffix'] = $tsuf . '</div></fieldset>';
+  }
+
+  if (isset($form['graticule']) && $form['graticule']['#type'] !== 'value' ) {
+    $form['graticule']['#prefix'] = '<fieldset class="collapsible getlocations_fieldset form-wrapper"><legend><span class="fieldset-legend">' . t('Graticule Control') . '</span></legend><div class="fieldset-wrapper">';
+    $tsuf = $form['graticule_ov_label']['#suffix'];
+    $form['graticule_ov_label']['#suffix'] = $tsuf . '</div></fieldset>';
+  }
+
+  if (isset($form['mouseposition']) && $form['mouseposition']['#type'] !== 'value' ) {
+    $form['mouseposition']['#prefix'] = '<fieldset class="collapsible getlocations_fieldset form-wrapper"><legend><span class="fieldset-legend">' . t('Mouse position Control') . '</span></legend><div class="fieldset-wrapper">';
+    $tsuf = $form['mouseposition_display_dms']['#suffix'];
+    $form['mouseposition_display_dms']['#suffix'] = $tsuf . '</div></fieldset>';
+  }
+
+  if (isset($form['pancontrol']) && $form['pancontrol']['#type'] !== 'value' ) {
+    $form['pancontrol']['#prefix'] = '<fieldset class="collapsible getlocations_fieldset form-wrapper"><legend><span class="fieldset-legend">' . t('Pan Control') . '</span></legend><div class="fieldset-wrapper">';
+    $tsuf = $form['pancontrolposition']['#suffix'];
+    $form['pancontrolposition']['#suffix'] = $tsuf . '</div></fieldset>';
+  }
+
+  if (isset($form['zoomslider']) && $form['zoomslider']['#type'] !== 'value' ) {
+    $form['zoomslider']['#prefix'] = '<fieldset class="collapsible getlocations_fieldset form-wrapper"><legend><span class="fieldset-legend">' . t('Zoom Slider Control') . '</span></legend><div class="fieldset-wrapper">';
+    $tsuf = $form['zoomsliderposition']['#suffix'];
+    $form['zoomsliderposition']['#suffix'] = $tsuf . '</div></fieldset>';
+  }
+
+  return $form;
 }
 

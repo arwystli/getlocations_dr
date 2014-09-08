@@ -224,9 +224,15 @@ var getlocations_leaflet_geocoder = [];
             }
             var graticule = L.graticule(gropts);
 
-            if (map_settings.graticule_layercontrol && ! map_settings.graticule_state) {
+            if (map_settings.graticule_show == 2) {
+              var gratctlOpts = {
+                forceSeparateButton: false,
+                title: map_settings.graticule_ov_label,
+                position: (map_settings.graticule_position ? map_settings.graticule_position : 'topleft')
+              };
+              getlocations_leaflet_map[key].addControl(L.control.graticule(graticule, gratctlOpts));
             }
-            else {
+            if ((map_settings.graticule_show && map_settings.graticule_state) || (! map_settings.graticule_show)) {
               graticule.addTo(getlocations_leaflet_map[key]);
             }
           }
@@ -248,18 +254,15 @@ var getlocations_leaflet_geocoder = [];
               resolution: 2
             };
             var terminator = L.terminator(terminatorOpts);
-            if (map_settings.terminator_showbtn) {
+            if (map_settings.terminator_show == 2) {
               var termctlOpts = {
                 forceSeparateButton: false,
-                title: Drupal.t('Day/Night'),
+                title: map_settings.terminator_label,
                 position: (map_settings.terminator_position ? map_settings.terminator_position : 'topleft')
               };
               getlocations_leaflet_map[key].addControl(L.control.terminator(terminator, termctlOpts));
-              if (map_settings.terminator_on) {
-                terminator.addTo(getlocations_leaflet_map[key]);
-              }
             }
-            else {
+            if ((map_settings.terminator_show && map_settings.terminator_state) || (! map_settings.terminator_show)) {
               terminator.addTo(getlocations_leaflet_map[key]);
             }
           }
@@ -439,8 +442,13 @@ var getlocations_leaflet_geocoder = [];
             }
 
             // adding graticule to overlay switches
-            if (map_settings.graticule && map_settings.graticule_layercontrol ) {
-              getlocations_leaflet_overlays[key][map_settings.graticule_ov_label] = graticule;
+            if (map_settings.graticule && map_settings.graticule_show == 1 ) {
+                getlocations_leaflet_overlays[key][map_settings.graticule_ov_label] = graticule;
+            }
+
+            // adding terminator to overlay switches
+            if (map_settings.terminator && map_settings.terminator_show == 1 ) {
+              getlocations_leaflet_overlays[key][map_settings.terminator_label] = terminator;
             }
 
           } // end datanum > 0
