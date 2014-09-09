@@ -2590,7 +2590,7 @@ function getlocations_leaflet_display_options_form($defaults, $admin = FALSE) {
       TRUE
     );
     $form['terminator_show'] = getlocations_element_dd(
-      t('Terminator show options'),
+      t('Day/Night show options'),
       $defaults['terminator_show'],
       array( 0 => t('Always show'), 1 => t('Checkbox on Layercontrol'), 2 => t('Button on the map'))
     );
@@ -2606,7 +2606,7 @@ function getlocations_leaflet_display_options_form($defaults, $admin = FALSE) {
     );
 
     $form['terminator_label'] = getlocations_element_map_tf(
-      t('Terminator Label'),
+      t('Day/Night Label'),
       $defaults['terminator_label'],
       t('The label to display on the Layer Control or Tooltip.'),
       20
