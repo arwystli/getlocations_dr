@@ -6856,6 +6856,12 @@ function theme_getlocations_plugin_style_map_options_form($variables) {
     }
   }
 
+  if (isset($form['gps_button']) && $form['gps_button']['#type'] !== 'value' ) {
+    $form['gps_button']['#prefix'] = '<fieldset class="collapsible getlocations_fieldset form-wrapper"><legend><span class="fieldset-legend">' . t('GPS Button') . '</span></legend><div class="fieldset-wrapper">';
+    $tsuf = $form['gps_center']['#suffix'];
+    $form['gps_center']['#suffix'] = $tsuf . '</div></fieldset>';
+  }
+
   $output = drupal_render_children($form);
   return $output;
 
