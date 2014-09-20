@@ -115,7 +115,7 @@ function getlocations_map_field_formatter_view($entity_type, $entity, $field, $i
       $bundle = $instance['bundle'];
       $locative_field_name = (isset($items[0]['locative_field_name']) ? $items[0]['locative_field_name'] : '');
 
-      if ($locative_field_name) {
+      if ($locative_field_name && isset($entity->{$locative_field_name}[$lang])) {
 
         $locative_fields = $entity->{$locative_field_name}[$lang];
         $locative_fields_count = count($locative_fields);

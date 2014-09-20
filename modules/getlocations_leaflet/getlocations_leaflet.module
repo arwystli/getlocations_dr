@@ -482,7 +482,7 @@ function getlocations_leaflet_field_formatter_view($entity_type, $entity, $field
       $module = getlocations_get_current_supported_module();
       $bundle = $instance['bundle'];
       $locative_field_name = (isset($items[0]['locative_field_name']) ? $items[0]['locative_field_name'] : '');
-      if ($locative_field_name) {
+      if ($locative_field_name && isset($entity->{$locative_field_name}[$lang])) {
 
         if (empty($settings)) {
           $settings = getlocations_leaflet_map_formatter_defaults();
