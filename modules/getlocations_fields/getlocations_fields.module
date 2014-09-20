@@ -730,7 +730,9 @@ function getlocations_fields_field_formatter_settings_form($field, $instance, $v
   }
 
   // views_search_marker etc
-  $element += getlocations_fields_views_search_form($settings);
+  if (module_exists('views')) {
+    $element += getlocations_fields_views_search_form($settings);
+  }
 
   // streetview overlay settings
   $element += getlocations_fields_sv_control_form($settings);

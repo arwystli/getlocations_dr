@@ -213,7 +213,9 @@ class getlocations_leaflet_plugin_style extends views_plugin_style {
     }
 
     // search markers
-    $form += getlocations_fields_views_search_form($this->options, TRUE);
+    if (module_exists('getlocations_fields') && module_exists('views')) {
+      $form += getlocations_fields_views_search_form($this->options, TRUE);
+    }
 
     // end markers
 

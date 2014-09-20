@@ -3305,10 +3305,10 @@ function getlocations_leaflet_settings_form() {
     }
   }
 
-  if (module_exists('getlocations_fields')) {
     // search markers
-    $form['getlocations_leaflet_defaults'] += getlocations_fields_views_search_form($settings, TRUE);
-  }
+    if (module_exists('getlocations_fields') && module_exists('views')) {
+      $form['getlocations_leaflet_defaults'] += getlocations_fields_views_search_form($settings, TRUE);
+    }
 
   // javascript paths
   $getlocations_leaflet_paths = getlocations_leaflet_paths_get();

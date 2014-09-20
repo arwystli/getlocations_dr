@@ -311,7 +311,9 @@ class getlocations_plugin_style_map extends views_plugin_style {
     }
 
     // views_search_marker etc
-    $form += getlocations_fields_views_search_form($this->options);
+    if (module_exists('getlocations_fields') && module_exists('views')) {
+      $form += getlocations_fields_views_search_form($this->options);
+    }
 
     // categories
     $term_reference_fields = getlocations_get_term_reference_fields();
