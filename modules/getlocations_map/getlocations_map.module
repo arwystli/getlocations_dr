@@ -105,6 +105,14 @@ function getlocations_map_field_formatter_view($entity_type, $entity, $field, $i
   drupal_add_css(GETLOCATIONS_MAP_PATH . '/getlocations_map.css');
   global $language;
   $lang = ($langcode ? $langcode : ($entity->language ? $entity->language : $language->language));
+  $locative_field_name = (isset($items[0]['locative_field_name']) ? $items[0]['locative_field_name'] : '');
+  if (! isset($entity->{$locative_field_name}[$lang])) {
+    return;
+  }
+  $locative_fields = $entity->{$locative_field_name}[$lang];
+  if (! (is_array($locative_fields) && count($locative_fields) > 0)) {
+    return;
+  }
   $settings = $display['settings'];
   $element = array();
 
@@ -113,225 +121,212 @@ function getlocations_map_field_formatter_view($entity_type, $entity, $field, $i
 
       $module = getlocations_get_current_supported_module();
       $bundle = $instance['bundle'];
-      $locative_field_name = (isset($items[0]['locative_field_name']) ? $items[0]['locative_field_name'] : '');
+      $minmaxes = '';
+      // marker
+      $marker = '';
+      if (empty($settings)) {
+        $settings = getlocations_map_map_formatter_defaults();
+      }
+      $default_settings = getlocations_map_map_formatter_defaults();
+      $default = getlocations_adjust_vars($default_settings, $settings);
 
-      if ($locative_field_name && isset($entity->{$locative_field_name}[$lang])) {
+      $marker = (isset($default['map_marker']) ? $default['map_marker'] : '');
+      if (isset($default[$entity_type . '_map_marker'])) {
+        $marker = $default[$entity_type . '_map_marker'];
+      }
 
-        $locative_fields = $entity->{$locative_field_name}[$lang];
-        $locative_fields_count = count($locative_fields);
-        $minmaxes = '';
-
-        // marker
-        $marker = '';
-
-        if (empty($settings)) {
-          $settings = getlocations_map_map_formatter_defaults();
-        }
-        $default_settings = getlocations_map_map_formatter_defaults();
-        $default = getlocations_adjust_vars($default_settings, $settings);
-
-        $marker = (isset($default['map_marker']) ? $default['map_marker'] : '');
-        if (isset($default[$entity_type . '_map_marker'])) {
-          $marker = $default[$entity_type . '_map_marker'];
-        }
-
-        if ($entity_type == 'node') {
-          $getlocations_markers = variable_get('getlocations_markers', array());
-          if (isset($getlocations_markers[$entity_type]['enable']) && $getlocations_markers[$entity_type]['enable']) {
-            $type_markers = getlocations_get_type_markers();
-            foreach ($type_markers AS $et => $bundles) {
-              if ($et == $entity_type) {
-                foreach ($bundles AS $bundle => $field_names) {
-                  foreach ($field_names AS $field_name => $marker_data) {
-                    if (isset($getlocations_markers[$entity_type][$bundle][$field_name]['marker']) && $getlocations_markers[$entity_type][$bundle][$field_name]['marker']) {
-                      $marker = $getlocations_markers[$entity_type][$bundle][$field_name]['marker'];
-                    }
+      if ($entity_type == 'node') {
+        $getlocations_markers = variable_get('getlocations_markers', array());
+        if (isset($getlocations_markers[$entity_type]['enable']) && $getlocations_markers[$entity_type]['enable']) {
+          $type_markers = getlocations_get_type_markers();
+          foreach ($type_markers AS $et => $bundles) {
+            if ($et == $entity_type) {
+              foreach ($bundles AS $bundle => $field_names) {
+                foreach ($field_names AS $field_name => $marker_data) {
+                  if (isset($getlocations_markers[$entity_type][$bundle][$field_name]['marker']) && $getlocations_markers[$entity_type][$bundle][$field_name]['marker']) {
+                    $marker = $getlocations_markers[$entity_type][$bundle][$field_name]['marker'];
                   }
                 }
               }
             }
           }
         }
+      }
 
 
-        // fetch lats and lons
-        $ct = 0;
-        foreach (array_keys($locative_fields) AS $delta) {
-          $title = '';
-          if ($module == 'getlocations_fields') {
-            if (isset($entity->{$locative_field_name}[$lang][$delta])) {
-              if ($location = $entity->{$locative_field_name}[$lang][$delta]) {
-                $lat = $location['latitude'];
-                $lon = $location['longitude'];
-                // per item marker
-                if (isset($location['marker']) && ! empty($location['marker'])) {
-                  $marker = $location['marker'];
-                }
-                if (isset($location['name']) && ! empty($location['name'])) {
-                  $title = $location['name'];
-                }
-              }
-            }
-            // smuggle these in from location data
-            // streetview_ settings
-            if (isset($location['streetview_settings_allow'])) {
-              $streetview_settings_allow = $location['streetview_settings_allow'];
-            }
-            else {
-              $streetview_settings_allow = getlocations_fields_streetview_settings_allow();
-            }
-            if ($streetview_settings_allow) {
-              if (isset($location['sv_heading']) && is_numeric($location['sv_heading'])) {
-                $default['sv_heading'] = $location['sv_heading'];
-              }
-              if (isset($location['sv_zoom']) && is_numeric($location['sv_zoom'])) {
-                $default['sv_zoom'] = $location['sv_zoom'];
-              }
-              if (isset($location['sv_pitch']) && is_numeric($location['sv_pitch'])) {
-                $default['sv_pitch'] = $location['sv_pitch'];
-              }
-              if (isset($location['sv_showfirst']) && is_numeric($location['sv_showfirst'])) {
-                $default['sv_showfirst'] = $location['sv_showfirst'];
-              }
-              // streetview display settings
-              $display_settings_defaults = getlocations_fields_get_display_settings_defaults();
-              foreach ($display_settings_defaults AS $dkey => $dval) {
-                if (isset($location[$dkey])) {
-                  $default[$dkey] = $location[$dkey];
-                }
-                else {
-                  $default[$dkey] = $dval;
-                }
-              }
-            }
-
-            // map_settings
-            if (isset($location['map_settings_allow'])) {
-              $map_settings_allow = $location['map_settings_allow'];
-            }
-            else {
-              $map_settings_allow = getlocations_fields_map_settings_allow();
-            }
-            if ($map_settings_allow) {
-              if (isset($location['mapzoom']) && is_numeric($location['mapzoom'])) {
-                $default['nodezoom'] = $location['mapzoom'];
-              }
-              if (isset($location['map_maptype']) && $location['map_maptype']) {
-                $default['maptype'] = $location['map_maptype'];
-              }
-              // update baselayers
-              $default['baselayers'][$location['map_maptype']] = 1;
-            }
-          }
-          elseif ($module == 'location_cck') {
-            if (isset($entity->{$locative_field_name}[$lang][$delta])) {
-              if ($location = $entity->{$locative_field_name}[$lang][$delta]) {
-                $lat = $location['latitude'];
-                $lon = $location['longitude'];
-                if (isset($location['name']) && ! empty($location['name'])) {
-                  $title = $location['name'];
-                }
-              }
-            }
-          }
-          elseif ($module == 'geofield') {
+      // fetch lats and lons
+      $ct = 0;
+      foreach (array_keys($locative_fields) AS $delta) {
+        $title = '';
+        if ($module == 'getlocations_fields') {
+          if (isset($entity->{$locative_field_name}[$lang][$delta])) {
             if ($location = $entity->{$locative_field_name}[$lang][$delta]) {
-              $lat = $location['lat'];
-              $lon = $location['lon'];
+              $lat = $location['latitude'];
+              $lon = $location['longitude'];
+              // per item marker
+              if (isset($location['marker']) && ! empty($location['marker'])) {
+                $marker = $location['marker'];
+              }
+              if (isset($location['name']) && ! empty($location['name'])) {
+                $title = $location['name'];
+              }
             }
           }
-          elseif ($module == 'geolocation') {
-            if ($location = $entity->{$locative_field_name}[$lang][$delta]) {
-              $lat = $location['lat'];
-              $lon = $location['lng'];
+          // smuggle these in from location data
+          // streetview_ settings
+          if (isset($location['streetview_settings_allow'])) {
+            $streetview_settings_allow = $location['streetview_settings_allow'];
+          }
+          else {
+            $streetview_settings_allow = getlocations_fields_streetview_settings_allow();
+          }
+          if ($streetview_settings_allow) {
+            if (isset($location['sv_heading']) && is_numeric($location['sv_heading'])) {
+              $default['sv_heading'] = $location['sv_heading'];
+            }
+            if (isset($location['sv_zoom']) && is_numeric($location['sv_zoom'])) {
+              $default['sv_zoom'] = $location['sv_zoom'];
+            }
+            if (isset($location['sv_pitch']) && is_numeric($location['sv_pitch'])) {
+              $default['sv_pitch'] = $location['sv_pitch'];
+            }
+            if (isset($location['sv_showfirst']) && is_numeric($location['sv_showfirst'])) {
+              $default['sv_showfirst'] = $location['sv_showfirst'];
+            }
+            // streetview display settings
+            $display_settings_defaults = getlocations_fields_get_display_settings_defaults();
+            foreach ($display_settings_defaults AS $dkey => $dval) {
+              if (isset($location[$dkey])) {
+                $default[$dkey] = $location[$dkey];
+              }
+              else {
+                $default[$dkey] = $dval;
+              }
             }
           }
-          # elseif other modules here
 
-          if (isset($lat) && ! empty($lat) && isset($lon) && ! empty($lon)  && $latlon = getlocations_latlon_check($lat . ',' . $lon)) {
-            $ll = explode(',', $latlon);
-            $location['latitude'] = $ll[0];
-            $location['longitude'] = $ll[1];
-            $entity_get_info = entity_get_info($entity_type);
-            $entity_key = $entity_get_info['entity keys']['id']; // nid, cid, uid etc
-            $entity_id = $entity->{$entity_key};
-            if (empty($title)) {
-              $title = (isset($entity->title) ? $entity->title : '');
+          // map_settings
+          if (isset($location['map_settings_allow'])) {
+            $map_settings_allow = $location['map_settings_allow'];
+          }
+          else {
+            $map_settings_allow = getlocations_fields_map_settings_allow();
+          }
+          if ($map_settings_allow) {
+            if (isset($location['mapzoom']) && is_numeric($location['mapzoom'])) {
+              $default['nodezoom'] = $location['mapzoom'];
             }
-
-            $title = htmlspecialchars_decode(strip_tags($title), ENT_QUOTES);
-            $minmaxes = getlocations_do_minmaxes($ct, $location, $minmaxes);
-            $latlons[] = array($lat, $lon, $entity_id, $title, $marker, $entity_key, '', '');
-            $ct++;
-
-          } // end lat lon check
-        } // end foreach
-
-        $mapid = getlocations_setup_map($default);
-
-        if ($ct < 2 ) {
-          unset($minmaxes);
-          $minmaxes = '';
+            if (isset($location['map_maptype']) && $location['map_maptype']) {
+              $default['maptype'] = $location['map_maptype'];
+            }
+            // update baselayers
+            $default['baselayers'][$location['map_maptype']] = 1;
+          }
         }
+        elseif ($module == 'location_cck') {
+          if (isset($entity->{$locative_field_name}[$lang][$delta])) {
+            if ($location = $entity->{$locative_field_name}[$lang][$delta]) {
+              $lat = $location['latitude'];
+              $lon = $location['longitude'];
+              if (isset($location['name']) && ! empty($location['name'])) {
+                $title = $location['name'];
+              }
+            }
+          }
+        }
+        elseif ($module == 'geofield') {
+          if ($location = $entity->{$locative_field_name}[$lang][$delta]) {
+            $lat = $location['lat'];
+            $lon = $location['lon'];
+          }
+        }
+        elseif ($module == 'geolocation') {
+          if ($location = $entity->{$locative_field_name}[$lang][$delta]) {
+            $lat = $location['lat'];
+            $lon = $location['lng'];
+          }
+        }
+        # elseif other modules here
 
-        $entity_info = array(
-          'entity_type' => $entity_type,
-          'entity_id' => $entity_id,
-          'entity_title' => $title,
-          'entity_link' => '',
-        );
+        if (isset($lat) && ! empty($lat) && isset($lon) && ! empty($lon)  && $latlon = getlocations_latlon_check($lat . ',' . $lon)) {
+          $ll = explode(',', $latlon);
+          $location['latitude'] = $ll[0];
+          $location['longitude'] = $ll[1];
+          $entity_get_info = entity_get_info($entity_type);
+          $entity_key = $entity_get_info['entity keys']['id']; // nid, cid, uid etc
+          $entity_id = $entity->{$entity_key};
+          if (empty($title)) {
+            $title = (isset($entity->title) ? $entity->title : '');
+          }
 
-        getlocations_js_settings_do($default, $latlons, $minmaxes, $mapid);
-        $element[$delta] = array(
-          '#theme'       => 'getlocations_show',
-          '#width'       => $default['width'],
-          '#height'      => $default['height'],
-          '#defaults'    => $default,
-          '#mapid'       => $mapid,
-          '#latlons'     => $latlons,
-          '#minmaxes'    => $minmaxes,
-          '#entity_info' => $entity_info,
-          '#object'      => '',
-        );
+          $title = htmlspecialchars_decode(strip_tags($title), ENT_QUOTES);
+          $minmaxes = getlocations_do_minmaxes($ct, $location, $minmaxes);
+          $latlons[] = array($lat, $lon, $entity_id, $title, $marker, $entity_key, '', '');
+          $ct++;
 
-      } // end if ($locative_field_name)
+        } // end lat lon check
+      } // end foreach
+
+      $mapid = getlocations_setup_map($default);
+
+      if ($ct < 2 ) {
+        unset($minmaxes);
+        $minmaxes = '';
+      }
+
+      $entity_info = array(
+        'entity_type' => $entity_type,
+        'entity_id' => $entity_id,
+        'entity_title' => $title,
+        'entity_link' => '',
+      );
+
+      getlocations_js_settings_do($default, $latlons, $minmaxes, $mapid);
+      $element[$delta] = array(
+        '#theme'       => 'getlocations_show',
+        '#width'       => $default['width'],
+        '#height'      => $default['height'],
+        '#defaults'    => $default,
+        '#mapid'       => $mapid,
+        '#latlons'     => $latlons,
+        '#minmaxes'    => $minmaxes,
+        '#entity_info' => $entity_info,
+        '#object'      => '',
+      );
+
       break;
-
 
     case 'getlocations_map_link':
 
       if (empty($settings) || ! isset($settings['text'])) {
         $settings = getlocations_map_link_formatter_defaults();
       }
-      $locative_field_name = (isset($items[0]['locative_field_name']) ? $items[0]['locative_field_name'] : '');
-      if ($locative_field_name) {
-        $locative_fields = $entity->{$locative_field_name}[$lang];
-        foreach (array_keys($locative_fields) AS $delta) {
-          $entity_get_info = entity_get_info($entity_type);
-          $entity_key = $entity_get_info['entity keys']['id']; // nid, cid, uid etc
-          $entity_id = $entity->{$entity_key};
-          $link_text = $settings['text'];
-          if ($settings['text_opt'] == 'page') {
-            $entity_title = '';
-            if (isset($entity_get_info['entity keys']['label'])) {
-              $entity_title = $entity_get_info['entity keys']['label'];
-            }
-            elseif ($entity_type == 'user') {
-              $entity_title = 'name';
-            }
-            if ($entity_title && isset($entity->{$entity_title})) {
-              $link_text = $entity->{$entity_title};
-            }
+      foreach (array_keys($locative_fields) AS $delta) {
+        $entity_get_info = entity_get_info($entity_type);
+        $entity_key = $entity_get_info['entity keys']['id']; // nid, cid, uid etc
+        $entity_id = $entity->{$entity_key};
+        $link_text = $settings['text'];
+        if ($settings['text_opt'] == 'page') {
+          $entity_title = '';
+          if (isset($entity_get_info['entity keys']['label'])) {
+            $entity_title = $entity_get_info['entity keys']['label'];
           }
-          $link_text = check_plain($link_text);
-          $element[$delta] = array(
-            '#theme' => 'getlocations_map_link',
-            '#link_text' => $link_text,
-            '#entity_type' => $entity_type,
-            '#entity_id' => $entity_id,
-          );
+          elseif ($entity_type == 'user') {
+            $entity_title = 'name';
+          }
+          if ($entity_title && isset($entity->{$entity_title})) {
+            $link_text = $entity->{$entity_title};
+          }
         }
-      } // end if ($locative_field_name)
+        $link_text = check_plain($link_text);
+        $element[$delta] = array(
+          '#theme' => 'getlocations_map_link',
+          '#link_text' => $link_text,
+          '#entity_type' => $entity_type,
+          '#entity_id' => $entity_id,
+        );
+      }
+
       break;
   } // end switch
   return $element;

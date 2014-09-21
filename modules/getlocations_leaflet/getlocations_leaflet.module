@@ -466,6 +466,14 @@ function getlocations_leaflet_field_formatter_view($entity_type, $entity, $field
 
   global $language;
   $lang = ($langcode ? $langcode : ($entity->language ? $entity->language : $language->language));
+  $locative_field_name = (isset($items[0]['locative_field_name']) ? $items[0]['locative_field_name'] : '');
+  if (! isset($entity->{$locative_field_name}[$lang])) {
+    return;
+  }
+  $locative_fields = $entity->{$locative_field_name}[$lang];
+  if (! (is_array($locative_fields) && count($locative_fields) > 0)) {
+    return;
+  }
   $settings = $display['settings'];
   $field_name = '';
   if (isset($field['field_name'])) {
@@ -481,207 +489,199 @@ function getlocations_leaflet_field_formatter_view($entity_type, $entity, $field
 
       $module = getlocations_get_current_supported_module();
       $bundle = $instance['bundle'];
-      $locative_field_name = (isset($items[0]['locative_field_name']) ? $items[0]['locative_field_name'] : '');
-      if ($locative_field_name && isset($entity->{$locative_field_name}[$lang])) {
 
-        if (empty($settings)) {
-          $settings = getlocations_leaflet_map_formatter_defaults();
+      if (empty($settings)) {
+        $settings = getlocations_leaflet_map_formatter_defaults();
+      }
+      $default_settings = getlocations_leaflet_map_formatter_defaults();
+      $default = getlocations_adjust_vars($default_settings, $settings);
+      $getlocations_defaults = getlocations_defaults();
+      $minmaxes = '';
+      // awesome
+      $marker = '';
+      $vector = '';
+      if ($settings['awesome'] && $settings['marker_type'] == 'fa') {
+        $per_field_markers = FALSE;
+        $getlocations_markers = variable_get('getlocations_markers', array());
+        if (isset($getlocations_markers[$entity_type]['enable']) && $getlocations_markers[$entity_type]['enable']) {
+          if (isset($getlocations_markers[$entity_type][$bundle][$locative_field_name]['marker']) && $getlocations_markers[$entity_type][$bundle][$locative_field_name]['marker']) {
+            $per_field_markers = TRUE;
+            $m = $entity_type . '__' . $bundle . '__' . $locative_field_name;
+            $vicon = getlocations_leaflet_awesome_marker_get($settings, $m);
+          }
         }
-        $default_settings = getlocations_leaflet_map_formatter_defaults();
-        $default = getlocations_adjust_vars($default_settings, $settings);
-        $getlocations_defaults = getlocations_defaults();
+        if (! $per_field_markers) {
+          if (isset($default[$entity_type . '_map_marker'])) {
+            $vicon = getlocations_leaflet_awesome_marker_get($settings, $entity_type);
+          }
+          elseif (isset($getlocations_defaults[$entity_type . '_map_marker'])) {
+            $vicon = getlocations_leaflet_awesome_marker_get($settings, $entity_type);
+          }
+          else {
+            $vicon = getlocations_leaflet_awesome_marker_get($settings);
+          }
+        }
+        $vector = $vicon;
+      }
+      else {
+        // marker
+        $per_field_markers = FALSE;
+        $getlocations_markers = variable_get('getlocations_markers', array());
+        if (isset($getlocations_markers[$entity_type]['enable']) && $getlocations_markers[$entity_type]['enable']) {
+          if (isset($getlocations_markers[$entity_type][$bundle][$locative_field_name]['marker']) && $getlocations_markers[$entity_type][$bundle][$locative_field_name]['marker']) {
+            $per_field_markers = TRUE;
+            $marker = $getlocations_markers[$entity_type][$bundle][$locative_field_name]['marker'];
+          }
+        }
+        if (! $per_field_markers) {
+          if (isset($default[$entity_type . '_map_marker'])) {
+            $marker = $default[$entity_type . '_map_marker'];
+          }
+          elseif (isset($getlocations_defaults[$entity_type . '_map_marker'])) {
+            $marker = $getlocations_defaults[$entity_type . '_map_marker'];
+          }
+          else {
+            $marker = (isset($default['map_marker']) ? $default['map_marker'] : $getlocations_defaults['map_marker']);
+          }
+        }
+      }
 
+      $mapzoom = FALSE;
+      $iconlist = array();
+      $minmaxes = array('minlat' => 0, 'minlon' => 0, 'maxlat' => 0, 'maxlon' => 0);
+      $location = array();
 
-        $locative_fields = $entity->{$locative_field_name}[$lang];
-        $locative_fields_count = count($locative_fields);
+      // fetch lats and lons
+      $ct = 0;
+      foreach (array_keys($locative_fields) AS $delta) {
+        $title = '';
+        $lid = 0;
+        if (isset($entity->{$locative_field_name}[$lang][$delta]) && $location = $entity->{$locative_field_name}[$lang][$delta]) {
+          // collect the lat and lon
+          if ($module == 'getlocations_fields') {
+            $lat = $location['latitude'];
+            $lon = $location['longitude'];
+            $lid = (isset($location['glid']) ? $location['glid'] : 0);
+          }
+          elseif ($module == 'location_cck') {
+            $lat = $location['latitude'];
+            $lon = $location['longitude'];
+            $lid = (isset($location['lid']) ? $location['lid'] : 0);
+          }
+          elseif ($module == 'geofield') {
+            $lat = $location['lat'];
+            $lon = $location['lon'];
+          }
+          elseif ($module == 'geolocation') {
+            $lat = $location['lat'];
+            $lon = $location['lng'];
+          }
+
+          if (isset($lat) && ! empty($lat) && isset($lon) && ! empty($lon)  && $latlon = getlocations_latlon_check($lat . ',' . $lon)) {
+            $ll = explode(',', $latlon);
+            $location['latitude'] = $ll[0];
+            $location['longitude'] = $ll[1];
+            $entity_get_info = entity_get_info($entity_type);
+            $entity_key = $entity_get_info['entity keys']['id']; // nid, cid, uid etc
+            $entity_id = $entity->{$entity_key};
+
+            if (isset($location['name']) && ! empty($location['name'])) {
+              $title = $location['name'];
+            }
+            else {
+              $title = (isset($entity->title) ? $entity->title : '');
+            }
+            $title = htmlspecialchars_decode(strip_tags($title), ENT_QUOTES);
+            $minmaxes = getlocations_do_minmaxes($ct, $location, $minmaxes);
+
+            // per item marker
+            if (isset($location['marker']) && ! empty($location['marker'])) {
+              $marker = $location['marker'];
+            }
+
+            if (isset($location['mapzoom'])) {
+              $mapzoom = $location['mapzoom'];
+            }
+
+            if ($lid && $default['markeraction'] == 'popup') {
+              $extra = FALSE;
+              if (isset($default['getdirections_link'])) {
+                $extra['gdlink'] = $default['getdirections_link'];
+              }
+              $markeraction = array('type' => 'popup', 'data' => getlocations_getinfo($lid, $entity_key, $extra));
+            }
+            elseif ($lid && $default['markeraction'] == 'link') {
+              $markeraction = array('type' => 'link', 'data' => getlocations_getlidinfo($lid, $entity_key));
+            }
+            else {
+              $markeraction = array();
+            }
+
+            $iconlist[$marker] = getlocations_leaflet_get_marker($marker);
+
+            $latlons[$ct] = array($location['latitude'], $location['longitude'], $entity_key, $entity_id, $lid, $title, $marker, $vector, $markeraction, '');
+
+            $ct++;
+          } // end lat lon check
+        }
+      } // end foreach
+
+      if ($ct < 2 ) {
+        unset($minmaxes);
         $minmaxes = '';
+      }
 
-        // awesome
-        $marker = '';
-        $vector = '';
-        if ($settings['awesome'] && $settings['marker_type'] == 'fa') {
-          $per_field_markers = FALSE;
-          $getlocations_markers = variable_get('getlocations_markers', array());
-          if (isset($getlocations_markers[$entity_type]['enable']) && $getlocations_markers[$entity_type]['enable']) {
-            if (isset($getlocations_markers[$entity_type][$bundle][$locative_field_name]['marker']) && $getlocations_markers[$entity_type][$bundle][$locative_field_name]['marker']) {
-              $per_field_markers = TRUE;
-              $m = $entity_type . '__' . $bundle . '__' . $locative_field_name;
-              $vicon = getlocations_leaflet_awesome_marker_get($settings, $m);
-            }
-          }
-          if (! $per_field_markers) {
-            if (isset($default[$entity_type . '_map_marker'])) {
-              $vicon = getlocations_leaflet_awesome_marker_get($settings, $entity_type);
-            }
-            elseif (isset($getlocations_defaults[$entity_type . '_map_marker'])) {
-              $vicon = getlocations_leaflet_awesome_marker_get($settings, $entity_type);
-            }
-            else {
-              $vicon = getlocations_leaflet_awesome_marker_get($settings);
-            }
-          }
-          $vector = $vicon;
-        }
-        else {
-          // marker
-          $per_field_markers = FALSE;
-          $getlocations_markers = variable_get('getlocations_markers', array());
-          if (isset($getlocations_markers[$entity_type]['enable']) && $getlocations_markers[$entity_type]['enable']) {
-            if (isset($getlocations_markers[$entity_type][$bundle][$locative_field_name]['marker']) && $getlocations_markers[$entity_type][$bundle][$locative_field_name]['marker']) {
-              $per_field_markers = TRUE;
-              $marker = $getlocations_markers[$entity_type][$bundle][$locative_field_name]['marker'];
-            }
-          }
-          if (! $per_field_markers) {
-            if (isset($default[$entity_type . '_map_marker'])) {
-              $marker = $default[$entity_type . '_map_marker'];
-            }
-            elseif (isset($getlocations_defaults[$entity_type . '_map_marker'])) {
-              $marker = $getlocations_defaults[$entity_type . '_map_marker'];
-            }
-            else {
-              $marker = (isset($default['map_marker']) ? $default['map_marker'] : $getlocations_defaults['map_marker']);
-            }
+      $map_settings = getlocations_leaflet_map_get_info('Getlocations OSM');
+      $map_settings = getlocations_leaflet_get_map_layers($map_settings);
+
+      if (! empty($settings['baselayers'])) {
+        $map_layers = array();
+        foreach ($settings['baselayers'] AS $k => $v) {
+          if (isset($map_settings['map_layers'][$k]) && $settings['baselayers'][$k]) {
+            $map_layers[$k] = $map_settings['map_layers'][$k];
           }
         }
-
-        $mapzoom = FALSE;
-        $iconlist = array();
-        $minmaxes = array('minlat' => 0, 'minlon' => 0, 'maxlat' => 0, 'maxlon' => 0);
-        $location = array();
-
-        // fetch lats and lons
-        $ct = 0;
-        foreach (array_keys($locative_fields) AS $delta) {
-          $title = '';
-          $lid = 0;
-          if (isset($entity->{$locative_field_name}[$lang][$delta]) && $location = $entity->{$locative_field_name}[$lang][$delta]) {
-            // collect the lat and lon
-            if ($module == 'getlocations_fields') {
-              $lat = $location['latitude'];
-              $lon = $location['longitude'];
-              $lid = (isset($location['glid']) ? $location['glid'] : 0);
-            }
-            elseif ($module == 'location_cck') {
-              $lat = $location['latitude'];
-              $lon = $location['longitude'];
-              $lid = (isset($location['lid']) ? $location['lid'] : 0);
-            }
-            elseif ($module == 'geofield') {
-              $lat = $location['lat'];
-              $lon = $location['lon'];
-            }
-            elseif ($module == 'geolocation') {
-              $lat = $location['lat'];
-              $lon = $location['lng'];
-            }
-
-            if (isset($lat) && ! empty($lat) && isset($lon) && ! empty($lon)  && $latlon = getlocations_latlon_check($lat . ',' . $lon)) {
-              $ll = explode(',', $latlon);
-              $location['latitude'] = $ll[0];
-              $location['longitude'] = $ll[1];
-              $entity_get_info = entity_get_info($entity_type);
-              $entity_key = $entity_get_info['entity keys']['id']; // nid, cid, uid etc
-              $entity_id = $entity->{$entity_key};
-
-              if (isset($location['name']) && ! empty($location['name'])) {
-                $title = $location['name'];
-              }
-              else {
-                $title = (isset($entity->title) ? $entity->title : '');
-              }
-              $title = htmlspecialchars_decode(strip_tags($title), ENT_QUOTES);
-              $minmaxes = getlocations_do_minmaxes($ct, $location, $minmaxes);
-
-              // per item marker
-              if (isset($location['marker']) && ! empty($location['marker'])) {
-                $marker = $location['marker'];
-              }
-
-              if (isset($location['mapzoom'])) {
-                $mapzoom = $location['mapzoom'];
-              }
-
-              if ($lid && $default['markeraction'] == 'popup') {
-                $extra = FALSE;
-                if (isset($default['getdirections_link'])) {
-                  $extra['gdlink'] = $default['getdirections_link'];
-                }
-                $markeraction = array('type' => 'popup', 'data' => getlocations_getinfo($lid, $entity_key, $extra));
-              }
-              elseif ($lid && $default['markeraction'] == 'link') {
-                $markeraction = array('type' => 'link', 'data' => getlocations_getlidinfo($lid, $entity_key));
-              }
-              else {
-                $markeraction = array();
-              }
-
-              $iconlist[$marker] = getlocations_leaflet_get_marker($marker);
-
-              $latlons[$ct] = array($location['latitude'], $location['longitude'], $entity_key, $entity_id, $lid, $title, $marker, $vector, $markeraction, '');
-
-              $ct++;
-            } // end lat lon check
-          }
-        } // end foreach
-
-        if ($ct < 2 ) {
-          unset($minmaxes);
-          $minmaxes = '';
+        if (! empty($map_layers)) {
+          $map_settings['map_layers'] = $map_layers;
         }
+      }
 
-        $map_settings = getlocations_leaflet_map_get_info('Getlocations OSM');
-        $map_settings = getlocations_leaflet_get_map_layers($map_settings);
+      $nodezoom = FALSE;
+      if ($ct == 1 && $settings['nodezoom']) {
+        $nodezoom = $settings['nodezoom'];
+        $map_settings['map_opts']['center'] = array($location['latitude'], $location['longitude']);
+        $map_settings['map_opts']['zoom'] = $nodezoom;
+      }
+      elseif ($ct < 1) {
+        $ll = explode(',', $default['latlong']);
+        $map_settings['map_opts']['center'] = array($ll[0], $ll[1]);
+        $map_settings['map_opts']['zoom'] = $settings['zoom'];
+      }
 
-        if (! empty($settings['baselayers'])) {
-          $map_layers = array();
-          foreach ($settings['baselayers'] AS $k => $v) {
-            if (isset($map_settings['map_layers'][$k]) && $settings['baselayers'][$k]) {
-              $map_layers[$k] = $map_settings['map_layers'][$k];
-            }
-          }
-          if (! empty($map_layers)) {
-            $map_settings['map_layers'] = $map_layers;
-          }
-        }
+      $mapid = getlocations_setup_map('', FALSE, FALSE, TRUE);
 
-        $nodezoom = FALSE;
-        if ($ct == 1 && $settings['nodezoom']) {
-          $nodezoom = $settings['nodezoom'];
-          $map_settings['map_opts']['center'] = array($location['latitude'], $location['longitude']);
-          $map_settings['map_opts']['zoom'] = $nodezoom;
-        }
-        elseif ($ct < 1) {
-          $ll = explode(',', $default['latlong']);
-          $map_settings['map_opts']['center'] = array($ll[0], $ll[1]);
-          $map_settings['map_opts']['zoom'] = $settings['zoom'];
-        }
+      // add in some more
+      $map_settings = getlocations_leaflet_map_settings_do($map_settings, $default, $latlons, $mapid);
 
-        $mapid = getlocations_setup_map('', FALSE, FALSE, TRUE);
+      $map_settings['map_settings']['nodezoom'] = ($nodezoom ? $nodezoom : FALSE);
+      $map_settings['map_settings']['minmaxes'] = (empty($minmaxes) ? FALSE : implode(',', $minmaxes));
 
-        // add in some more
-        $map_settings = getlocations_leaflet_map_settings_do($map_settings, $default, $latlons, $mapid);
+      $map_settings['icons'] = $iconlist;
+      $map_settings['datanum'] = $ct;
+      $map_settings['latlons'] = $latlons;
 
-        $map_settings['map_settings']['nodezoom'] = ($nodezoom ? $nodezoom : FALSE);
-        $map_settings['map_settings']['minmaxes'] = (empty($minmaxes) ? FALSE : implode(',', $minmaxes));
+      drupal_add_library('getlocations_leaflet', 'getlocations-leaflet');
 
-        $map_settings['icons'] = $iconlist;
-        $map_settings['datanum'] = $ct;
-        $map_settings['latlons'] = $latlons;
+      #getlocations_leaflet_js_settings_do($map_settings, $mapid);
+      $element[$delta] = array(
+        '#theme' => 'getlocations_leaflet_map',
+        '#width' => $default['width'],
+        '#height' => $default['height'],
+        '#map_settings' => $map_settings,
+        '#mapid' => $mapid,
+        '#links' => '',
+      );
 
-        drupal_add_library('getlocations_leaflet', 'getlocations-leaflet');
-
-        #getlocations_leaflet_js_settings_do($map_settings, $mapid);
-        $element[$delta] = array(
-          '#theme' => 'getlocations_leaflet_map',
-          '#width' => $default['width'],
-          '#height' => $default['height'],
-          '#map_settings' => $map_settings,
-          '#mapid' => $mapid,
-          '#links' => '',
-        );
-
-      } // end if ($locative_field_name)
       break;
 
     case 'getlocations_leaflet_link':
@@ -689,37 +689,33 @@ function getlocations_leaflet_field_formatter_view($entity_type, $entity, $field
       if (empty($settings) || ! isset($settings['text'])) {
         $settings = getlocations_leaflet_link_formatter_defaults();
       }
-
       $bundle = $instance['bundle'];
-      $locative_field_name = (isset($items[0]['locative_field_name']) ? $items[0]['locative_field_name'] : '');
-      if ($locative_field_name) {
-        $locative_fields = $entity->{$locative_field_name}[$lang];
-        foreach (array_keys($locative_fields) AS $delta) {
-          $entity_get_info = entity_get_info($entity_type);
-          $entity_key = $entity_get_info['entity keys']['id']; // nid, cid, uid etc
-          $entity_id = $entity->{$entity_key};
-          $link_text = $settings['text'];
-          if ($settings['text_opt'] == 'page') {
-            $entity_title = '';
-            if (isset($entity_get_info['entity keys']['label'])) {
-              $entity_title = $entity_get_info['entity keys']['label'];
-            }
-            elseif ($entity_type == 'user') {
-              $entity_title = 'name';
-            }
-            if ($entity_title && isset($entity->{$entity_title})) {
-              $link_text = $entity->{$entity_title};
-            }
+      foreach (array_keys($locative_fields) AS $delta) {
+        $entity_get_info = entity_get_info($entity_type);
+        $entity_key = $entity_get_info['entity keys']['id']; // nid, cid, uid etc
+        $entity_id = $entity->{$entity_key};
+        $link_text = $settings['text'];
+        if ($settings['text_opt'] == 'page') {
+          $entity_title = '';
+          if (isset($entity_get_info['entity keys']['label'])) {
+            $entity_title = $entity_get_info['entity keys']['label'];
           }
-          $link_text = check_plain($link_text);
-          $element[$delta] = array(
-            '#theme' => 'getlocations_leaflet_link',
-            '#link_text' => $link_text,
-            '#entity_type' => $entity_type,
-            '#entity_id' => $entity_id,
-          );
+          elseif ($entity_type == 'user') {
+            $entity_title = 'name';
+          }
+          if ($entity_title && isset($entity->{$entity_title})) {
+            $link_text = $entity->{$entity_title};
+          }
         }
-      } // end if ($locative_field_name)
+        $link_text = check_plain($link_text);
+        $element[$delta] = array(
+          '#theme' => 'getlocations_leaflet_link',
+          '#link_text' => $link_text,
+          '#entity_type' => $entity_type,
+          '#entity_id' => $entity_id,
+        );
+      }
+
       break;
   } // end switch
   return $element;
