@@ -863,6 +863,47 @@ function theme_getlocations_search_settings_form($variables) {
 }
 
 /**
+ * Themes getlocations_search settings form
+ *
+ * @param array $variables
+ *
+ * @return
+ *   Returns $output
+ *
+ */
+function theme_getlocations_search_block_settings_form($variables) {
+  $form = $variables['form'];
+  $output = '';
+  $varname = $form['varname']['#value'];
+  unset($form['varname']);
+
+  if (isset($form[$varname]['vocab']) ) {
+    $form[$varname]['vocab']['#prefix'] = '<div id="getlocations_search_defaults_vocab">';
+    $form[$varname]['vocab_element']['#suffix'] = '</div>';
+  }
+  $form[$varname]['useclustermanager']['#prefix'] = '<div id="wrap-getlocations-clusteropts">';
+  $form[$varname]['markerclusterer_minsize']['#suffix'] = '</div>';
+
+  $form[$varname]['usemarkermanager']['#prefix'] = '<div id="wrap-getlocations-markeropts">';
+  $form[$varname]['maxzoom']['#suffix'] = '</div>';
+
+  $form[$varname]['do_search_marker']['#suffix'] = '<div id="wrap-getlocations-search-marker">';
+  $form[$varname]['search_marker_toggle_active']['#suffix'] = '</div>';
+
+  if (module_exists('colorbox')) {
+    $getlocations_colorbox = getlocations_colorbox_settings();
+    if ($getlocations_colorbox['marker_enable']) {
+      $link = getlocations_markerpicker_link($form[$varname]['search_marker']['#id'], 's');
+      $form[$varname]['search_marker']['#field_suffix'] = '&nbsp;' . $link;
+    }
+  }
+
+  $output .= drupal_render_children($form);
+  return $output;
+
+}
+
+/**
  * @param array $variables
  *
  * @return
