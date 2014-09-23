@@ -1,9 +1,46 @@
-commit ea8b4f2
+commit 0a61ba0
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Tue Sep 23 20:53:40 2014 +0100
+
+    notice avoidance
+
+modules/getlocations_fields/getlocations_fields.module
+
+commit a6c12c0
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Tue Sep 23 10:19:47 2014 +0100
+
+    added missing theme function
+
+modules/getlocations_search/getlocations_search.module
+
+commit f355961
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sun Sep 21 08:50:08 2014 +0100
+
+    more empty location bug
+
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_map/getlocations_map.module
+
+commit d4b2543
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sat Sep 20 22:17:12 2014 +0100
+
+    fixed bug in search marker form display
+
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/views/getlocations_leaflet_plugin_style.inc
+views/getlocations_plugin_style_map.inc
+
+commit f9bda9c
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Sat Sep 20 18:48:58 2014 +0100
 
     fixed skip map issue #2341985
 
+CHANGELOG.txt
 modules/getlocations_leaflet/getlocations_leaflet.module
 modules/getlocations_map/getlocations_map.module
 

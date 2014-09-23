@@ -258,7 +258,7 @@ function getlocations_fields_field_update($entity_type, $entity, $field, $instan
   $settings['display_settings'] = getlocations_fields_get_display_settings($instance['display']['default']['settings']);
 
   $mode = 'update';
-  if ($entity->revision && ($entity->nid !== $entity->vid) ) {
+  if ((isset($entity->revision) && $entity->revision) && ($entity->nid !== $entity->vid) ) {
     $mode = 'insert';
   }
 
