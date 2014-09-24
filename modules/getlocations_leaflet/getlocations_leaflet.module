@@ -3091,7 +3091,8 @@ function getlocations_leaflet_settings_form() {
   );
   $form['getlocations_leaflet_cdn']['enable'] = getlocations_element_map_checkbox(
     t('Enable CDN'),
-    $getlocations_leaflet_cdn['enable']
+    $getlocations_leaflet_cdn['enable'],
+    t('Supply the URLs for CDN below.')
   );
   $form['getlocations_leaflet_cdn']['js'] = getlocations_element_map_tf(
     t('Leaflet library javascript URL'),
