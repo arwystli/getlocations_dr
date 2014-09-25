@@ -318,7 +318,7 @@ function getlocations_map_field_formatter_view($entity_type, $entity, $field, $i
             $link_text = $entity->{$entity_title};
           }
         }
-        $link_text = check_plain($link_text);
+
         $element[$delta] = array(
           '#theme' => 'getlocations_map_link',
           '#link_text' => $link_text,

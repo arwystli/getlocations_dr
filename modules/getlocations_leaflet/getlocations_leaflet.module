@@ -707,7 +707,7 @@ function getlocations_leaflet_field_formatter_view($entity_type, $entity, $field
             $link_text = $entity->{$entity_title};
           }
         }
-        $link_text = check_plain($link_text);
+
         $element[$delta] = array(
           '#theme' => 'getlocations_leaflet_link',
           '#link_text' => $link_text,
