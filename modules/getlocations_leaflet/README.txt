@@ -11,8 +11,8 @@ All other files and folder(s) that come with the library are also needed there.
 You can install it using drush:
 drush getlocations-leaflet
 
-Alternately you can use CDN, see http://leafletjs.com/ for details.
-You can add the css and js URLs in the Leaflet configuration page.
+Alternately you can use CDN, see http://leafletjs.com/ or https://cdnjs.com/libraries/leaflet for details.
+You can add the css and js URLs on the Leaflet configuration page.
 
 
 markercluster comes from
