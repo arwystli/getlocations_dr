@@ -1,9 +1,53 @@
-commit 0a61ba0
+commit 6344366
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Oct 1 14:11:51 2014 +0100
+
+    fix issue #2347681
+
+js/getlocations_categories.js
+js/getlocations_categories.min.js
+
+commit 82acd48
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Oct 1 08:48:39 2014 +0100
+
+    updated markerclusterer
+
+js/markerclusterer.js
+js/markerclusterer_packed.js
+
+commit 62344aa
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Thu Sep 25 18:40:46 2014 +0100
+
+    added to README
+
+modules/getlocations_leaflet/README.txt
+
+commit 2e4797a
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Thu Sep 25 18:40:24 2014 +0100
+
+    removed unwanted check_plain
+
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_map/getlocations_map.module
+
+commit 8a57161
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Thu Sep 25 00:06:19 2014 +0100
+
+    added description to CDN switch
+
+modules/getlocations_leaflet/getlocations_leaflet.module
+
+commit 871706e
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Tue Sep 23 20:53:40 2014 +0100
 
     notice avoidance
 
+CHANGELOG.txt
 modules/getlocations_fields/getlocations_fields.module
 
 commit a6c12c0

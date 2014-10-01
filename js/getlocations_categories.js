@@ -20,10 +20,16 @@
                 if (vis) {
                   label = l + ' ' + Drupal.t('On');
                   sv = false;
+                  if (getlocations_settings[k].useclustermanager) {
+                    getlocations_settings[k].cmgr.removeMarker(mark);
+                  }
                 }
                 else {
                   label = l + ' ' + Drupal.t('Off');
                   sv = true;
+                  if (getlocations_settings[k].useclustermanager) {
+                    getlocations_settings[k].cmgr.addMarker(mark);
+                  }
                 }
                 mark.setVisible(sv);
                 $(tgt).val(label);
