@@ -10,6 +10,9 @@ files[] = handlers/getlocations_fields_handler_argument_postcode.inc
 files[] = handlers/getlocations_fields_handler_argument_province.inc
 files[] = handlers/getlocations_fields_handler_argument_city.inc
 files[] = handlers/getlocations_fields_handler_argument_glid.inc
+files[] = handlers/getlocations_fields_handler_argument_bbox.inc
+
+files[] = handlers/getlocations_fields_plugin_argument_default_bboxquery.inc
 
 files[] = handlers/getlocations_fields_handler_field_coordinates.inc
 
