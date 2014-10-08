@@ -1,9 +1,38 @@
-commit 6344366
+commit fbf5067
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Oct 8 16:22:04 2014 +0100
+
+    fixed missing jquery show/hide
+
+modules/getlocations_fields/js/getlocations_fields_formatter.js
+modules/getlocations_fields/js/getlocations_fields_formatter.min.js
+
+commit 9d10708
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Oct 8 16:21:15 2014 +0100
+
+    better bundle detection
+
+modules/getlocations_fields/getlocations_fields.module
+
+commit 95ee6c5
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Tue Oct 7 09:15:10 2014 +0100
+
+    added bbox handler
+
+modules/getlocations_fields/getlocations_fields.info
+modules/getlocations_fields/handlers/getlocations_fields_handler_argument_bbox.inc
+modules/getlocations_fields/handlers/getlocations_fields_plugin_argument_default_bboxquery.inc
+modules/getlocations_fields/views/getlocations_fields.views.inc
+
+commit ebe36fc
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Wed Oct 1 14:11:51 2014 +0100
 
     fix issue #2347681
 
+CHANGELOG.txt
 js/getlocations_categories.js
 js/getlocations_categories.min.js
 

@@ -356,6 +356,60 @@
         }
       });
 
+      // gps button
+      if ($("input[id$=gps-button]").is('input')) {
+        if ($("input[id$=gps-button]").attr('checked')) {
+          $("#wrap-getlocations-gps-button").show();
+        }
+        else {
+          $("#wrap-getlocations-gps-button").hide();
+        }
+        $("input[id$=gps-button]").change(function() {
+          if ($(this).attr('checked')) {
+            $("#wrap-getlocations-gps-button").show();
+          }
+          else {
+            $("#wrap-getlocations-gps-button").hide();
+          }
+        });
+      }
+
+      // search marker
+      if ($("input[id$=views-search-marker-enable]").is('input')) {
+        if ( $("input[id$=views-search-marker-enable]").attr('checked')) {
+          $("#wrap-getlocations-views-search-marker").show();
+        }
+        else {
+          $("#wrap-getlocations-views-search-marker").hide();
+        }
+        $("input[id$=views-search-marker-enable]").change(function() {
+          if ($(this).attr('checked')) {
+            $("#wrap-getlocations-views-search-marker").show();
+          }
+          else {
+            $("#wrap-getlocations-views-search-marker").hide();
+          }
+        });
+      }
+
+      // search area shape
+      if ($("input[id$=views-search-radshape-enable]").is('input')) {
+        if ($("input[id$=views-search-radshape-enable]").attr('checked')) {
+          $("#wrap-getlocations-views-search-radshape").show();
+        }
+        else {
+          $("#wrap-getlocations-views-search-radshape").hide();
+        }
+        $("input[id$=views-search-radshape-enable]").change(function() {
+          if ($(this).attr('checked')) {
+            $("#wrap-getlocations-views-search-radshape").show();
+          }
+          else {
+            $("#wrap-getlocations-views-search-radshape").hide();
+          }
+        });
+      }
+
     }
   };
 }(jQuery));
