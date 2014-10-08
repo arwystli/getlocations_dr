@@ -606,11 +606,20 @@ function getlocations_fields_field_formatter_view($entity_type, $entity, $field,
   }
 
   $entity_get_info = entity_get_info($entity_type);
+
   $entity_key = $entity_get_info['entity keys']['id']; // nid, cid, uid etc
   $entity_id = $entity->{$entity_key};
   $locations = $entity->{$field_name}[$langcode];
+
   // TODO markers, tested with node
-  $bundle = $entity->type;
+  $bundle = FALSE;
+  if (isset($entity->type)) {
+    $bundle = $entity->type;
+  }
+  // field_collection
+  elseif (isset($entity_get_info['entity keys']['bundle'])) {
+    $bundle = $entity->{$entity_get_info['entity keys']['bundle']};
+  }
 
   $getlocations_markers = variable_get('getlocations_markers', array());
 
