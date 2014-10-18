@@ -37,8 +37,6 @@ class getlocations_leaflet_plugin_style extends views_plugin_style {
     $options = parent::option_definition();
 
     $getlocations_leaflet_defaults = getlocations_leaflet_defaults();
-    // fallback
-    $getlocations_defaults = getlocations_defaults();
     foreach ($getlocations_leaflet_defaults AS $key => $value) {
       $options[$key] = array('default' => $value);
     }
@@ -47,12 +45,6 @@ class getlocations_leaflet_plugin_style extends views_plugin_style {
     $options['fullscreen_disable']    = array('default' =>  0);
     $options['styles']                = array('default' => '');
     $options['jquery_colorpicker_enabled'] = array('default' => 0);
-
-    $fieldables = getlocations_get_fieldable_entity_types();
-    foreach ($fieldables AS $entity_type) {
-      $options[$entity_type . '_map_marker'] = array('default' => $getlocations_leaflet_defaults[$entity_type . '_map_marker']);
-    }
-
     // empty_result
     $options['empty_result'] = array('default' => FALSE);
 
