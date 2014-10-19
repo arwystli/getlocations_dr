@@ -26,13 +26,13 @@
         if (settings.extcontrol == 'preview_map') {
 
           // an event handler on zoomend and getZoom()
-          getlocations_leaflet_map[key].on('zoomend', function() {
-            $("#edit-getlocations-leaflet-defaults-zoom").val(getlocations_leaflet_map[key].getZoom());
+          Drupal.getlocations_leaflet_map[key].on('zoomend', function() {
+            $("#edit-getlocations-leaflet-defaults-zoom").val(Drupal.getlocations_leaflet_map[key].getZoom());
           });
 
           // an event handler on dragend and getCenter()
-          getlocations_leaflet_map[key].on('dragend', function() {
-            var ll = getlocations_leaflet_map[key].getCenter();
+          Drupal.getlocations_leaflet_map[key].on('dragend', function() {
+            var ll = Drupal.getlocations_leaflet_map[key].getCenter();
             $("#edit-getlocations-leaflet-defaults-latlong").val(ll.lat + ',' + ll.lng);
           });
 

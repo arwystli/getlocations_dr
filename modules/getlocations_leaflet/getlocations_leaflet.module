@@ -124,6 +124,16 @@ function getlocations_leaflet_library() {
   // add plugins
   $jsarr = array();
   $cssarr = array();
+
+  // add getlocations geo library
+  $getlocations_paths = getlocations_paths_get();
+  $jsarr += array(
+    $getlocations_paths['getlocations_geo_path'] =>  array(
+      'type' => 'file',
+      'preprocess' => $aggr
+    ),
+  );
+
   if ($getlocations_leaflet_plugins['fullscreen_enable']) {
     $jsarr += array(
       GETLOCATIONS_LEAFLET_PATH . '/plugins/fullscreen/Control.FullScreen.min.js' => array(
@@ -4493,7 +4503,7 @@ function theme_getlocations_leaflet_map($variables) {
     'minmaxes' => $minmaxes
   ));
   $output .= "\n" . '<script type="text/javascript">' . "\n" . '<!--//--><![CDATA[//><!--' . "\n";
-  $output .= 'getlocations_leaflet_data["' . $mapid . '"] = ' . $localdata . ';' . "\n";
+  $output .= 'Drupal.getlocations_leaflet_data["' . $mapid . '"] = ' . $localdata . ';' . "\n";
   $output .= '//--><!]]>' . "\n" . '</script>' . "\n";
   // show_search_distance etc
   if (module_exists('getlocations_fields') && isset($map_settings['search_dist_info'])) {

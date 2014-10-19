@@ -108,9 +108,9 @@
         }
 
         if (polygons.length) {
-          PolyG.addTo(getlocations_leaflet_map[key]);
-          if (getlocations_leaflet_settings[key].map_settings.layercontrol_polyg_ov) {
-            getlocations_leaflet_layerscontrol[key].addOverlay(PolyG, getlocations_leaflet_settings[key].map_settings.layercontrol_polyg_ov_label);
+          PolyG.addTo(Drupal.getlocations_leaflet_map[key]);
+          if (Drupal.getlocations_leaflet_settings[key].map_settings.layercontrol_polyg_ov) {
+            Drupal.getlocations_leaflet_layerscontrol[key].addOverlay(PolyG, Drupal.getlocations_leaflet_settings[key].map_settings.layercontrol_polyg_ov_label);
           }
         }
 

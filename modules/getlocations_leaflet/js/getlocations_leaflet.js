@@ -8,16 +8,16 @@
  * this is for leaflet maps http://leafletjs.com/
  */
 
-var getlocations_leaflet_map = [];
-var getlocations_leaflet_markers = [];
-var getlocations_leaflet_settings = [];
-var getlocations_leaflet_overlays = [];
-var getlocations_leaflet_layerscontrol = [];
-var getlocations_leaflet_data = [];
-var getlocations_leaflet_geocoder = [];
-
 (function ($) {
   Drupal.getlocations_leaflet = {};
+  Drupal.getlocations_leaflet_map = [];
+  Drupal.getlocations_leaflet_markers = [];
+  Drupal.getlocations_leaflet_settings = [];
+  Drupal.getlocations_leaflet_overlays = [];
+  Drupal.getlocations_leaflet_layerscontrol = [];
+  Drupal.getlocations_leaflet_data = [];
+  Drupal.getlocations_leaflet_geocoder = [];
+
   Drupal.behaviors.getlocations_leaflet = {
     attach: function (context, settings) {
 
@@ -32,11 +32,11 @@ var getlocations_leaflet_geocoder = [];
 
       var getlocations_leaflet_dd_to_dms_do = function(coord, latlon) {
         if (latlon == 'lat') {
-          coord = getlocations_leaflet_normalize_lat(coord);
+          coord = Drupal.getlocations.geo.normalizeLat(coord);
           direction = (coord < 0) ? 'S' : 'N';
         }
         else {
-          coord = getlocations_leaflet_normalize_lng(coord);
+          coord = Drupal.getlocations.geo.normalizeLng(coord);
           direction = (coord < 0) ? 'W' : 'E';
         }
         coord = Math.abs(coord);
@@ -50,28 +50,13 @@ var getlocations_leaflet_geocoder = [];
       };
 
       var getlocations_leaflet_dd_lat = function(coord) {
-        coord = getlocations_leaflet_normalize_lat(coord);
+        coord = Drupal.getlocations.geo.normalizeLat(coord);
         return coord.toFixed(6);
       };
 
       var getlocations_leaflet_dd_lng = function(coord) {
-        coord = getlocations_leaflet_normalize_lng(coord);
+        coord = Drupal.getlocations.geo.normalizeLng(coord);
         return coord.toFixed(6);
-      };
-
-      // normalize functions
-      var getlocations_leaflet_normalize_lat = function(lat) {
-        lat = parseFloat(lat);
-        return Math.max(-90, Math.min(90, lat));
-      };
-
-      var getlocations_leaflet_normalize_lng = function(lng) {
-        lng = parseFloat(lng);
-        mod = lng % 360;
-        if (mod == 180) {
-          return 180;
-        }
-        return ((mod < -180) ? (lng + 360) : (mod > 180) ? (lng - 360) : lng);
       };
 
       function getlocations_leaflet_do_link(m, l) {
@@ -113,29 +98,29 @@ var getlocations_leaflet_geocoder = [];
           var map_opts = settings.getlocations_leaflet[key].map_opts;
           var map_layers = settings.getlocations_leaflet[key].map_layers;
 
-          var icons = getlocations_leaflet_data[key].icons;
-          var datanum = getlocations_leaflet_data[key].datanum;
-          var latlons = getlocations_leaflet_data[key].latlons;
-          var minmaxes = getlocations_leaflet_data[key].minmaxes;
+          var icons = Drupal.getlocations_leaflet_data[key].icons;
+          var datanum = Drupal.getlocations_leaflet_data[key].datanum;
+          var latlons = Drupal.getlocations_leaflet_data[key].latlons;
+          var minmaxes = Drupal.getlocations_leaflet_data[key].minmaxes;
 
-          getlocations_leaflet_markers[key] = {};
-          getlocations_leaflet_markers[key].coords = {};
-          getlocations_leaflet_markers[key].lids = {};
-          getlocations_leaflet_markers[key].cat = {};
-          getlocations_leaflet_settings[key] = settings.getlocations_leaflet[key];
-          getlocations_leaflet_overlays[key] = {};
-          getlocations_leaflet_layerscontrol[key] = {};
+          Drupal.getlocations_leaflet_markers[key] = {};
+          Drupal.getlocations_leaflet_markers[key].coords = {};
+          Drupal.getlocations_leaflet_markers[key].lids = {};
+          Drupal.getlocations_leaflet_markers[key].cat = {};
+          Drupal.getlocations_leaflet_settings[key] = settings.getlocations_leaflet[key];
+          Drupal.getlocations_leaflet_overlays[key] = {};
+          Drupal.getlocations_leaflet_layerscontrol[key] = {};
 
           // get the map
-          //getlocations_leaflet_map[key] = L.map('getlocations_leaflet_canvas_' + key, map_opts);
-          getlocations_leaflet_map[key] = L.map($(element).get(0), map_opts);
+          //Drupal.getlocations_leaflet_map[key] = L.map('getlocations_leaflet_canvas_' + key, map_opts);
+          Drupal.getlocations_leaflet_map[key] = L.map($(element).get(0), map_opts);
 
           // layers
           var layers = {};
           // do the default layer first and separately
           var default_layer_name = map_settings.default_layer_name;
           var default_layer_label = map_settings.default_layer_label;
-          layers[default_layer_label] = L.tileLayer.provider(default_layer_name).addTo(getlocations_leaflet_map[key]);
+          layers[default_layer_label] = L.tileLayer.provider(default_layer_name).addTo(Drupal.getlocations_leaflet_map[key]);
           for (var lkey in map_layers) {
             if (lkey != default_layer_name) {
               var layer = map_layers[lkey];
@@ -150,12 +135,12 @@ var getlocations_leaflet_geocoder = [];
                 layers[layer.label] = map_layer;
               }
               else if (layer.type == 'overlay') {
-                getlocations_leaflet_overlays[key][layer.label] = map_layer;
+                Drupal.getlocations_leaflet_overlays[key][layer.label] = map_layer;
               }
             }
           }
           if (layers.length) {
-            layers.addTo(getlocations_leaflet_map[key]);
+            layers.addTo(Drupal.getlocations_leaflet_map[key]);
           }
 
           // fullscreen control
@@ -165,7 +150,7 @@ var getlocations_leaflet_geocoder = [];
               fsopts.position = map_settings.fullscreenposition;
             }
             fsopts.title = Drupal.t('Fullscreen');
-            getlocations_leaflet_map[key].addControl(L.control.fullscreen(fsopts));
+            Drupal.getlocations_leaflet_map[key].addControl(L.control.fullscreen(fsopts));
           }
 
           // magnifying glass
@@ -185,7 +170,7 @@ var getlocations_leaflet_geocoder = [];
               title: Drupal.t('Magnifying Glass'),
               position: (map_settings.magnifyingglasscontrolposition ? map_settings.magnifyingglasscontrolposition : 'topleft')
             };
-            getlocations_leaflet_map[key].addControl(L.control.magnifyingglass(magnifyingGlass, magControlOpts));
+            Drupal.getlocations_leaflet_map[key].addControl(L.control.magnifyingglass(magnifyingGlass, magControlOpts));
           }
 
           // pancontrol
@@ -194,7 +179,7 @@ var getlocations_leaflet_geocoder = [];
             if (map_settings.pancontrolposition) {
               popts.position = map_settings.pancontrolposition;
             }
-            getlocations_leaflet_map[key].addControl(L.control.pan(popts));
+            Drupal.getlocations_leaflet_map[key].addControl(L.control.pan(popts));
           }
 
           // zoomslider
@@ -203,7 +188,7 @@ var getlocations_leaflet_geocoder = [];
             if (map_settings.zoomsliderposition) {
               popts.position = map_settings.zoomsliderposition;
             }
-            getlocations_leaflet_map[key].addControl(L.control.zoomslider(popts));
+            Drupal.getlocations_leaflet_map[key].addControl(L.control.zoomslider(popts));
           }
 
           // graticule
@@ -230,10 +215,10 @@ var getlocations_leaflet_geocoder = [];
                 title: map_settings.graticule_ov_label,
                 position: (map_settings.graticule_position ? map_settings.graticule_position : 'topleft')
               };
-              getlocations_leaflet_map[key].addControl(L.control.graticule(graticule, gratctlOpts));
+              Drupal.getlocations_leaflet_map[key].addControl(L.control.graticule(graticule, gratctlOpts));
             }
             if ((map_settings.graticule_show && map_settings.graticule_state) || (! map_settings.graticule_show)) {
-              graticule.addTo(getlocations_leaflet_map[key]);
+              graticule.addTo(Drupal.getlocations_leaflet_map[key]);
             }
           }
 
@@ -260,10 +245,10 @@ var getlocations_leaflet_geocoder = [];
                 title: map_settings.terminator_label,
                 position: (map_settings.terminator_position ? map_settings.terminator_position : 'topleft')
               };
-              getlocations_leaflet_map[key].addControl(L.control.terminator(terminator, termctlOpts));
+              Drupal.getlocations_leaflet_map[key].addControl(L.control.terminator(terminator, termctlOpts));
             }
             if ((map_settings.terminator_show && map_settings.terminator_state) || (! map_settings.terminator_show)) {
-              terminator.addTo(getlocations_leaflet_map[key]);
+              terminator.addTo(Drupal.getlocations_leaflet_map[key]);
             }
           }
 
@@ -273,14 +258,14 @@ var getlocations_leaflet_geocoder = [];
             if (map_settings.zoomcontrolposition) {
               zoomopts.position = map_settings.zoomcontrolposition;
             }
-            getlocations_leaflet_map[key].addControl(L.control.zoom(zoomopts));
+            Drupal.getlocations_leaflet_map[key].addControl(L.control.zoom(zoomopts));
           }
 
           // Attribution control
           if (map_settings.attributionControl && map_settings.attributioncontrolposition) {
             var attributionopts = {position: map_settings.attributioncontrolposition};
             var attribcontrol = L.control.attribution(attributionopts);
-            getlocations_leaflet_map[key].addControl(attribcontrol);
+            Drupal.getlocations_leaflet_map[key].addControl(attribcontrol);
             //attribcontrol.addAttribution(map_layers.earth.options.attribution);
           }
 
@@ -299,7 +284,7 @@ var getlocations_leaflet_geocoder = [];
               mopts.lngFormatter = getlocations_leaflet_dd_lng;
               mopts.latFormatter = getlocations_leaflet_dd_lat;
             }
-            getlocations_leaflet_map[key].addControl(L.control.mousePosition(mopts));
+            Drupal.getlocations_leaflet_map[key].addControl(L.control.mousePosition(mopts));
           }
 
           // Scale control
@@ -318,7 +303,7 @@ var getlocations_leaflet_geocoder = [];
                 scaleopts.imperial = true;
               }
             }
-            getlocations_leaflet_map[key].addControl(L.control.scale(scaleopts));
+            Drupal.getlocations_leaflet_map[key].addControl(L.control.scale(scaleopts));
           }
 
           // Geocoder control
@@ -339,8 +324,8 @@ var getlocations_leaflet_geocoder = [];
             else {
               geo_opts.geocoder = L.Control.Geocoder.nominatim();
             }
-            getlocations_leaflet_geocoder[key] = L.Control.geocoder(geo_opts);
-            getlocations_leaflet_map[key].addControl(getlocations_leaflet_geocoder[key]);
+            Drupal.getlocations_leaflet_geocoder[key] = L.Control.geocoder(geo_opts);
+            Drupal.getlocations_leaflet_map[key].addControl(Drupal.getlocations_leaflet_geocoder[key]);
           }
 
           // latlons data
@@ -417,38 +402,38 @@ var getlocations_leaflet_geocoder = [];
 
               // add marker to getlocations_leaflet_markers
               // still experimental
-              getlocations_leaflet_markers[key].lids[glid] = Marker;
+              Drupal.getlocations_leaflet_markers[key].lids[glid] = Marker;
 
             } // end latlons
 
             // add the markers to the map
             if (map_settings.category_showhide_buttons) {
               for (var c in categories) {
-                getlocations_leaflet_map[key].addLayer(Markers[c]);
+                Drupal.getlocations_leaflet_map[key].addLayer(Markers[c]);
               }
             }
             else {
-              getlocations_leaflet_map[key].addLayer(Markers['loc']);
+              Drupal.getlocations_leaflet_map[key].addLayer(Markers['loc']);
             }
 
             // set up overlays
             if (map_settings.category_showhide_buttons) {
               for (var c in categories) {
-                getlocations_leaflet_overlays[key][categories[c]] = Markers[c];
+                Drupal.getlocations_leaflet_overlays[key][categories[c]] = Markers[c];
               }
             }
             else if (map_settings.layercontrol_mark_ov) {
-              getlocations_leaflet_overlays[key][map_settings.layercontrol_mark_ov_label] = Markers['loc'];
+              Drupal.getlocations_leaflet_overlays[key][map_settings.layercontrol_mark_ov_label] = Markers['loc'];
             }
 
             // adding graticule to overlay switches
             if (map_settings.graticule && map_settings.graticule_show == 1 ) {
-                getlocations_leaflet_overlays[key][map_settings.graticule_ov_label] = graticule;
+              Drupal.getlocations_leaflet_overlays[key][map_settings.graticule_ov_label] = graticule;
             }
 
             // adding terminator to overlay switches
             if (map_settings.terminator && map_settings.terminator_show == 1 ) {
-              getlocations_leaflet_overlays[key][map_settings.terminator_label] = terminator;
+              Drupal.getlocations_leaflet_overlays[key][map_settings.terminator_label] = terminator;
             }
 
           } // end datanum > 0
@@ -460,10 +445,10 @@ var getlocations_leaflet_geocoder = [];
               layeropts.position = map_settings.layercontrolposition;
             }
             if (map_settings.minimap) {
-              getlocations_leaflet_layerscontrol[key] = L.control.layers.minimap(layers, getlocations_leaflet_overlays[key], layeropts).addTo(getlocations_leaflet_map[key]);
+              Drupal.getlocations_leaflet_layerscontrol[key] = L.control.layers.minimap(layers, Drupal.getlocations_leaflet_overlays[key], layeropts).addTo(Drupal.getlocations_leaflet_map[key]);
             }
             else {
-              getlocations_leaflet_layerscontrol[key] = L.control.layers(layers, getlocations_leaflet_overlays[key], layeropts).addTo(getlocations_leaflet_map[key]);
+              Drupal.getlocations_leaflet_layerscontrol[key] = L.control.layers(layers, Drupal.getlocations_leaflet_overlays[key], layeropts).addTo(Drupal.getlocations_leaflet_map[key]);
             }
           }
 
@@ -474,7 +459,7 @@ var getlocations_leaflet_geocoder = [];
               var sw = L.latLng(parseFloat(mmarr[2]), parseFloat(mmarr[3])),
                 ne = L.latLng(parseFloat(mmarr[0]), parseFloat(mmarr[1])),
                 bounds = L.latLngBounds(sw, ne).pad(0.1);
-                getlocations_leaflet_map[key].fitBounds(bounds, {reset: true});
+                Drupal.getlocations_leaflet_map[key].fitBounds(bounds, {reset: true});
             }
           }
 
@@ -485,10 +470,10 @@ var getlocations_leaflet_geocoder = [];
               $("#getlocations_leaflet_gps_throbber_" + key).removeClass('getlocations_leaflet_gps_throbber_inactive');
               $("#getlocations_leaflet_gps_throbber_" + key).addClass('getlocations_leaflet_gps_throbber_active');
               if (usermarker) {
-                getlocations_leaflet_map[key].removeLayer(usermarker);
+                Drupal.getlocations_leaflet_map[key].removeLayer(usermarker);
                 usermarker = null;
               }
-              getlocations_leaflet_map[key].on("locationfound", function(location) {
+              Drupal.getlocations_leaflet_map[key].on("locationfound", function(location) {
                 if (! usermarker) {
                   usermarker_opts = {
                     pulsing: map_settings.usermarker_pulsing,
@@ -503,7 +488,7 @@ var getlocations_leaflet_geocoder = [];
                       clickable: false
                     }
                   };
-                  usermarker = L.userMarker(location.latlng, usermarker_opts).addTo(getlocations_leaflet_map[key]);
+                  usermarker = L.userMarker(location.latlng, usermarker_opts).addTo(Drupal.getlocations_leaflet_map[key]);
                   usermarker.setLatLng(location.latlng);
                   if (map_settings.usermarker_accuracy) {
                     usermarker.setAccuracy(location.accuracy);
@@ -516,7 +501,7 @@ var getlocations_leaflet_geocoder = [];
                 alert('Error: location failed. ' + error.message);
               });
 
-              getlocations_leaflet_map[key].locate({
+              Drupal.getlocations_leaflet_map[key].locate({
                 watch: false,
                 locate: true,
                 setView: true,
@@ -538,7 +523,7 @@ var getlocations_leaflet_geocoder = [];
 
     // categories
     if (cat) {
-      getlocations_leaflet_markers[mkey].cat[glid] = cat;
+      Drupal.getlocations_leaflet_markers[mkey].cat[glid] = cat;
     }
 
     var vicon = false;
@@ -549,8 +534,8 @@ var getlocations_leaflet_geocoder = [];
 
     // check for duplicates
     var hash = new String(lat + lon);
-    if (getlocations_leaflet_markers[mkey].coords[hash] == null) {
-      getlocations_leaflet_markers[mkey].coords[hash] = 1;
+    if (Drupal.getlocations_leaflet_markers[mkey].coords[hash] == null) {
+      Drupal.getlocations_leaflet_markers[mkey].coords[hash] = 1;
     }
     else {
       // we have a duplicate
