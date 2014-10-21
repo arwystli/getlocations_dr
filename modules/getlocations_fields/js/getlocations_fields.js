@@ -37,7 +37,7 @@
         var elemID = $(element).attr('id');
         var key = elemID.replace(/^getlocations_map_canvas_/, '');
         // is there really a map?
-        if ( $("#getlocations_map_canvas_" + key).is('div') ) {
+        if ( $("#getlocations_map_canvas_" + key).is('div') && settings.getlocations_fields[key] !== undefined) {
 
           var gset = gsettings[key];
           if (gset.input_map_show != 1) {
