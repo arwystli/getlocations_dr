@@ -637,5 +637,20 @@
     return Marker;
   };
 
+  // redo map
+  Drupal.getlocations_leaflet.redoMap = function(key) {
+    var settings = Drupal.settings.getlocations_leaflet[key];
+    var minmaxes = (Drupal.getlocations_leaflet_data[key].minmaxes ? Drupal.getlocations_leaflet_data[key].minmaxes : '');
+    var datanum = Drupal.getlocations_leaflet_data[key].datanum;
+    if (datanum > 1) {
+      if (minmaxes) {
+        var mmarr = minmaxes.split(',');
+        var sw = L.latLng(parseFloat(mmarr[2]), parseFloat(mmarr[3])),
+          ne = L.latLng(parseFloat(mmarr[0]), parseFloat(mmarr[1])),
+          bounds = L.latLngBounds(sw, ne).pad(0.1);
+        Drupal.getlocations_leaflet_map[key].invalidateSize().fitBounds(bounds, {reset: true});
+      }
+    }
+  };
 
 })(jQuery);

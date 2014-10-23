@@ -1174,6 +1174,38 @@ var getlocations_data = [];
     }
   };
 
+  Drupal.getlocations.redoMap = function(key) {
+    var settings = Drupal.settings.getlocations[key];
+    var minmaxes = (Drupal.getlocations_data[key].minmaxes ? Drupal.getlocations_data[key].minmaxes : '');
+    var minlat = '';
+    var minlon = '';
+    var maxlat = '';
+    var maxlon = '';
+    var cenlat = '';
+    var cenlon = '';
+    if (minmaxes) {
+      minlat = parseFloat(minmaxes.minlat);
+      minlon = parseFloat(minmaxes.minlon);
+      maxlat = parseFloat(minmaxes.maxlat);
+      maxlon = parseFloat(minmaxes.maxlon);
+      cenlat = ((minlat + maxlat) / 2);
+      cenlon = ((minlon + maxlon) / 2);
+    }
+    google.maps.event.trigger(Drupal.getlocations_map[key], "resize");
+    if (! settings.inputmap && ! settings.extcontrol) {
+      if (settings.pansetting == 1) {
+        Drupal.getlocations.doBounds(Drupal.Drupal.getlocations_map[key], minlat, minlon, maxlat, maxlon, true);
+      }
+      else if (settings.pansetting == 2) {
+        Drupal.getlocations.doBounds(Drupal.getlocations_map[key], minlat, minlon, maxlat, maxlon, false);
+      }
+      else if (settings.pansetting == 3 && cenlat && cenlon) {
+        var c = new google.maps.LatLng(parseFloat(cenlat), parseFloat(cenlon));
+        Drupal.getlocations_map[key].setCenter(c);
+      }
+    }
+  };
+
   Drupal.getlocations.msiedetect = function() {
     var ieversion = '';
     if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)){ //test for MSIE x.x;
