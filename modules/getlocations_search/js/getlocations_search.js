@@ -21,7 +21,7 @@
       // is there really a map?
       if ($("#getlocations_map_canvas_" + key).is('div')) {
         // getlocations settings for current map
-        var gset = getlocations_settings[key];
+        var gset = Drupal.getlocations_settings[key];
         var method = searchsettings.method;
         gset.do_lookup = searchsettings.do_lookup;
         gset.show_distance = searchsettings.show_distance;
@@ -62,7 +62,7 @@
           if (searchsettings.search_distance_type == 'dist') {
             // radius circle
             radShape[key] = new google.maps.Circle({
-              map: getlocations_map[key],
+              map: Drupal.getlocations_map[key],
               strokeColor: searchsettings.search_radshape_strokecolor,
               strokeOpacity: searchsettings.search_radshape_strokeopacity,
               strokeWeight: searchsettings.search_radshape_strokeweight,
@@ -77,7 +77,7 @@
             var shcoords = new google.maps.LatLng(parseFloat(0.0), parseFloat(0.0));
             var shbounds = new google.maps.LatLngBounds(shcoords, shcoords);
             radShape[key] = new google.maps.Rectangle({
-              map: getlocations_map[key],
+              map: Drupal.getlocations_map[key],
               strokeColor: searchsettings.search_radshape_strokecolor,
               strokeOpacity: searchsettings.search_radshape_strokeopacity,
               strokeWeight: searchsettings.search_radshape_strokeweight,
@@ -92,7 +92,7 @@
 
         if (gset.markermanagertype == 1 && gset.usemarkermanager == 1) {
           gset.usemarkermanager = true;
-          gset.mgr = new MarkerManager(getlocations_map[key], {
+          gset.mgr = new MarkerManager(Drupal.getlocations_map[key], {
             borderPadding: 50,
             maxZoom: maxzoom,
             trackMarkers: false
@@ -101,7 +101,7 @@
         else if (gset.markermanagertype == 2 && gset.useclustermanager == 1) {
           gset.useclustermanager = true;
           gset.cmgr = new MarkerClusterer(
-            getlocations_map[key],
+            Drupal.getlocations_map[key],
             [],
             {
               gridSize: gset.cmgr_gridSize,
@@ -122,13 +122,13 @@
           }
           var ac_adrs = new google.maps.places.Autocomplete(input_adrs, opts);
           if (autocomplete_bias) {
-            ac_adrs.bindTo('bounds', getlocations_map[key]);
+            ac_adrs.bindTo('bounds', Drupal.getlocations_map[key]);
           }
           google.maps.event.addListener(ac_adrs, 'place_changed', function () {
             var place_adrs = ac_adrs.getPlace();
             fm_adrs = {'address': place_adrs.formatted_address};
             // Create a Client Geocoder
-            do_Geocode(getlocations_map[key], gset, fm_adrs, key);
+            do_Geocode(Drupal.getlocations_map[key], gset, fm_adrs, key);
             if ($("#getlocations_search_geocode_button_wrapper_" + key).is('div')) {
               $("#getlocations_search_geocode_button_" + key).show();
             }
@@ -140,7 +140,7 @@
             input_adrs = $("#edit-getlocations-search-" + mapid2).val();
             fm_adrs = {'address': input_adrs};
             // Create a Client Geocoder
-            do_Geocode(getlocations_map[key], gset, fm_adrs, key);
+            do_Geocode(Drupal.getlocations_map[key], gset, fm_adrs, key);
             return false;
           });
         }
@@ -152,7 +152,7 @@
           $("#getlocations_search_geolocation_status_ok_" + key).removeClass('js-hide');
           $("#getlocations_search_geolocation_status_err_" + key).removeClass('js-hide');
           $("#getlocations_search_geolocation_button_" + key).click( function () {
-            do_Geolocationbutton(getlocations_map[key], gset, key);
+            do_Geolocationbutton(Drupal.getlocations_map[key], gset, key);
           });
         }
         else {
@@ -162,7 +162,7 @@
         // Geocode button
         if ($("#getlocations_search_geocode_button_wrapper_" + key).is('div')) {
           $("#getlocations_search_geocode_button_" + key).click( function () {
-            do_Geocode(getlocations_map[key], gset, fm_adrs, key);
+            do_Geocode(Drupal.getlocations_map[key], gset, fm_adrs, key);
           });
         }
 

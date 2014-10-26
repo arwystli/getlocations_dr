@@ -28,7 +28,7 @@
           var gps_bubble = settings.getlocations_gps[key].gps_bubble;
           var gps_geocode = settings.getlocations_gps[key].gps_geocode;
           var gps_center = settings.getlocations_gps[key].gps_center;
-          var gs = getlocations_settings[key];
+          var gs = Drupal.getlocations_settings[key];
           var getlocations_gps_marker = [];
           var accuracies = [];
           accuracies['APPROXIMATE'] = Drupal.t('Approximate');
@@ -110,19 +110,19 @@
                             google.maps.event.addListener(getlocations_gps_marker[key], 'click', function() {
                               if (Drupal.settings.getlocations[key].markeraction == 2) {
                                 // use infobubble
-                                infoBubble.open(getlocations_map[key], getlocations_gps_marker[key]);
-                                getlocations_settings[key].infoBubbles.push(infoBubble);
+                                infoBubble.open(Drupal.getlocations_map[key], getlocations_gps_marker[key]);
+                                Drupal.getlocations_settings[key].infoBubbles.push(infoBubble);
                               }
                               else {
                                 // use infowindow
                                 infowindow.open(getlocations_map[key], getlocations_gps_marker[key]);
-                                getlocations_settings[key].infoBubbles.push(infowindow);
+                                Drupal.getlocations_settings[key].infoBubbles.push(infowindow);
                               }
                             });
                           }
                           getlocations_gps_marker[key].setVisible(true);
                           if (gps_center) {
-                            getlocations_map[key].setCenter(ll);
+                            Drupal.getlocations_map[key].setCenter(ll);
                           }
                           deactive_throbber(key);
                         }
@@ -141,11 +141,11 @@
                       getlocations_gps_marker[key].setPosition(p);
                     }
                     else {
-                      getlocations_gps_marker[key] = Drupal.getlocations.makeMarker(getlocations_map[key], gs, result['lat'], result['lon'], 0, gps_marker_title, '', '', '', key);
+                      getlocations_gps_marker[key] = Drupal.getlocations.makeMarker(Drupal.getlocations_map[key], gs, result['lat'], result['lon'], 0, gps_marker_title, '', '', '', key);
                       getlocations_gps_marker[key].setVisible(true);
                     }
                     if (gps_center) {
-                      getlocations_map[key].setCenter(p);
+                      Drupal.getlocations_map[key].setCenter(p);
                     }
                     deactive_throbber(key);
                   }

@@ -9,7 +9,6 @@
 (function ($) {
   Drupal.behaviors.getlocations_fields_streetview = {
     attach: function() {
-      var getlocations_pano = [];
 
       // bail out
       if (typeof Drupal.settings.getlocations_fields_streetview === 'undefined') {
@@ -42,7 +41,7 @@
           $("#getlocations_streetview_wrapper_" + key).toggleClass("fullscreen");
           $("html,body").toggleClass("svfullscreen-body-" + key);
           $(document).scrollTop(0);
-          google.maps.event.trigger(getlocations_pano[key], "resize");
+          google.maps.event.trigger(Drupal.getlocations_pano[key], "resize");
           setTimeout( function() {
             if($("#getlocations_streetview_wrapper_" + key).hasClass("fullscreen")) {
               $("#svbtnFullScreen").attr("src", js_path + 'images/fs-map-normal.png');
@@ -170,7 +169,7 @@
             popt.clickToGo = false;
           }
 
-          getlocations_pano[key] = new google.maps.StreetViewPanorama(document.getElementById("getlocations_streetview_canvas_" + key), popt);
+          Drupal.getlocations_pano[key] = new google.maps.StreetViewPanorama(document.getElementById("getlocations_streetview_canvas_" + key), popt);
 
           // fullscreen
           if (fullscreen) {
@@ -187,7 +186,7 @@
             var fsdoc = document.createElement("DIV");
             var fs = new FullScreenControl(fsdoc);
             fsdoc.index = 0;
-            getlocations_pano[key].controls[google.maps.ControlPosition.TOP_RIGHT].setAt(0, fsdoc);
+            Drupal.getlocations_pano[key].controls[google.maps.ControlPosition.TOP_RIGHT].setAt(0, fsdoc);
           }
 
         } // end is div

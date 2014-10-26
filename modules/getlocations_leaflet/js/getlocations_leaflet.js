@@ -101,7 +101,6 @@
           var icons = Drupal.getlocations_leaflet_data[key].icons;
           var datanum = Drupal.getlocations_leaflet_data[key].datanum;
           var latlons = Drupal.getlocations_leaflet_data[key].latlons;
-          var minmaxes = Drupal.getlocations_leaflet_data[key].minmaxes;
 
           Drupal.getlocations_leaflet_markers[key] = {};
           Drupal.getlocations_leaflet_markers[key].coords = {};
@@ -452,16 +451,8 @@
             }
           }
 
-          // minmaxes will apply when there are more than one marker on the map
-          if (datanum > 1) {
-            if (minmaxes) {
-              var mmarr = minmaxes.split(',');
-              var sw = L.latLng(parseFloat(mmarr[2]), parseFloat(mmarr[3])),
-                ne = L.latLng(parseFloat(mmarr[0]), parseFloat(mmarr[1])),
-                bounds = L.latLngBounds(sw, ne).pad(0.1);
-                Drupal.getlocations_leaflet_map[key].fitBounds(bounds, {reset: true});
-            }
-          }
+          // bounds
+          Drupal.getlocations_leaflet.redoMap(key);
 
           // Usermarker
           if (map_settings.usermarker) {
@@ -639,10 +630,8 @@
 
   // redo map
   Drupal.getlocations_leaflet.redoMap = function(key) {
-    var settings = Drupal.settings.getlocations_leaflet[key];
-    var minmaxes = (Drupal.getlocations_leaflet_data[key].minmaxes ? Drupal.getlocations_leaflet_data[key].minmaxes : '');
-    var datanum = Drupal.getlocations_leaflet_data[key].datanum;
-    if (datanum > 1) {
+    if (Drupal.getlocations_leaflet_data[key].datanum > 1) {
+      var minmaxes = (Drupal.getlocations_leaflet_data[key].minmaxes ? Drupal.getlocations_leaflet_data[key].minmaxes : '');
       if (minmaxes) {
         var mmarr = minmaxes.split(',');
         var sw = L.latLng(parseFloat(mmarr[2]), parseFloat(mmarr[3])),

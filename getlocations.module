@@ -6270,7 +6270,7 @@ function theme_getlocations_show($variables) {
     'minmaxes' => $minmaxes
   ));
   $output .= "\n" . '<script type="text/javascript">' . "\n" . '<!--//--><![CDATA[//><!--' . "\n";
-  $output .= 'getlocations_data["' . $mapid . '"] = ' . $localdata . ';' . "\n";
+  $output .= 'Drupal.getlocations_data["' . $mapid . '"] = ' . $localdata . ';' . "\n";
   $output .= '//--><!]]>' . "\n" . '</script>' . "\n";
 
   // show_search_distance

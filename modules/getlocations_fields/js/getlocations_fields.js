@@ -75,7 +75,7 @@
           lng = $("#" + lonfield + key).val();
           if (lat && lng) {
             point[key] = new google.maps.LatLng(parseFloat(lat), parseFloat(lng));
-            updateMap(getlocations_inputmap[key], point[key], key);
+            updateMap(Drupal.getlocations_inputmap[key], point[key], key);
             streetviewSetupButtonDo(key);
           }
 
@@ -83,9 +83,9 @@
             // make an icon
             if (! point[key]) {
               point[key] = new google.maps.LatLng(parseFloat(gset.lat), parseFloat(gset.lng));
-              getlocations_inputmap[key].setCenter(point[key]);
+              Drupal.getlocations_inputmap[key].setCenter(point[key]);
             }
-            makeMoveMarker(getlocations_inputmap[key], point[key], key);
+            makeMoveMarker(Drupal.getlocations_inputmap[key], point[key], key);
           }
 
           if (use_address > 0) {
@@ -101,7 +101,7 @@
             }
             var ac_adrs = new google.maps.places.Autocomplete(input_adrs, opts);
             if (autocomplete_bias) {
-              ac_adrs.bindTo('bounds', getlocations_inputmap[key]);
+              ac_adrs.bindTo('bounds', Drupal.getlocations_inputmap[key]);
             }
             google.maps.event.addListener(ac_adrs, 'place_changed', function () {
               var place_adrs = ac_adrs.getPlace();
@@ -178,39 +178,38 @@
             // monitor zoom
             if ($("#getlocations_mapzoom_" + key).is('input')) {
               if ( $("#getlocations_mapzoom_" + key).val() == '') {
-                $("#getlocations_mapzoom_" + key).val(getlocations_map[key].getZoom());
+                $("#getlocations_mapzoom_" + key).val(Drupal.getlocations_map[key].getZoom());
               }
-              getlocations_map[key].setZoom(parseInt($("#getlocations_mapzoom_" + key).val()));
-              google.maps.event.addListener(getlocations_map[key], 'zoom_changed', function() {
-                $("#getlocations_mapzoom_" + key).val(getlocations_map[key].getZoom());
+              Drupal.getlocations_map[key].setZoom(parseInt($("#getlocations_mapzoom_" + key).val()));
+              google.maps.event.addListener(Drupal.getlocations_map[key], 'zoom_changed', function() {
+                $("#getlocations_mapzoom_" + key).val(Drupal.getlocations_map[key].getZoom());
               });
             }
             // monitor maptype
             if ($("#getlocations_map_maptype_" + key).is('input')) {
               if ( $("#getlocations_map_maptype_" + key).val() == '') {
-                var m = getlocations_map[key].getMapTypeId();
+                var m = Drupal.getlocations_map[key].getMapTypeId();
                 var maptype = getmaptype(m);
                 $("#getlocations_map_maptype_" + key).val(maptype);
               }
               else {
                 var maptype = $("#getlocations_map_maptype_" + key).val();
                 var m = gettypemap(maptype);
-                getlocations_map[key].setMapTypeId(m);
+                Drupal.getlocations_map[key].setMapTypeId(m);
               }
-              google.maps.event.addListener(getlocations_map[key], 'maptypeid_changed', function() {
-                var m = getlocations_map[key].getMapTypeId();
+              google.maps.event.addListener(Drupal.getlocations_map[key], 'maptypeid_changed', function() {
+                var m = Drupal.getlocations_map[key].getMapTypeId();
                 var maptype = getmaptype(m);
                 $("#getlocations_map_maptype_" + key).val(maptype);
               });
             }
           }
 
-
         } // end is there really a map?
 
         // functions
         function manageGeobutton(k, use_adrs, adrs) {
-          var mmap = getlocations_inputmap[k];
+          var mmap = Drupal.getlocations_inputmap[k];
           var kk = k;
           if (adrs == '') {
             // pull the address out of the form
@@ -279,7 +278,7 @@
             lng = $("#" + lonfield + k).val();
             point[k] = new google.maps.LatLng(parseFloat(lat), parseFloat(lng));
             doReverseGeocode(point[k], k);
-            updateMap(getlocations_inputmap[k], point[k], k);
+            updateMap(mmap, point[k], k);
             streetviewSetupButtonDo(k);
           }
           else {
@@ -476,19 +475,19 @@
                 enableCloseButton: true,
                 zoom: parseInt(z)
               };
-              getlocations_pano[k] = new google.maps.StreetViewPanorama(document.getElementById("getlocations_map_canvas_" + k), popt);
-              getlocations_pano[k].setVisible(true);
+              Drupal.getlocations_pano[k] = new google.maps.StreetViewPanorama(document.getElementById("getlocations_map_canvas_" + k), popt);
+              Drupal.getlocations_pano[k].setVisible(true);
               $("#getlocations_streetview_setup_" + k).hide();
 
               // handler for closebutton
-              google.maps.event.addListener(getlocations_pano[k], "closeclick", function() {
-                getlocations_pano[k] = null;
+              google.maps.event.addListener(Drupal.getlocations_pano[k], "closeclick", function() {
+                Drupal.getlocations_pano[k] = null;
                 $("#getlocations_streetview_setup_" + k).show();
               });
 
               // handler for heading
-              google.maps.event.addListener(getlocations_pano[k], "pov_changed", function() {
-                var ph = getlocations_pano[k].getPov().heading;
+              google.maps.event.addListener(Drupal.getlocations_pano[k], "pov_changed", function() {
+                var ph = Drupal.getlocations_pano[k].getPov().heading;
                 while (ph < 0) {
                   ph = ph + 360;
                 }
@@ -496,7 +495,7 @@
                   ph = ph - 360;
                 }
                 $("#getlocations_sv_heading_" + k).val(parseInt(ph));
-                var pp = getlocations_pano[k].getPov().pitch;
+                var pp = Drupal.getlocations_pano[k].getPov().pitch;
                 if (pp < -90) {
                   pp = -90;
                 }
@@ -508,7 +507,7 @@
 
               // handler for zoom
               google.maps.event.addListener(getlocations_pano[k], "zoom_changed", function() {
-                var pz = getlocations_pano[k].getZoom();
+                var pz = Drupal.getlocations_pano[k].getZoom();
                 $("#getlocations_sv_zoom_" + k).val(parseInt(pz));
               });
             });
@@ -566,7 +565,7 @@
                   }
                 }
                 point[kk] = new google.maps.LatLng(parseFloat(lat), parseFloat(lng));
-                updateMap(getlocations_inputmap[kk], point[kk], kk);
+                updateMap(Drupal.getlocations_inputmap[kk], point[kk], kk);
                 streetviewSetupButtonDo(kk);
               }
 
@@ -587,7 +586,7 @@
               $("#" + latfield + k).val(lat);
               $("#" + lonfield + k).val(lng);
               point[k] = new google.maps.LatLng(parseFloat(lat), parseFloat(lng));
-              updateMap(getlocations_inputmap[k], point[k], k);
+              updateMap(Drupal.getlocations_inputmap[k], point[k], k);
               streetviewSetupButtonDo(k);
               doReverseGeocode(point[k], k);
               //statusmsg = Drupal.t('Browser OK');

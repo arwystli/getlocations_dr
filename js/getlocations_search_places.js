@@ -13,13 +13,13 @@
   var getlocations_places_service;
 
   Drupal.getlocations_search_places = function(key) {
-    getlocations_places_service = new google.maps.places.PlacesService(getlocations_map[key]);
+    getlocations_places_service = new google.maps.places.PlacesService(Drupal.getlocations_map[key]);
     var sp_switch = Drupal.settings.getlocations[key].search_places_dd;
     if (sp_switch) {
       // dropdown
       $("#search_places_go_btn_" + key).click( function() {
         var t = $("#search_places_select_" + key).val();
-        var b = getlocations_map[key].getBounds();
+        var b = Drupal.getlocations_map[key].getBounds();
         var s = {bounds:b, types:[t]};
         // clear out existing markers
         Drupal.getlocations_search_places_clearmarkers(key, false);
@@ -34,7 +34,7 @@
     else {
       // textbox
       var getlocations_search_places_Box = new google.maps.places.SearchBox(document.getElementById('search_places_input_' + key));
-      getlocations_search_places_Box.bindTo('bounds', getlocations_map[key]);
+      getlocations_search_places_Box.bindTo('bounds', Drupal.getlocations_map[key]);
       google.maps.event.addListener(getlocations_search_places_Box, 'places_changed', function() {
         // clear out existing markers
         Drupal.getlocations_search_places_clearmarkers(key, false);
@@ -124,11 +124,11 @@
     google.maps.event.addListener(marker, 'click', function() {
       // close any previous instances
       if (pushit) {
-        for (var i in getlocations_settings[key].infoBubbles) {
-          getlocations_settings[key].infoBubbles[i].close();
+        for (var i in Drupal.getlocations_settings[key].infoBubbles) {
+          Drupal.getlocations_settings[key].infoBubbles[i].close();
         }
       }
-      if (getlocations_settings[key].markeraction == 2) {
+      if (Drupal.getlocations_settings[key].markeraction == 2) {
         if (typeof(infoBubbleOptions) == 'object') {
           var infoBubbleOpts = infoBubbleOptions;
         }
@@ -148,9 +148,9 @@
         infoWindowOpts.content = sp_content;
         var sp_iw = new google.maps.InfoWindow(infoWindowOpts);
       }
-      sp_iw.open(getlocations_map[key], marker);
+      sp_iw.open(Drupal.getlocations_map[key], marker);
       if (pushit) {
-        getlocations_settings[key].infoBubbles.push(sp_iw);
+        Drupal.getlocations_settings[key].infoBubbles.push(sp_iw);
       }
     });
   }
@@ -179,7 +179,7 @@
         scaledSize: new google.maps.Size(25, 25)
       };
       var sp_marker = new google.maps.Marker({
-        map: getlocations_map[key],
+        map: Drupal.getlocations_map[key],
         icon: image,
         title: place.name,
         position: place.geometry.location
@@ -210,8 +210,8 @@
 
     var ver = Drupal.getlocations.msiedetect();
     if ( (ver == '') || (ver && ver > 8)) {
-      for (var i in getlocations_settings[key].infoBubbles) {
-        getlocations_settings[key].infoBubbles[i].close();
+      for (var i in Drupal.getlocations_settings[key].infoBubbles) {
+        Drupal.getlocations_settings[key].infoBubbles[i].close();
       }
     }
 

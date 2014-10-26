@@ -8,15 +8,14 @@
  * this is for googlemaps API version 3
 */
 
-// global vars
-var getlocations_inputmap = [];
-var getlocations_map = [];
-var getlocations_markers = [];
-var getlocations_settings = {};
-var getlocations_pano = [];
-var getlocations_data = [];
-
 (function ($) {
+
+  Drupal.getlocations_inputmap = [];
+  Drupal.getlocations_pano = [];
+  Drupal.getlocations_data = [];
+  Drupal.getlocations_markers = [];
+  Drupal.getlocations_settings = [];
+  Drupal.getlocations_map = [];
 
   // in icons.js
   Drupal.getlocations.iconSetup();
@@ -103,10 +102,10 @@ var getlocations_data = [];
           }
           global_settings.getdirections_link = setting.getdirections_link;
 
-          getlocations_markers[key] = {};
-          getlocations_markers[key].coords = {};
-          getlocations_markers[key].lids = {};
-          getlocations_markers[key].cat = {};
+          Drupal.getlocations_markers[key] = {};
+          Drupal.getlocations_markers[key].coords = {};
+          Drupal.getlocations_markers[key].lids = {};
+          Drupal.getlocations_markers[key].cat = {};
 
           global_settings.locale_prefix = (setting.locale_prefix ? setting.locale_prefix + "/" : "");
           global_settings.show_bubble_on_one_marker = (setting.show_bubble_on_one_marker ? true : false);
@@ -138,7 +137,7 @@ var getlocations_data = [];
             global_settings.maxzoom_map = parseInt(setting.maxzoom_map);
           }
 
-          global_settings.datanum = getlocations_data[key].datanum;
+          global_settings.datanum = Drupal.getlocations_data[key].datanum;
 
           global_settings.markermanagertype = setting.markermanagertype;
           global_settings.pansetting = setting.pansetting;
@@ -212,23 +211,7 @@ var getlocations_data = [];
           global_settings.defaultIcon = Drupal.getlocations.getIcon(map_marker);
 
           // each map has its own data so when a map is replaced by ajax the new data is too.
-          global_settings.latlons = (getlocations_data[key].latlons ? getlocations_data[key].latlons : '');
-          var minmaxes = (getlocations_data[key].minmaxes ? getlocations_data[key].minmaxes : '');
-          var minlat = '';
-          var minlon = '';
-          var maxlat = '';
-          var maxlon = '';
-          var cenlat = '';
-          var cenlon = '';
-
-          if (minmaxes) {
-            minlat = parseFloat(minmaxes.minlat);
-            minlon = parseFloat(minmaxes.minlon);
-            maxlat = parseFloat(minmaxes.maxlat);
-            maxlon = parseFloat(minmaxes.maxlon);
-            cenlat = ((minlat + maxlat)/2);
-            cenlon = ((minlon + maxlon)/2);
-          }
+          global_settings.latlons = (Drupal.getlocations_data[key].latlons ? Drupal.getlocations_data[key].latlons : '');
 
           // map type
           var maptypes = [];
@@ -387,9 +370,9 @@ var getlocations_data = [];
           }
 
           // make the map
-          getlocations_map[key] = new google.maps.Map(document.getElementById("getlocations_map_canvas_" + key), mapOpts);
+          Drupal.getlocations_map[key] = new google.maps.Map(document.getElementById("getlocations_map_canvas_" + key), mapOpts);
           // another way
-          // getlocations_map[key] = new google.maps.Map($(element).get(0), mapOpts);
+          // Drupal.getlocations_map[key] = new google.maps.Map($(element).get(0), mapOpts);
 
           // OpenStreetMap
           if (useOpenStreetMap) {
@@ -397,7 +380,7 @@ var getlocations_data = [];
             if (setting.mtc == 'menu') {
               tle = Drupal.t("OSM map");
             }
-            getlocations_map[key].mapTypes.set("OSM", new google.maps.ImageMapType({
+            Drupal.getlocations_map[key].mapTypes.set("OSM", new google.maps.ImageMapType({
               getTileUrl: function(coord, zoom) {
                 return "http://tile.openstreetmap.org/" + zoom + "/" + coord.x + "/" + coord.y + ".png";
               },
@@ -405,21 +388,21 @@ var getlocations_data = [];
               name: tle,
               maxZoom: 18
             }));
-            google.maps.event.addListener(getlocations_map[key], 'maptypeid_changed', updateCopyrights);
+            google.maps.event.addListener(Drupal.getlocations_map[key], 'maptypeid_changed', updateCopyrights);
             if (maptype == "OSM") {
               updateCopyrights();
             }
-            getlocations_map[key].controls[google.maps.ControlPosition.BOTTOM_RIGHT].push(copyrightNode);
+            Drupal.getlocations_map[key].controls[google.maps.ControlPosition.BOTTOM_RIGHT].push(copyrightNode);
           }
 
           // input map
           if (setting.inputmap) {
-            getlocations_inputmap[key] = getlocations_map[key];
+            Drupal.getlocations_inputmap[key] = Drupal.getlocations_map[key];
           }
 
           // set up markermanager
           if (global_settings.usemarkermanager) {
-            global_settings.mgr = new MarkerManager(getlocations_map[key], {
+            global_settings.mgr = new MarkerManager(Drupal.getlocations_map[key], {
               borderPadding: 50,
               maxZoom: global_settings.maxzoom,
               trackMarkers: false
@@ -427,7 +410,7 @@ var getlocations_data = [];
           }
           else if (global_settings.useclustermanager) {
             global_settings.cmgr = new MarkerClusterer(
-              getlocations_map[key],
+              Drupal.getlocations_map[key],
               [],
               {
                 gridSize: global_settings.cmgr_gridSize,
@@ -450,7 +433,7 @@ var getlocations_data = [];
               suppressInfoWindows: (setting.kml_url_infowindow ? true : false)
             });
             if (setting.kml_url_button_state > 0) {
-              kmlLayer[key].setMap(getlocations_map[key]);
+              kmlLayer[key].setMap(Drupal.getlocations_map[key]);
               kmlLayertoggleState[key] = true;
             }
             else {
@@ -466,7 +449,7 @@ var getlocations_data = [];
                 label = l + ' ' + Drupal.t('On');
               }
               else {
-                kmlLayer[key].setMap(getlocations_map[key]);
+                kmlLayer[key].setMap(Drupal.getlocations_map[key]);
                 kmlLayertoggleState[key] = true;
                 label = l + ' ' + Drupal.t('Off');
               }
@@ -480,7 +463,7 @@ var getlocations_data = [];
             var traffictoggleState = [];
             trafficInfo[key] = new google.maps.TrafficLayer();
             if (setting.trafficinfo_state > 0) {
-              trafficInfo[key].setMap(getlocations_map[key]);
+              trafficInfo[key].setMap(Drupal.getlocations_map[key]);
               traffictoggleState[key] = true;
             }
             else {
@@ -495,7 +478,7 @@ var getlocations_data = [];
                 label = Drupal.t('Traffic Info On');
               }
               else {
-                trafficInfo[key].setMap(getlocations_map[key]);
+                trafficInfo[key].setMap(Drupal.getlocations_map[key]);
                 traffictoggleState[key] = true;
                 label = Drupal.t('Traffic Info Off');
               }
@@ -509,7 +492,7 @@ var getlocations_data = [];
             var bicycletoggleState =  [];
             bicycleInfo[key] = new google.maps.BicyclingLayer();
             if (setting.bicycleinfo_state > 0) {
-              bicycleInfo[key].setMap(getlocations_map[key]);
+              bicycleInfo[key].setMap(Drupal.getlocations_map[key]);
               bicycletoggleState[key] = true;
             }
             else {
@@ -524,7 +507,7 @@ var getlocations_data = [];
                 label = Drupal.t('Bicycle Info On');
               }
               else {
-                bicycleInfo[key].setMap(getlocations_map[key]);
+                bicycleInfo[key].setMap(Drupal.getlocations_map[key]);
                 bicycletoggleState[key] = true;
                 label = Drupal.t('Bicycle Info Off');
               }
@@ -538,7 +521,7 @@ var getlocations_data = [];
             var transittoggleState = [];
             transitInfo[key] = new google.maps.TransitLayer();
             if (setting.transitinfo_state > 0) {
-              transitInfo[key].setMap(getlocations_map[key]);
+              transitInfo[key].setMap(Drupal.getlocations_map[key]);
               transittoggleState[key] = true;
             }
             else {
@@ -553,7 +536,7 @@ var getlocations_data = [];
                 label = Drupal.t('Transit Info On');
               }
               else {
-                transitInfo[key].setMap(getlocations_map[key]);
+                transitInfo[key].setMap(Drupal.getlocations_map[key]);
                 transittoggleState[key] = true;
                 label = Drupal.t('Transit Info Off');
               }
@@ -567,7 +550,7 @@ var getlocations_data = [];
             var panoramiotoggleState = [];
             panoramioLayer[key] = new google.maps.panoramio.PanoramioLayer();
             if (setting.panoramio_state > 0) {
-              panoramioLayer[key].setMap(getlocations_map[key]);
+              panoramioLayer[key].setMap(Drupal.getlocations_map[key]);
               panoramiotoggleState[key] = true;
             }
             else {
@@ -582,7 +565,7 @@ var getlocations_data = [];
                 label = Drupal.t('Panoramio On');
               }
               else {
-                panoramioLayer[key].setMap(getlocations_map[key]);
+                panoramioLayer[key].setMap(Drupal.getlocations_map[key]);
                 panoramiotoggleState[key] = true;
                 label = Drupal.t('Panoramio Off');
               }
@@ -620,7 +603,7 @@ var getlocations_data = [];
               }
               weatherLayer[key] = new google.maps.weather.WeatherLayer(weatherOpts);
               if (setting.weather_state > 0) {
-                weatherLayer[key].setMap(getlocations_map[key]);
+                weatherLayer[key].setMap(Drupal.getlocations_map[key]);
                 weathertoggleState[key] = true;
               }
               else {
@@ -635,7 +618,7 @@ var getlocations_data = [];
                   label = Drupal.t('Weather On');
                 }
                 else {
-                  weatherLayer[key].setMap(getlocations_map[key]);
+                  weatherLayer[key].setMap(Drupal.getlocations_map[key]);
                   weathertoggleState[key] = true;
                   label = Drupal.t('Weather Off');
                 }
@@ -647,7 +630,7 @@ var getlocations_data = [];
               var cloudtoggleState = [];
               cloudLayer[key] = new google.maps.weather.CloudLayer();
               if (setting.weather_cloud_state > 0) {
-                cloudLayer[key].setMap(getlocations_map[key]);
+                cloudLayer[key].setMap(Drupal.getlocations_map[key]);
                 cloudtoggleState[key] = true;
               }
               else {
@@ -662,7 +645,7 @@ var getlocations_data = [];
                   label = Drupal.t('Clouds On');
                 }
                 else {
-                  cloudLayer[key].setMap(getlocations_map[key]);
+                  cloudLayer[key].setMap(Drupal.getlocations_map[key]);
                   cloudtoggleState[key] = true;
                   label = Drupal.t('Clouds Off');
                 }
@@ -671,26 +654,17 @@ var getlocations_data = [];
             }
           }
 
-          // exporting global_settings to getlocations_settings
-          getlocations_settings[key] = global_settings;
+          // exporting global_settings to Drupal.getlocations_settings
+          Drupal.getlocations_settings[key] = global_settings;
 
           // markers and bounding
           if (! setting.inputmap && ! setting.extcontrol) {
-            //setTimeout(function() { doAllMarkers(getlocations_map[key], global_settings, key) }, 300);
-            doAllMarkers(getlocations_map[key], global_settings, key);
+            //setTimeout(function() { doAllMarkers(Drupal.getlocations_map[key], global_settings, key) }, 300);
+            doAllMarkers(Drupal.getlocations_map[key], global_settings, key);
 
-            if (pansetting == 1) {
-              Drupal.getlocations.doBounds(getlocations_map[key], minlat, minlon, maxlat, maxlon, true);
-            }
-            else if (pansetting == 2) {
-              Drupal.getlocations.doBounds(getlocations_map[key], minlat, minlon, maxlat, maxlon, false);
-            }
-            else if (pansetting == 3) {
-              if (cenlat  && cenlon) {
-                c = new google.maps.LatLng(parseFloat(cenlat), parseFloat(cenlon));
-                getlocations_map[key].setCenter(c);
-              }
-            }
+            // Bounding
+            Drupal.getlocations.redoMap(key);
+
           }
 
           // fullscreen
@@ -711,7 +685,7 @@ var getlocations_data = [];
             if (fullscreen_controlposition) {
               var fs_p = controlpositions[fullscreen_controlposition];
             }
-            getlocations_map[key].controls[fs_p].setAt(0, fsdoc);
+            Drupal.getlocations_map[key].controls[fs_p].setAt(0, fsdoc);
           }
 
           // search_places in getlocations_search_places.js
@@ -747,12 +721,12 @@ var getlocations_data = [];
         }
 
         function toggleFullScreen() {
-          var cnt = getlocations_map[key].getCenter();
+          var cnt = Drupal.getlocations_map[key].getCenter();
           $("#getlocations_map_wrapper_" + key).toggleClass("fullscreen");
           $("html,body").toggleClass("fullscreen-body-" + key);
           $(document).scrollTop(0);
-          google.maps.event.trigger(getlocations_map[key], "resize");
-          getlocations_map[key].setCenter(cnt);
+          google.maps.event.trigger(Drupal.getlocations_map[key], "resize");
+          Drupal.getlocations_map[key].setCenter(cnt);
           setTimeout( function() {
             if($("#getlocations_map_wrapper_" + key).hasClass("fullscreen")) {
               $("#btnFullScreen").attr("src", js_path + 'images/fs-map-normal.png');
@@ -790,7 +764,7 @@ var getlocations_data = [];
             }
             var m = Drupal.getlocations.makeMarker(map, gs, lat, lon, lid, name, lidkey, customContent, cat, mkey);
             // still experimental
-            getlocations_markers[mkey].lids[lid] = m;
+            Drupal.getlocations_markers[mkey].lids[lid] = m;
             if (gs.usemarkermanager || gs.useclustermanager) {
               gs.batchr.push(m);
             }
@@ -806,7 +780,7 @@ var getlocations_data = [];
         }
 
         function updateCopyrights() {
-          if(getlocations_map[key].getMapTypeId() == "OSM") {
+          if(Drupal.getlocations_map[key].getMapTypeId() == "OSM") {
             copyrightNode.innerHTML = "OSM map data @<a target=\"_blank\" href=\"http://www.openstreetmap.org/\"> OpenStreetMap</a>-contributors,<a target=\"_blank\" href=\"http://creativecommons.org/licenses/by-sa/2.0/legalcode\"> CC BY-SA</a>";
             if (setting.trafficinfo) {
               $("#getlocations_toggleTraffic_" + key).attr('disabled', true);
@@ -846,13 +820,13 @@ var getlocations_data = [];
 
     // categories
     if (cat) {
-      getlocations_markers[mkey].cat[lid] = cat;
+      Drupal.getlocations_markers[mkey].cat[lid] = cat;
     }
 
     // check for duplicates
     var hash = new String(lat + lon);
-    if (getlocations_markers[mkey].coords[hash] == null) {
-      getlocations_markers[mkey].coords[hash] = 1;
+    if (Drupal.getlocations_markers[mkey].coords[hash] == null) {
+      Drupal.getlocations_markers[mkey].coords[hash] = 1;
     }
     else {
       // we have a duplicate
@@ -1085,8 +1059,8 @@ var getlocations_data = [];
           popt.clickToGo = false;
         }
 
-        getlocations_pano[mkey] = new google.maps.StreetViewPanorama(document.getElementById("getlocations_map_canvas_" + mkey), popt);
-        getlocations_pano[mkey].setVisible(true);
+        Drupal.getlocations_pano[mkey] = new google.maps.StreetViewPanorama(document.getElementById("getlocations_map_canvas_" + mkey), popt);
+        Drupal.getlocations_pano[mkey].setVisible(true);
       }
     }
 
@@ -1122,8 +1096,8 @@ var getlocations_data = [];
 
     if (pushit) {
       // close any previous instances
-      for (var i in getlocations_settings[key].infoBubbles) {
-        getlocations_settings[key].infoBubbles[i].close();
+      for (var i in Drupal.getlocations_settings[key].infoBubbles) {
+        Drupal.getlocations_settings[key].infoBubbles[i].close();
       }
     }
 
@@ -1139,7 +1113,7 @@ var getlocations_data = [];
       infoBubble.open(map, m);
       if (pushit) {
         // add to the array
-        getlocations_settings[key].infoBubbles.push(infoBubble);
+        Drupal.getlocations_settings[key].infoBubbles.push(infoBubble);
       }
     }
     else {
@@ -1154,7 +1128,7 @@ var getlocations_data = [];
       infowindow.open(map, m);
       if (pushit) {
         // add to the array
-        getlocations_settings[key].infoBubbles.push(infowindow);
+        Drupal.getlocations_settings[key].infoBubbles.push(infowindow);
       }
     }
   };
