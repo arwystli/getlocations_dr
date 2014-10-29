@@ -487,7 +487,7 @@
                 }
                 getlocations_leaflet_deactive_throbber(key);
               });
-              getlocations_leaflet_map[key].on("locationerror", function(error) {
+              Drupal.getlocations_leaflet_map[key].on("locationerror", function(error) {
                 getlocations_leaflet_deactive_throbber(key);
                 alert('Error: location failed. ' + error.message);
               });

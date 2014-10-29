@@ -98,7 +98,7 @@
                           deactive_throbber(key);
                         }
                         else {
-                          getlocations_gps_marker[key] = Drupal.getlocations.makeMarker(getlocations_map[key], gs, result['lat'], result['lon'], 0, gps_marker_title, '', '', '', key);
+                          getlocations_gps_marker[key] = Drupal.getlocations.makeMarker(Drupal.getlocations_map[key], gs, result['lat'], result['lon'], 0, gps_marker_title, '', '', '', key);
                           if (gps_bubble && customContent) {
                             var opts = {content: customContent};
                             if (Drupal.settings.getlocations[key].markeraction == 2) {
@@ -115,7 +115,7 @@
                               }
                               else {
                                 // use infowindow
-                                infowindow.open(getlocations_map[key], getlocations_gps_marker[key]);
+                                infowindow.open(Drupal.getlocations_map[key], getlocations_gps_marker[key]);
                                 Drupal.getlocations_settings[key].infoBubbles.push(infowindow);
                               }
                             });

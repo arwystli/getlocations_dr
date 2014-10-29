@@ -3461,10 +3461,11 @@ function getlocations_fields_display_settings_form($defaults) {
     ''
   );
 
-  $form['display_geo_microformat'] = getlocations_element_map_checkbox(
-    t('Show Latitude/Longitude in accordance with Geo Microformat markup'),
+  $form['display_geo_microformat'] = getlocations_element_dd(
+    t('Show Latitude/Longitude in accordance with Geo Microformat or Microdata markup'),
     $defaults['display_geo_microformat'],
-    t('See the <a href="@a" target="_blank">Microformats wiki</a> for more information', array('@a' => url('http://microformats.org/wiki/geo')))
+    array( 0 => t('None'), 1 => t('Microformat'), 2 => t('Microdata')),
+    t('See the <a href="@a" target="_blank">Microformats wiki</a> or <a href="@b" target="_blank">Microdata standards</a> for more information', array('@a' => url('http://microformats.org/wiki/geo'), '@b' => url('http://www.w3.org/TR/microdata/')))
   );
 
   $form['display_onemap'] = getlocations_element_map_checkbox(
@@ -3963,13 +3964,23 @@ function theme_getlocations_fields_show($variables) {
     if ($settings['display_latlong']) {
       $lat = $location['latitude'];
       $lng = $location['longitude'];
-      if ($settings['display_geo_microformat']) {
+      if ($settings['display_geo_microformat'] > 0) {
         $lat_dms = theme('getlocations_latitude_dms', array('latitude' => $lat));
         $lng_dms = theme('getlocations_longitude_dms', array('longitude' => $lng));
-        $output .= '<div class="geo">';
-        $output .= '<abbr class="latitude" title="' . $lat . '">' . $lat_dms . '</abbr> ';
-        $output .= '<abbr class="longitude" title="' . $lng . '">' . $lng_dms . '</abbr>';
-        $output .= '</div>';
+        if ($settings['display_geo_microformat'] == 1) {
+          $output .= '<div class="geo">';
+          $output .= '<abbr class="latitude" title="' . $lat . '">' . $lat_dms . '</abbr> ';
+          $output .= '<abbr class="longitude" title="' . $lng . '">' . $lng_dms . '</abbr>';
+          $output .= '</div>';
+        }
+        else {
+          $output .= '<div itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">';
+          $output .= t('Latitude') . '&nbsp;' . $lat_dms . '<br />';
+          $output .= t('Longitude') . '&nbsp;' . $lng_dms;
+          $output .= '<meta itemprop="latitude" content="' . $lat . '" />';
+          $output .= '<meta itemprop="longitude" content="' . $lng . '" />';
+          $output .= '</div>';
+        }
         $output .= '<br />';
       }
       else {

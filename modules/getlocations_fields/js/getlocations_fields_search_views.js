@@ -108,7 +108,7 @@
                 gst.markdone = Drupal.getlocations.getIcon(gset.views_search_marker);
                 gst.markeraction = 0;
                 var vs_marker = {};
-                vs_marker[key] = Drupal.getlocations.makeMarker(getlocations_map[key], gst, slat, slon, 0, '', '', '', '', key);
+                vs_marker[key] = Drupal.getlocations.makeMarker(Drupal.getlocations_map[key], gst, slat, slon, 0, '', '', '', '', key);
                 // initial setting
                 if (gset.views_search_marker_toggle) {
                   if (gset.views_search_marker_toggle_active) {
@@ -156,7 +156,7 @@
                   if (op == 'dist') {
                     // radius circle
                     rShape[key] = new google.maps.Circle({
-                      map: getlocations_map[key],
+                      map: Drupal.getlocations_map[key],
                       strokeColor: gset.views_search_radshape_strokecolor,
                       strokeOpacity: gset.views_search_radshape_strokeopacity,
                       strokeWeight: gset.views_search_radshape_strokeweight,
@@ -169,14 +169,14 @@
                     rShape[key].setRadius(parseInt(distance_meters));
                     rShape[key].setCenter(point);
                     if (gset.pansetting == 1) {
-                      Drupal.getlocations.doBounds(getlocations_map[key], lats[0], lngs[0], lats[1], lngs[1], true);
+                      Drupal.getlocations.doBounds(Drupal.getlocations_map[key], lats[0], lngs[0], lats[1], lngs[1], true);
                     }
                     else if (gset.pansetting == 2) {
-                      Drupal.getlocations.doBounds(getlocations_map[key], lats[0], lngs[0], lats[1], lngs[1], false);
+                      Drupal.getlocations.doBounds(Drupal.getlocations_map[key], lats[0], lngs[0], lats[1], lngs[1], false);
                     }
                     else if (gset.pansetting == 3) {
                       if (slat && slon) {
-                        getlocations_map[key].setCenter(point);
+                        Drupal.getlocations_map[key].setCenter(point);
                       }
                     }
                     done = true;
@@ -184,7 +184,7 @@
                   else if (op == 'mbr') {
                     // rectangle
                     rShape[key] = new google.maps.Rectangle({
-                      map: getlocations_map[key],
+                      map: Drupal.getlocations_map[key],
                       strokeColor: gset.views_search_radshape_strokecolor,
                       strokeOpacity: gset.views_search_radshape_strokeopacity,
                       strokeWeight: gset.views_search_radshape_strokeweight,
@@ -242,7 +242,7 @@
               }
               // views_search_center
               if (gset.views_search_center) {
-                Drupal.getlocations.doBounds(getlocations_map[key], parseFloat(lats[0]), parseFloat(lngs[0]), parseFloat(lats[1]), parseFloat(lngs[1]), false);
+                Drupal.getlocations.doBounds(Drupal.getlocations_map[key], parseFloat(lats[0]), parseFloat(lngs[0]), parseFloat(lats[1]), parseFloat(lngs[1]), false);
               }
             } // end if slat && slon
           } // end is there really a map
@@ -410,12 +410,12 @@
               }
               // add to the map
               if (gset.map_settings.views_search_marker_enable || gset.map_settings.views_search_radshape_enable) {
-                getlocations_leaflet_map[key].addLayer(searchLayer);
+                Drupal.getlocations_leaflet_map[key].addLayer(searchLayer);
               }
               // views_search_center
               if (gset.map_settings.views_search_center) {
                 var bounds = L.latLngBounds(sw, ne).pad(0.1);
-                  getlocations_leaflet_map[key].fitBounds(bounds, {reset: true});
+                Drupal.getlocations_leaflet_map[key].fitBounds(bounds, {reset: true});
               }
             } // end if slat && slon
           } // end is there really a map

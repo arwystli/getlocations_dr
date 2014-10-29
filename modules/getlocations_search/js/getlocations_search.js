@@ -372,8 +372,13 @@
           if (accuracy) {
             $("#getlocations_search_accuracy_" + mkey).html('<span class="results-label">' + Drupal.t('Accuracy') + ':</span><span class="results-value">' + accuracy + '</span>');
           }
-          if (gs.display_geo_microformat) {
-            $("#getlocations_search_latlon_" + mkey).html('<div class="geo"><abbr class="latitude" title="' + slat + '">' + latout + '</abbr>&nbsp;<abbr class="longitude" title="' + slon + '">' + lonout + '</abbr></div>');
+          if (gs.display_geo_microformat > 0) {
+            if (gs.display_geo_microformat == 1) {
+              $("#getlocations_search_latlon_" + mkey).html('<div class="geo"><abbr class="latitude" title="' + slat + '">' + latout + '</abbr>&nbsp;<abbr class="longitude" title="' + slon + '">' + lonout + '</abbr></div>');
+            }
+            else {
+              $("#getlocations_search_latlon_" + mkey).html('<div  itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">' + Drupal.t('Latitude') + '&nbsp;' + latout + '<br />' + Drupal.t('Longitude') + '&nbsp;' + lonout + '<meta itemprop="latitude" content="' + slat + '" /><meta itemprop="longitude" content="' + slon + '" />  </div>');
+            }
           }
           else {
             $("#getlocations_search_lat_" + mkey).html('<span class="results-label">' + Drupal.t('Latitude') + ':</span><span class="results-value">' + latout + '</span>');
