@@ -258,15 +258,32 @@ function getlocations_fields_field_update($entity_type, $entity, $field, $instan
   $settings['display_settings'] = getlocations_fields_get_display_settings($instance['display']['default']['settings']);
 
   $mode = 'update';
-  if ((isset($entity->revision) && $entity->revision) && ($entity->nid !== $entity->vid) ) {
+  if ((isset($entity->revision) && $entity->revision) && (isset($entity->nid) && isset($entity->vid) && $entity->nid !== $entity->vid) ) {
     $mode = 'insert';
   }
 
   if (!empty($items)) {
-
     $criteria = array();
     if ($field['field_name']) {
-      $criteria = array('field_name' => $field['field_name']);
+      $criteria = array(
+        'field_name' => $field['field_name'],
+      );
+      $et_info = entity_get_info($entity_type);
+      $id_name = (isset($et_info['entity keys']['id']) ? $et_info['entity keys']['id'] : '');
+      if ($id_name && isset($entity->{$id_name}) && $entity->{$id_name} > 0) {
+        $criteria['entity_type'] = $entity_type;
+        $criteria['entity_id'] = $entity->{$id_name};
+      }
+    }
+
+    // feeds sanity
+    if (module_exists('feeds') && module_exists('getlocations_feeds') && isset($entity->feeds_item) && ! $entity->feeds_item->is_new) {
+      // feeds update, set active so that glid can be added later
+      foreach ($items AS $key => $item) {
+        if (! isset($items[$key]['active'])) {
+          $items[$key]['active'] = 1;
+        }
+      }
     }
 
     if (! empty($criteria)) {
@@ -2058,6 +2075,14 @@ function getlocations_fields_save_locations($locations, $criteria, $settings, $m
       }
       elseif ($mode == 'update') {
         if (isset($locations[$key]['active']) && $locations[$key]['active']) {
+
+          // check for elusive glid in feed imports
+          if ( $criteria['entity_id'] && (! isset($locations[$key]['glid']) || ! is_numeric($locations[$key]['glid']))) {
+            // eek
+            $loc = getlocations_fields_load_locations($criteria['entity_type'], $criteria['entity_id']);
+            $locations[$key]['glid'] = $loc[$key]['glid'];
+          }
+
           $result = getlocations_fields_update_record($locations[$key], $criteria);
           if ($result && ! isset($locations[$key]['glid'])) {
             $locations[$key]['glid'] = $result;
