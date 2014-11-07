@@ -1,9 +1,128 @@
-commit fbf5067
+commit 1f28963
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Fri Nov 7 21:38:05 2014 +0000
+
+    fixed bug #2371345
+
+modules/getlocations_feeds/getlocations_feeds.module
+
+commit f3f7263
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Thu Nov 6 14:19:38 2014 +0000
+
+    a fix to help with feeds module
+
+modules/getlocations_fields/getlocations_fields.module
+
+commit 8a2b276
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Oct 29 09:31:03 2014 +0000
+
+    fixed bug in global vars
+
+js/getlocations_geojson.js
+js/getlocations_geojson.min.js
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_fields/js/getlocations_fields_preview.js
+modules/getlocations_fields/js/getlocations_fields_preview.min.js
+modules/getlocations_fields/js/getlocations_fields_search_views.js
+modules/getlocations_fields/js/getlocations_fields_search_views.min.js
+modules/getlocations_gps/js/getlocations_gps.js
+modules/getlocations_gps/js/getlocations_gps.min.js
+modules/getlocations_leaflet/js/getlocations_leaflet.js
+modules/getlocations_leaflet/js/getlocations_leaflet.min.js
+modules/getlocations_search/getlocations_search.admin.inc
+modules/getlocations_search/js/getlocations_search.js
+modules/getlocations_search/js/getlocations_search.min.js
+
+commit 17ee177
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sun Oct 26 07:59:03 2014 +0000
+
+    changed namespace of global js vars
+
+getlocations.module
+js/getlocations.js
+js/getlocations.min.js
+js/getlocations_categories.js
+js/getlocations_categories.min.js
+js/getlocations_circles.js
+js/getlocations_circles.min.js
+js/getlocations_polygons.js
+js/getlocations_polygons.min.js
+js/getlocations_polylines.js
+js/getlocations_polylines.min.js
+js/getlocations_preview.js
+js/getlocations_preview.min.js
+js/getlocations_rectangles.js
+js/getlocations_rectangles.min.js
+js/getlocations_search_places.js
+js/getlocations_search_places.min.js
+modules/getlocations_fields/js/getlocations_fields.js
+modules/getlocations_fields/js/getlocations_fields.min.js
+modules/getlocations_fields/js/getlocations_fields_streetview.js
+modules/getlocations_fields/js/getlocations_fields_streetview.min.js
+modules/getlocations_gps/js/getlocations_gps.js
+modules/getlocations_gps/js/getlocations_gps.min.js
+modules/getlocations_leaflet/js/getlocations_leaflet.js
+modules/getlocations_leaflet/js/getlocations_leaflet.min.js
+modules/getlocations_search/js/getlocations_search.js
+modules/getlocations_search/js/getlocations_search.min.js
+
+commit f46202b
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Thu Oct 23 13:58:15 2014 +0100
+
+    added redomap functions
+
+js/getlocations.js
+js/getlocations.min.js
+modules/getlocations_leaflet/js/getlocations_leaflet.js
+modules/getlocations_leaflet/js/getlocations_leaflet.min.js
+
+commit 582242e
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Tue Oct 21 13:44:53 2014 +0100
+
+    fixed bug when more than one map on input page
+
+modules/getlocations_fields/js/getlocations_fields.js
+
+commit b6bf1b6
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sun Oct 19 17:49:33 2014 +0100
+
+    reorganised leaflet global vars
+
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/js/getlocations_leaflet.js
+modules/getlocations_leaflet/js/getlocations_leaflet.min.js
+modules/getlocations_leaflet/js/getlocations_leaflet_circles.js
+modules/getlocations_leaflet/js/getlocations_leaflet_circles.min.js
+modules/getlocations_leaflet/js/getlocations_leaflet_polygons.js
+modules/getlocations_leaflet/js/getlocations_leaflet_polygons.min.js
+modules/getlocations_leaflet/js/getlocations_leaflet_polylines.js
+modules/getlocations_leaflet/js/getlocations_leaflet_polylines.min.js
+modules/getlocations_leaflet/js/getlocations_leaflet_preview.js
+modules/getlocations_leaflet/js/getlocations_leaflet_preview.min.js
+modules/getlocations_leaflet/js/getlocations_leaflet_rectangles.js
+modules/getlocations_leaflet/js/getlocations_leaflet_rectangles.min.js
+
+commit 8fbe317
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sat Oct 18 08:27:08 2014 +0100
+
+    cleanup code
+
+modules/getlocations_leaflet/views/getlocations_leaflet_plugin_style.inc
+
+commit 10f30da
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Wed Oct 8 16:22:04 2014 +0100
 
     fixed missing jquery show/hide
 
+CHANGELOG.txt
 modules/getlocations_fields/js/getlocations_fields_formatter.js
 modules/getlocations_fields/js/getlocations_fields_formatter.min.js
 

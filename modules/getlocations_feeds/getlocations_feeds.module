@@ -83,6 +83,7 @@ function _getlocations_feeds_fields() {
   if (empty($fields)) {
     $getlocations_fields_defaults = getlocations_fields_defaults();
     $fields = $getlocations_fields_defaults['columns'];
+    $fields += getlocations_fields_data_keys();
   }
 
   return $fields;
