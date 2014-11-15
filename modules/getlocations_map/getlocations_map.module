@@ -106,7 +106,7 @@ function getlocations_map_field_formatter_view($entity_type, $entity, $field, $i
   global $language;
   $lang = ($langcode ? $langcode : ($entity->language ? $entity->language : $language->language));
   $locative_field_name = (isset($items[0]['locative_field_name']) ? $items[0]['locative_field_name'] : '');
-  if (! isset($entity->{$locative_field_name}[$lang])) {
+  if (empty($locative_field_name) || ! isset($entity->{$locative_field_name}[$lang])) {
     return;
   }
   $locative_fields = $entity->{$locative_field_name}[$lang];
