@@ -809,6 +809,18 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
     drupal_add_css(GETLOCATIONS_PATH . '/getlocations.css');
   }
 
+  // geocoder-js
+  if ($defaults['geocoder_enable'] && $geocoder_path = getlocations_get_geocoder_path()) {
+    if (!stristr($current_js, $geocoder_path)) {
+      $js_opts = array();
+      $js_opts['weight'] = $getlocations_js_weight;
+      $js_opts['type'] = 'file';
+      $js_opts['preprocess'] = $aggr;
+      drupal_add_js($geocoder_path, $js_opts);
+      $getlocations_js_weight++;
+    }
+  }
+
   // streetview only
   if ($sv && module_exists('getlocations_fields')) {
     $getlocations_fields_paths = getlocations_fields_paths_get();
@@ -1235,6 +1247,7 @@ function getlocations_defaults($reset = FALSE) {
     'views_search_radshape_toggle'         => 0,
     'views_search_radshape_toggle_active'  => 0,
     'views_search_center'                  => 0,
+    'geocoder_enable'                      => 0,
   );
 
   $fieldables = getlocations_get_fieldable_entity_types();
@@ -2496,6 +2509,9 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
     $settings[$mapid]['views_search_radshape_toggle']        = $defaults['views_search_radshape_toggle'];
     $settings[$mapid]['views_search_radshape_toggle_active'] = $defaults['views_search_radshape_toggle_active'];
   }
+
+  // geocoder-js
+  $settings[$mapid]['geocoder_enable'] = $defaults['geocoder_enable'];
 
   drupal_add_js(array('getlocations' => $settings), 'setting');
 
@@ -3760,6 +3776,8 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
 
     $form += getlocations_highlight_form($defaults);
 
+    $form += getlocations_geocoder_form($defaults);
+
     $form += getlocations_google_places_form($defaults, $config);
 
     if ($config) {
@@ -4390,6 +4408,22 @@ function getlocations_google_places_form($defaults, $config) {
   return $form;
 }
 
+function getlocations_geocoder_form($defaults) {
+  $form = array();
+  if (getlocations_get_geocoder_path()) {
+    $form['geocoder_enable'] = getlocations_element_map_checkbox(
+      t('Use OpenStreetMap for searches'),
+      $defaults['geocoder_enable'],
+      t('Use OpenStreetMap instead of Google for searches.')
+    );
+  }
+  else {
+    $form['geocoder_enable'] = array('#type' => 'value', '#value' => 0);
+  }
+  return $form;
+}
+
+
 /**
  * Function
  *
@@ -4843,6 +4877,23 @@ function getlocations_get_geojson_path() {
   }
   return FALSE;
 }
+
+/**
+ * Function to get the path to the Geocoder-js library
+ *
+ * @param
+ *
+ * @return
+ *   Returns string or false
+ *
+ */
+function getlocations_get_geocoder_path() {
+  if ($path = libraries_get_path('geocoder-js')) {
+    return $path . '/geocoder.min.js';
+  }
+  return FALSE;
+}
+
 
 /**
  * Function to run string through check_plain but then restore apostrophes

@@ -212,72 +212,84 @@
           var mmap = Drupal.getlocations_inputmap[k];
           var kk = k;
           if (adrs == '') {
-            // pull the address out of the form
-            var input_adrs_arr = [];
-            var streetfield_value = $("#" + streetfield + k).val();
-            if (streetfield_value) {
-              input_adrs_arr.push(streetfield_value);
-            }
-            var additionalfield_value = $("#" + additionalfield + k).val();
-            if (additionalfield_value) {
-              input_adrs_arr.push(additionalfield_value);
-            }
-            var cityfield_value = $("#" + cityfield + k).val();
-            if (cityfield_value) {
-              input_adrs_arr.push(cityfield_value);
-            }
-            var provincefield_value = $("#" + provincefield + k).val();
-            if (provincefield_value) {
-              input_adrs_arr.push(provincefield_value);
-            }
-            var postal_codefield_value = $("#" + postal_codefield + k).val();
-            if (postal_codefield_value) {
-              input_adrs_arr.push(postal_codefield_value);
-            }
-            var countryfield_value = $("#" + countryfield + k).val();
-            if (countryfield_value && streetfield_value) {
-              if (countryfield_value == 'GB' ) {
-                countryfield_value = 'UK';
-              }
-              input_adrs_arr.push(countryfield_value);
-            }
-            var input_adrstmp = input_adrs_arr.join(", ");
+            var input_adrstmp = get_input_address(k);
           }
           else {
             var input_adrstmp = adrs.formatted_address;
           }
           if (input_adrstmp) {
-            var input_adrs = {'address': input_adrstmp};
-            // Create a Client Geocoder
-            var geocoder = new google.maps.Geocoder();
-            geocoder.geocode(input_adrs, function (results, status) {
-              if (status == google.maps.GeocoderStatus.OK) {
-                point[kk] = results[0].geometry.location;
-                lat = results[0].geometry.location.lat();
-                lng = results[0].geometry.location.lng();
-                $("#" + latfield + kk).val(lat);
-                $("#" + lonfield + kk).val(lng);
-                updateMap(mmap, point[kk], kk);
-                streetviewSetupButtonDo(kk);
-                if (use_adrs > 0) {
-                  set_address_components(kk, adrs.address_components);
-                  // Get name property and fill name field
-                  $("#" + namefield + kk).val(adrs.name);
+
+            if (gsettings[k].geocoder_enable > 0) {
+              // nominatem
+              var geocoder = GeocoderJS.createGeocoder('openstreetmap');
+              geocoder.geocode(input_adrstmp, function (results) {
+                if (results) {
+                  lat = (results[0].latitude !== undefined ? parseFloat(results[0].latitude) : 0);
+                  lng = (results[0].longitude !== undefined ? parseFloat(results[0].longitude) : 0);
+                  if (lat && lng) {
+                    $("#" + latfield + kk).val(lat);
+                    $("#" + lonfield + kk).val(lng);
+                    point[kk] = new google.maps.LatLng(parseFloat(lat), parseFloat(lng));
+                    updateMap(mmap, point[kk], kk);
+                    streetviewSetupButtonDo(kk);
+                    if (use_adrs > 0) {
+                      set_address_components2(kk, results);
+                      // Get name property and fill name field
+                      $("#" + namefield + kk).val(adrs.name);
+                    }
+                  }
                 }
-              }
-              else {
-                var prm = {'!a': input_adrstmp, '!b': Drupal.getlocations.getGeoErrCode(status) };
-                var msg = Drupal.t('Geocode for (!a) was not successful for the following reason: !b', prm);
-                alert(msg);
-              }
-            });
+                else {
+                  var prm = {'!a': input_adrstmp};
+                  var msg = Drupal.t('Geocode for (!a) was not successful', prm);
+                  alert(msg);
+                }
+              });
+            }
+            else {
+              var input_adrs = {'address': input_adrstmp};
+              // Create a Client Geocoder
+              var geocoder = new google.maps.Geocoder();
+              geocoder.geocode(input_adrs, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                  point[kk] = results[0].geometry.location;
+                  lat = results[0].geometry.location.lat();
+                  lng = results[0].geometry.location.lng();
+                  $("#" + latfield + kk).val(lat);
+                  $("#" + lonfield + kk).val(lng);
+                  updateMap(mmap, point[kk], kk);
+                  streetviewSetupButtonDo(kk);
+                  if (use_adrs > 0) {
+                    set_address_components(kk, adrs.address_components);
+                    // Get name property and fill name field
+                    $("#" + namefield + kk).val(adrs.name);
+                  }
+                }
+                else {
+                  var prm = {'!a': input_adrstmp, '!b': Drupal.getlocations.getGeoErrCode(status) };
+                  var msg = Drupal.t('Geocode for (!a) was not successful for the following reason: !b', prm);
+                  alert(msg);
+                }
+              });
+
+            }
+
           }
           else if ( ($("#" + latfield + k).val() !== '') && ($("#" + lonfield + k).val() !== '')  ) {
             // reverse geocoding
             lat = $("#" + latfield + k).val();
             lng = $("#" + lonfield + k).val();
             point[k] = new google.maps.LatLng(parseFloat(lat), parseFloat(lng));
-            doReverseGeocode(point[k], k);
+            if (gsettings[k].geocoder_enable > 0) {
+              // nominatem
+              var geocoder = GeocoderJS.createGeocoder('openstreetmap');
+              geocoder.geodecode(parseFloat(lat), parseFloat(lng), function (results) {
+                set_address_components2(k, results);
+              });
+            }
+            else {
+              doReverseGeocode(point[k], k);
+            }
             updateMap(mmap, point[k], k);
             streetviewSetupButtonDo(k);
           }
@@ -403,6 +415,32 @@
             }
           }
         } // set_address_components
+
+        // distribute the results to the various textfields
+        function set_address_components2(k, results) {
+          var cityfield_value = (results[0].city !== undefined ? results[0].city : '');
+          if (cityfield_value) {
+            $("#" + cityfield + k).val(cityfield_value);
+          }
+          var postal_codefield_value = (results[0].postal_code !== undefined ? results[0].postal_code : '');
+          if (postal_codefield_value) {
+            $("#" + postal_codefield + k).val(postal_codefield_value);
+          }
+          var provincefield_value = (results[0].region !== undefined ? results[0].region : '');
+          if (provincefield_value) {
+            $("#" + provincefield + k).val(provincefield_value);
+          }
+          var streetnumber_value = (results[0].streetNumber !== undefined ? results[0].streetNumber : '');
+          var streetfield_value = (results[0].streetName !== undefined ? results[0].streetName : '');
+          if (street_num_pos == 1) {
+            $("#" + streetfield + k).val((streetnumber_value ? streetnumber_value + ' ' : '') + streetfield_value);
+          }
+          else {
+            $("#" + streetfield + k).val(streetfield_value + (streetnumber_value ? ' ' + streetnumber_value : ''));
+          }
+
+        }
+
 
         function makeMoveMarker(mmap, ppoint, mkey) {
           // remove existing marker
@@ -652,6 +690,40 @@
           $("#" + postal_codefield + k).val("");
           $("#" + countryfield + k).val(search_country);
         }
+
+        var get_input_address = function(k) {
+          // pull the address out of the form
+          var input_adrs_arr = [];
+          var streetfield_value = $("#" + streetfield + k).val();
+          if (streetfield_value) {
+            input_adrs_arr.push(streetfield_value);
+          }
+          var additionalfield_value = $("#" + additionalfield + k).val();
+          if (additionalfield_value) {
+            input_adrs_arr.push(additionalfield_value);
+          }
+          var cityfield_value = $("#" + cityfield + k).val();
+          if (cityfield_value) {
+            input_adrs_arr.push(cityfield_value);
+          }
+          var provincefield_value = $("#" + provincefield + k).val();
+          if (provincefield_value) {
+            input_adrs_arr.push(provincefield_value);
+          }
+          var postal_codefield_value = $("#" + postal_codefield + k).val();
+          if (postal_codefield_value) {
+            input_adrs_arr.push(postal_codefield_value);
+          }
+          var countryfield_value = $("#" + countryfield + k).val();
+          if (countryfield_value && streetfield_value) {
+            if (countryfield_value == 'GB' ) {
+              countryfield_value = 'UK';
+            }
+            input_adrs_arr.push(countryfield_value);
+          }
+          var input_adrstmp = input_adrs_arr.join(", ");
+          return input_adrstmp;
+        };
 
         // end functions
 

@@ -10,12 +10,26 @@ Before installing getlocations please ensure that you have the libraries module 
 
 You can fetch markers from dropbox:
 As tarballs:
-http://dl.dropbox.com/u/41489105/Drupal/getlocations/getlocations-markers.tar.gz (required)
-http://dl.dropbox.com/u/41489105/Drupal/getlocations/getlocations-markers-extra.tar.gz
+https://dl.dropboxusercontent.com/u/41489105/Drupal/getlocations/getlocations-markers.tar.gz (required)
+https://dl.dropboxusercontent.com/u/41489105/Drupal/getlocations/getlocations-markers-extra.tar.gz
+https://dl.dropboxusercontent.com/u/41489105/Drupal/getlocations/getlocations-markers-various.tar.gz
+https://dl.dropboxusercontent.com/u/41489105/Drupal/getlocations/getlocations-markers-various-small.tar.gz
+https://dl.dropboxusercontent.com/u/41489105/Drupal/getlocations/getlocations-markers-restaurants-bars.tar.gz
+https://dl.dropboxusercontent.com/u/41489105/Drupal/getlocations/getlocations-markers-hairlines.tar.gz
+https://dl.dropboxusercontent.com/u/41489105/Drupal/getlocations/getlocations-markers-circular.tar.gz
+https://dl.dropboxusercontent.com/u/41489105/Drupal/getlocations/getlocations-markers-micons.tar.gz
+https://dl.dropboxusercontent.com/u/41489105/Drupal/getlocations/getlocations-markers-paddle.tar.gz
 
-As zipfles:
-http://dl.dropbox.com/u/41489105/Drupal/getlocations/getlocations-markers.zip (required)
-http://dl.dropbox.com/u/41489105/Drupal/getlocations/getlocations-markers-extra.zip
+As zipfiles:
+https://dl.dropboxusercontent.com/u/41489105/Drupal/getlocations/getlocations-markers.zip (required)
+https://dl.dropboxusercontent.com/u/41489105/Drupal/getlocations/getlocations-markers-extra.zip
+https://dl.dropboxusercontent.com/u/41489105/Drupal/getlocations/getlocations-markers-various.zip
+https://dl.dropboxusercontent.com/u/41489105/Drupal/getlocations/getlocations-markers-various-small.zip
+https://dl.dropboxusercontent.com/u/41489105/Drupal/getlocations/getlocations-markers-restaurants-bars.zip
+https://dl.dropboxusercontent.com/u/41489105/Drupal/getlocations/getlocations-markers-hairlines.zip
+https://dl.dropboxusercontent.com/u/41489105/Drupal/getlocations/getlocations-markers-circular.zip
+https://dl.dropboxusercontent.com/u/41489105/Drupal/getlocations/getlocations-markers-micons.zip
+https://dl.dropboxusercontent.com/u/41489105/Drupal/getlocations/getlocations-markers-paddle.zip
 
 Download the file(s) and place them into your libraries folder so you have
 a path something like this:
@@ -257,7 +271,6 @@ You should add these to the pipe delimited list, eg
 
 strokeColor:#0000FF|strokeOpacity:0.8|51.501579,-0.193544|51.498373,-0.144449|51.479882,-0.148054|51.484585,-0.184446
 
-
 GeoJSON
 Getlocations can support GeoJSON objects, see http://www.geojson.org/ for information about this format.
 You can download the library from https://github.com/JasonSanford/GeoJSON-to-Google-Maps.
@@ -266,9 +279,17 @@ sites/all/libraries/GeoJSON/GeoJSON.js
 
 Once the library is installed you can enable it globally, per view or per content type
 
+Geocoder-js
+The geocoder-js library provides support for the search facilities from Openstreetmap
+You can download the library from https://github.com/geocoder-php/geocoder-js.
+You should copy the file from dist/geocoder.min.js to sites/all/libraries/geocoder-js/geocoder.min.js
+
+Once the library is installed you can enable it globally, per content type or in getlocations_search.
 
 Drush integration for getlocations.
 'drush getlocations-markers' will install the basic getlocations marker set
 'drush getlocations-geojson' will install the GeoJSON javascript library
+'drush getlocations-geocoder' will install the Geocoder-js javascript library
+'drush getlocations-leaflet'  will install the Leaflet javascript library
 If you want the library installed somewhere other than sites/all/libraries then provide the path after the command.
 

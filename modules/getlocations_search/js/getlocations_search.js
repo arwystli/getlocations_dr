@@ -13,6 +13,9 @@
   var searchmarker = [];
   var shapetoggleState = [];
   var markertoggleState = [];
+  var unitsdisplay = {'km': Drupal.t('Kilometer'), 'm': Drupal.t('Meter'), 'mi': Drupal.t('Mile'), 'yd': Drupal.t('Yard'), 'nmi': Drupal.t('Nautical mile')};
+  var unitsdisplaypl = {'km': Drupal.t('Kilometers'), 'm': Drupal.t('Meters'), 'mi': Drupal.t('Miles'), 'yd': Drupal.t('Yards'), 'nmi': Drupal.t('Nautical miles')};
+  var typesdisplay = {'all': Drupal.t('All'), 'node': Drupal.t('Nodes'), 'user': Drupal.t('Users'), 'taxonomy_term': Drupal.t('Taxonomy Terms'), 'term': Drupal.t('Terms'), 'comment': Drupal.t('Comments')};
 
   function getlocations_search_init() {
 
@@ -21,7 +24,8 @@
       // is there really a map?
       if ($("#getlocations_map_canvas_" + key).is('div')) {
         // getlocations settings for current map
-        var gset = Drupal.getlocations_settings[key];
+        //var gset = Drupal.getlocations_settings[key];
+        var gset = Drupal.settings.getlocations[key];
         var method = searchsettings.method;
         gset.do_lookup = searchsettings.do_lookup;
         gset.show_distance = searchsettings.show_distance;
@@ -126,9 +130,16 @@
           }
           google.maps.event.addListener(ac_adrs, 'place_changed', function () {
             var place_adrs = ac_adrs.getPlace();
-            fm_adrs = {'address': place_adrs.formatted_address};
-            // Create a Client Geocoder
-            do_Geocode(Drupal.getlocations_map[key], gset, fm_adrs, key);
+            var fm_adrs = place_adrs.formatted_address;
+            if (gset.geocoder_enable > 0) {
+              // nominatem
+              do_geocoder_Geocode(Drupal.getlocations_map[key], gset, fm_adrs, key);
+            }
+            else {
+              // Create a Client Geocoder google
+              do_Geocode(Drupal.getlocations_map[key], gset, {'address':fm_adrs}, key);
+            }
+
             if ($("#getlocations_search_geocode_button_wrapper_" + key).is('div')) {
               $("#getlocations_search_geocode_button_" + key).show();
             }
@@ -138,9 +149,15 @@
           $("#edit-getlocations-search-submit-" + mapid2).click( function() {
             // collect the search string
             input_adrs = $("#edit-getlocations-search-" + mapid2).val();
-            fm_adrs = {'address': input_adrs};
-            // Create a Client Geocoder
-            do_Geocode(Drupal.getlocations_map[key], gset, fm_adrs, key);
+            var fm_adrs = input_adrs;
+            if (gset.geocoder_enable > 0) {
+              // Create a Client Geocoder
+              do_geocoder_Geocode(Drupal.getlocations_map[key], gset, fm_adrs, key);
+            }
+            else {
+              // Create a Client Geocoder google
+              do_Geocode(Drupal.getlocations_map[key], gset, {'address':fm_adrs}, key);
+            }
             return false;
           });
         }
@@ -271,10 +288,6 @@
     // clear the results box
     getlocations_search_clear_results(mkey, gs);
 
-    // set up some display vars
-    var unitsdisplay = {'km': Drupal.t('Kilometer'), 'm': Drupal.t('Meter'), 'mi': Drupal.t('Mile'), 'yd': Drupal.t('Yard'), 'nmi': Drupal.t('Nautical mile')};
-    var unitsdisplaypl = {'km': Drupal.t('Kilometers'), 'm': Drupal.t('Meters'), 'mi': Drupal.t('Miles'), 'yd': Drupal.t('Yards'), 'nmi': Drupal.t('Nautical miles')};
-    var typesdisplay = {'all': Drupal.t('All'), 'node': Drupal.t('Nodes'), 'user': Drupal.t('Users'), 'taxonomy_term': Drupal.t('Taxonomy Terms'), 'term': Drupal.t('Terms'), 'comment': Drupal.t('Comments')};
     // get settings from the DOM
     var mapid2 = mkey.replace("_", "-");
     var distance = $("#edit-getlocations-search-distance-" + mapid2).val();
@@ -305,146 +318,8 @@
           }
         }
 
-        // go get the data
-        $.get(gs.search_info_path, {
-          'lat':slat,
-          'lon':slon,
-          'distance':distance,
-          'units':units,
-          'type':type,
-          'limits':limits
-        }, function(data) {
-          // in data, an array of locations, minmaxes and info
-          var locations = data['locations'];
-          var minmaxes = data['minmaxes'];
-          var minlat = ''; var minlon = ''; var maxlat = ''; var maxlon = ''; var cenlat = ''; var cenlon = '';
-          if (minmaxes) {
-            mmarr = minmaxes.split(',');
-            minlat = parseFloat(mmarr[0]);
-            minlon = parseFloat(mmarr[1]);
-            maxlat = parseFloat(mmarr[2]);
-            maxlon = parseFloat(mmarr[3]);
-            cenlat = parseFloat((minlat + maxlat)/2);
-            cenlon = parseFloat((minlon + maxlon)/2);
-          }
-          var info = data['info'];
-          distance = 0;
-          units = '';
-          infoarr = info.split(',');
-          distance = infoarr[0];
-          units = infoarr[1];
-          type = infoarr[2];
-          latout = infoarr[3];
-          lonout = infoarr[4];
-          distance_meters = infoarr[5];
-          locationct = 0;
-          for (var i = 0; i < locations.length; i++) {
-            lidkey = 'nid';
-            lid = 0;
-            lidkey = locations[i].entity_key;
-            lid = locations[i].entity_id;
-            if (locations[i].glid > 0) {
-              lid = locations[i].glid;
-            }
+        getlocations_search_get_data(slat, slon, distance, units, type, limits, accuracy, address, gs, map, mkey);
 
-            if (! gs.showall) {
-              // just in case
-              if (locations[i].marker === '') {
-                gs.markdone = gs.defaultIcon;
-              }
-              else {
-                gs.markdone = Drupal.getlocations.getIcon(locations[i].marker);
-              }
-              title = (locations[i].title ? locations[i].title : (locations[i].name ? locations[i].name : ''));
-              // make a marker
-              marker = Drupal.getlocations.makeMarker(map, gs, locations[i].latitude, locations[i].longitude, lid, title, lidkey, '', '', mkey);
-              search_markersArray.push(marker);
-            }
-            locationct++;
-          }
-          // display results
-          $("#getlocations_search_address_" + mkey).html('<span class="results-label">' + Drupal.t('Search') + ':</span><span class="results-value">' +  address + '</span>');
-          $("#getlocations_search_distance_" + mkey).html('<span class="results-label">' + Drupal.t('Distance') + ':</span><span class="results-value">' + distance + ' ' + (distance == 1 ? unitsdisplay[units] : unitsdisplaypl[units] ) + '</span>');
-          if (gs.do_lookup) {
-            $("#getlocations_search_count_" + mkey).html('<span class="results-label">' + Drupal.t('Locations found') + ':</span><span class="results-value">' + locationct + '</span>');
-            $("#getlocations_search_type_" + mkey).html('<span class="results-label">' + Drupal.t('Search Type') + ':</span><span class="results-value">' + typesdisplay[type] + '</span>');
-          }
-          if (accuracy) {
-            $("#getlocations_search_accuracy_" + mkey).html('<span class="results-label">' + Drupal.t('Accuracy') + ':</span><span class="results-value">' + accuracy + '</span>');
-          }
-          if (gs.display_geo_microformat > 0) {
-            if (gs.display_geo_microformat == 1) {
-              $("#getlocations_search_latlon_" + mkey).html('<div class="geo"><abbr class="latitude" title="' + slat + '">' + latout + '</abbr>&nbsp;<abbr class="longitude" title="' + slon + '">' + lonout + '</abbr></div>');
-            }
-            else {
-              $("#getlocations_search_latlon_" + mkey).html('<div  itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">' + Drupal.t('Latitude') + '&nbsp;' + latout + '<br />' + Drupal.t('Longitude') + '&nbsp;' + lonout + '<meta itemprop="latitude" content="' + slat + '" /><meta itemprop="longitude" content="' + slon + '" />  </div>');
-            }
-          }
-          else {
-            $("#getlocations_search_lat_" + mkey).html('<span class="results-label">' + Drupal.t('Latitude') + ':</span><span class="results-value">' + latout + '</span>');
-            $("#getlocations_search_lon_" + mkey).html('<span class="results-label">' + Drupal.t('Longitude') + ':</span><span class="results-value">' + lonout + '</span>');
-          }
-          // hidden stuff, used by search distance and search marker
-          $("#getlocations_search_slat_" + mkey).html(slat);
-          $("#getlocations_search_slon_" + mkey).html(slon);
-          $("#getlocations_search_sunit_" + mkey).html(units);
-
-          if (! gs.showall) {
-            // markermanagers add batchr
-            if (gs.usemarkermanager) {
-              gs.mgr.addMarkers(search_markersArray, gs.minzoom, gs.maxzoom);
-            }
-            else if (gs.useclustermanager) {
-              gs.cmgr.addMarkers(search_markersArray, 0);
-            }
-          }
-          if (minlat !== '' && minlon !== '' && maxlat !== '' && maxlon !== '') {
-            if (gs.pansetting == 1) {
-              Drupal.getlocations.doBounds(map, minlat, minlon, maxlat, maxlon, true);
-            }
-            else if (gs.pansetting == 2) {
-              Drupal.getlocations.doBounds(map, minlat, minlon, maxlat, maxlon, false);
-            }
-            else if (gs.pansetting == 3) {
-              if (cenlat && cenlon) {
-                c = new google.maps.LatLng(cenlat, cenlon);
-                map.setCenter(c);
-              }
-            }
-          }
-
-          if (! gs.showall) {
-            if (gs.usemarkermanager) {
-              gs.mgr.refresh();
-            }
-            else if (gs.useclustermanager) {
-              gs.cmgr.repaint();
-            }
-          }
-          // search marker
-          if (gs.do_search_marker) {
-            smark = gs.search_marker;
-            makeSearchcenterMarker(slat, slon, smark, map, mkey);
-          }
-          if (locationct == 1) {
-            if (gs.zoom_on_single_use) {
-              map.setZoom(gs.nodezoom);
-            }
-
-            if (! gs.showall) {
-              // show_bubble_on_one_marker
-              if (gs.show_bubble_on_one_marker && (gs.useInfoWindow || gs.useInfoBubble)) {
-                google.maps.event.trigger(marker, 'click');
-              }
-            }
-          }
-
-          // search area shape
-          if (gs.search_radshape_enable) {
-            makeRadShape(slat, slon, distance_meters, gs, mkey);
-          }
-
-        });
       }
       else {
         var prm = {'!a': place_adrs, '!b': Drupal.getlocations.getGeoErrCode(status) };
@@ -452,6 +327,203 @@
         alert(msg);
       }
     });
+  }
+
+  // cleans out any existing markers, sets up a new geocoder and runs it, filling in the results.
+  // this one is for openstreetmap search
+  function do_geocoder_Geocode(map, gs, adrs, mkey) {
+    if (! gs.showall) {
+      // are there any markers already?
+      if (search_markersArray.length) {
+        getlocations_search_deleteOverlays(gs);
+      }
+    }
+    // clear out search marker
+    if (gs.do_search_marker) {
+      oldslat = $("#getlocations_search_slat_" + mkey).html();
+      oldslon = $("#getlocations_search_slon_" + mkey).html();
+      if (oldslat) {
+        searchmarker[mkey].setMap();
+      }
+    }
+
+    // close any previous instances
+    for (var i in gs.infoBubbles) {
+      gs.infoBubbles[i].close();
+    }
+    // clear the results box
+    getlocations_search_clear_results(mkey, gs);
+
+    // get settings from the DOM
+    var mapid2 = mkey.replace("_", "-");
+    var distance = $("#edit-getlocations-search-distance-" + mapid2).val();
+    var units = $("#edit-getlocations-search-units-" + mapid2).val();
+    var type = $("#edit-getlocations-search-type-" + mapid2).val();
+    var limits = $("#edit-getlocations-search-limits-" + mapid2).val();
+    // start geocoder
+    // nominatem
+    var geocoder = GeocoderJS.createGeocoder('openstreetmap');
+    geocoder.geocode(adrs, function (results) {
+      if (results) {
+        var address = adrs;
+        var slat = results[0].latitude;
+        var slon = results[0].longitude;
+        var accuracy = '';
+
+        getlocations_search_get_data(slat, slon, distance, units, type, limits, accuracy, address, gs, map, mkey);
+
+      }
+      else {
+        var prm = {'!a': place_adrs};
+        var msg = Drupal.t('Geocode for (!a) was not successful', prm);
+        alert(msg);
+      }
+    });
+
+  }
+
+  function getlocations_search_get_data(slat, slon, distance, units, type, limits, accuracy, address, gs, map, mkey) {
+    // go get the data
+    $.get(gs.search_info_path, {
+      'lat':slat,
+      'lon':slon,
+      'distance':distance,
+      'units':units,
+      'type':type,
+      'limits':limits
+    }, function(data) {
+      // in data, an array of locations, minmaxes and info
+      var locations = data['locations'];
+      var minmaxes = data['minmaxes'];
+      var minlat = ''; var minlon = ''; var maxlat = ''; var maxlon = ''; var cenlat = ''; var cenlon = '';
+      if (minmaxes) {
+        mmarr = minmaxes.split(',');
+        minlat = parseFloat(mmarr[0]);
+        minlon = parseFloat(mmarr[1]);
+        maxlat = parseFloat(mmarr[2]);
+        maxlon = parseFloat(mmarr[3]);
+        cenlat = parseFloat((minlat + maxlat)/2);
+        cenlon = parseFloat((minlon + maxlon)/2);
+      }
+      var info = data['info'];
+      distance = 0;
+      units = '';
+      infoarr = info.split(',');
+      distance = infoarr[0];
+      units = infoarr[1];
+      type = infoarr[2];
+      latout = infoarr[3];
+      lonout = infoarr[4];
+      distance_meters = infoarr[5];
+      locationct = 0;
+      for (var i = 0; i < locations.length; i++) {
+        lidkey = 'nid';
+        lid = 0;
+        lidkey = locations[i].entity_key;
+        lid = locations[i].entity_id;
+        if (locations[i].glid > 0) {
+          lid = locations[i].glid;
+        }
+
+        if (! gs.showall) {
+          // just in case
+          if (locations[i].marker === '') {
+            gs.markdone = gs.defaultIcon;
+          }
+          else {
+            gs.markdone = Drupal.getlocations.getIcon(locations[i].marker);
+          }
+          title = (locations[i].title ? locations[i].title : (locations[i].name ? locations[i].name : ''));
+          // make a marker
+          marker = Drupal.getlocations.makeMarker(map, gs, locations[i].latitude, locations[i].longitude, lid, title, lidkey, '', '', mkey);
+          search_markersArray.push(marker);
+        }
+        locationct++;
+      }
+      // display results
+      $("#getlocations_search_address_" + mkey).html('<span class="results-label">' + Drupal.t('Search') + ':</span><span class="results-value">' +  address + '</span>');
+      $("#getlocations_search_distance_" + mkey).html('<span class="results-label">' + Drupal.t('Distance') + ':</span><span class="results-value">' + distance + ' ' + (distance == 1 ? unitsdisplay[units] : unitsdisplaypl[units] ) + '</span>');
+      if (gs.do_lookup) {
+        $("#getlocations_search_count_" + mkey).html('<span class="results-label">' + Drupal.t('Locations found') + ':</span><span class="results-value">' + locationct + '</span>');
+        $("#getlocations_search_type_" + mkey).html('<span class="results-label">' + Drupal.t('Search Type') + ':</span><span class="results-value">' + typesdisplay[type] + '</span>');
+      }
+      if (accuracy) {
+        $("#getlocations_search_accuracy_" + mkey).html('<span class="results-label">' + Drupal.t('Accuracy') + ':</span><span class="results-value">' + accuracy + '</span>');
+      }
+      if (gs.display_geo_microformat > 0) {
+        if (gs.display_geo_microformat == 1) {
+          $("#getlocations_search_latlon_" + mkey).html('<div class="geo"><abbr class="latitude" title="' + slat + '">' + latout + '</abbr>&nbsp;<abbr class="longitude" title="' + slon + '">' + lonout + '</abbr></div>');
+        }
+        else {
+          $("#getlocations_search_latlon_" + mkey).html('<div  itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">' + Drupal.t('Latitude') + '&nbsp;' + latout + '<br />' + Drupal.t('Longitude') + '&nbsp;' + lonout + '<meta itemprop="latitude" content="' + slat + '" /><meta itemprop="longitude" content="' + slon + '" />  </div>');
+        }
+      }
+      else {
+        $("#getlocations_search_lat_" + mkey).html('<span class="results-label">' + Drupal.t('Latitude') + ':</span><span class="results-value">' + latout + '</span>');
+        $("#getlocations_search_lon_" + mkey).html('<span class="results-label">' + Drupal.t('Longitude') + ':</span><span class="results-value">' + lonout + '</span>');
+      }
+      // hidden stuff, used by search distance and search marker
+      $("#getlocations_search_slat_" + mkey).html(slat);
+      $("#getlocations_search_slon_" + mkey).html(slon);
+      $("#getlocations_search_sunit_" + mkey).html(units);
+
+      if (! gs.showall) {
+        // markermanagers add batchr
+        if (gs.usemarkermanager) {
+          gs.mgr.addMarkers(search_markersArray, gs.minzoom, gs.maxzoom);
+        }
+        else if (gs.useclustermanager) {
+          gs.cmgr.addMarkers(search_markersArray, 0);
+        }
+      }
+      if (minlat !== '' && minlon !== '' && maxlat !== '' && maxlon !== '') {
+        if (gs.pansetting == 1) {
+          Drupal.getlocations.doBounds(map, minlat, minlon, maxlat, maxlon, true);
+        }
+        else if (gs.pansetting == 2) {
+          Drupal.getlocations.doBounds(map, minlat, minlon, maxlat, maxlon, false);
+        }
+        else if (gs.pansetting == 3) {
+          if (cenlat && cenlon) {
+            c = new google.maps.LatLng(cenlat, cenlon);
+            map.setCenter(c);
+          }
+        }
+      }
+
+      if (! gs.showall) {
+        if (gs.usemarkermanager) {
+          gs.mgr.refresh();
+        }
+        else if (gs.useclustermanager) {
+          gs.cmgr.repaint();
+        }
+      }
+      // search marker
+      if (gs.do_search_marker) {
+        smark = gs.search_marker;
+        makeSearchcenterMarker(slat, slon, smark, map, mkey);
+      }
+      if (locationct == 1) {
+        if (gs.zoom_on_single_use) {
+          map.setZoom(gs.nodezoom);
+        }
+
+        if (! gs.showall) {
+          // show_bubble_on_one_marker
+          if (gs.show_bubble_on_one_marker && (gs.useInfoWindow || gs.useInfoBubble)) {
+            google.maps.event.trigger(marker, 'click');
+          }
+        }
+      }
+
+      // search area shape
+      if (gs.search_radshape_enable) {
+        makeRadShape(slat, slon, distance_meters, gs, mkey);
+      }
+
+    });
+
   }
 
   function do_Geolocationbutton(map, gs, mkey) {
@@ -598,8 +670,8 @@
     var lon = Drupal.settings.getlocations[k].lng;
     var zoom = Drupal.settings.getlocations[k].zoom;
     var pansetting = Drupal.settings.getlocations[k].pansetting;
-    var latlons = (getlocations_data[k].latlons ? getlocations_data[k].latlons : '');
-    var minmaxes = (getlocations_data[k].minmaxes ? getlocations_data[k].minmaxes : '');
+    var latlons = (Drupal.getlocations_data[k].latlons ? Drupal.getlocations_data[k].latlons : '');
+    var minmaxes = (Drupal.getlocations_data[k].minmaxes ? Drupal.getlocations_data[k].minmaxes : '');
     var minlat = '';
     var minlon = '';
     var maxlat = '';
@@ -616,20 +688,20 @@
     }
     if (gs.showall && cenlat && cenlon) {
       if (pansetting == 1) {
-        Drupal.getlocations.doBounds(getlocations_map[k], minlat, minlon, maxlat, maxlon, true);
+        Drupal.getlocations.doBounds(Drupal.getlocations_map[k], minlat, minlon, maxlat, maxlon, true);
       }
       else if (pansetting == 2) {
-        Drupal.getlocations.doBounds(getlocations_map[k], minlat, minlon, maxlat, maxlon, false);
+        Drupal.getlocations.doBounds(Drupal.getlocations_map[k], minlat, minlon, maxlat, maxlon, false);
       }
       else if (pansetting == 3) {
-        getlocations_map[k].setCenter(new google.maps.LatLng(parseFloat(cenlat), parseFloat(cenlon)));
-        getlocations_map[k].setZoom(parseInt(zoom));
+        Drupal.getlocations_map[k].setCenter(new google.maps.LatLng(parseFloat(cenlat), parseFloat(cenlon)));
+        Drupal.getlocations_map[k].setZoom(parseInt(zoom));
       }
     }
     else {
       getlocations_search_deleteOverlays(gs);
-      getlocations_map[k].setCenter(new google.maps.LatLng(parseFloat(lat), parseFloat(lon)));
-      getlocations_map[k].setZoom(parseInt(zoom));
+      Drupal.getlocations_map[k].setCenter(new google.maps.LatLng(parseFloat(lat), parseFloat(lon)));
+      Drupal.getlocations_map[k].setZoom(parseInt(zoom));
     }
   }
 
