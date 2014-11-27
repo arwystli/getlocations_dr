@@ -1435,12 +1435,16 @@ function getlocations_search_info_sql($lat, $lon, $distance, $units, $type, $dos
 
           $entity_get_info = entity_get_info($entity_type);
           $load_hook = $entity_get_info['load hook'];
-          $object = $load_hook($entity_id);
+          $object = FALSE;
+          if ($load_hook && function_exists($load_hook)) {
+            $object = $load_hook($entity_id);
+          }
+
           if (isset($locations[$location_ct]->status)) {
             $status = $locations[$location_ct]->status;
           }
           else {
-            $status = $object->status;
+            $status = ($object && isset($object->status) ? $object->status : '');
           }
           // sanity check
           if (! $status) {
