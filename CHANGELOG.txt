@@ -1,9 +1,54 @@
-commit 1f28963
+commit 245a69a
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Mon Dec 1 14:36:22 2014 +0000
+
+    added more maps
+
+README.txt
+getlocations.module
+js/getlocations.js
+js/getlocations.min.js
+
+commit f7b4f5b
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Thu Nov 27 16:11:33 2014 +0000
+
+    load_hook bugfix
+
+modules/getlocations_search/getlocations_search.module
+
+commit 05cabef
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Thu Nov 27 12:19:27 2014 +0000
+
+    added openstreetmap search
+
+README.txt
+drush/getlocations.drush.inc
+getlocations.module
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_fields/js/getlocations_fields.js
+modules/getlocations_fields/js/getlocations_fields.min.js
+modules/getlocations_search/getlocations_search.module
+modules/getlocations_search/js/getlocations_search.js
+modules/getlocations_search/js/getlocations_search.min.js
+
+commit 267254e
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sat Nov 15 20:56:30 2014 +0000
+
+    some wsod avoidance
+
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_map/getlocations_map.module
+
+commit 1a377dd
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Fri Nov 7 21:38:05 2014 +0000
 
     fixed bug #2371345
 
+CHANGELOG.txt
 modules/getlocations_feeds/getlocations_feeds.module
 
 commit f3f7263

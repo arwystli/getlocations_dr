@@ -1060,13 +1060,6 @@ function getlocations_defaults($reset = FALSE) {
     'latlong'                       => '40,0',
     'maptype'                       => 'Map',
     'mtc'                           => 'standard',
-    'baselayers' => array(
-      'Map'                         => 1,
-      'Satellite'                   => 1,
-      'Hybrid'                      => 1,
-      'Physical'                    => 1,
-      'OpenStreetMap'               => 0,
-    ),
     'scale'                         => 0,
     'overview'                      => 0,
     'overview_opened'               => 0,
@@ -1249,6 +1242,13 @@ function getlocations_defaults($reset = FALSE) {
     'views_search_center'                  => 0,
     'geocoder_enable'                      => 0,
   );
+
+  $providers = getlocations_get_map_providers();
+  $baselayers = array();
+  foreach ($providers AS $k => $v) {
+    $baselayers[$k] = $v['default'];
+  }
+  $defaults['baselayers'] = $baselayers;
 
   $fieldables = getlocations_get_fieldable_entity_types();
   foreach ($fieldables AS $entity_type) {
@@ -2513,6 +2513,15 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
   // geocoder-js
   $settings[$mapid]['geocoder_enable'] = $defaults['geocoder_enable'];
 
+  // baselayer settings
+  $providers = getlocations_get_map_providers();
+  $baselayers = $defaults['baselayers'];
+  foreach ($providers AS $k => $v) {
+    if (isset($baselayers[$k]) && $baselayers[$k]) {
+      $settings[$mapid]['baselayer_settings'][$k] = $v;
+    }
+  }
+
   drupal_add_js(array('getlocations' => $settings), 'setting');
 
   if ($defaults['preload_data']) {
@@ -3037,15 +3046,13 @@ function getlocations_element_map_mtc($default) {
  */
 function getlocations_element_map_maptype($default, $baselayers) {
   $options = array();
-  $layers = array(
-    'Map' => t('Standard street map'),
-    'Satellite' => t('Standard satellite map'),
-    'Hybrid' => t('Hybrid satellite map'),
-    'Physical' => t('Terrain map'),
-    'OpenStreetMap' => t('OpenStreet map'),
-  );
+  $providers = getlocations_get_map_providers();
+  $layers = array();
+  foreach ($providers AS $k => $v) {
+    $layers[$k] = $v['title'];
+  }
   foreach ($layers AS $key => $layer) {
-    if ($baselayers[$key]) {
+    if (isset($baselayers[$key]) && $baselayers[$key]) {
       $options[$key] = $layer;
     }
   }
@@ -3070,25 +3077,10 @@ function getlocations_element_map_maptype($default, $baselayers) {
 function getlocations_element_map_baselayers($view, $default) {
   // Map Satellite Hybrid Physical
   $title = FALSE;
-  if ($view == 'Map') {
-    $title = t('Standard street map');
-    $description = t('The standard default street map.');
-  }
-  elseif ($view == 'Satellite') {
-    $title = t('Standard satellite map');
-    $description = t('Satellite view without street overlay.');
-  }
-  elseif ($view == 'Hybrid') {
-    $title = t('Hybrid satellite map');
-    $description = t('Satellite view with street overlay.');
-  }
-  elseif ($view == 'Physical') {
-    $title = t('Terrain map');
-    $description = t('Map with physical data (terrain, vegetation.)');
-  }
-  elseif ($view == 'OpenStreetMap') {
-    $title = t('OpenStreet map');
-    $description = t('Map from the OpenStreetMap Foundation.');
+  $providers = getlocations_get_map_providers();
+  if (isset($providers[$view])) {
+    $title = $providers[$view]['title'];
+    $description = $providers[$view]['description'];
   }
   if ($title) {
     $element = getlocations_element_map_checkbox($title, $default, $description);
@@ -3277,6 +3269,329 @@ function getlocations_element_dd($title, $default, $options, $description = '', 
   return $element;
 }
 
+function getlocations_get_map_providers() {
+  // support hook_getlocations_map_providers
+  $providers = module_invoke_all('getlocations_map_providers');
+  return $providers;
+}
+
+function getlocations_getlocations_map_providers() {
+  $osm_attrib = '&copy; <a target="_blank" href="http://www.openstreetmap.org">OpenStreetMap</a> contributors, <a target="_blank" href="http://www.openstreetmap.org/copyright">ODBL</a>';
+  $stamen_attrib = 'Tiles &copy; <a target="_blank" href="http://stamen.com">Stamen Design</a>, <a target="_blank" href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; ' . $osm_attrib;
+  $esri_attrib = 'Tiles &copy; <a target="_blank" href="http://www.esri.com/">Esri</a>';
+  $providers = array(
+    'Map' => array(
+      'title' => t('Standard street map'),
+      'short_title' => t('Map'),
+      'description' => t('The standard default street map.'),
+      'default' => 1,
+      'minzoom' => 0,
+      'maxzoom' => 20,
+      'url' => '',
+      'attribution' => '',
+      'tilesize' => 256,
+    ),
+    'Satellite' => array(
+      'title' => t('Standard satellite map'),
+      'short_title' => t('Satellite'),
+      'description' => t('Satellite view without street overlay.'),
+      'default' => 1,
+      'minzoom' => 0,
+      'maxzoom' => 20,
+      'url' => '',
+      'attribution' => '',
+      'tilesize' => 256,
+    ),
+    'Hybrid' => array(
+      'title' => t('Hybrid satellite map'),
+      'short_title' => t('Hybrid'),
+      'description' => t('Satellite view with street overlay.'),
+      'default' => 1,
+      'minzoom' => 0,
+      'maxzoom' => 20,
+      'url' => '',
+      'attribution' => '',
+      'tilesize' => 256,
+    ),
+    'Physical' => array(
+      'title' => t('Terrain map'),
+      'short_title' => t('Terrain'),
+      'description' => t('Map with physical data (terrain, vegetation.)'),
+      'default' => 1,
+      'minzoom' => 0,
+      'maxzoom' => 20,
+      'url' => '',
+      'attribution' => '',
+      'tilesize' => 256,
+    ),
+    'OSM' => array(
+      'title' => t('OpenStreet map'),
+      'short_title' => t('OSM map'),
+      'description' => t('Map from the OpenStreetMap Foundation.'),
+      'default' => 0,
+      'minzoom' => 1,
+      'maxzoom' => 18,
+      'url' => "http://tile.openstreetmap.org/__Z__/__X__/__Y__.png",
+      'attribution' => $osm_attrib,
+      'tilesize' => 256,
+    ),
+    'OSMBW' => array(
+      'title' => t('OpenStreetMap Black and White'),
+      'short_title' => t('OSM BW'),
+      'description' => t('Map from the OpenStreetMap Foundation, black and white version.'),
+      'default' => 0,
+      'minzoom' => 1,
+      'maxzoom' => 18,
+      'url' => "http://www.toolserver.org/tiles/bw-mapnik/__Z__/__X__/__Y__.png",
+      'attribution' => $osm_attrib,
+      'tilesize' => 256,
+    ),
+    'OSMDE' => array(
+      'title' => t('OpenStreetMap DE'),
+      'short_title' => t('OSM DE'),
+      'description' => t('German OpenStreet map'),
+      'default' => 0,
+      'minzoom' => 1,
+      'maxzoom' => 18,
+      'url' => "http://tile.openstreetmap.de/tiles/osmde/__Z__/__X__/__Y__.png",
+      'attribution' => $osm_attrib,
+      'tilesize' => 256,
+    ),
+    'OCM' => array(
+      'title' => t('OpenCycleMap'),
+      'short_title' => t('OCM'),
+      'description' => '',
+      'default' => 0,
+      'minzoom' => 1,
+      'maxzoom' => 18,
+      'url' => "http://tile.opencyclemap.org/cycle/__Z__/__X__/__Y__.png",
+      'attribution' => '&copy; <a target="_blank" href="http://www.opencyclemap.org" >OpenCycleMap</a>, ' . $osm_attrib,
+      'tilesize' => 256,
+    ),
+    'OCMT' => array(
+      'title' => t('OpenCycleMap Transport'),
+      'short_title' => t('OCM Transport'),
+      'description' => '',
+      'default' => 0,
+      'minzoom' => 1,
+      'maxzoom' => 18,
+      'url' => "http://tile.opencyclemap.org/transport/__Z__/__X__/__Y__.png",
+      'attribution' => '&copy; <a target="_blank" href="http://www.opencyclemap.org" >OpenCycleMap</a>, ' . $osm_attrib,
+      'tilesize' => 256,
+    ),
+    'OCML' => array(
+      'title' => t('OpenCycleMap Landscape'),
+      'short_title' => t('OCM Landscape'),
+      'description' => '',
+      'default' => 0,
+      'minzoom' => 1,
+      'maxzoom' => 18,
+      'url' => "http://tile.opencyclemap.org/landscape/__Z__/__X__/__Y__.png",
+      'attribution' => '&copy; <a target="_blank" href="http://www.opencyclemap.org" >OpenCycleMap</a>, ' . $osm_attrib,
+      'tilesize' => 256,
+    ),
+    'OCMO' => array(
+      'title' => t('OpenCycleMap Outdoors'),
+      'short_title' => t('OCM Outdoors'),
+      'description' => '',
+      'default' => 0,
+      'minzoom' => 1,
+      'maxzoom' => 18,
+      'url' => "http://tile.thunderforest.com/outdoors/__Z__/__X__/__Y__.png",
+      'attribution' => '&copy; <a target="_blank" href="http://www.opencyclemap.org" >OpenCycleMap</a>, ' . $osm_attrib,
+      'tilesize' => 256,
+    ),
+    'Stamen' => array(
+      'title' => t('Stamen Toner'),
+      'short_title' => t('ST'),
+      'description' => '',
+      'default' => 0,
+      'minzoom' => 1,
+      'maxzoom' => 18,
+      'url' => "http://tile.stamen.com/toner/__Z__/__X__/__Y__.png",
+      'attribution' => $stamen_attrib,
+      'tilesize' => 256,
+    ),
+    'StamenBG' => array(
+      'title' => t('Stamen Toner-background'),
+      'short_title' => t('STBG'),
+      'description' => '',
+      'default' => 0,
+      'minzoom' => 0,
+      'maxzoom' => 18,
+      'url' => "http://tile.stamen.com/toner-background/__Z__/__X__/__Y__.png",
+      'attribution' => $stamen_attrib,
+      'tilesize' => 256,
+    ),
+    'StamenHY' => array(
+      'title' => t('Stamen Toner-hybrid'),
+      'short_title' => t('STHY'),
+      'description' => '',
+      'default' => 0,
+      'minzoom' => 1,
+      'maxzoom' => 18,
+      'url' => "http://tile.stamen.com/toner-hybrid/__Z__/__X__/__Y__.png",
+      'attribution' => $stamen_attrib,
+      'tilesize' => 256,
+    ),
+    'StamenLI' => array(
+      'title' => t('Stamen Toner-lines'),
+      'short_title' => t('STLI'),
+      'description' => '',
+      'default' => 0,
+      'minzoom' => 1,
+      'maxzoom' => 18,
+      'url' => "http://tile.stamen.com/toner-lines/__Z__/__X__/__Y__.png",
+      'attribution' => $stamen_attrib,
+      'tilesize' => 256,
+    ),
+    'StamenLA' => array(
+      'title' => t('Stamen Toner-labels'),
+      'short_title' => t('STLA'),
+      'description' => '',
+      'default' => 0,
+      'minzoom' => 1,
+      'maxzoom' => 18,
+      'url' => "http://tile.stamen.com/toner-labels/__Z__/__X__/__Y__.png",
+      'attribution' => $stamen_attrib,
+      'tilesize' => 256,
+    ),
+    'StamenLT' => array(
+      'title' => t('Stamen Toner-lite'),
+      'short_title' => t('STLT'),
+      'description' => '',
+      'default' => 0,
+      'minzoom' => 1,
+      'maxzoom' => 18,
+      'url' => "http://tile.stamen.com/toner-lite/__Z__/__X__/__Y__.png",
+      'attribution' => $stamen_attrib,
+      'tilesize' => 256,
+    ),
+    'Watercolor' => array(
+      'title' => t('Watercolor'),
+      'short_title' => t('STWC'),
+      'description' => '',
+      'default' => 0,
+      'minzoom' => 1,
+      'maxzoom' => 18,
+      'url' => "http://tile.stamen.com/watercolor/__Z__/__X__/__Y__.jpg",
+      'attribution' => $stamen_attrib,
+      'tilesize' => 256,
+    ),
+    'ESRI' => array(
+      'title' => t('Esri'),
+      'short_title' => t('Esri'),
+      'description' => '',
+      'default' => 0,
+      'minzoom' => 1,
+      'maxzoom' => 17,
+      'url' => "http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/__Z__/__Y__/__X__",
+      'attribution' => $esri_attrib,
+      'tilesize' => 256,
+    ),
+    'DeLorme' => array(
+      'title' => t('Esri DeLorme'),
+      'short_title' => t('DeLorme'),
+      'description' => '',
+      'default' => 0,
+      'minzoom' => 1,
+      'maxzoom' => 11,
+      'url' => "http://server.arcgisonline.com/ArcGIS/rest/services/Specialty/DeLorme_World_Base_Map/MapServer/tile/__Z__/__Y__/__X__",
+      'attribution' => $esri_attrib . ' &mdash; &copy;2012 DeLorme',
+      'tilesize' => 256,
+    ),
+    'WorldTopoMap' => array(
+      'title' => t('Esri Topo'),
+      'short_title' => t('Topo'),
+      'description' => '',
+      'default' => 0,
+      'minzoom' => 1,
+      'maxzoom' => 18,
+      'url' => "http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/__Z__/__Y__/__X__",
+      'attribution' => $esri_attrib . ' &mdash; DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community',
+      'tilesize' => 256,
+    ),
+    'WorldImagery' => array(
+      'title' => t('Esri Imagery'),
+      'short_title' => t('Imagery'),
+      'description' => '',
+      'default' => 0,
+      'minzoom' => 1,
+      'maxzoom' => 18,
+      'url' => "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/__Z__/__Y__/__X__",
+      'attribution' => $esri_attrib . ' &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+      'tilesize' => 256,
+    ),
+    'WorldTerrain' => array(
+      'title' => t('Esri Terrain'),
+      'short_title' => t('Terrain'),
+      'description' => '',
+      'default' => 0,
+      'minzoom' => 1,
+      'maxzoom' => 9,
+      'url' => "http://server.arcgisonline.com/ArcGIS/rest/services/World_Terrain_Base/MapServer/tile/__Z__/__Y__/__X__",
+      'attribution' => $esri_attrib . ' &mdash; Source: USGS, Esri, TANA, DeLorme, and NPS',
+      'tilesize' => 256,
+    ),
+    'WorldShadedRelief' => array(
+      'title' => t('Esri Shaded'),
+      'short_title' => t('Shaded'),
+      'description' => '',
+      'default' => 0,
+      'minzoom' => 1,
+      'maxzoom' => 13,
+      'url' => "http://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/__Z__/__Y__/__X__",
+      'attribution' => $esri_attrib . '',
+      'tilesize' => 256,
+    ),
+    'WorldPhysical' => array(
+      'title' => t('Esri Physical'),
+      'short_title' => t('Physical'),
+      'description' => '',
+      'default' => 0,
+      'minzoom' => 1,
+      'maxzoom' => 8,
+      'url' => "http://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/__Z__/__Y__/__X__",
+      'attribution' => $esri_attrib . ' &mdash; US National Park Service',
+      'tilesize' => 256,
+    ),
+    'OceanBasemap' => array(
+      'title' => t('Esri Ocean'),
+      'short_title' => t('Ocean'),
+      'description' => '',
+      'default' => 0,
+      'minzoom' => 1,
+      'maxzoom' => 13,
+      'url' => "http://services.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/__Z__/__Y__/__X__",
+      'attribution' => $esri_attrib . ' &mdash; GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ',
+      'tilesize' => 256,
+    ),
+    'NatGeoWorldMap' => array(
+      'title' => t('Esri Geo'),
+      'short_title' => t('Esri Geo'),
+      'description' => '',
+      'default' => 0,
+      'minzoom' => 1,
+      'maxzoom' => 12,
+      'url' => "http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/__Z__/__Y__/__X__",
+      'attribution' => $esri_attrib . ' &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC',
+      'tilesize' => 256,
+    ),
+    'WorldGrayCanvas' => array(
+      'title' => t('Esri Canvas'),
+      'short_title' => t('Esri Canvas'),
+      'description' => '',
+      'default' => 0,
+      'minzoom' => 1,
+      'maxzoom' => 16,
+      'url' => "http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/__Z__/__Y__/__X__",
+      'attribution' => $esri_attrib . ' &mdash; Esri, DeLorme, NAVTEQ',
+      'tilesize' => 256,
+    ),
+  );
+  return $providers;
+}
+
 /**
  * Function
  *
@@ -3426,10 +3741,16 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
   );
   $form['mapcontrolposition']['#suffix'] = '</div>';
 
-  // a hack to get this in
-  if (! isset($defaults['baselayers']['OpenStreetMap'])) {
-    $defaults['baselayers']['OpenStreetMap'] = 0;
+  $getlocations_defaults = getlocations_defaults();
+
+  // get baselayers in
+  $baselayers = $getlocations_defaults['baselayers'];
+  foreach ($baselayers AS $k => $v) {
+    if (! isset($defaults['baselayers'][$k])) {
+      $defaults['baselayers'][$k] = $value;
+    }
   }
+
   // make sure at least one layer is set
   $found = FALSE;
   foreach ($defaults['baselayers'] AS $key => $value) {
@@ -3441,10 +3762,13 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
     $defaults['baselayers']['Map'] = 1;
     $defaults['maptype'] = 'Map';
   }
+  // backward compat
+  if (isset($defaults['baselayers']['OpenStreetMap'])) {
+    $defaults['baselayers']['OSM'] = $defaults['baselayers']['OpenStreetMap'];
+    unset ($defaults['baselayers']['OpenStreetMap']);
+  }
 
   $form['maptype'] = getlocations_element_map_maptype($defaults['maptype'], $defaults['baselayers']);
-
-  $getlocations_defaults = getlocations_defaults();
 
   $form['baselayers'] =  array(
     '#type' => 'fieldset',

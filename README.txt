@@ -293,3 +293,6 @@ Drush integration for getlocations.
 'drush getlocations-leaflet'  will install the Leaflet javascript library
 If you want the library installed somewhere other than sites/all/libraries then provide the path after the command.
 
+Other map tiles.
+Getlocations supports the use of other sources of maps besides Google, you can show maps from OpenStreetMap, OpenCycleMap, Stamen and Esri.
+Developers can add their own maps using hook_getlocations_map_providers(), see the function getlocations_getlocations_map_providers() for examples.

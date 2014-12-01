@@ -217,24 +217,36 @@
           var maptypes = [];
           if (maptype) {
             if (maptype == 'Map' && baselayers.Map) { maptype = google.maps.MapTypeId.ROADMAP; }
-              if (maptype == 'Satellite' && baselayers.Satellite) { maptype = google.maps.MapTypeId.SATELLITE; }
-              if (maptype == 'Hybrid' && baselayers.Hybrid) { maptype = google.maps.MapTypeId.HYBRID; }
-              if (maptype == 'Physical' && baselayers.Physical) { maptype = google.maps.MapTypeId.TERRAIN; }
-              if (maptype == 'OpenStreetMap' && baselayers.OpenStreetMap) { maptype = "OSM"; }
-              if (baselayers.Map) { maptypes.push(google.maps.MapTypeId.ROADMAP); }
-              if (baselayers.Satellite) { maptypes.push(google.maps.MapTypeId.SATELLITE); }
-              if (baselayers.Hybrid) { maptypes.push(google.maps.MapTypeId.HYBRID); }
-              if (baselayers.Physical) { maptypes.push(google.maps.MapTypeId.TERRAIN); }
-              if (baselayers.OpenStreetMap) {
-                maptypes.push("OSM");
-                var copyrightNode = document.createElement('div');
-                copyrightNode.id = 'copyright-control';
-                copyrightNode.style.fontSize = '11px';
-                copyrightNode.style.fontFamily = 'Arial, sans-serif';
-                copyrightNode.style.margin = '0 2px 2px 0';
-                copyrightNode.style.whiteSpace = 'nowrap';
-                useOpenStreetMap = true;
+            else if (maptype == 'Satellite' && baselayers.Satellite) { maptype = google.maps.MapTypeId.SATELLITE; }
+            else if (maptype == 'Hybrid' && baselayers.Hybrid) { maptype = google.maps.MapTypeId.HYBRID; }
+            else if (maptype == 'Physical' && baselayers.Physical) { maptype = google.maps.MapTypeId.TERRAIN; }
+
+            if (baselayers.Map) { maptypes.push(google.maps.MapTypeId.ROADMAP); }
+            if (baselayers.Satellite) { maptypes.push(google.maps.MapTypeId.SATELLITE); }
+            if (baselayers.Hybrid) { maptypes.push(google.maps.MapTypeId.HYBRID); }
+            if (baselayers.Physical) { maptypes.push(google.maps.MapTypeId.TERRAIN); }
+
+            var copyrightNode = document.createElement('div');
+            copyrightNode.id = 'copyright-control';
+            copyrightNode.style.fontSize = '11px';
+            copyrightNode.style.fontFamily = 'Arial, sans-serif';
+            copyrightNode.style.margin = '0 2px 2px 0';
+            copyrightNode.style.whiteSpace = 'nowrap';
+
+            var baselayer_keys = new Array();
+            for(var bl_key in baselayers) {
+              baselayer_keys[baselayer_keys.length] = bl_key;
+            }
+            for (var c = 0; c < baselayer_keys.length; c++) {
+              var bl_key = baselayer_keys[c];
+              if ( bl_key != 'Map' && bl_key != 'Satellite' && bl_key != 'Hybrid' && bl_key != 'Physical') {
+                // do stuff
+                if (baselayers[bl_key]) {
+                  maptypes.push(bl_key);
+                  useOpenStreetMap = true;
+                }
               }
+            }
           }
           else {
             maptype = google.maps.MapTypeId.ROADMAP;
@@ -374,24 +386,18 @@
           // another way
           // Drupal.getlocations_map[key] = new google.maps.Map($(element).get(0), mapOpts);
 
+          // other maps
           // OpenStreetMap
           if (useOpenStreetMap) {
-            var tle = Drupal.t("OpenStreetMap");
-            if (setting.mtc == 'menu') {
-              tle = Drupal.t("OSM map");
+            for (var c = 0; c < baselayer_keys.length; c++) {
+              var bl_key = baselayer_keys[c];
+              if ( bl_key != 'Map' && bl_key != 'Satellite' && bl_key != 'Hybrid' && bl_key != 'Physical') {
+                if (baselayers[bl_key] ) {
+                  setupNewMap(key, bl_key);
+                }
+              }
             }
-            Drupal.getlocations_map[key].mapTypes.set("OSM", new google.maps.ImageMapType({
-              getTileUrl: function(coord, zoom) {
-                return "http://tile.openstreetmap.org/" + zoom + "/" + coord.x + "/" + coord.y + ".png";
-              },
-              tileSize: new google.maps.Size(256, 256),
-              name: tle,
-              maxZoom: 18
-            }));
-            google.maps.event.addListener(Drupal.getlocations_map[key], 'maptypeid_changed', updateCopyrights);
-            if (maptype == "OSM") {
-              updateCopyrights();
-            }
+            google.maps.event.addListener(Drupal.getlocations_map[key], 'maptypeid_changed', updateAttribs);
             Drupal.getlocations_map[key].controls[google.maps.ControlPosition.BOTTOM_RIGHT].push(copyrightNode);
           }
 
@@ -779,9 +785,9 @@
           }
         }
 
-        function updateCopyrights() {
-          if(Drupal.getlocations_map[key].getMapTypeId() == "OSM") {
-            copyrightNode.innerHTML = "OSM map data @<a target=\"_blank\" href=\"http://www.openstreetmap.org/\"> OpenStreetMap</a>-contributors,<a target=\"_blank\" href=\"http://creativecommons.org/licenses/by-sa/2.0/legalcode\"> CC BY-SA</a>";
+        function updateCopyrights(attrib) {
+          if (attrib) {
+            copyrightNode.innerHTML = attrib;
             if (setting.trafficinfo) {
               $("#getlocations_toggleTraffic_" + key).attr('disabled', true);
             }
@@ -805,6 +811,49 @@
             }
           }
         }
+
+        function setupNewMap(k, blk) {
+          if (setting.baselayer_settings[blk] !== undefined) {
+            var tle = setting.baselayer_settings[blk].title;
+            if (setting.mtc == 'menu') {
+              tle = setting.baselayer_settings[blk].short_title;
+            }
+            var tilesize = parseInt(setting.baselayer_settings[blk].tilesize);
+            var url_template = setting.baselayer_settings[blk].url;
+            Drupal.getlocations_map[k].mapTypes.set(blk, new google.maps.ImageMapType({
+              getTileUrl: function(coord, zoom) {
+                var url = '';
+                if (url_template) {
+                  url = url_template.replace(/__Z__/, zoom).replace(/__X__/, coord.x).replace(/__Y__/, coord.y);
+                }
+                return url;
+              },
+              tileSize: new google.maps.Size(tilesize, tilesize),
+              name: tle,
+              minZoom: parseInt(setting.baselayer_settings[blk].minzoom),
+              maxZoom: parseInt(setting.baselayer_settings[blk].maxzoom)
+            }));
+          }
+        }
+
+        function updateAttribs() {
+          var blk = Drupal.getlocations_map[key].getMapTypeId();
+          for (var c = 0; c < baselayer_keys.length; c++) {
+            var bl_key = baselayer_keys[c];
+            if ( bl_key != 'Map' && bl_key != 'Satellite' && bl_key != 'Hybrid' && bl_key != 'Physical') {
+              if ( bl_key == blk ) {
+                var attrib = setting.baselayer_settings[blk].attribution;
+                if (attrib) {
+                  updateCopyrights(attrib);
+                }
+              }
+            }
+            else {
+              updateCopyrights('');
+            }
+          }
+        }
+
         // end functions
 
       }); // end once
