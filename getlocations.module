@@ -4735,10 +4735,11 @@ function getlocations_google_places_form($defaults, $config) {
 function getlocations_geocoder_form($defaults) {
   $form = array();
   if (getlocations_get_geocoder_path()) {
-    $form['geocoder_enable'] = getlocations_element_map_checkbox(
-      t('Use OpenStreetMap for searches'),
+    $form['geocoder_enable'] = getlocations_element_dd(
+      t('Geocoder type'),
       $defaults['geocoder_enable'],
-      t('Use OpenStreetMap instead of Google for searches.')
+      array(0 => t('Quick Google Search'), 1 => t('Full Google Search'), 2 => t('OpenStreetMap Search')),
+      t('The type of geocoder to use. Quick Google search only applies if Google Autocomplete has been used.')
     );
   }
   else {

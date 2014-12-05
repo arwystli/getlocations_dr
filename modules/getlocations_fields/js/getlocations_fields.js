@@ -219,7 +219,7 @@
           }
           if (input_adrstmp) {
 
-            if (gsettings[k].geocoder_enable > 0) {
+            if (gsettings[k].geocoder_enable == 2) {
               // nominatem
               var geocoder = GeocoderJS.createGeocoder('openstreetmap');
               geocoder.geocode(input_adrstmp, function (results) {
@@ -246,7 +246,7 @@
                 }
               });
             }
-            else {
+            else if (gsettings[k].geocoder_enable == 1 || use_adrs == 0) {
               var input_adrs = {'address': input_adrstmp};
               // Create a Client Geocoder
               var geocoder = new google.maps.Geocoder();
@@ -271,9 +271,19 @@
                   alert(msg);
                 }
               });
-
             }
-
+            else {
+              point[kk] = adrs.geometry.location;
+              lat = adrs.geometry.location.lat();
+              lng = adrs.geometry.location.lng();
+              $("#" + latfield + kk).val(lat);
+              $("#" + lonfield + kk).val(lng);
+              updateMap(mmap, point[kk], kk);
+              streetviewSetupButtonDo(kk);
+              set_address_components(kk, adrs.address_components);
+              $("#" + namefield + kk).val(adrs.name);
+            }
+            
           }
           else if ( ($("#" + latfield + k).val() !== '') && ($("#" + lonfield + k).val() !== '')  ) {
             // reverse geocoding

@@ -131,13 +131,17 @@
           google.maps.event.addListener(ac_adrs, 'place_changed', function () {
             var place_adrs = ac_adrs.getPlace();
             var fm_adrs = place_adrs.formatted_address;
-            if (gset.geocoder_enable > 0) {
+            if (gset.geocoder_enable == 2) {
               // nominatem
               do_geocoder_Geocode(Drupal.getlocations_map[key], gset, fm_adrs, key);
             }
-            else {
-              // Create a Client Geocoder google
+            else if (gset.geocoder_enable == 1) {
+              // google
               do_Geocode(Drupal.getlocations_map[key], gset, {'address':fm_adrs}, key);
+            }
+            else {
+              // just use place_adrs
+              do_PlaceAdrs(Drupal.getlocations_map[key], gset, place_adrs, key);
             }
 
             if ($("#getlocations_search_geocode_button_wrapper_" + key).is('div')) {
@@ -150,7 +154,7 @@
             // collect the search string
             input_adrs = $("#edit-getlocations-search-" + mapid2).val();
             var fm_adrs = input_adrs;
-            if (gset.geocoder_enable > 0) {
+            if (gset.geocoder_enable == 2) {
               // Create a Client Geocoder
               do_geocoder_Geocode(Drupal.getlocations_map[key], gset, fm_adrs, key);
             }
@@ -379,6 +383,44 @@
         alert(msg);
       }
     });
+
+  }
+
+  function do_PlaceAdrs(map, gs, place_adrs, mkey) {
+    if (! gs.showall) {
+      // are there any markers already?
+      if (search_markersArray.length) {
+        getlocations_search_deleteOverlays(gs);
+      }
+    }
+    // clear out search marker
+    if (gs.do_search_marker) {
+      oldslat = $("#getlocations_search_slat_" + mkey).html();
+      oldslon = $("#getlocations_search_slon_" + mkey).html();
+      if (oldslat) {
+        searchmarker[mkey].setMap();
+      }
+    }
+
+    // close any previous instances
+    for (var i in gs.infoBubbles) {
+      gs.infoBubbles[i].close();
+    }
+
+    // clear the results box
+    getlocations_search_clear_results(mkey, gs);
+
+    // get settings from the DOM
+    var mapid2 = mkey.replace("_", "-");
+    var distance = $("#edit-getlocations-search-distance-" + mapid2).val();
+    var units = $("#edit-getlocations-search-units-" + mapid2).val();
+    var type = $("#edit-getlocations-search-type-" + mapid2).val();
+    var limits = $("#edit-getlocations-search-limits-" + mapid2).val();
+    var address = place_adrs.formatted_address;
+    var slat = place_adrs.geometry.location.lat();
+    var slon = place_adrs.geometry.location.lng();
+    var accuracy = '';
+    getlocations_search_get_data(slat, slon, distance, units, type, limits, accuracy, address, gs, map, mkey);
 
   }
 
