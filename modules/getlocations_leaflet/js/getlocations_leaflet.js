@@ -22,42 +22,6 @@
     attach: function (context, settings) {
 
       // functions
-      var getlocations_leaflet_dd_to_dms_lat = function(coord) {
-        return getlocations_leaflet_dd_to_dms_do(coord, 'lat');
-      };
-
-      var getlocations_leaflet_dd_to_dms_lng = function(coord) {
-        return getlocations_leaflet_dd_to_dms_do(coord, 'lng');
-      };
-
-      var getlocations_leaflet_dd_to_dms_do = function(coord, latlon) {
-        if (latlon == 'lat') {
-          coord = Drupal.getlocations.geo.normalizeLat(coord);
-          direction = (coord < 0) ? 'S' : 'N';
-        }
-        else {
-          coord = Drupal.getlocations.geo.normalizeLng(coord);
-          direction = (coord < 0) ? 'W' : 'E';
-        }
-        coord = Math.abs(coord);
-        degrees = Math.floor(coord);
-        coord = (coord - degrees) * 60;
-        minutes = Math.floor(coord);
-        coord = (coord - minutes) * 60;
-        seconds = Math.round(coord, 6);
-        output = degrees + "&deg;&nbsp;" + minutes + "&#39;&nbsp;" + seconds + "&#34;&nbsp;" + direction;
-        return output;
-      };
-
-      var getlocations_leaflet_dd_lat = function(coord) {
-        coord = Drupal.getlocations.geo.normalizeLat(coord);
-        return coord.toFixed(6);
-      };
-
-      var getlocations_leaflet_dd_lng = function(coord) {
-        coord = Drupal.getlocations.geo.normalizeLng(coord);
-        return coord.toFixed(6);
-      };
 
       function getlocations_leaflet_do_link(m, l) {
         m.on('click', function() {
@@ -276,12 +240,12 @@
               mopts.position = map_settings.mouseposition_position;
             }
             if (map_settings.mouseposition_display_dms) {
-              mopts.lngFormatter = getlocations_leaflet_dd_to_dms_lng;
-              mopts.latFormatter = getlocations_leaflet_dd_to_dms_lat;
+              mopts.lngFormatter = Drupal.getlocations.geo.dd_to_dms_lng;
+              mopts.latFormatter = Drupal.getlocations.geo.dd_to_dms_lat;
             }
             else {
-              mopts.lngFormatter = getlocations_leaflet_dd_lng;
-              mopts.latFormatter = getlocations_leaflet_dd_lat;
+              mopts.lngFormatter = Drupal.getlocations.geo.dd_lng;
+              mopts.latFormatter = Drupal.getlocations.geo.dd_lat;
             }
             Drupal.getlocations_leaflet_map[key].addControl(L.control.mousePosition(mopts));
           }

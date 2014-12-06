@@ -181,18 +181,34 @@
    * @returns {Number} distance in meters
    */
   Drupal.getlocations.geo.earth_distance = function(latitude1, longitude1, latitude2, longitude2) {
-    latitude1  = parseFloat(latitude1);
-    longitude1 = parseFloat(longitude1);
-    latitude2  = parseFloat(latitude2);
-    longitude2 = parseFloat(longitude2);
-
-    var lat1 = Drupal.getlocations.geo.toRad(latitude1);
-    var lng1 = Drupal.getlocations.geo.toRad(longitude1);
-    var lat2 = Drupal.getlocations.geo.toRad(latitude2);
-    var lng2 = Drupal.getlocations.geo.toRad(longitude2);
-    var radius = Drupal.getlocations.geo.earth_radius((latitude1 + latitude2) / 2);
-    var cosangle = Math.cos(lat1) * Math.cos(lat2) * (Math.cos(long1) * Math.cos(long2) + Math.sin(long1) * Math.sin(long2)) + Math.sin(lat1) * Math.sin(lat2);
+    var lat1 = Drupal.getlocations.geo.toRad(parseFloat(latitude1));
+    var lng1 = Drupal.getlocations.geo.toRad(parseFloat(longitude1));
+    var lat2 = Drupal.getlocations.geo.toRad(parseFloat(latitude2));
+    var lng2 = Drupal.getlocations.geo.toRad(parseFloat(longitude2));
+    var radius = Drupal.getlocations.geo.earth_radius((parseFloat(latitude1) + parseFloat(latitude2)) / 2);
+    var cosangle = Math.cos(lat1) * Math.cos(lat2) * (Math.cos(lng1) * Math.cos(lng2) + Math.sin(lng1) * Math.sin(lng2)) + Math.sin(lat1) * Math.sin(lat2);
     return Math.acos(cosangle) * radius;
+  };
+
+  /**
+   * Estimate the earth-surface distance between two locations, Haversine formula.
+   *
+   * @param {Number} latitude1
+   * @param {Number} longitude1
+   * @param {Number} latitude2
+   * @param {Number} longitude2
+   * @returns {Number} distance in meters
+   */
+  Drupal.getlocations.geo.earth_distance2 = function(latitude1, longitude1, latitude2, longitude2) {
+    var lat1 = Drupal.getlocations.geo.toRad(parseFloat(latitude1));
+    var lng1 = Drupal.getlocations.geo.toRad(parseFloat(longitude1));
+    var lat2 = Drupal.getlocations.geo.toRad(parseFloat(latitude2));
+    var lng2 = Drupal.getlocations.geo.toRad(parseFloat(longitude2));
+    var radius = Drupal.getlocations.geo.earth_radius((parseFloat(latitude1) + parseFloat(latitude2)) / 2);
+    var latm = lat2 - lat1;
+    var lngm = lng2 - lng1;
+    var a = Math.sin(latm / 2) * Math.sin(latm / 2) + Math.cos(lat1) * Math.cos(lat2) * Math.sin(lngm / 2) * Math.sin(lngm / 2);
+    return radius * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
   };
 
   /**
@@ -247,5 +263,223 @@
     return retval;
   };
 
+  /**
+   * Convert Decimal Degrees to Degrees, minutes, seconds
+   * @param {Number} coordinate in Decimal Degrees
+   * @param {String} 'lat' for latitude or anything else for longitude
+   * @return {String} Degrees, minutes, seconds formatted for webpage
+   */
+  Drupal.getlocations.geo.dd_to_dms_do = function(coord, latlon, web) {
+    if (typeof web == 'undefined') web = true;
+    if (latlon == 'lat') {
+      coord = Drupal.getlocations.geo.normalizeLat(coord);
+      direction = (coord < 0) ? 'S' : 'N';
+    }
+    else {
+      coord = Drupal.getlocations.geo.normalizeLng(coord);
+      direction = (coord < 0) ? 'W' : 'E';
+    }
+    coord = Math.abs(coord);
+    degrees = Math.floor(coord);
+    coord = (coord - degrees) * 60;
+    minutes = Math.floor(coord);
+    coord = (coord - minutes) * 60;
+    seconds = Math.round(coord, 6);
+    if (web) {
+      output = degrees + "&deg;&nbsp;" + minutes + "&#39;&nbsp;" + seconds + "&#34;&nbsp;" + direction;
+    }
+    else {
+      output = degrees + '°' + minutes + '′' + seconds + '″' + direction;
+    }
+
+    return output;
+  };
+
+  /**
+   * Convert Decimal Degrees Latitude to Degrees, minutes, seconds
+   * @param {Number} coordinate in Decimal Degrees
+   * @return {String} Degrees, minutes, seconds formatted for webpage
+   */
+  Drupal.getlocations.geo.dd_to_dms_lat = function(coord) {
+    return Drupal.getlocations.geo.dd_to_dms_do(coord, 'lat');
+  };
+
+  /**
+   * Convert Decimal Degrees Longitude to Degrees, minutes, seconds
+   * @param {Number} coordinate in Decimal Degrees
+   * @return {String} Degrees, minutes, seconds formatted for webpage
+   */
+  Drupal.getlocations.geo.dd_to_dms_lng = function(coord) {
+    return Drupal.getlocations.geo.dd_to_dms_do(coord, 'lng');
+  };
+
+  /**
+   * Format Decimal Degrees Latitude
+   * @param {Number} coordinate in Decimal Degrees
+   * @param {Number} number of digits after decimal point
+   * @return {Number} formatted to standard length
+   *
+   */
+  Drupal.getlocations.geo.dd_lat = function(coord, len) {
+    if (typeof len == 'undefined') len = 6;
+    coord = Drupal.getlocations.geo.normalizeLat(coord);
+    return coord.toFixed(len);
+  };
+
+  /**
+  * Format Decimal Degrees Longitude
+  * @param {Number} coordinate in Decimal Degrees
+  * @param {Number} number of digits after decimal point
+  * @return {Number} formatted to standard length
+  *
+  */
+  Drupal.getlocations.geo.dd_lng = function(coord, len) {
+    if (typeof len == 'undefined') len = 6;
+    coord = Drupal.getlocations.geo.normalizeLng(coord);
+    return coord.toFixed(len);
+  };
+
+  /**
+   * Convert Degrees, minutes, seconds to Decimal Degrees
+   * from www.movable-type.co.uk/scripts/latlong.html
+   * Sample usage:
+   *   var lat = Drupal.getlocations.geo.parseDMS('51° 28′ 40.12″ N');
+   *   var lon = Drupal.getlocations.geo.parseDMS('000° 00′ 05.31″ W');
+   *
+   * @param {String} Degrees, minutes, seconds
+   * @return {Number} Decimal Degrees
+   */
+  Drupal.getlocations.geo.parseDMS = function(dmsStr) {
+    // check for signed decimal degrees without NSEW, if so return it directly
+    if (typeof dmsStr == 'number' && isFinite(dmsStr)) return Number(dmsStr);
+
+    // strip off any sign or compass dir'n & split out separate d/m/s
+    var dms = String(dmsStr).trim().replace(/^-/,'').replace(/[NSEW]$/i,'').split(/[^0-9.,]+/);
+    if (dms[dms.length-1]=='') dms.splice(dms.length-1);  // from trailing symbol
+
+    if (dms == '') return NaN;
+    // and convert to decimal degrees...
+    var deg;
+    switch (dms.length) {
+      case 3:  // interpret 3-part result as d/m/s
+        deg = dms[0]/1 + dms[1]/60 + dms[2]/3600;
+        break;
+      case 2:  // interpret 2-part result as d/m
+        deg = dms[0]/1 + dms[1]/60;
+        break;
+      case 1:  // just d (possibly decimal) or non-separated dddmmss
+        deg = dms[0];
+        // check for fixed-width unseparated format eg 0033709W
+        //if (/[NS]/i.test(dmsStr)) deg = '0' + deg;  // - normalise N/S to 3-digit degrees
+        //if (/[0-9]{7}/.test(deg)) deg = deg.slice(0,3)/1 + deg.slice(3,5)/60 + deg.slice(5)/3600;
+        break;
+      default:
+        return NaN;
+    }
+    if (/^-|[WS]$/i.test(dmsStr.trim())) deg = -deg; // take '-', west and south as -ve
+    return Number(deg);
+
+  };
+
+  /**
+   * Converts decimal degrees to deg/min/sec format
+   *  - degree, prime, double-prime symbols are added, but sign is discarded, though no compass
+   *    direction is added.
+   *
+   * @private
+   * @param   {number} deg - Degrees to be formatted as specified.
+   * @param   {string} [format=dms] - Return value as 'd', 'dm', 'dms'.
+   * @param   {number} [dp=0|2|4] - Number of decimal places to use – default 0 for dms, 2 for dm, 4 for d.
+   * @returns {string} Degrees formatted as deg/min/secs according to specified format.
+   */
+  Drupal.getlocations.geo.toDMS = function(deg, format, dp) {
+    if (isNaN(deg)) return null;  // give up here if we can't make a number from deg
+
+    // default values
+    if (typeof format == 'undefined') format = 'dms';
+    if (typeof dp == 'undefined') {
+      switch (format) {
+        case 'd':   dp = 4; break;
+        case 'dm':  dp = 2; break;
+        case 'dms': dp = 0; break;
+        default:    format = 'dms'; dp = 0;  // be forgiving on invalid format
+      }
+    }
+
+    deg = Math.abs(deg);  // (unsigned result ready for appending compass dir'n)
+
+    var dms, d, m, s;
+    switch (format) {
+      default: // invalid format spec!
+      case 'd':
+        d = deg.toFixed(dp);     // round degrees
+        if (d<100) d = '0' + d;  // pad with leading zeros
+    if (d<10) d = '0' + d;
+    dms = d + '°';
+    break;
+      case 'dm':
+        var min = (deg*60).toFixed(dp);  // convert degrees to minutes & round
+        d = Math.floor(min / 60);    // get component deg/min
+        m = (min % 60).toFixed(dp);  // pad with trailing zeros
+        if (d<100) d = '0' + d;          // pad with leading zeros
+    if (d<10) d = '0' + d;
+    if (m<10) m = '0' + m;
+    dms = d + '°' + m + '′';
+    break;
+      case 'dms':
+        var sec = (deg*3600).toFixed(dp);  // convert degrees to seconds & round
+        d = Math.floor(sec / 3600);    // get component deg/min/sec
+        m = Math.floor(sec/60) % 60;
+        s = (sec % 60).toFixed(dp);    // pad with trailing zeros
+        if (d<100) d = '0' + d;            // pad with leading zeros
+    if (d<10) d = '0' + d;
+    if (m<10) m = '0' + m;
+    if (s<10) s = '0' + s;
+    dms = d + '°' + m + '′' + s + '″';
+    break;
+    }
+
+    return dms;
+  };
+
+  /**
+   * Converts numeric degrees to deg/min/sec latitude (2-digit degrees, suffixed with N/S).
+   *
+   * @param   {number} deg - Degrees to be formatted as specified.
+   * @param   {string} [format=dms] - Return value as 'd', 'dm', 'dms'.
+   * @param   {number} [dp=0|2|4] - Number of decimal places to use – default 0 for dms, 2 for dm, 4 for d.
+   * @returns {string} Degrees formatted as deg/min/secs according to specified format.
+   */
+  Drupal.getlocations.geo.toLat = function(deg, format, dp) {
+    var lat = Drupal.getlocations.geo.toDMS(deg, format, dp);
+    return lat===null ? '–' : lat.slice(1) + (deg<0 ? 'S' : 'N');  // knock off initial '0' for lat!
+  };
+
+  /**
+   * Convert numeric degrees to deg/min/sec longitude (3-digit degrees, suffixed with E/W)
+   *
+   * @param   {number} deg - Degrees to be formatted as specified.
+   * @param   {string} [format=dms] - Return value as 'd', 'dm', 'dms'.
+   * @param   {number} [dp=0|2|4] - Number of decimal places to use – default 0 for dms, 2 for dm, 4 for d.
+   * @returns {string} Degrees formatted as deg/min/secs according to specified format.
+   */
+  Drupal.getlocations.geo.toLon = function(deg, format, dp) {
+    var lon = Drupal.getlocations.geo.toDMS(deg, format, dp);
+    return lon===null ? '–' : lon + (deg<0 ? 'W' : 'E');
+  };
+
+  /**
+   * Converts numeric degrees to deg/min/sec as a bearing (0°..360°)
+   *
+   * @param   {number} deg - Degrees to be formatted as specified.
+   * @param   {string} [format=dms] - Return value as 'd', 'dm', 'dms'.
+   * @param   {number} [dp=0|2|4] - Number of decimal places to use – default 0 for dms, 2 for dm, 4 for d.
+   * @returns {string} Degrees formatted as deg/min/secs according to specified format.
+   */
+  Drupal.getlocations.geo.toBrng = function(deg, format, dp) {
+    deg = (Number(deg)+360) % 360;  // normalise -ve values to 180°..360°
+    var brng =  Drupal.getlocations.geo.toDMS(deg, format, dp);
+    return (brng === null ? '–' : brng.replace('360', '0'));  // just in case rounding took us up to 360°!
+  };
 
 }(jQuery));
