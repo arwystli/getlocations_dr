@@ -88,6 +88,18 @@
             makeMoveMarker(Drupal.getlocations_inputmap[key], point[key], key);
           }
 
+          // search type in tooltip
+          if (gsettings[key].geocoder_enable == 2) {
+            msg = Drupal.t('Search by OpenStreetMap');
+          }
+          else if (gsettings[key].geocoder_enable == 1 || use_address == 0) {
+            msg = Drupal.t('Search by Google');
+          }
+          else {
+            msg = Drupal.t('Search by Google Maps Places');
+          }
+          $("#" + adrsfield + key).attr({title: msg});
+
           if (use_address > 0) {
             if (use_address == 1) {
               $("#" + 'getlocations_geocodebutton_' + key).attr('disabled', 'disabled');
@@ -283,7 +295,7 @@
               set_address_components(kk, adrs.address_components);
               $("#" + namefield + kk).val(adrs.name);
             }
-            
+
           }
           else if ( ($("#" + latfield + k).val() !== '') && ($("#" + lonfield + k).val() !== '')  ) {
             // reverse geocoding

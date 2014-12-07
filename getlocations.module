@@ -799,16 +799,6 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
     }
   }
 
-  if ($googleonly) {
-    return;
-  }
-
-  $getlocations_paths = getlocations_paths_get();
-
-  if (!stristr($current_css, GETLOCATIONS_PATH . '/getlocations.css')) {
-    drupal_add_css(GETLOCATIONS_PATH . '/getlocations.css');
-  }
-
   // geocoder-js
   if ($defaults['geocoder_enable'] && $geocoder_path = getlocations_get_geocoder_path()) {
     if (!stristr($current_js, $geocoder_path)) {
@@ -819,6 +809,16 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
       drupal_add_js($geocoder_path, $js_opts);
       $getlocations_js_weight++;
     }
+  }
+
+  if ($googleonly) {
+    return;
+  }
+
+  $getlocations_paths = getlocations_paths_get();
+
+  if (!stristr($current_css, GETLOCATIONS_PATH . '/getlocations.css')) {
+    drupal_add_css(GETLOCATIONS_PATH . '/getlocations.css');
   }
 
   // streetview only

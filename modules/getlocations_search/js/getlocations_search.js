@@ -57,6 +57,18 @@
           $("#getlocations_search_geocode_button_" + mapid).hide();
         }
 
+        // search type in tooltip
+        if (gset.geocoder_enable == 2) {
+          msg = Drupal.t('Search by OpenStreetMap');
+        }
+        else if (gset.geocoder_enable == 1) {
+          msg = Drupal.t('Search by Google');
+        }
+        else {
+          msg = Drupal.t('Search by Google Maps Places');
+        }
+        $("#edit-getlocations-search-" + mapid2).attr({title: msg});
+
         var fm_adrs = '';
         // search area shape
         gset.search_radshape_enable = searchsettings.search_radshape_enable;

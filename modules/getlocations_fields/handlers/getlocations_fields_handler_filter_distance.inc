@@ -27,6 +27,7 @@ class getlocations_fields_handler_filter_distance extends views_handler_filter {
     $options['settings']['country']                 = array('default' => variable_get('site_default_country', ''));
     $options['settings']['display_search_distance'] = array('default' => 1);
     $options['settings']['display_search_units']    = array('default' => 1);
+    $options['settings']['geocoder_enable']         = array('default' => 0);
 
     $options['value'] = array(
       'default' => array(
@@ -115,6 +116,11 @@ class getlocations_fields_handler_filter_distance extends views_handler_filter {
         TRUE
       );
       $form['settings']['searchbox_size']['#dependency'] = array('edit-options-origin' => array('search'));
+
+      // geocoder type
+      $geocoder_default['geocoder_enable'] = (isset($this->options['settings']['geocoder_enable']) ? $this->options['settings']['geocoder_enable'] : 0);
+      $form['settings'] += getlocations_geocoder_form($geocoder_default);
+
       // country restriction
       $form['settings']['restrict_by_country'] = getlocations_element_map_checkbox(
         t('Restrict by country'),
@@ -146,11 +152,13 @@ class getlocations_fields_handler_filter_distance extends views_handler_filter {
             'getlocations_fields_search_views' => array(
               'restrict_by_country' => (isset($this->options['settings']['restrict_by_country']) ? $this->options['settings']['restrict_by_country'] : 0),
               'country' => (isset($this->options['settings']['country']) ? $this->options['settings']['country'] : variable_get('site_default_country', '')),
+              'geocoder_enable' => $geocoder_default['geocoder_enable'],
             )
           );
           drupal_add_js($settings, 'setting');
         }
         $getlocations_defaults = getlocations_defaults();
+        $getlocations_defaults['geocoder_enable'] = $geocoder_default['geocoder_enable'];
         getlocations_setup_js($getlocations_defaults, TRUE);
       }
 

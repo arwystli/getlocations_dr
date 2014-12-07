@@ -26,21 +26,59 @@
         var ac_adrs = new google.maps.places.Autocomplete(input_adrs, opts);
         google.maps.event.addListener(ac_adrs, 'place_changed', function () {
           var place_adrs = ac_adrs.getPlace();
-          fm_adrs = {'address': place_adrs.formatted_address};
-          var geocoder = new google.maps.Geocoder();
-          geocoder.geocode(fm_adrs, function (results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
-              $("#edit-distance-latitude").val(results[0].geometry.location.lat());
-              $("#edit-distance-longitude").val(results[0].geometry.location.lng());
-              $("#edit-distance-search-field").val(results[0].formatted_address);
-            }
-            else {
-              var prm = {'!a': fm_adrs, '!b': Drupal.getlocations.getGeoErrCode(status) };
-              var msg = Drupal.t('Geocode for (!a) was not successful for the following reason: !b', prm);
-              alert(msg);
-            }
-          });
+          var fm_adrs = place_adrs.formatted_address;
+          if (settings.geocoder_enable == 2) {
+            // Nominatem
+            var geocoder = GeocoderJS.createGeocoder('openstreetmap');
+            geocoder.geocode(fm_adrs, function (results) {
+              if (results) {
+                $("#edit-distance-latitude").val(results[0].latitude);
+                $("#edit-distance-longitude").val(results[0].longitude);
+                $("#edit-distance-search-field").val(fm_adrs);
+              }
+              else {
+                var prm = {'!a': fm_adrs};
+                var msg = Drupal.t('Geocode for (!a) was not successful', prm);
+                alert(msg);
+              }
+            });
+          }
+          else if (settings.geocoder_enable == 1) {
+            // full google
+            fm_adrs = {'address': place_adrs.formatted_address};
+            var geocoder = new google.maps.Geocoder();
+            geocoder.geocode(fm_adrs, function (results, status) {
+              if (status == google.maps.GeocoderStatus.OK) {
+                $("#edit-distance-latitude").val(results[0].geometry.location.lat());
+                $("#edit-distance-longitude").val(results[0].geometry.location.lng());
+                $("#edit-distance-search-field").val(results[0].formatted_address);
+              }
+              else {
+                var prm = {'!a': fm_adrs, '!b': Drupal.getlocations.getGeoErrCode(status) };
+                var msg = Drupal.t('Geocode for (!a) was not successful for the following reason: !b', prm);
+                alert(msg);
+              }
+            });
+          }
+          else {
+            //quick
+            $("#edit-distance-latitude").val(place_adrs.geometry.location.lat());
+            $("#edit-distance-longitude").val(place_adrs.geometry.location.lng());
+            $("#edit-distance-search-field").val(fm_adrs);
+          }
         });
+
+        // search type in tooltip
+        if (settings.geocoder_enable == 2) {
+          msg = Drupal.t('Search by OpenStreetMap');
+        }
+        else if (settings.geocoder_enable == 1) {
+          msg = Drupal.t('Search by Google');
+        }
+        else {
+          msg = Drupal.t('Search by Google Maps Places');
+        }
+        $("#edit-distance-search-field").attr({title: msg});
       }
 
       //#edit-options-settings-restrict-by-country
