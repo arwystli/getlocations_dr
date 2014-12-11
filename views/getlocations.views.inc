@@ -245,7 +245,7 @@ function template_preprocess_getlocations_view_map(&$variables) {
   getlocations_js_settings_do($newdefaults, $latlons, $minmaxes, $mapid);
 
   // show_search_distance
-  if (isset($variables['view']->exposed_data['distance']) && $variables['view']->exposed_data['distance']['latitude'] && $variables['view']->exposed_data['distance']['longitude'] && $variables['view']->exposed_data['distance']['search_distance']) {
+  if (isset($variables['view']->exposed_data['distance']) && isset($variables['view']->exposed_data['distance']['latitude']) && $variables['view']->exposed_data['distance']['latitude'] && isset($variables['view']->exposed_data['distance']['longitude']) && $variables['view']->exposed_data['distance']['longitude'] && $variables['view']->exposed_data['distance']['search_distance']) {
     $newdefaults['search_dist_info'] = $variables['view']->exposed_data['distance'];
   }
 
