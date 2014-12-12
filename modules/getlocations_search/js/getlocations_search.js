@@ -24,8 +24,8 @@
       // is there really a map?
       if ($("#getlocations_map_canvas_" + key).is('div')) {
         // getlocations settings for current map
-        //var gset = Drupal.getlocations_settings[key];
-        var gset = Drupal.settings.getlocations[key];
+        var gset = Drupal.getlocations_settings[key];
+        //var gset = Drupal.settings.getlocations[key];
         var method = searchsettings.method;
         gset.do_lookup = searchsettings.do_lookup;
         gset.show_distance = searchsettings.show_distance;

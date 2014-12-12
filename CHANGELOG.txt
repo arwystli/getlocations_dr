@@ -1,9 +1,65 @@
-commit 245a69a
+commit db53c98
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Fri Dec 12 15:02:46 2014 +0000
+
+    fixed js bug
+
+modules/getlocations_search/js/getlocations_search.js
+modules/getlocations_search/js/getlocations_search.min.js
+
+commit acf1dbe
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Thu Dec 11 17:32:47 2014 +0000
+
+    some notice avoidance
+
+views/getlocations.views.inc
+
+commit bb51207
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sun Dec 7 11:11:13 2014 +0000
+
+    added search type tooltip
+
+getlocations.module
+modules/getlocations_fields/handlers/getlocations_fields_handler_filter_distance.inc
+modules/getlocations_fields/js/getlocations_fields.js
+modules/getlocations_fields/js/getlocations_fields.min.js
+modules/getlocations_fields/js/getlocations_fields_search_views.js
+modules/getlocations_fields/js/getlocations_fields_search_views.min.js
+modules/getlocations_search/js/getlocations_search.js
+modules/getlocations_search/js/getlocations_search.min.js
+
+commit 885e5fc
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sat Dec 6 10:48:30 2014 +0000
+
+    more geo functions, updated leaflet
+
+js/getlocations_geo.js
+js/getlocations_geo.min.js
+modules/getlocations_leaflet/js/getlocations_leaflet.js
+modules/getlocations_leaflet/js/getlocations_leaflet.min.js
+
+commit 368680b
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Fri Dec 5 10:07:44 2014 +0000
+
+    added search type selector
+
+getlocations.module
+modules/getlocations_fields/js/getlocations_fields.js
+modules/getlocations_fields/js/getlocations_fields.min.js
+modules/getlocations_search/js/getlocations_search.js
+modules/getlocations_search/js/getlocations_search.min.js
+
+commit 0a78d55
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Mon Dec 1 14:36:22 2014 +0000
 
     added more maps
 
+CHANGELOG.txt
 README.txt
 getlocations.module
 js/getlocations.js
