@@ -566,7 +566,7 @@
               });
 
               // handler for zoom
-              google.maps.event.addListener(getlocations_pano[k], "zoom_changed", function() {
+              google.maps.event.addListener(Drupal.getlocations_pano[k], "zoom_changed", function() {
                 var pz = Drupal.getlocations_pano[k].getZoom();
                 $("#getlocations_sv_zoom_" + k).val(parseInt(pz));
               });

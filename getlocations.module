@@ -3747,7 +3747,7 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
   $baselayers = $getlocations_defaults['baselayers'];
   foreach ($baselayers AS $k => $v) {
     if (! isset($defaults['baselayers'][$k])) {
-      $defaults['baselayers'][$k] = $value;
+      $defaults['baselayers'][$k] = $v;
     }
   }
 
