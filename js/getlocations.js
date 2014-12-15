@@ -180,6 +180,7 @@
             global_settings.cmgr_maxZoom = (setting.markerclusterer_zoom == -1 ? null : parseInt(setting.markerclusterer_zoom));
             global_settings.cmgr_minClusterSize = (setting.markerclusterer_minsize == -1 ? null : parseInt(setting.markerclusterer_minsize));
             global_settings.cmgr_title = setting.markerclusterer_title;
+            global_settings.cmgr_imgpath = setting.markerclusterer_imgpath;
             global_settings.useclustermanager = true;
             global_settings.usemarkermanager = false;
           }
@@ -415,16 +416,20 @@
             });
           }
           else if (global_settings.useclustermanager) {
+            var cmgr_settings = {
+              gridSize: global_settings.cmgr_gridSize,
+              maxZoom: global_settings.cmgr_maxZoom,
+              styles: global_settings.cmgr_styles[global_settings.cmgr_style],
+              minimumClusterSize: global_settings.cmgr_minClusterSize,
+              title: global_settings.cmgr_title
+            };
+            if (global_settings.cmgr_imgpath) {
+              cmgr_settings.imagePath = global_settings.cmgr_imgpath + '/m';
+            }
             global_settings.cmgr = new MarkerClusterer(
               Drupal.getlocations_map[key],
               [],
-              {
-                gridSize: global_settings.cmgr_gridSize,
-                maxZoom: global_settings.cmgr_maxZoom,
-                styles: global_settings.cmgr_styles[global_settings.cmgr_style],
-                minimumClusterSize: global_settings.cmgr_minClusterSize,
-                title: global_settings.cmgr_title
-              }
+              cmgr_settings
             );
           }
 

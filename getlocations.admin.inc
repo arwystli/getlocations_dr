@@ -219,31 +219,8 @@ function getlocations_settings_form() {
     t('The Maximum zoom level at which markers will be visible.')
   );
 
-  $form['getlocations_default']['useclustermanager'] = getlocations_element_map_checkbox(
-    t('Use Cluster manager'),
-    $getlocations_defaults['useclustermanager'],
-    t('Use Cluster manager. Switching this off will use no manager.')
-  );
-
-  if (file_exists(GETLOCATIONS_PATH . '/getlocations.markercluster_override.inc')) {
-    module_load_include('inc', 'getlocations', 'getlocations.markercluster_override');
-  }
-  else {
-    module_load_include('inc', 'getlocations', 'getlocations.markercluster');
-  }
-  $form['getlocations_default']['markerclusterer_style'] = getlocations_element_markerclusterer_style($getlocations_defaults['markerclusterer_style']);
-  $form['getlocations_default']['markerclusterer_title'] = getlocations_element_map_tf(
-    t('Markerclusterer tooltip'),
-    $getlocations_defaults['markerclusterer_title'],
-    t('The text of a Markerclusterer tooltip'),
-    30,
-    64,
-    TRUE
-  );
-
-  $form['getlocations_default']['markerclusterer_zoom'] = getlocations_element_markerclusterer_zoom($getlocations_defaults['markerclusterer_zoom']);
-  $form['getlocations_default']['markerclusterer_size'] = getlocations_element_markerclusterer_size($getlocations_defaults['markerclusterer_size']);
-  $form['getlocations_default']['markerclusterer_minsize'] = getlocations_element_markerclusterer_minsize($getlocations_defaults['markerclusterer_minsize']);
+  // markerclusterer
+  $form['getlocations_default'] += getlocations_markercluster_form($getlocations_defaults);
 
   $form['getlocations_default']['pansetting'] = getlocations_element_map_pansetting($getlocations_defaults['pansetting']);
 

@@ -1110,6 +1110,7 @@ function getlocations_defaults($reset = FALSE) {
     'markerclusterer_size'          => -1,
     'markerclusterer_minsize'       => -1,
     'markerclusterer_title'         => t('Click here to see more'),
+    'markerclusterer_imgpath'       => base_path() . GETLOCATIONS_PATH . '/js/images',
     'pansetting'                    => 2,
     'draggable'                     => 1,
     'styles'                        => '',
@@ -2390,6 +2391,7 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
       'markerclusterer_size'      => $defaults['markerclusterer_size'],
       'markerclusterer_minsize'   => $defaults['markerclusterer_minsize'],
       'markerclusterer_title'     => $defaults['markerclusterer_title'],
+      'markerclusterer_imgpath'   => $defaults['markerclusterer_imgpath'],
       'pansetting'                => $defaults['pansetting'],
       'draggable'                 => $defaults['draggable'],
       'styles'                    => $defaults['styles'],
@@ -4751,6 +4753,44 @@ function getlocations_geocoder_form($defaults) {
   return $form;
 }
 
+function getlocations_markercluster_form($defaults) {
+
+  if (file_exists(GETLOCATIONS_PATH . '/getlocations.markercluster_override.inc')) {
+    module_load_include('inc', 'getlocations', 'getlocations.markercluster_override');
+  }
+  else {
+    module_load_include('inc', 'getlocations', 'getlocations.markercluster');
+  }
+
+  $form = array();
+
+  $form['useclustermanager'] = getlocations_element_map_checkbox(
+    t('Use Cluster manager'),
+    $defaults['useclustermanager'],
+    t('Use Cluster manager. Switching this off will use no manager.')
+  );
+  $form['markerclusterer_style'] = getlocations_element_markerclusterer_style($defaults['markerclusterer_style']);
+  $form['markerclusterer_imgpath'] = getlocations_element_map_tf(
+    t('Markerclusterer image path'),
+    $defaults['markerclusterer_imgpath'],
+    '',
+    40,
+    255
+  );
+  $form['markerclusterer_title'] = getlocations_element_map_tf(
+    t('Markerclusterer tooltip'),
+    $defaults['markerclusterer_title'],
+    t('The text of a Markerclusterer tooltip'),
+    30,
+    64,
+    TRUE
+  );
+  $form['markerclusterer_zoom'] = getlocations_element_markerclusterer_zoom($defaults['markerclusterer_zoom']);
+  $form['markerclusterer_size'] = getlocations_element_markerclusterer_size($defaults['markerclusterer_size']);
+  $form['markerclusterer_minsize'] = getlocations_element_markerclusterer_minsize($defaults['markerclusterer_minsize']);
+
+  return $form;
+}
 
 /**
  * Function
