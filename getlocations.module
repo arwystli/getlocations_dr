@@ -3882,6 +3882,9 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
         '#description' => t('Enable geolocation for mobile devices only.'),
       );
     }
+    else {
+      $form['geolocation_mobile_check'] = array('#type' => 'value', '#value' => 0);
+    }
 
     $form['sv_show'] = getlocations_element_map_checkbox(
       t('Show streetview Pegman'),
