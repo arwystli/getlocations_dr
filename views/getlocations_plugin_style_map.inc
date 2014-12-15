@@ -366,22 +366,9 @@ class getlocations_plugin_style_map extends views_plugin_style {
     // markermanager option
     if ($this->options['markermanagertype'] == 1) {
       $form['useclustermanager'] = array('#type' => 'hidden', '#value' => 0);
-
-      $form['usemarkermanager'] = getlocations_element_map_checkbox(
-        t('Use Marker manager for this map'),
-        $this->options['usemarkermanager']
-      );
+      // markermanager
+      $form += getlocations_markermanager_form($this->options);
       $form['usemarkermanager']['#suffix'] = '<div id="wrap-usemarkermanager">';
-      $form['minzoom'] = getlocations_element_map_zoom(
-        t('Minimum Zoom'),
-        $this->options['minzoom'],
-        t('The Minimum zoom level at which markers will be visible.')
-      );
-      $form['maxzoom'] = getlocations_element_map_zoom(
-        t('Maximum Zoom'),
-        $this->options['maxzoom'],
-        t('The Maximum zoom level at which markers will be visible.')
-      );
       $form['maxzoom']['#suffix'] = '</div>';
     }
     elseif ($this->options['markermanagertype'] == 2)  {

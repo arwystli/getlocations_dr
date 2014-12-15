@@ -199,25 +199,11 @@ function getlocations_settings_form() {
     t('The Default zoom level for a single marker.')
   );
 
-  // marker manager
+  // marker managers
   $form['getlocations_default']['markermanagertype'] = getlocations_element_markermanagertype($getlocations_defaults['markermanagertype']);
-  $form['getlocations_default']['usemarkermanager'] = getlocations_element_map_checkbox(
-    t('Use Marker manager'),
-    $getlocations_defaults['usemarkermanager'],
-    t('Use Marker manager. Switching this off will use no manager.')
-  );
 
-  $form['getlocations_default']['minzoom'] = getlocations_element_map_zoom(
-    t('Minimum Zoom'),
-    $getlocations_defaults['minzoom'],
-    t('The Minimum zoom level at which markers will be visible.')
-  );
-
-  $form['getlocations_default']['maxzoom'] = getlocations_element_map_zoom(
-    t('Maximum Zoom'),
-    $getlocations_defaults['maxzoom'],
-    t('The Maximum zoom level at which markers will be visible.')
-  );
+  // markermanager
+  $form['getlocations_default'] += getlocations_markermanager_form($getlocations_defaults);
 
   // markerclusterer
   $form['getlocations_default'] += getlocations_markercluster_form($getlocations_defaults);

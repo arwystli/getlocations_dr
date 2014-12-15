@@ -436,22 +436,9 @@ function _getlocations_search_settings_form($defaults, $which = 'admin') {
 
   // marker manager
   $form[$varname]['markermanagertype'] = getlocations_element_markermanagertype($defaults['markermanagertype']);
-  $form[$varname]['usemarkermanager'] = getlocations_element_map_checkbox(
-    t('Use Marker manager'),
-    $defaults['usemarkermanager'],
-    t('Use Marker manager. Switching this off will use no manager.')
-  );
-  $form[$varname]['minzoom'] = getlocations_element_map_zoom(
-    t('Minimum Zoom'),
-    $defaults['minzoom'],
-    t('The Minimum zoom level at which markers will be visible.')
-  );
 
-  $form[$varname]['maxzoom'] = getlocations_element_map_zoom(
-    t('Maximum Zoom'),
-    $defaults['maxzoom'],
-    t('The Maximum zoom level at which markers will be visible.')
-  );
+  // markermanager
+  $form[$varname] += getlocations_markermanager_form($defaults);
 
   // markerclusterer
   $form[$varname] += getlocations_markercluster_form($defaults);

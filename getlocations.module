@@ -4753,6 +4753,28 @@ function getlocations_geocoder_form($defaults) {
   return $form;
 }
 
+function getlocations_markermanager_form($defaults) {
+  $form = array();
+  $form['usemarkermanager'] = getlocations_element_map_checkbox(
+    t('Use Marker manager'),
+    $defaults['usemarkermanager'],
+    t('Use Marker manager. Switching this off will use no manager.')
+  );
+
+  $form['minzoom'] = getlocations_element_map_zoom(
+    t('Minimum Zoom'),
+    $defaults['minzoom'],
+    t('The Minimum zoom level at which markers will be visible.')
+  );
+
+  $form['maxzoom'] = getlocations_element_map_zoom(
+    t('Maximum Zoom'),
+    $defaults['maxzoom'],
+    t('The Maximum zoom level at which markers will be visible.')
+  );
+  return $form;
+}
+
 function getlocations_markercluster_form($defaults) {
 
   if (file_exists(GETLOCATIONS_PATH . '/getlocations.markercluster_override.inc')) {
