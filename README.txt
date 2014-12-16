@@ -224,7 +224,7 @@ eg
 theme_getlocations_adinfo() becomes MYTHEME_getlocations_adinfo() where MYTHEME is the name of your theme.
 You can edit it there to suit your needs.
 
-These functions can be found in the file getlocations.theme.inc
+These functions can be found in the file getlocations.module
 
 Theming the content of InfoWindow or InfoBubble.
 This is done with function theme_getlocations_adinfo()
@@ -296,3 +296,11 @@ If you want the library installed somewhere other than sites/all/libraries then 
 Other map tiles.
 Getlocations supports the use of other sources of maps besides Google, you can show maps from OpenStreetMap, OpenCycleMap, Stamen and Esri.
 Developers can add their own maps using hook_getlocations_map_providers(), see the function getlocations_getlocations_map_providers() for examples.
+
+The Google Places Search service can be enabled for any map. It can be configured to provide an Autocomplete textfield or a dropdown.
+If you want to preselect a particular item in the dropdown you can add something like this to your theme's javascript:
+
+var key = 'key_1';
+var tp = 'grocery_or_supermarket';
+$("#search_places_select_" + key).val(tp);
+
