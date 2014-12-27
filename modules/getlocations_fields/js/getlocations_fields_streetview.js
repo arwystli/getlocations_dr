@@ -1,5 +1,6 @@
 /**
- * @file getlocations_fields_streetview.js
+ * @file
+ * getlocations_fields_streetview.js
  * @author Bob Hutchinson http://drupal.org/user/52366
  * @copyright GNU GPL
  *

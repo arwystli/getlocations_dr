@@ -1,6 +1,7 @@
 
 /**
- * @file getlocations_geo.js
+ * @file
+ * getlocations_geo.js
  * @author Bob Hutchinson http://drupal.org/user/52366
  * @copyright GNU GPL
  *

@@ -1,6 +1,7 @@
 
 /**
- * @file getlocations_search.js
+ * @file
+ * getlocations_search.js
  * @author Bob Hutchinson http://drupal.org/user/52366
  * @copyright GNU GPL
  *

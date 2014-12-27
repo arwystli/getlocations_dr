@@ -1,6 +1,7 @@
 
 /**
- * @file getlocations_leaflet_polygons.js
+ * @file
+ * getlocations_leaflet_polygons.js
  * @author Bob Hutchinson http://drupal.org/user/52366
  * @copyright GNU GPL
  *

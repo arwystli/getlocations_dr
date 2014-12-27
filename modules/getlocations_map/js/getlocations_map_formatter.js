@@ -1,6 +1,7 @@
 
 /**
- * @file getlocations_map_formatter.js
+ * @file
+ * getlocations_map_formatter.js
  * @author Bob Hutchinson http://drupal.org/user/52366
  * @copyright GNU GPL
  *

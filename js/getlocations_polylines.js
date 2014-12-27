@@ -1,6 +1,7 @@
 
 /**
- * @file getlocations_polylines.js
+ * @file
+ * getlocations_polylines.js
  * @author Bob Hutchinson http://drupal.org/user/52366
  * @copyright GNU GPL
  *

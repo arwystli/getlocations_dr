@@ -1,6 +1,7 @@
 
 /**
- * @file getlocations_rectangles.js
+ * @file
+ * getlocations_rectangles.js
  * @author Bob Hutchinson http://drupal.org/user/52366
  * @copyright GNU GPL
  *

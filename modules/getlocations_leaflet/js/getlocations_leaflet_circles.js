@@ -1,6 +1,7 @@
 
 /**
- * @file getlocations_leaflet_circles.js
+ * @file
+ * getlocations_leaflet_circles.js
  * @author Bob Hutchinson http://drupal.org/user/52366
  * @copyright GNU GPL
  *

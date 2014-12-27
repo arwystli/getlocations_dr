@@ -1,6 +1,7 @@
 
 /**
- * @file getlocations_colorbox.js
+ * @file
+ * getlocations_colorbox.js
  * @author Bob Hutchinson http://drupal.org/user/52366
  * @copyright GNU GPL
  *

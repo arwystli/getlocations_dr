@@ -1,6 +1,7 @@
 
 /**
- * @file getlocations_leaflet.js
+ * @file
+ * getlocations_leaflet.js
  * @author Bob Hutchinson http://drupal.org/user/52366
  * @copyright GNU GPL
  *
@@ -453,7 +454,7 @@
               });
               Drupal.getlocations_leaflet_map[key].on("locationerror", function(error) {
                 getlocations_leaflet_deactive_throbber(key);
-                alert('Error: location failed. ' + error.message);
+                alert(Drupal.t('Error: location failed.') + ' ' + error.message);
               });
 
               Drupal.getlocations_leaflet_map[key].locate({
