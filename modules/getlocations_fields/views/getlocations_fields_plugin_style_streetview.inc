@@ -1,7 +1,8 @@
 <?php
 
 /**
- * @file getlocations_fields_plugin_style_streetview.inc
+ * @file
+ *  getlocations_fields_plugin_style_streetview.inc
  * @author Bob Hutchinson http://drupal.org/user/52366
  * @copyright GNU GPL
  *

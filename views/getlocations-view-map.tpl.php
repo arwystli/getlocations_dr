@@ -1,6 +1,7 @@
 <?php
 /**
- * @file getlocations-view-map.tpl.php
+ * @file
+ * getlocations-view-map.tpl.php
  * @author Bob Hutchinson http://drupal.org/user/52366
  * @copyright GNU GPL
  *

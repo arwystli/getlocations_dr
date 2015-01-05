@@ -1,9 +1,137 @@
-commit db53c98
+commit f7ae31e
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Mon Jan 5 09:23:56 2015 +0000
+
+    tidyup
+
+modules/getlocations_fields/views/getlocations-fields-view-streetview.tpl.php
+modules/getlocations_fields/views/getlocations_fields.views.inc
+modules/getlocations_fields/views/getlocations_fields.views_default.inc
+modules/getlocations_fields/views/getlocations_fields_plugin_style_streetview.inc
+modules/getlocations_leaflet/getlocations_leaflet.module
+views/getlocations-view-map.tpl.php
+views/getlocations.views.inc
+views/getlocations.views_default.inc
+views/getlocations_plugin_style_map.inc
+
+commit cbfe1c7
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sat Dec 27 18:54:37 2014 +0000
+
+    run through coder review
+
+js/getlocations.js
+js/getlocations_admin.js
+js/getlocations_box.js
+js/getlocations_categories.js
+js/getlocations_circles.js
+js/getlocations_colorbox.js
+js/getlocations_geo.js
+js/getlocations_geojson.js
+js/getlocations_marker_box.js
+js/getlocations_polygons.js
+js/getlocations_polylines.js
+js/getlocations_preview.js
+js/getlocations_rectangles.js
+js/getlocations_search_places.js
+js/getlocations_views.js
+js/icons.js
+modules/getlocations_blocks/js/getlocations_blocks.js
+modules/getlocations_blocks/js/getlocations_blocks.min.js
+modules/getlocations_blocks/js/getlocations_blocks_admin.js
+modules/getlocations_blocks/js/getlocations_blocks_admin.min.js
+modules/getlocations_fields/js/getlocations_fields.js
+modules/getlocations_fields/js/getlocations_fields_admin.js
+modules/getlocations_fields/js/getlocations_fields_formatter.js
+modules/getlocations_fields/js/getlocations_fields_preview.js
+modules/getlocations_fields/js/getlocations_fields_search_views.js
+modules/getlocations_fields/js/getlocations_fields_streetview.js
+modules/getlocations_fields/js/getlocations_fields_views.js
+modules/getlocations_gps/js/getlocations_gps.js
+modules/getlocations_leaflet/js/getlocations_leaflet.js
+modules/getlocations_leaflet/js/getlocations_leaflet.min.js
+modules/getlocations_leaflet/js/getlocations_leaflet_circles.js
+modules/getlocations_leaflet/js/getlocations_leaflet_formatter.js
+modules/getlocations_leaflet/js/getlocations_leaflet_geojson.js
+modules/getlocations_leaflet/js/getlocations_leaflet_polygons.js
+modules/getlocations_leaflet/js/getlocations_leaflet_polylines.js
+modules/getlocations_leaflet/js/getlocations_leaflet_preview.js
+modules/getlocations_leaflet/js/getlocations_leaflet_providers.js
+modules/getlocations_leaflet/js/getlocations_leaflet_rectangles.js
+modules/getlocations_map/js/getlocations_map_formatter.js
+modules/getlocations_search/js/getlocations_search.js
+modules/getlocations_search/js/getlocations_search_admin.js
+
+commit 427d64c
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Tue Dec 16 12:22:49 2014 +0000
+
+    updated README
+
+README.txt
+
+commit 52ba350
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Mon Dec 15 18:01:26 2014 +0000
+
+    moved some form elements into getlocations_markermanager_form
+
+getlocations.admin.inc
+getlocations.module
+js/markerclusterer.js
+js/markerclusterer_packed.js
+modules/getlocations_search/getlocations_search.admin.inc
+views/getlocations_plugin_style_map.inc
+
+commit f380171
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Mon Dec 15 15:13:44 2014 +0000
+
+    moved some form elements into getlocations_markercluster_form
+
+getlocations.admin.inc
+getlocations.markercluster.inc
+getlocations.module
+js/getlocations.js
+js/getlocations.min.js
+modules/getlocations_search/getlocations_search.admin.inc
+modules/getlocations_search/getlocations_search.module
+views/getlocations_plugin_style_map.inc
+
+commit be1cc81
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Mon Dec 15 12:23:37 2014 +0000
+
+    fixed geolocation_mobile_check notice
+
+getlocations.module
+
+commit e830e83
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sun Dec 14 17:49:03 2014 +0000
+
+    fixed issue #2393069
+
+js/markerclusterer.js
+js/markerclusterer_packed.js
+
+commit abda72e
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Fri Dec 12 21:35:13 2014 +0000
+
+    bugfixes
+
+getlocations.module
+modules/getlocations_fields/js/getlocations_fields.js
+modules/getlocations_fields/js/getlocations_fields.min.js
+
+commit 8201646
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Fri Dec 12 15:02:46 2014 +0000
 
     fixed js bug
 
+CHANGELOG.txt
 modules/getlocations_search/js/getlocations_search.js
 modules/getlocations_search/js/getlocations_search.min.js
 
