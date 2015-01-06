@@ -689,7 +689,8 @@
           else if (m == google.maps.MapTypeId.SATELLITE) { maptype = 'Satellite'; }
           else if (m == google.maps.MapTypeId.HYBRID)    { maptype = 'Hybrid'; }
           else if (m == google.maps.MapTypeId.TERRAIN)   { maptype = 'Physical'; }
-          else if (m == "OSM")                           { maptype = 'OpenStreetMap'; }
+          else if (m == 'OpenStreetMap') { maptype = 'OSM'; }
+          else { maptype = m; }
           return maptype;
         }
         function gettypemap(maptype) {
@@ -699,9 +700,10 @@
           else if (maptype == 'Hybrid')        { m = google.maps.MapTypeId.HYBRID; }
           else if (maptype == 'Physical')      { m = google.maps.MapTypeId.TERRAIN; }
           else if (maptype == 'OpenStreetMap') { m = 'OSM'; }
+          else { m = maptype; }
           return m;
         }
-
+        
         // Clear form
         function clearForm(k) {
           $("#" + adrsfield + k).val("");
