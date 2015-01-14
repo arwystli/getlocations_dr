@@ -10,6 +10,7 @@
   margin-left: 4px;
   background-image: url('images/throbber.gif');
   background-position: 100% 2px;
+  background-repeat: repeat-y;
 }
 .getlocations_gps_throbber_active {
   background-position: 100% -18px;
