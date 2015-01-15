@@ -53,7 +53,7 @@
                 if (gps_bubble) {
                   customContent = '<div class="location vcard">';
                   customContent += '<h4>' + gps_marker_title + '</h4>';
-                  customContent += '<div class="adr">' + result['formatted_address'];
+                  customContent += '<div class="adr">' + result['formatted_address'].replace(/[,]/g, ',<br />');
                   if (results[0].geometry.location_type) {
                     customContent += '<br />' + Drupal.t('Accuracy') + ' : ' + accuracies[results[0].geometry.location_type];
                   }
@@ -109,12 +109,10 @@
     }
     // functions
     function deactive_throbber(k) {
-      $("#getlocations_gps_throbber_" + k).removeClass('getlocations_gps_throbber_active');
-      $("#getlocations_gps_throbber_" + k).addClass('getlocations_gps_throbber_inactive');
+      $("#getlocations_gps_throbber_" + k).removeClass('getlocations_gps_throbber_active').addClass('getlocations_gps_throbber_inactive');
     }
     function active_throbber(k) {
-      $("#getlocations_gps_throbber_" + k).removeClass('getlocations_gps_throbber_inactive');
-      $("#getlocations_gps_throbber_" + k).addClass('getlocations_gps_throbber_active');
+      $("#getlocations_gps_throbber_" + k).removeClass('getlocations_gps_throbber_inactive').addClass('getlocations_gps_throbber_active');
     }
     // end functions
   };

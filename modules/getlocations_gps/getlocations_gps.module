@@ -1,7 +1,8 @@
 <?php
 
 /**
- * @file getlocations_gps.module
+ * @file
+ * getlocations_gps.module
  * @author Bob Hutchinson http://drupal.org/user/52366
  * @copyright GNU GPL
  *
@@ -23,15 +24,6 @@ function getlocations_gps_help($path, $arg) {
 }
 
 /**
- * Implements hook_init().
- */
-#function getlocations_gps_init() {
-  #drupal_add_js(GETLOCATIONS_GPS_PATH . '/js/getlocations_gps.js', array('weight' => 50));
-  #drupal_add_css(GETLOCATIONS_GPS_PATH . '/getlocations_gps.css');
-#}
-
-
-/**
  * Implements hook_permission().
  */
 function getlocations_gps_permission() {
@@ -42,7 +34,6 @@ function getlocations_gps_permission() {
   );
   return $perms;
 }
-
 
 /**
  * Implements hook_menu().
@@ -134,13 +125,6 @@ function getlocations_gps_settings_form() {
     128,
     t('Where the getlocations_gps javascript file is located.')
   );
-  #$form['getlocations_gps_paths']['getlocations_gps_admin_path'] = getlocations_element_path(
-  #  t('Path to getlocations_gps admin javascript file'),
-  #  $getlocations_gps_paths['getlocations_gps_admin_path'],
-  #  70,
-  #  128,
-  #  t('Where the getlocations_gps admin javascript file is located.')
-  #);
 
   $form['getlocations_gps_paths']['reset'] = getlocations_element_dd(
     t('Reset'),
@@ -176,13 +160,11 @@ function getlocations_gps_paths_get($reset = FALSE, $min = FALSE) {
   if ($min) {
     $defaults = array(
       'getlocations_gps_path' => GETLOCATIONS_SEARCH_PATH . '/js/getlocations_gps.min.js',
-      #'getlocations_gps_admin_path' => GETLOCATIONS_SEARCH_PATH . '/js/getlocations_gps_admin.min.js',
     );
   }
   else {
     $defaults = array(
       'getlocations_gps_path' => GETLOCATIONS_SEARCH_PATH . '/js/getlocations_gps.js',
-      #'getlocations_gps_admin_path' => GETLOCATIONS_SEARCH_PATH . '/js/getlocations_gps_admin.js',
     );
   }
   if ($reset || $min) {
