@@ -22,10 +22,12 @@ function getlocations_leaflet_requirements($phase) {
   // Ensure js library is installed. Show number of maps avaialble.
   if (file_exists(libraries_get_path('leaflet') . '/leaflet.js')) {
     $maps = getlocations_leaflet_map_get_info();
+    $version = getlocations_leaflet_get_version();
     $requirements['leaflet'] = array(
       'title' => t('Leaflet library'),
-      'value' => t('Installed. @maps available.', array(
-        '@maps' => format_plural(count($maps['Getlocations OSM']['map_layers']),'One map', '@count maps'))),
+      'value' => t('@v Installed. @maps available.', array(
+        '@v' => ($version ? 'Version ' . $version : ''),
+        '@maps' => format_plural(count($maps['Getlocations OSM']['map_layers']), 'One map', '@count maps'))),
       'severity' => REQUIREMENT_OK,
     );
   }

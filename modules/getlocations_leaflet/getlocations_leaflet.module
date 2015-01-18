@@ -1861,6 +1861,27 @@ function getlocations_leaflet_getlocations_leaflet_map_info() {
 }
 
 /**
+ * Fetch leaflet version.
+ *
+ * @return
+ *   Returns version number
+ */
+function getlocations_leaflet_get_version() {
+  $version = '';
+  $leafletjs = libraries_get_path('leaflet') . '/leaflet.js';
+  if (file_exists($leafletjs)) {
+    $contents = file_get_contents($leafletjs);
+    $regex = '/version="([0-9.]+)",/';
+    if (preg_match($regex, $contents, $matches)) {
+      if (isset($matches[1])) {
+        $version = $matches[1];
+      }
+    }
+  }
+  return $version;
+}
+
+/**
  * Implements hook_field_settings_form().
  * Add settings to a field settings form.
  *
