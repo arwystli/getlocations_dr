@@ -1,7 +1,8 @@
 <?php
 
 /**
- * @file getlocations_leaflet.install
+ * @file
+ * getlocations_leaflet.install
  * @author Bob Hutchinson http://drupal.org/user/52366
  * @copyright GNU GPL
  *
@@ -22,7 +23,7 @@ function getlocations_leaflet_requirements($phase) {
   // Ensure js library is installed. Show number of maps avaialble.
   if (file_exists(libraries_get_path('leaflet') . '/leaflet.js')) {
     $maps = getlocations_leaflet_map_get_info();
-    $version = getlocations_leaflet_get_version();
+    $version = getlocations_leaflet_library_version();
     $requirements['leaflet'] = array(
       'title' => t('Leaflet library'),
       'value' => t('@v Installed. @maps available.', array(
