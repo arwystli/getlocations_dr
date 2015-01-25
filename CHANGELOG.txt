@@ -1,9 +1,84 @@
-commit f7ae31e
+commit 16d83ff
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sun Jan 25 16:53:43 2015 +0000
+
+    added support for field group multipage
+
+modules/getlocations_fields/js/getlocations_fields.js
+modules/getlocations_fields/js/getlocations_fields.min.js
+
+commit f7af99b
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Tue Jan 20 18:43:26 2015 +0000
+
+    getlocations_leaflet_get vbersion removed and getlocations_leaflet_library_version updated
+
+modules/getlocations_leaflet/getlocations_leaflet.install
+modules/getlocations_leaflet/getlocations_leaflet.module
+
+commit c380521
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sun Jan 18 13:29:09 2015 +0000
+
+    getlocations_leaflet_get_version added
+
+modules/getlocations_leaflet/getlocations_leaflet.install
+modules/getlocations_leaflet/getlocations_leaflet.module
+
+commit 198a756
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Thu Jan 15 14:51:44 2015 +0000
+
+    paths cleanup
+
+js/getlocations_admin.js
+js/getlocations_admin.min.js
+js/getlocations_views.js
+js/getlocations_views.min.js
+modules/getlocations_fields/js/getlocations_fields_formatter.js
+modules/getlocations_fields/js/getlocations_fields_formatter.min.js
+modules/getlocations_gps/getlocations_gps.install
+modules/getlocations_gps/getlocations_gps.module
+modules/getlocations_gps/js/getlocations_gps.js
+modules/getlocations_gps/js/getlocations_gps.min.js
+modules/getlocations_gps/js/getlocations_gps_admin.js
+modules/getlocations_gps/js/getlocations_gps_admin.min.js
+
+commit 5be63b6
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Thu Jan 15 09:27:43 2015 +0000
+
+    use default throbber
+
+modules/getlocations_gps/getlocations_gps.css
+modules/getlocations_gps/images/throbber.gif
+
+commit b874748
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Jan 14 11:25:48 2015 +0000
+
+    reworked getlocations_gps.js
+
+modules/getlocations_gps/getlocations_gps.css
+modules/getlocations_gps/js/getlocations_gps.js
+modules/getlocations_gps/js/getlocations_gps.min.js
+
+commit 404b8d2
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Tue Jan 6 13:39:05 2015 +0000
+
+    fixed bug in map selector on input map
+
+modules/getlocations_fields/js/getlocations_fields.js
+modules/getlocations_fields/js/getlocations_fields.min.js
+
+commit 521c438
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Mon Jan 5 09:23:56 2015 +0000
 
     tidyup
 
+CHANGELOG.txt
 modules/getlocations_fields/views/getlocations-fields-view-streetview.tpl.php
 modules/getlocations_fields/views/getlocations_fields.views.inc
 modules/getlocations_fields/views/getlocations_fields.views_default.inc

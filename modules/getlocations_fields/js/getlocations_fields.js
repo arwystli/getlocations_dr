@@ -218,6 +218,14 @@
             }
           }
 
+          // field group multipage support
+          if ($(".multipage-link-next,.multipage-link-previous").is('input')) {
+            $(".multipage-link-next,.multipage-link-previous").one('click', function(event) {
+              Drupal.getlocations.redoMap(key);
+              Drupal.getlocations_inputmap[key].setCenter(point[key]);
+           });
+          }
+
         } // end is there really a map?
 
         // functions
