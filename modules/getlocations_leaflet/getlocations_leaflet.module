@@ -680,9 +680,6 @@ function getlocations_leaflet_field_formatter_view($entity_type, $entity, $field
       $map_settings['datanum'] = $ct;
       $map_settings['latlons'] = $latlons;
 
-      drupal_add_library('getlocations_leaflet', 'getlocations-leaflet');
-
-      #getlocations_leaflet_js_settings_do($map_settings, $mapid);
       $element[$delta] = array(
         '#theme' => 'getlocations_leaflet_map',
         '#width' => $default['width'],
@@ -3675,8 +3672,6 @@ function getlocations_leaflet_entity_type_map($type, $entity_id) {
     $map_settings['datanum'] = $ct;
     $map_settings['latlons'] = $latlons;
 
-    drupal_add_library('getlocations_leaflet', 'getlocations-leaflet');
-
     $output = theme('getlocations_leaflet_map', array(
       'width' => $settings['width'],
       'height' => $settings['height'],
@@ -4468,6 +4463,8 @@ function theme_getlocations_leaflet_link($variables) {
  *
  */
 function theme_getlocations_leaflet_map($variables) {
+
+  drupal_add_library('getlocations_leaflet', 'getlocations-leaflet');
   drupal_add_css(GETLOCATIONS_LEAFLET_PATH . '/getlocations_leaflet.css');
   $width = $variables['width'];
   $height = $variables['height'];
@@ -4644,7 +4641,6 @@ function theme_getlocations_leaflet_settings_form($variables) {
     $map_settings['latlons'] = $latlons;
     $map_settings['extcontrol'] = 'preview_map';
 
-    drupal_add_library('getlocations_leaflet', 'getlocations-leaflet');
     $preview_map = theme('getlocations_leaflet_map', array(
         'width' => $getlocations_leaflet_defaults['width'],
         'height' => $getlocations_leaflet_defaults['height'],

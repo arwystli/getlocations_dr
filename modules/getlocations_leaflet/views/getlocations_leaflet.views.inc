@@ -359,8 +359,6 @@ function template_preprocess_getlocations_leaflet_view_map(&$variables) {
   $map_settings['map_settings']['categories'] = $cats;
   $map_settings['map_settings']['category_showhide_buttons'] = $options['category_showhide_buttons'];
 
-  drupal_add_library('getlocations_leaflet', 'getlocations-leaflet');
-
   $variables['map'] = theme('getlocations_leaflet_map', array(
     'width' => $options['width'],
     'height' => $options['height'],
