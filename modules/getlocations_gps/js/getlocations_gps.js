@@ -12,6 +12,8 @@
   Drupal.getlocations_gps = {};
   Drupal.getlocations_gps.dolocation = function(key, settings) {
     active_throbber(key);
+    $("#getlocations_gps_lat_" + key).html();
+    $("#getlocations_gps_lon_" + key).html();
     var gps_marker = Drupal.getlocations.getIcon(settings.getlocations_gps[key].gps_marker);
     var gps_marker_title = settings.getlocations_gps[key].gps_marker_title;
     var gps_bubble = settings.getlocations_gps[key].gps_bubble;
@@ -69,6 +71,7 @@
                   Drupal.getlocations_map[key].setCenter(ll);
                 }
                 deactive_throbber(key);
+                gps_in_dom(key, result['lat'], result['lon']);
               }
               else {
                 deactive_throbber(key);
@@ -91,6 +94,7 @@
               Drupal.getlocations_map[key].setCenter(p);
             }
             deactive_throbber(key);
+            gps_in_dom(key, result['lat'], result['lon']);
           }
         },
         function(error) {
@@ -107,6 +111,7 @@
       msg = Drupal.t('Sorry, no browser navigator available.');
       alert(msg);
     }
+
     // functions
     function deactive_throbber(k) {
       $("#getlocations_gps_throbber_" + k).removeClass('getlocations_gps_throbber_active').addClass('getlocations_gps_throbber_inactive');
@@ -114,7 +119,12 @@
     function active_throbber(k) {
       $("#getlocations_gps_throbber_" + k).removeClass('getlocations_gps_throbber_inactive').addClass('getlocations_gps_throbber_active');
     }
+    function gps_in_dom(k, lat, lon) {
+      $("#getlocations_gps_lat_" + k).html(lat);
+      $("#getlocations_gps_lon_" + k).html(lon);
+    }
     // end functions
+
   };
 
   Drupal.behaviors.getlocations_gps = {
@@ -134,4 +144,3 @@
     } // end attach
   }; // end behaviors
 }(jQuery));
-

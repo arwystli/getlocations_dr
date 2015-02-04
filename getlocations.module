@@ -6798,7 +6798,11 @@ function theme_getlocations_show($variables) {
   // getlocations_gps
   $geolocation_mobile_check = ($defaults['geolocation_mobile_check'] ? FALSE : TRUE);
   if (getlocations_is_mobile($geolocation_mobile_check) && module_exists('getlocations_gps') && isset($defaults['gps_button']) && $defaults['gps_button']) {
-    $buttons[] = '<input type="button" value="' . $defaults['gps_button_label'] . '" id="getlocations_gps_show_' . $mapid . '" class="form-submit"  /><div class="getlocations_gps_throbber getlocations_gps_throbber_inactive" id="getlocations_gps_throbber_' . $mapid . '">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
+    $gpsbtn = '<input type="button" value="' . $defaults['gps_button_label'] . '" id="getlocations_gps_show_' . $mapid . '" class="form-submit"  />';
+    $gpsbtn .= '<div class="getlocations_gps_throbber getlocations_gps_throbber_inactive" id="getlocations_gps_throbber_' . $mapid . '">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
+    $gpsbtn .= '<div class="js-hide" id="getlocations_gps_lat_' . $mapid . '"></div>';
+    $gpsbtn .= '<div class="js-hide" id="getlocations_gps_lon_' . $mapid . '"></div>';
+    $buttons[] = $gpsbtn;
   }
 
   if (count($buttons)) {
