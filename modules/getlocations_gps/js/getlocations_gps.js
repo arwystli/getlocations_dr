@@ -32,6 +32,7 @@
     result['formatted_address'] = '';
     gs.markeraction = 0;
     gs.useLink = false;
+    gs.useCustomContent = false;
     Drupal.getlocations_gps.marker = Drupal.getlocations_gps.marker || [];
     if (Drupal.getlocations_gps.marker[key] !== undefined) {
       Drupal.getlocations_gps.marker[key].setMap();
@@ -52,6 +53,7 @@
                 result['lat'] = results[0].geometry.location.lat();
                 result['lon'] = results[0].geometry.location.lng();
                 var customContent = '';
+
                 if (gps_bubble) {
                   customContent = '<div class="location vcard">';
                   customContent += '<h4>' + gps_marker_title + '</h4>';
@@ -62,11 +64,12 @@
                   customContent += '</div></div>';
                   gs.useCustomContent = true;
                   gs.useInfoBubble = (Drupal.settings.getlocations[key].markeraction == 2 ? true : false);
-                  gs.markeraction = Drupal.settings.getlocations[key].markeraction;
+                  gs.markeraction = (Drupal.settings.getlocations[key].markeraction == 2 ? 2 : 1);
                 }
+
                 var ll = new google.maps.LatLng(parseFloat(result['lat']), parseFloat(result['lon']));
                 Drupal.getlocations_gps.marker[key] = Drupal.getlocations.makeMarker(Drupal.getlocations_map[key], gs, result['lat'], result['lon'], 0, gps_marker_title, '', customContent, '', key);
-                Drupal.getlocations_gps.marker[key].setVisible(true);
+                //Drupal.getlocations_gps.marker[key].setVisible(true);
                 if (gps_center) {
                   Drupal.getlocations_map[key].setCenter(ll);
                 }
@@ -88,7 +91,7 @@
             }
             else {
               Drupal.getlocations_gps.marker[key] = Drupal.getlocations.makeMarker(Drupal.getlocations_map[key], gs, result['lat'], result['lon'], 0, gps_marker_title, '', '', '', key);
-              Drupal.getlocations_gps.marker[key].setVisible(true);
+              //Drupal.getlocations_gps.marker[key].setVisible(true);
             }
             if (gps_center) {
               Drupal.getlocations_map[key].setCenter(p);
@@ -135,6 +138,8 @@
         var key = elemID.replace(/^getlocations_map_canvas_/, '');
         // is there really a map?
         if ($("#getlocations_map_canvas_" + key).is('div') && settings.getlocations_gps[key] !== undefined ) {
+          var lladd = '<div class="js-hide" id="getlocations_gps_lat_' + key + '"></div><div class="js-hide" id="getlocations_gps_lon_' + key + '"></div>';
+          $("#getlocations_map_wrapper_" + key).append(lladd);
           // gps button
           $("#getlocations_gps_show_" + key).click( function() {
             Drupal.getlocations_gps.dolocation(key, settings);
