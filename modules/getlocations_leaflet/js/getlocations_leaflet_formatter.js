@@ -415,6 +415,21 @@
         }
       });
 
+      if ($("input[id$=mapquest-maps-use]").attr('checked')) {
+        $("#wrap-getlocations-mapquest-maps-use").show();
+      }
+      else {
+        $("#wrap-getlocations-mapquest-maps-use").hide();
+      }
+      $("input[id$=mapquest-maps-use]").change(function() {
+        if ($(this).attr('checked')) {
+          $("#wrap-getlocations-mapquest-maps-use").show();
+        }
+        else {
+          $("#wrap-getlocations-mapquest-maps-use").hide();
+        }
+      });
+
       // search marker
       if ($("#edit-getlocations-leaflet-defaults-views-search-marker-enable").is('input')) {
         if ($("#edit-getlocations-leaflet-defaults-views-search-marker-enable").attr('checked')) {

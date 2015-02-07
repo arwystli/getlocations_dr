@@ -1,9 +1,72 @@
-commit 16d83ff
+commit 2fd3656
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sat Feb 7 15:34:36 2015 +0000
+
+    added mapquest support
+
+getlocations.admin.inc
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/js/getlocations_leaflet.js
+modules/getlocations_leaflet/js/getlocations_leaflet.min.js
+modules/getlocations_leaflet/js/getlocations_leaflet_formatter.js
+modules/getlocations_leaflet/js/getlocations_leaflet_formatter.min.js
+
+commit 3705a99
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sat Feb 7 15:33:12 2015 +0000
+
+    debugged gps
+
+modules/getlocations_gps/getlocations_gps.module
+modules/getlocations_gps/js/getlocations_gps.js
+modules/getlocations_gps/js/getlocations_gps.min.js
+
+commit 757a6ab
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Feb 4 13:57:56 2015 +0000
+
+    added gps_in_dom
+
+getlocations.module
+modules/getlocations_gps/js/getlocations_gps.js
+modules/getlocations_gps/js/getlocations_gps.min.js
+
+commit b485d7b
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Mon Feb 2 17:25:30 2015 +0000
+
+    removed unused code
+
+modules/getlocations_fields/views/getlocations_fields.views.inc
+
+commit 24e9d91
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sat Jan 31 09:39:38 2015 +0000
+
+    moved drupal_add_library to theme
+
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/views/getlocations_leaflet.views.inc
+
+commit 2761d5f
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Tue Jan 27 15:46:12 2015 +0000
+
+    more field_group support
+
+getlocations.module
+js/getlocations.js
+js/getlocations.min.js
+modules/getlocations_fields/js/getlocations_fields.js
+modules/getlocations_fields/js/getlocations_fields.min.js
+
+commit 8f0ec6f
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Sun Jan 25 16:53:43 2015 +0000
 
     added support for field group multipage
 
+CHANGELOG.txt
 modules/getlocations_fields/js/getlocations_fields.js
 modules/getlocations_fields/js/getlocations_fields.min.js
 

@@ -1,7 +1,8 @@
 <?php
 
 /**
- * @file getlocations_leaflet.module
+ * @file
+ * getlocations_leaflet.module
  * @author Bob Hutchinson http://drupal.org/user/52366
  * @copyright GNU GPL
  *
@@ -362,6 +363,34 @@ function getlocations_leaflet_library() {
         'media' => 'all',
       ),
     );
+  }
+
+  // mapquest
+  $mapquest_lic =  variable_get('getlocations_mapquest_lic', array('key' => '', 'type' => 'l'));
+  if ($mapquest_lic['key']) {
+    global $is_https;
+    $scheme = ($is_https ? 'https' : 'http');
+    if ($mapquest_lic['type'] == 'o') {
+      $dom = 'open.mapquestapi.com/sdk/leaflet/v1.s';
+    }
+    else {
+      $dom = 'www.mapquestapi.com/sdk/leaflet/v1.s';
+    }
+
+    $url1 = $scheme . '://' . $dom . '/' . 'mq-map.js' . '?key=' . $mapquest_lic['key'];
+    $jsarr += array($url1 => array('type' => 'external', 'weight' => 20));
+    if ($getlocations_leaflet_plugins['mapquest_traffic_enable']) {
+      $url2 = $scheme . '://' . $dom . '/' . 'mq-traffic.js' . '?key=' . $mapquest_lic['key'];
+      $jsarr += array($url2 => array('type' => 'external', 'weight' => 21));
+    }
+    if ($getlocations_leaflet_plugins['mapquest_routing_enable']) {
+      $url2 = $scheme . '://' . $dom . '/' . 'mq-routing.js' . '?key=' . $mapquest_lic['key'];
+      $jsarr += array($url2 => array('type' => 'external', 'weight' => 22));
+    }
+    if ($getlocations_leaflet_plugins['mapquest_geocoder_enable']) {
+      $url2 = $scheme . '://' . $dom . '/' . 'mq-geocoding.js' . '?key=' . $mapquest_lic['key'];
+      $jsarr += array($url2 => array('type' => 'external', 'weight' => 23));
+    }
   }
 
   $jsarr += array(
@@ -1222,13 +1251,16 @@ function getlocations_leaflet_map_settings_do($map_settings, $defaults, $latlons
     $map_settings['map_settings']['minimap'] = FALSE;
   }
 
+  // mapquest
+  $mapquest_lic =  variable_get('getlocations_mapquest_lic', array('key' => '', 'type' => 'l'));
+  $map_settings['map_settings']['mapquest_key'] = $mapquest_lic['key'];
+
   if ($getlocations_leaflet_plugins['geocoder_enable']) {
     $map_settings['map_settings']['geocoder'] = ($defaults['geocoder'] ? TRUE : FALSE);
     $map_settings['map_settings']['geocoderposition'] = $defaults['geocoderposition'];
     $map_settings['map_settings']['geocodersrc'] = $defaults['geocodersrc'];
     $map_settings['map_settings']['geocodercollapsed'] = $defaults['geocodercollapsed'];
     $map_settings['map_settings']['geocoder_bing_key'] = $defaults['geocoder_bing_key'];
-    $map_settings['map_settings']['geocoder_mapquest_key'] = $defaults['geocoder_mapquest_key'];
   }
   else {
     $map_settings['map_settings']['geocoder'] = FALSE;
@@ -1292,6 +1324,24 @@ function getlocations_leaflet_map_settings_do($map_settings, $defaults, $latlons
   else {
     $map_settings['map_settings']['terminator']  = FALSE;
   }
+
+  // mapquest
+  $map_settings['map_settings']['mapquest_traffic_enable'] = ($getlocations_leaflet_plugins['mapquest_traffic_enable'] ? 1 : 0);
+  $map_settings['map_settings']['mapquest_traffic_flow'] = ($defaults['mapquest_traffic_flow'] ? 1 : 0);
+  $map_settings['map_settings']['mapquest_traffic_flow_on'] = ($defaults['mapquest_traffic_flow_on'] ? 1 : 0);
+  $map_settings['map_settings']['mapquest_traffic_incident'] = ($defaults['mapquest_traffic_incident'] ? 1 : 0);
+  $map_settings['map_settings']['mapquest_traffic_incident_on'] = ($defaults['mapquest_traffic_incident_on'] ? 1 : 0);
+
+  $map_settings['map_settings']['mapquest_routing_enable'] = ($getlocations_leaflet_plugins['mapquest_routing_enable'] ? 1 : 0);
+
+  $map_settings['map_settings']['mapquest_geocoder_enable'] = ($getlocations_leaflet_plugins['mapquest_geocoder_enable'] ? 1 : 0);
+
+  $map_settings['map_settings']['mapquest_maps_enable'] = ($getlocations_leaflet_plugins['mapquest_maps_enable'] ? 1 : 0);
+  $map_settings['map_settings']['mapquest_maps_default'] = $defaults['mapquest_maps_default'];
+  $map_settings['map_settings']['mapquest_maps_maplayer'] = $defaults['mapquest_maps_maplayer'];
+  $map_settings['map_settings']['mapquest_maps_satellitelayer'] = $defaults['mapquest_maps_satellitelayer'];
+  $map_settings['map_settings']['mapquest_maps_hybridlayer'] = $defaults['mapquest_maps_hybridlayer'];
+  $map_settings['map_settings']['mapquest_maps_use'] = $defaults['mapquest_maps_use'];
 
   if ($getlocations_leaflet_plugins['pancontrol_enable']) {
     $map_settings['map_settings']['leaflet_pancontrol'] = ($defaults['pancontrol'] ? TRUE : FALSE);
@@ -2060,7 +2110,7 @@ function getlocations_leaflet_defaults() {
   $newdefaults['geocodersrc']                 = 'n'; // n = nominatim, b = bing, m = mapquest
   $newdefaults['geocodercollapsed']           = 1;
   $newdefaults['geocoder_bing_key']           = ''; // required for bing
-  $newdefaults['geocoder_mapquest_key']       = ''; // required for mapquest
+#  $newdefaults['geocoder_mapquest_key']       = ''; // required for mapquest
 
   $newdefaults['awesome']                     = 0;
   $newdefaults['awesome_icon']                = 'fa-home';
@@ -2150,7 +2200,31 @@ function getlocations_leaflet_defaults() {
   $newdefaults['custom_content_enable'] = 0;
   $newdefaults['custom_content_source'] = '';
 
+  // mapquest
+  $newdefaults['mapquest_traffic_flow']        = 1;
+  $newdefaults['mapquest_traffic_flow_on']     = 0;
+  $newdefaults['mapquest_traffic_incident']    = 1;
+  $newdefaults['mapquest_traffic_incident_on'] = 0;
+
+  $newdefaults['mapquest_maps_default']        = 'm';
+  $newdefaults['mapquest_maps_maplayer']       = 1;
+  $newdefaults['mapquest_maps_satellitelayer'] = 1;
+  $newdefaults['mapquest_maps_hybridlayer']    = 1;
+  $newdefaults['mapquest_maps_use']            = 1;
+
   $settings = variable_get('getlocations_leaflet_defaults', '');
+
+  // mapquest
+  if (isset($settings['geocoder_mapquest_key'])) {
+    if (! empty($settings['geocoder_mapquest_key'])) {
+      $mapquest_lic = variable_get('getlocations_mapquest_lic', array('key' => '', 'type' => 'l'));
+      if (empty($mapquest_lic['key'])) {
+        $mapquest_lic['key'] = $settings['geocoder_mapquest_key'];
+        variable_set('getlocations_mapquest_lic', $mapquest_lic);
+      }
+    }
+    unset($settings['geocoder_mapquest_key']);
+  }
 
   $newdefaults['baselayers'] = (isset($settings['baselayers']) && ! empty($settings['baselayers']) ? $settings['baselayers'] : array('OpenStreetMap.Mapnik'));
 
@@ -2174,6 +2248,10 @@ function getlocations_leaflet_plugins() {
     'bouncemarker_enable'  => 0,
     'magnifyingglass_enable' => 0,
     'terminator_enable'    => 0,
+    'mapquest_traffic_enable' => 0,
+    'mapquest_routing_enable' => 0,
+    'mapquest_geocoder_enable' => 0,
+    'mapquest_maps_enable' => 0,
   );
   $settings = variable_get('getlocations_leaflet_plugins', $defaults);
   $return = getlocations_adjust_vars($defaults, $settings);
@@ -2263,6 +2341,87 @@ function getlocations_leaflet_display_options_form($defaults, $admin = FALSE) {
     t('Enable bounce At Zoom Limits.')
   );
 
+  // mapquest
+  if ($getlocations_leaflet_plugins['mapquest_maps_enable']) {
+
+    $form['mapquest_maps_use'] = getlocations_element_map_checkbox(
+      t('Enable Mapquest maps'),
+      $defaults['mapquest_maps_use']
+    );
+    $form['mapquest_maps_use']['#suffix'] = '<div id="wrap-getlocations-mapquest-maps-use">';
+
+    $mapopts = array();
+    if ($defaults['mapquest_maps_maplayer']) {
+      $mapopts['m'] = t('Map layer');
+    }
+    if ($defaults['mapquest_maps_satellitelayer']) {
+      $mapopts['s'] = t('Satellite layer');
+    }
+    if ($defaults['mapquest_maps_hybridlayer']) {
+      $mapopts['h'] = t('Hybrid layer');
+    }
+    if (count($mapopts) < 1) {
+      $mapopts['m'] = t('Map layer');
+      $defaults['mapquest_maps_maplayer'] = 1;
+    }
+
+    $form['mapquest_maps_default'] = getlocations_element_dd(
+      t('Default map'),
+      $defaults['mapquest_maps_default'],
+      $mapopts
+    );
+    $form['mapquest_maps_maplayer'] = getlocations_element_map_checkbox(
+      t('Map layer'),
+      $defaults['mapquest_maps_maplayer']
+    );
+    $form['mapquest_maps_satellitelayer'] = getlocations_element_map_checkbox(
+      t('Satellite layer'),
+      $defaults['mapquest_maps_satellitelayer']
+    );
+    $form['mapquest_maps_hybridlayer'] = getlocations_element_map_checkbox(
+      t('Hybrid layer'),
+      $defaults['mapquest_maps_hybridlayer']
+    );
+    $form['mapquest_maps_hybridlayer']['#suffix'] = '</div>';
+  }
+  else {
+    $form['mapquest_maps_default'] = array('#type' => 'value', '#value' => 'm');
+    $form['mapquest_maps_maplayer'] = array('#type' => 'value', '#value' => 1);
+    $form['mapquest_maps_satellitelayer'] = array('#type' => 'value', '#value' => 1);
+    $form['mapquest_maps_hybridlayer'] = array('#type' => 'value', '#value' => 1);
+  }
+
+  if ($getlocations_leaflet_plugins['mapquest_traffic_enable']) {
+    $form['mapquest_traffic_flow'] = getlocations_element_map_checkbox(
+      t('Enable traffic flow'),
+      $defaults['mapquest_traffic_flow'],
+      t('Enable Traffic Flow on the map. Limited Availability.')
+    );
+    $form['mapquest_traffic_flow_on'] = getlocations_element_map_checkbox(
+      t('Show traffic flow'),
+      $defaults['mapquest_traffic_flow_on'],
+      t('Show Traffic Flow on the map on startup.')
+    );
+    $form['mapquest_traffic_incident'] = getlocations_element_map_checkbox(
+      t('Enable traffic incident'),
+      $defaults['mapquest_traffic_incident'],
+      t('Enable Traffic Incident on the map. Limited Availability.')
+    );
+    $form['mapquest_traffic_incident_on'] = getlocations_element_map_checkbox(
+      t('Show traffic incident'),
+      $defaults['mapquest_traffic_incident_on'],
+      t('Show Traffic Incident on the map on startup.')
+    );
+    $form['mapquest_traffic_incident_on']['#suffix'] = '';
+  }
+  else {
+    $form['mapquest_traffic_flow'] = array('#type' => 'value', '#value' => 0);
+    $form['mapquest_traffic_flow_on'] = array('#type' => 'value', '#value' => 0);
+    $form['mapquest_traffic_incident'] = array('#type' => 'value', '#value' => 0);
+    $form['mapquest_traffic_incident_on'] = array('#type' => 'value', '#value' => 0);
+    $form['mapquest_traffic_incident_on']['#suffix'] = '';
+  }
+
   $form['scaleControl'] = getlocations_element_map_checkbox(
     t('Scale'),
     $defaults['scaleControl'],
@@ -2328,12 +2487,6 @@ function getlocations_leaflet_display_options_form($defaults, $admin = FALSE) {
       t('Bing Geocoder key'),
       $defaults['geocoder_bing_key'],
       t('A Geocoder key is required for Bing.'),
-      40
-    );
-    $form['geocoder_mapquest_key'] = getlocations_element_map_tf(
-      t('Mapquest Geocoder key'),
-      $defaults['geocoder_mapquest_key'],
-      t('A Geocoder key is required for Mapquest.'),
       40
     );
     $form['geocodercollapsed'] = getlocations_element_map_checkbox(
@@ -3189,6 +3342,46 @@ function getlocations_leaflet_settings_form() {
     t('Enable Day/Night plugin'),
     $getlocations_leaflet_plugins['terminator_enable']
   );
+
+  // mapquest
+  $mapquest_lic =  variable_get('getlocations_mapquest_lic', array('key' => '', 'type' => 'l'));
+  if ($mapquest_lic['key']) {
+
+    if ($mapquest_lic['type'] == 'l') {
+      $form['getlocations_leaflet_plugins']['mapquest_traffic_enable'] = getlocations_element_map_checkbox(
+        t('Enable Mapquest Traffic plugin'),
+        $getlocations_leaflet_plugins['mapquest_traffic_enable']
+      );
+    }
+    else {
+      $form['getlocations_leaflet_plugins']['mapquest_traffic_enable'] = array('#type' => 'value', '#value' => 0);
+    }
+
+    #$form['getlocations_leaflet_plugins']['mapquest_routing_enable'] = getlocations_element_map_checkbox(
+    #  t('Enable Mapquest Routing plugin'),
+    #  $getlocations_leaflet_plugins['mapquest_routing_enable']
+    #);
+    $form['getlocations_leaflet_plugins']['mapquest_routing_enable'] = array('#type' => 'value', '#value' => 0);
+
+    #$form['getlocations_leaflet_plugins']['mapquest_geocoder_enable'] = getlocations_element_map_checkbox(
+    #  t('Enable Mapquest Geocoding plugin'),
+    #  $getlocations_leaflet_plugins['mapquest_geocoder_enable']
+    #);
+    $form['getlocations_leaflet_plugins']['mapquest_geocoder_enable'] = array('#type' => 'value', '#value' => 0);
+
+    $form['getlocations_leaflet_plugins']['mapquest_maps_enable'] = getlocations_element_map_checkbox(
+      t('Enable Mapquest Maps plugin'),
+      $getlocations_leaflet_plugins['mapquest_maps_enable']
+    );
+    #$form['getlocations_leaflet_plugins']['mapquest_maps_enable'] = array('#type' => 'value', '#value' => 0);
+
+  }
+  else {
+    $form['getlocations_leaflet_plugins']['mapquest_traffic_enable'] = array('#type' => 'value', '#value' => 0);
+    $form['getlocations_leaflet_plugins']['mapquest_routing_enable'] = array('#type' => 'value', '#value' => 0);
+    $form['getlocations_leaflet_plugins']['mapquest_geocoder_enable'] = array('#type' => 'value', '#value' => 0);
+    $form['getlocations_leaflet_plugins']['mapquest_maps_enable'] = array('#type' => 'value', '#value' => 0);
+  }
 
   // mapbox
   if (module_exists('getlocations_mapbox')) {
@@ -4749,6 +4942,12 @@ function getlocations_leaflet_display_options_fieldsets($form) {
     $form['zoomslider']['#prefix'] = '<fieldset class="collapsible getlocations_fieldset form-wrapper"><legend><span class="fieldset-legend">' . t('Zoom Slider Control') . '</span></legend><div class="fieldset-wrapper">';
     $tsuf = $form['zoomsliderposition']['#suffix'];
     $form['zoomsliderposition']['#suffix'] = $tsuf . '</div></fieldset>';
+  }
+
+  if (isset($form['mapquest_maps_use']) && $form['mapquest_maps_use']['#type'] !== 'value' ) {
+    $form['mapquest_maps_use']['#prefix'] = '<fieldset class="collapsible getlocations_fieldset form-wrapper"><legend><span class="fieldset-legend">' . t('Mapquest Maps') . '</span></legend><div class="fieldset-wrapper">';
+    $tsuf = $form['mapquest_traffic_incident_on']['#suffix'];
+    $form['mapquest_traffic_incident_on']['#suffix'] = $tsuf . '</div></fieldset>';
   }
 
   return $form;

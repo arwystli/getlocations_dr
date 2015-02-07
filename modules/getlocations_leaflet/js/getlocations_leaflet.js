@@ -81,28 +81,86 @@
 
           // layers
           var layers = {};
-          // do the default layer first and separately
-          var default_layer_name = map_settings.default_layer_name;
-          var default_layer_label = map_settings.default_layer_label;
-          layers[default_layer_label] = L.tileLayer.provider(default_layer_name).addTo(Drupal.getlocations_leaflet_map[key]);
-          for (var lkey in map_layers) {
-            if (lkey != default_layer_name) {
-              var layer = map_layers[lkey];
-              var map_layer = L.tileLayer.provider(lkey);
-              map_layer._leaflet_id = lkey;
-              if (layer.options) {
-                for (var option in layer.options) {
-                  map_layer.options[option] = layer.options[option];
+          var gotmap = false;
+
+          // mapquest
+          if (map_settings.mapquest_key && typeof(MQ) !== 'undefined') {
+
+            if (map_settings.mapquest_traffic_enable) {
+              if (map_settings.mapquest_traffic_flow) {
+                var label_flow = Drupal.t('Traffic Flow');
+                Drupal.getlocations_leaflet_overlays[key][label_flow] = MQ.trafficLayer({layers: ['flow']});
+                if (map_settings.mapquest_traffic_flow_on == 1) {
+                  Drupal.getlocations_leaflet_overlays[key][label_flow].addTo(Drupal.getlocations_leaflet_map[key]);
                 }
               }
-              if (layer.type == 'base') {
-                layers[layer.label] = map_layer;
-              }
-              else if (layer.type == 'overlay') {
-                Drupal.getlocations_leaflet_overlays[key][layer.label] = map_layer;
+              if (map_settings.mapquest_traffic_incident) {
+                var label_incident = Drupal.t('Traffic Incidents');
+                Drupal.getlocations_leaflet_overlays[key][label_incident] = MQ.trafficLayer({layers: ['incidents']});
+                if (map_settings.mapquest_traffic_incident_on == 1) {
+                  Drupal.getlocations_leaflet_overlays[key][label_incident].addTo(Drupal.getlocations_leaflet_map[key]);
+                }
               }
             }
+
+            if (map_settings.mapquest_routing_enable) {
+            }
+
+            if (map_settings.mapquest_geocoder_enable) {
+            }
+
+            if (map_settings.mapquest_maps_enable && map_settings.mapquest_maps_use) {
+              var default_layer_name = MQ.mapLayer();
+              var default_layer_label = Drupal.t('Map layer');
+              if (map_settings.mapquest_maps_default == 's') {
+                default_layer_name = MQ.satelliteLayer();
+                default_layer_label = Drupal.t('Satellite layer');
+              }
+              else if (map_settings.mapquest_maps_default == 'h') {
+                default_layer_name = MQ.hybridLayer();
+                default_layer_label = Drupal.t('Hybrid layer');
+              }
+              layers[default_layer_label] = default_layer_name.addTo(Drupal.getlocations_leaflet_map[key]);
+              if (map_settings.mapquest_maps_default != 'm' && map_settings.mapquest_maps_maplayer) {
+                layers[Drupal.t('Map layer')] = MQ.mapLayer();
+              }
+              if (map_settings.mapquest_maps_default != 's' && map_settings.mapquest_maps_satellitelayer) {
+                layers[Drupal.t('Satellite layer')] = MQ.satelliteLayer();
+              }
+              if (map_settings.mapquest_maps_default != 'h' && map_settings.mapquest_maps_hybridlayer) {
+                layers[Drupal.t('Hybrid layer')] = MQ.hybridLayer();
+              }
+              gotmap = true;
+            }
+
           }
+
+          if (! gotmap) {
+            // do the default layer first and separately
+            var default_layer_name = map_settings.default_layer_name;
+            var default_layer_label = map_settings.default_layer_label;
+            layers[default_layer_label] = L.tileLayer.provider(default_layer_name).addTo(Drupal.getlocations_leaflet_map[key]);
+            for (var lkey in map_layers) {
+              if (lkey != default_layer_name) {
+                var layer = map_layers[lkey];
+                var map_layer = L.tileLayer.provider(lkey);
+                map_layer._leaflet_id = lkey;
+                if (layer.options) {
+                  for (var option in layer.options) {
+                    map_layer.options[option] = layer.options[option];
+                  }
+                }
+                if (layer.type == 'base') {
+                  layers[layer.label] = map_layer;
+                }
+                else if (layer.type == 'overlay') {
+                  Drupal.getlocations_leaflet_overlays[key][layer.label] = map_layer;
+                }
+              }
+            }
+
+          }
+
           if (layers.length) {
             layers.addTo(Drupal.getlocations_leaflet_map[key]);
           }
@@ -282,8 +340,8 @@
             if (map_settings.geocodersrc == 'b' && map_settings.geocoder_bing_key) {
               geo_opts.geocoder = L.Control.Geocoder.bing(map_settings.geocoder_bing_key);
             }
-            else if (map_settings.geocodersrc == 'm' && map_settings.geocoder_mapquest_key) {
-              geo_opts.geocoder = L.Control.Geocoder.mapQuest(map_settings.geocoder_mapquest_key);
+            else if (map_settings.geocodersrc == 'm' && map_settings.mapquest_key) {
+              geo_opts.geocoder = L.Control.Geocoder.mapQuest(map_settings.mapquest_key);
             }
             else {
               geo_opts.geocoder = L.Control.Geocoder.nominatim();

@@ -87,6 +87,28 @@ function getlocations_settings_form() {
     FALSE
   );
 
+  // mapquest
+  $mapquest_lic =  variable_get('getlocations_mapquest_lic', array('key' => '', 'type' => 'l'));
+  $form['getlocations_mapquest_lic'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Mapquest key'),
+    '#description' => t('This key is required if you want to use Mapquest maps and services.'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#tree' => TRUE,
+  );
+  $form['getlocations_mapquest_lic']['key'] =  getlocations_element_map_tf(
+    t('Mapquest key'),
+    $mapquest_lic['key'],
+    '',
+    40
+  );
+  $form['getlocations_mapquest_lic']['type'] = getlocations_element_dd(
+    t('Mapquest type'),
+    $mapquest_lic['type'],
+    array('o' => t('Open'), 'l' => t('Licensed'))
+  );
+
   // map version
   $map_version = variable_get('getlocations_map_version', '');
   $form['map_version'] =  array(
