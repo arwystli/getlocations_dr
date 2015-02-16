@@ -462,6 +462,204 @@
 
       }
 
+      // mapquest
+      if (typeof(Drupal.settings.getlocations_mapquest) !== 'undefined') {
+
+        MQA.withModule('shapes', function() {
+
+          var gsettings = Drupal.settings.getlocations_mapquest;
+          $(".getlocations_mapquest_canvas", context).once('getlocations-fields-views-search-marker-mapquest-processed', function(index, element) {
+            var elemID = $(element).attr('id');
+            var key = elemID.replace(/^getlocations_mapquest_canvas_/, '');
+            // is there really a map?
+            if ( $("#getlocations_mapquest_canvas_" + key).is('div') ) {
+              var gset = gsettings[key];
+              // views_search
+              if (gset.map_settings.views_search_marker_enable) {
+                var mapquestviewssearchmarkertoggleState = [];
+                mapquestviewssearchmarkertoggleState[key] = true;
+                if (! gset.map_settings.views_search_marker_toggle_active) {
+                  mapquestviewssearchmarkertoggleState[key] = false;
+                }
+                $("#getlocations_mapquest_toggleSearchMarker_" + key).attr('disabled', true);
+              }
+              // do some setup
+              if (gset.map_settings.views_search_radshape_enable) {
+                var mapquestviewssearchshapetoggleState = [];
+                mapquestviewssearchshapetoggleState[key] = true;
+                if (! gset.map_settings.views_search_radshape_toggle_active) {
+                  mapquestviewssearchshapetoggleState[key] = false;
+                }
+                $("#getlocations_mapquest_toggleSearchArea_" + key).attr('disabled', true);
+              }
+              // views_search_marker and views_search_radshape_enable
+              var slat = false;
+              var slon = false;
+              var distance_meters = false;
+              var done = false;
+              if ($("#getlocations_fields_search_views_search_wrapper_" + key).is('div')) {
+                slat = $("#getlocations_fields_search_views_search_latitude_" + key).html();
+                slon = $("#getlocations_fields_search_views_search_longitude_" + key).html();
+                distance_meters = $("#getlocations_fields_search_views_search_distance_meters_" + key).html();
+              }
+              if (slat && slon && distance_meters) {
+                var latLng = new MQA.LatLng(parseFloat(slat), parseFloat(slon));
+                var lats = Drupal.getlocations.geo.earth_latitude_range(slat, slon, distance_meters);
+                var lngs = Drupal.getlocations.geo.earth_longitude_range(slat, slon, distance_meters);
+                var sw = new MQA.LatLng(parseFloat(lats[0]), parseFloat(lngs[0])), ne = new MQA.LatLng(parseFloat(lats[1]), parseFloat(lngs[1]));
+                //var searchLayer = L.layerGroup();
+
+                // views_search_marker
+                if (gset.map_settings.views_search_marker_enable) {
+                  var searchMarkerLayer = new MQA.ShapeCollection();
+                  var icon = (gset.map_settings.views_search_marker_info ? gset.map_settings.views_search_marker_info : false);
+                  var title = Drupal.t('Search Center');
+                  // make a leaflet marker gset.views_search_marker
+                  var searchMarker = {};
+                  //searchMarker[key] = Drupal.getlocations_mapquest.makeMarker(gset.map_settings, slat, slon, '', '', 0, title , icon, false, 0, '', key);
+                  searchMarker[key] = Drupal.getlocations_mapquest.makeMarker(gset.map_settings, slat, slon, '', '', 0, title , icon, 0, '', key);
+                  searchMarkerLayer.add(searchMarker[key]);
+                  Drupal.getlocations_mapquest.map[key].addShapeCollection(searchMarkerLayer);
+                  // initial setting
+                  if (gset.map_settings.views_search_marker_toggle) {
+                    if (gset.map_settings.views_search_marker_toggle_active) {
+                      searchMarkerLayer.add(searchMarker[key]);
+                      mapquestviewssearchmarkertoggleState[key] = true;
+                    }
+                    else {
+                      searchMarkerLayer.remove(searchMarker[key]);
+                      mapquestviewssearchmarkertoggleState[key] = false;
+                    }
+                    $("#getlocations_mapquest_toggleSearchMarker_" + key).attr('disabled', false);
+                    // click on this
+                    $("#getlocations_mapquest_toggleSearchMarker_" + key).click( function() {
+                      var label = '';
+                      if (mapquestviewssearchmarkertoggleState[key]) {
+                        searchMarkerLayer.remove(searchMarker[key]);
+                        mapquestviewssearchmarkertoggleState[key] = false;
+                        label = Drupal.t('Search marker On');
+                      }
+                      else {
+                        searchMarkerLayer.add(searchMarker[key]);
+                        mapquestviewssearchmarkertoggleState[key] = true;
+                        label = Drupal.t('Search marker Off');
+                      }
+                      $(this).val(label);
+                    });
+                  }
+                  else {
+                    mapquestviewssearchmarkertoggleState[key] = true;
+                    searchMarkerLayer.add(searchMarker[key]);
+                  }
+                }
+
+                // views_search_radshape
+                // TODO fix this
+                if (gset.map_settings.views_search_radshape_enable) {
+                  if ( $("#views_search_operator").is('input')) {
+                    var searchShapeLayer = new MQA.ShapeCollection();
+                    if (! gset.map_settings.views_search_radshape_strokecolor.match(/^#/)) {
+                      gset.map_settings.views_search_radshape_strokecolor = '#' + gset.map_settings.views_search_radshape_strokecolor;
+                    }
+                    if (! gset.map_settings.views_search_radshape_fillcolor.match(/^#/)) {
+                      gset.map_settings.views_search_radshape_fillcolor = '#' + gset.map_settings.views_search_radshape_fillcolor;
+                    }
+
+                    //views_search_operator
+                    var rShape = {};
+                    var op = $("#views_search_operator").val();
+                    if (op == 'dist') {
+                      // radius circle
+                      var radius = parseInt(distance_meters/1000);
+                      rShape[key] = new MQA.CircleOverlay();
+                      rShape[key].shapePoints = [parseFloat(slat), parseFloat(slon)];
+                      rShape[key].radiusUnit = 'KM';
+                      rShape[key].radius = radius;
+                      rShape[key].className = 'mapquest_circle';
+
+                      searchShapeLayer.add(rShape[key]);
+                      Drupal.getlocations_mapquest.map[key].addShapeCollection(searchShapeLayer);
+                      done = true;
+                    }
+                    else if (op == 'mbr') {
+                      // rectangle
+                      //var bounds = new L.LatLngBounds(sw, ne);
+                      //rShape[key] = new L.Rectangle(bounds, shapeOpts);
+                      //searchLayer.addLayer(rShape[key]);
+
+                      //var rectangle = new MQA.RectangleOverlay();
+                      //rectangle.shapePoints = [ 39.847136, -105.362437, 39.641389, -104.682833 ];
+
+                      rShape[key] = new MQA.RectangleOverlay();
+                      rShape[key] = [ lats[0], lngs[0], lats[1], lngs[1]];
+
+                      //rShape[key] = new MQA.RectLL(sw, ne);
+                      searchShapeLayer.add(rShape[key]);
+                      Drupal.getlocations_mapquest.map[key].addShapeCollection(searchShapeLayer);
+                      done = true;
+                    }
+
+                    if (gset.map_settings.views_search_radshape_toggle) {
+                      if (gset.map_settings.views_search_radshape_toggle_active) {
+                        searchShapeLayer.add(rShape[key]);
+                        mapquestviewssearchshapetoggleState[key] = true;
+                      }
+                      else {
+                        searchShapeLayer.remove(rShape[key]);
+                        mapquestviewssearchshapetoggleState[key] = false;
+                      }
+                      $("#getlocations_mapquest_toggleSearchArea_" + key).attr('disabled', false);
+                      // click on this
+                      $("#getlocations_mapquest_toggleSearchArea_" + key).click( function() {
+                        var label = '';
+                        if (mapquestviewssearchshapetoggleState[key]) {
+                          searchShapeLayer.remove(rShape[key]);
+                          mapquestviewssearchshapetoggleState[key] = false;
+                          label = Drupal.t('Search area On');
+                        }
+                        else {
+                          searchShapeLayer.add(rShape[key]);
+                          mapquestviewssearchshapetoggleState[key] = true;
+                          label = Drupal.t('Search area Off');
+                        }
+                        $(this).val(label);
+                      });
+                    }
+                    else {
+                      mapquestviewssearchshapetoggleState[key] = true;
+                    }
+                    if (done) {
+                      if (mapquestviewssearchshapetoggleState[key]) {
+                        searchShapeLayer.add(rShape[key]);
+                      }
+                      else {
+                        searchShapeLayer.remove(rShape[key]);
+                      }
+                    }
+                  }
+                }
+                // add to the map
+                //if (gset.map_settings.views_search_marker_enable || gset.map_settings.views_search_radshape_enable) {
+                //  Drupal.getlocations_mapquest.map[key].addShape(searchLayer);
+                //}
+                // views_search_center
+                if (gset.map_settings.views_search_center) {
+                  //var bounds = L.latLngBounds(sw, ne).pad(0.1);
+                  //Drupal.getlocations_mapquest.map[key].fitBounds(bounds, {reset: true});
+                  var rect = new MQA.RectLL(ne, sw);
+                  Drupal.getlocations_mapquest.map[key].zoomToRect(rect, false, 1, 20);
+                }
+
+                //Drupal.getlocations_mapquest.map[key].addShapeCollection(searchLayer);
+
+              } // end if slat && slon
+            } // end is there really a map
+          }); // end once
+
+        });
+
+      } // end mapquest
+
     }
   };
 

@@ -1,0 +1,10 @@
+name = GetLocations Mapquest
+description = "Provides Mapquest Maps integration for Getlocations."
+core = 7.x
+php = 5
+package = Fields
+dependencies[] = getlocations
+
+files[] = views/getlocations_mapquest_plugin_style.inc
+
+configure = admin/config/services/getlocations/mapquest

@@ -541,7 +541,7 @@ function getlocations_fields_smart_ip_get() {
  *   Returns form
  *
  */
-function getlocations_fields_views_search_form($defaults, $leaflet = FALSE) {
+function getlocations_fields_views_search_form($defaults, $map_type = '') {
 
   $form = array();
     // show_search_distance
@@ -564,7 +564,7 @@ function getlocations_fields_views_search_form($defaults, $leaflet = FALSE) {
     );
     $form['views_search_marker_enable']['#suffix'] = '<div id="wrap-getlocations-views-search-marker">';
 
-    if ($leaflet) {
+    if ($map_type == 'leaflet') {
       // TODO TEST THIS
       if ($defaults['awesome'] && $defaults['marker_type'] == 'fa') {
         $labels = array(
@@ -613,90 +613,93 @@ function getlocations_fields_views_search_form($defaults, $leaflet = FALSE) {
     );
     $form['views_search_marker_toggle_active']['#suffix'] = '</div>';
 
-    // search area shape
-    $form['views_search_radshape_enable'] = getlocations_element_map_checkbox(
-      t('Enable Show search area'),
-      $defaults['views_search_radshape_enable'],
-      t('Show Search area as a rectangle or circle. Applies to Views using a distance filter.')
-    );
-    $form['views_search_radshape_enable']['#suffix'] = '<div id="wrap-getlocations-views-search-radshape">';
-
-    // jquery_colorpicker
-    if (module_exists('jquery_colorpicker') && $defaults['jquery_colorpicker_enabled']) {
-      $form['views_search_radshape_strokecolor'] = array(
-        '#type' => 'jquery_colorpicker',
-        '#title' => t('Search area line color'),
-        '#default_value' => preg_replace("/^#/", '', $defaults['views_search_radshape_strokecolor']),
-        '#description' => t('Click on the Colorpicker icon to select a color'),
+    if ($map_type !== 'mapquest') {
+      // search area shape
+      $form['views_search_radshape_enable'] = getlocations_element_map_checkbox(
+        t('Enable Show search area'),
+        $defaults['views_search_radshape_enable'],
+        t('Show Search area as a rectangle or circle. Applies to Views using a distance filter.')
       );
-    }
-    else {
-      $form['views_search_radshape_strokecolor'] = getlocations_element_map_tf(
-        t('Search area line color'),
-        $defaults['views_search_radshape_strokecolor'],
-        t('HTML hex, eg #FF0000.'),
+      $form['views_search_radshape_enable']['#suffix'] = '<div id="wrap-getlocations-views-search-radshape">';
+
+      // jquery_colorpicker
+      if (module_exists('jquery_colorpicker') && $defaults['jquery_colorpicker_enabled']) {
+        $form['views_search_radshape_strokecolor'] = array(
+          '#type' => 'jquery_colorpicker',
+          '#title' => t('Search area line color'),
+          '#default_value' => preg_replace("/^#/", '', $defaults['views_search_radshape_strokecolor']),
+          '#description' => t('Click on the Colorpicker icon to select a color'),
+        );
+      }
+      else {
+        $form['views_search_radshape_strokecolor'] = getlocations_element_map_tf(
+          t('Search area line color'),
+          $defaults['views_search_radshape_strokecolor'],
+          t('HTML hex, eg #FF0000.'),
+          10,
+          10,
+          TRUE
+        );
+      }
+
+      $form['views_search_radshape_strokeopacity'] = getlocations_element_map_tf(
+        t('Search area line opacity'),
+        $defaults['views_search_radshape_strokeopacity'],
+        t('Must be between 0 and 1.'),
         10,
         10,
         TRUE
       );
-    }
-
-    $form['views_search_radshape_strokeopacity'] = getlocations_element_map_tf(
-      t('Search area line opacity'),
-      $defaults['views_search_radshape_strokeopacity'],
-      t('Must be between 0 and 1.'),
-      10,
-      10,
-      TRUE
-    );
-    $form['views_search_radshape_strokeweight'] = getlocations_element_map_tf(
-      t('Search area line thickness'),
-      $defaults['views_search_radshape_strokeweight'],
-      t('Must be an integer.'),
-      10,
-      10,
-      TRUE
-    );
-
-    // jquery_colorpicker
-    if (module_exists('jquery_colorpicker') && $defaults['jquery_colorpicker_enabled']) {
-      $form['views_search_radshape_fillcolor'] = array(
-        '#type' => 'jquery_colorpicker',
-        '#title' => t('Search area fill color'),
-        '#default_value' => preg_replace("/^#/", '', $defaults['views_search_radshape_fillcolor']),
-        '#description' => t('Click on the Colorpicker icon to select a color'),
-      );
-    }
-    else {
-      $form['views_search_radshape_fillcolor'] = getlocations_element_map_tf(
-        t('Search area fill color'),
-        $defaults['views_search_radshape_fillcolor'],
-        t('HTML hex, eg #FF0000.'),
+      $form['views_search_radshape_strokeweight'] = getlocations_element_map_tf(
+        t('Search area line thickness'),
+        $defaults['views_search_radshape_strokeweight'],
+        t('Must be an integer.'),
         10,
         10,
         TRUE
       );
-    }
 
-    $form['views_search_radshape_fillopacity'] = getlocations_element_map_tf(
-      t('Search area fill opacity'),
-      $defaults['views_search_radshape_fillopacity'],
-      t('Must be between 0 and 1.'),
-      10,
-      10,
-      TRUE
-    );
-    $form['views_search_radshape_toggle'] = getlocations_element_map_checkbox(
-      t('Enable Search area toggle button'),
-      $defaults['views_search_radshape_toggle'],
-      t('Show a button to switch visibility on or off.')
-    );
-    $form['views_search_radshape_toggle_active'] = getlocations_element_map_checkbox(
-      t('Initial state of Search area'),
-      $defaults['views_search_radshape_toggle_active'],
-      t('Set initial visibility on.')
-    );
-    $form['views_search_radshape_toggle_active']['#suffix'] = '</div>';
+      // jquery_colorpicker
+      if (module_exists('jquery_colorpicker') && $defaults['jquery_colorpicker_enabled']) {
+        $form['views_search_radshape_fillcolor'] = array(
+          '#type' => 'jquery_colorpicker',
+          '#title' => t('Search area fill color'),
+          '#default_value' => preg_replace("/^#/", '', $defaults['views_search_radshape_fillcolor']),
+          '#description' => t('Click on the Colorpicker icon to select a color'),
+        );
+      }
+      else {
+        $form['views_search_radshape_fillcolor'] = getlocations_element_map_tf(
+          t('Search area fill color'),
+          $defaults['views_search_radshape_fillcolor'],
+          t('HTML hex, eg #FF0000.'),
+          10,
+          10,
+          TRUE
+        );
+      }
+
+      $form['views_search_radshape_fillopacity'] = getlocations_element_map_tf(
+        t('Search area fill opacity'),
+        $defaults['views_search_radshape_fillopacity'],
+        t('Must be between 0 and 1.'),
+        10,
+        10,
+        TRUE
+      );
+      $form['views_search_radshape_toggle'] = getlocations_element_map_checkbox(
+        t('Enable Search area toggle button'),
+        $defaults['views_search_radshape_toggle'],
+        t('Show a button to switch visibility on or off.')
+      );
+      $form['views_search_radshape_toggle_active'] = getlocations_element_map_checkbox(
+        t('Initial state of Search area'),
+        $defaults['views_search_radshape_toggle_active'],
+        t('Set initial visibility on.')
+      );
+      $form['views_search_radshape_toggle_active']['#suffix'] = '</div>';
+
+    }
 
 
   return $form;
