@@ -1189,6 +1189,7 @@ function getlocations_mapquest_defaults() {
 #    'vocabulary_map_marker'      => $getlocations_defaults['vocabulary_map_marker'],
 #    'term_map_marker'            => $getlocations_defaults['term_map_marker'],
 #    'comment_map_marker'         => $getlocations_defaults['comment_map_marker'],
+     'map_marker'                 => $getlocations_defaults['map_marker'],
     'dragging'                   => $getlocations_defaults['draggable'],
     'scrollWheelZoom'            => $getlocations_defaults['scrollwheel'],
     'doubleClickZoom'            => ($getlocations_defaults['nodoubleclickzoom'] ? 0 : 1),
@@ -1801,6 +1802,7 @@ function _getlocations_mapquest_rebuild_marker_js_submit($form, &$form_state) {
  *
  */
 function getlocations_mapquest_entity_type_map($type, $entity_id) {
+/*
   global $language;
 
   $entity_type = getlocations_get_entity_type_from_path($type);
@@ -1817,57 +1819,72 @@ function getlocations_mapquest_entity_type_map($type, $entity_id) {
   $locative_field_name = $object->field_mapquest_map[$lang][0]['locative_field_name'];
   $typemarkers = getlocations_get_markertypes($entity_type);
   $bundle = $object->type;
+*/
+
+  $entity_type = getlocations_get_entity_type_from_path($type);
+  $locations = getlocations_load_locations($entity_id, $entity_type);
+  $settings = variable_get('getlocations_mapquest_defaults', '');
+  $entity_get_info = entity_get_info($entity_type);
+  $load_hook = $entity_get_info['load hook'];
+  $object = $load_hook($entity_id);
+
+  $entity_link = '';
+  $uri_callback = '';
+  if (isset($entity_get_info['uri callback'])) {
+    $uri_callback = $entity_get_info['uri callback'];
+    $entity_link = $uri_callback($object);
+  }
+  $entity_title = '';
+  $title = 'name';
+  if (isset($entity_get_info['entity keys']['label'])) {
+    $title = $entity_get_info['entity keys']['label'];
+  }
+  if (isset($object->{$title})) {
+    $entity_title = $object->{$title};
+  }
+  $entity_key = '';
+  if (isset($entity_get_info['entity keys']['id'])) {
+    $entity_key = $entity_get_info['entity keys']['id'];
+  }
+
+  $getlocations_defaults = getlocations_defaults();
+  $getlocations_mapquest_defaults = getlocations_mapquest_defaults();
+
   $marker = '';
   $vector = '';
-  // awesome
-  if ($getlocations_mapquest_defaults['awesome'] && $getlocations_mapquest_defaults['marker_type'] == 'fa') {
-    if ($entity_type == 'node') {
-      $per_field_markers = FALSE;
-      $getlocations_node_marker = variable_get('getlocations_node_marker', array('enable' => 0));
-      if ($getlocations_node_marker['enable']) {
-        if ($types = getlocations_get_types()) {
-          foreach ($types AS $type => $name) {
-            if ($type == $bundle) {
-              $field_names = getlocations_get_fieldname2($type, 'node');
-              foreach ($field_names AS $field_name) {
-                if ($field_name == $locative_field_name) {
-                  $mkey = 'node_marker__' . strtolower($type) . '__' . $field_name;
-                  $vicon = getlocations_mapquest_awesome_marker_get($getlocations_mapquest_defaults, $mkey);
-                  $per_field_markers = TRUE;
-                }
-              }
+
+  // marker
+  $marker = $getlocations_defaults['map_marker'];
+  if (isset($getlocations_defaults[$entity_type . '_map_marker'])) {
+    $marker = $getlocations_defaults[$entity_type . '_map_marker'];
+  }
+  if (isset($getlocations_mapquest_defaults[$entity_type . '_map_marker'])) {
+    $marker = $getlocations_mapquest_defaults[$entity_type . '_map_marker'];
+  }
+
+  $getlocations_markers = variable_get('getlocations_markers', array());
+  if (isset($getlocations_markers[$entity_type]['enable']) && $getlocations_markers[$entity_type]['enable']) {
+    $type_markers = getlocations_get_type_markers();
+    foreach ($type_markers AS $et => $bundles) {
+      if ($et == $entity_type) {
+        foreach ($bundles AS $bundle => $field_names) {
+          foreach ($field_names AS $field_name => $marker_data) {
+            if (isset($getlocations_markers[$entity_type][$bundle][$field_name]['marker']) && $getlocations_markers[$entity_type][$bundle][$field_name]['marker']) {
+              $marker = $getlocations_markers[$entity_type][$bundle][$field_name]['marker'];
             }
           }
         }
       }
-      if (! $per_field_markers) {
-        $vicon = getlocations_mapquest_awesome_marker_get($getlocations_mapquest_defaults, 'node');
-      }
-    }
-    elseif ($entity_type == 'taxonomy_term') {
-      $vicon = getlocations_mapquest_awesome_marker_get($getlocations_mapquest_defaults, 'vocabulary');
-    }
-    elseif ($entity_type == 'user') {
-      $vicon = getlocations_mapquest_awesome_marker_get($getlocations_mapquest_defaults, 'user');
-    }
-    elseif ($entity_type == 'comment') {
-      $vicon = getlocations_mapquest_awesome_marker_get($getlocations_mapquest_defaults, 'comment');
-    }
-    else {
-      $vicon = getlocations_mapquest_awesome_marker_get($getlocations_mapquest_defaults);
-    }
-    $vector = $vicon;
-  }
-  else {
-    // marker
-    $marker = $getlocations_mapquest_defaults['node_map_marker'];
-    if (isset($getlocations_mapquest_defaults[$entity_type . '_map_marker'])) {
-      $marker = $getlocations_mapquest_defaults[$entity_type . '_map_marker'];
-    }
-    if (isset($typemarkers[$object->type]) && $typemarkers[$object->type]) {
-      $marker = $typemarkers[$object->type];
     }
   }
+
+#  $marker = $getlocations_mapquest_defaults['node_map_marker'];
+#  if (isset($getlocations_mapquest_defaults[$entity_type . '_map_marker'])) {
+#    $marker = $getlocations_mapquest_defaults[$entity_type . '_map_marker'];
+#  }
+#  if (isset($typemarkers[$object->type]) && $typemarkers[$object->type]) {
+#    $marker = $typemarkers[$object->type];
+#  }
 
   $entity_title = '';
   if (isset($object->title)) {
@@ -1883,44 +1900,19 @@ function getlocations_mapquest_entity_type_map($type, $entity_id) {
   $returnlink = FALSE;
   $links = array();
   // return link
-  if ($entity_type == 'node' && $getlocations_mapquest_defaults['returnlink_page_enable']) {
-    if (is_object($object)) {
-      $linktext = $getlocations_mapquest_defaults['returnlink_page_link'];
-      if ( preg_match("/%t/", $linktext)) {
-        $linktext = preg_replace("/%t/", $object->title, $linktext);
+  if ($entity_type && $entity_link) {
+    if ($settings['returnlink_' . $entity_type . '_enable']) {
+      if (is_object($object)) {
+        $linktext = $settings['returnlink_' . $entity_type . '_link'];
+        if ( preg_match("/%t/", $linktext)) {
+          $linktext = preg_replace("/%t/", $entity_title, $linktext);
+        }
+        $returnlink = l($linktext, $entity_link['path']);
       }
-      $returnlink = l($linktext, 'node/' . $object->nid);
     }
-  }
-  elseif ($entity_type == 'user' && $getlocations_mapquest_defaults['returnlink_user_enable']) {
-    if (is_object($object)) {
-      $linktext = $getlocations_mapquest_defaults['returnlink_user_link'];
-      if ( preg_match("/%n/", $linktext)) {
-        $linktext = preg_replace("/%n/", $object->name, $linktext);
-      }
-      $returnlink = l($linktext, 'user/' . $object->uid);
+    if ($returnlink) {
+      $links['returnlink'] = $returnlink;
     }
-  }
-  elseif (($entity_type == 'term' || $entity_type == 'taxonomy_term') && $getlocations_mapquest_defaults['returnlink_term_enable'] && module_exists('taxonomy')) {
-    if (is_object($object)) {
-      $linktext = $getlocations_mapquest_defaults['returnlink_term_link'];
-      if ( preg_match("/%n/", $linktext)) {
-        $linktext = preg_replace("/%n/", $object->name, $linktext);
-      }
-      $returnlink = l($linktext, 'taxonomy/term/' . $object->tid);
-    }
-  }
-  elseif ($entity_type == 'comment' && $getlocations_mapquest_defaults['returnlink_comment_enable'] && module_exists('comment')) {
-    if (is_object($object)) {
-      $linktext = $getlocations_mapquest_defaults['returnlink_comment_link'];
-      if ( preg_match("/%n/", $linktext)) {
-        $linktext = preg_replace("/%n/", $object->subject, $linktext);
-      }
-      $returnlink = l($linktext, 'comment/' . $object->cid);
-    }
-  }
-  if ($returnlink) {
-    $links['returnlink'] = $returnlink;
   }
 
   $latlons = array();

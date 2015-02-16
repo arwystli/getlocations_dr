@@ -46,22 +46,13 @@ function template_preprocess_getlocations_mapquest_view_map(&$variables) {
   $locations = $variables['view']->style_plugin->rendered_fields;
   $options = $variables['view']->style_plugin->options;
   $base_field = $variables['view']->style_plugin->view->base_field;
-  $thiskey = FALSE;
-  $latlons = array();
-  $minmaxes = array('minlat' => 0, 'minlon' => 0, 'maxlat' => 0, 'maxlon' => 0);
-  $iconlist = array();
-  $cat = FALSE;
-  $cats = array();
-  $ct = 0;
-  $entity_type = 'node';
-  if ($base_field == 'uid') {
-    $entity_type = 'user';
-  }
-  elseif ($base_field == 'tid') {
-    $entity_type = 'taxonomy_term';
-  }
-  elseif ($base_field == 'cid') {
-    $entity_type = 'comment';
+  $entity_get_info = entity_get_info();
+  $entity_type = FALSE;
+  $entity_type_found = FALSE;
+  foreach ($entity_get_info AS $et => $entity_info) {
+    if ($base_field == $entity_info['entity keys']['id']) {
+      $entity_type = $et;
+    }
   }
 
   if ($options['custom_content_enable'] and !empty($options['custom_content_source'])) {
@@ -71,9 +62,16 @@ function template_preprocess_getlocations_mapquest_view_map(&$variables) {
     $custom_content_source = NULL;
   }
 
-  #$map_settings = getlocations_mapquest_map_get_info('Getlocations OSM');
+  $thiskey = FALSE;
+  $latlons = array();
+  $minmaxes = array('minlat' => 0, 'minlon' => 0, 'maxlat' => 0, 'maxlon' => 0);
+  $iconlist = array();
+  $cat = FALSE;
+  $cats = array();
+  $ct = 0;
+
   $map_settings = array();
-  #$map_settings = getlocations_mapquest_get_map_layers($map_settings);
+
   // show_search_distance
   if (
     isset($variables['view']->exposed_data['distance'])
@@ -118,79 +116,44 @@ function template_preprocess_getlocations_mapquest_view_map(&$variables) {
 
         $marker = '';
         $vector = '';
-        // awesome
-#        if ($options['awesome'] && $options['marker_type'] == 'fa') {
-#          if ($entity_type == 'node') {
-#            $per_field_markers = FALSE;
-#            $getlocations_node_marker = variable_get('getlocations_node_marker', array('enable' => 0));
-#            if ($getlocations_node_marker['enable']) {
-#              if (isset($location['type']) && isset($location['field_name'])) {
-#                $mkey = 'node_marker__' . drupal_strtolower($location['type']) . '__' . $location['field_name'];
-#                $vicon = getlocations_mapquest_awesome_marker_get($options, $mkey);
-#                $per_field_markers = TRUE;
-#              }
-#            }
-#            if (! $per_field_markers) {
-#              $vicon = getlocations_mapquest_awesome_marker_get($options, 'node');
-#            }
-#            // TODO per tid marker
-#          }
-#          elseif ($entity_type == 'taxonomy_term') {
-#            $vicon = getlocations_mapquest_awesome_marker_get($options, 'vocabulary');
-#          }
-#          elseif ($entity_type == 'user') {
-#            $vicon = getlocations_mapquest_awesome_marker_get($options, 'user');
-#          }
-#          elseif ($entity_type == 'comment') {
-#            $vicon = getlocations_mapquest_awesome_marker_get($options, 'comment');
-#          }
-#          else {
-#            $vicon = getlocations_mapquest_awesome_marker_get($options);
-#          }
-#          $vector = $vicon;
-#        }
-#        else {
-          if ($entity_type == 'node') {
-            $marker = $options['node_map_marker'];
-            if (isset($location['type']) && isset($location['field_name']) ) {
-              if (isset($options['node_marker__' . drupal_strtolower($location['type']) . '__' . $location['field_name']])) {
-                $marker = $options['node_marker__' . drupal_strtolower($location['type']) . '__' . $location['field_name']];
-              }
-            }
-            // term marker
-            $getlocations_term_marker = variable_get('getlocations_term_marker', array('enable' => 0, 'vids' => 0, 'max_depth' => ''));
-            if ($getlocations_term_marker['enable'] && $getlocations_term_marker['vids']) {
-              $vids = $getlocations_term_marker['vids'];
-              foreach ($vids AS $vid) {
-                if ($nid = getlocations_get_nid_from_lid($lid)) {
-                  $query = db_select('taxonomy_index', 't');
-                  $query->fields('t', array('tid'));
-                  $query->join('taxonomy_term_data', 'd', 't.tid=d.tid');
-                  $query->condition('t.nid', $nid);
-                  $query->condition('d.vid', $vid);
-                  $result = $query->execute()->fetchObject();
-                  if (isset($result->tid) && $result->tid > 0 && isset($options['term_marker_' . $result->tid])) {
-                    $marker = $options['term_marker_' . $result->tid];
+
+        $per_field_markers = FALSE;
+        // getlocations_markers
+        $getlocations_markers = variable_get('getlocations_markers', array());
+        if ($entity_type_found && isset($getlocations_markers[$entity_type_found]['enable']) && $getlocations_markers[$entity_type_found]['enable']) {
+          $type_markers = getlocations_get_type_markers();
+          foreach ($type_markers AS $et => $bundles) {
+            if ($et == $entity_type_found) {
+              foreach ($bundles AS $bundle => $field_names) {
+                foreach ($field_names AS $field_name => $marker_data) {
+                  if ($field_name == $location['field_name']) {
+                    $mkey = 'marker__' . $entity_type_found . '__' . $bundle . '__' . $field_name;
+                    if (isset($options[$mkey]) && $options[$mkey]) {
+                      $per_field_markers = TRUE;
+                      $marker = $options[$mkey];
+                    }
                   }
                 }
               }
             }
           }
-          elseif ($entity_type == 'taxonomy_term') {
-            $marker = $options['vocabulary_map_marker'];
-            if (isset($location['field_name'])) {
-              if (isset($options['vocabulary_marker_' . $location['field_name']])) {
-                $marker = $options['vocabulary_marker_' . $location['field_name']];
-              }
-            }
+        }
+        if (! $per_field_markers) {
+          if ($entity_type_found && $options[$entity_type_found . '_map_marker']) {
+            $marker = $options[$entity_type_found . '_map_marker'];
           }
-          elseif ($entity_type == 'user') {
-            $marker = $options['user_map_marker'];
+          else {
+            // default
+            $marker = $options['map_marker'];
           }
-          elseif ($entity_type == 'comment') {
-            $marker = $options['comment_map_marker'];
-          }
-#        }
+        }
+      }
+
+      // per item marker
+      if (isset($location['marker']) && ! empty($location['marker'])) {
+        $marker = $location['marker'];
+      }
+
 
         // dump bummers with no lat/lon
         if ($latlon = getlocations_latlon_check($location['latitude'] . ',' . $location['longitude'])) {
@@ -271,7 +234,7 @@ function template_preprocess_getlocations_mapquest_view_map(&$variables) {
 
           $ct++;
         }
-      }
+      #}
     } // end foreach locations
   }
 

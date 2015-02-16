@@ -50,51 +50,6 @@ class getlocations_mapquest_plugin_style extends views_plugin_style {
     $options['styles']                = array('default' => '');
     $options['jquery_colorpicker_enabled'] = array('default' => 0);
 
-    // node markers
-    $getlocations_node_marker = variable_get('getlocations_node_marker', array('enable' => 0));
-    if ($getlocations_node_marker['enable']) {
-      if ($types = getlocations_get_types()) {
-        foreach ($types AS $type => $name) {
-          $field_names = getlocations_get_fieldname2($type, 'node');
-          foreach ($field_names AS $field_name) {
-            $mkey = 'node_marker__' . drupal_strtolower($type) . '__' . $field_name;
-            $mmarker = (isset($getlocations_node_marker['content_type'][$type]['field_name'][$field_name]['map_marker']) ? $getlocations_node_marker['content_type'][$type]['field_name'][$field_name]['map_marker'] : $getlocations_defaults['node_map_marker']);
-            $options[$mkey] = array('default' => $mmarker);
-          }
-        }
-      }
-    }
-    if (module_exists('taxonomy')) {
-      // vocabulary markers
-      if ($types = getlocations_get_vocabularies()) {
-        $getlocations_vocabulary_marker = variable_get('getlocations_vocabulary_marker', array('enable' => 0));
-        if ($getlocations_vocabulary_marker['enable']) {
-          foreach ($types AS $type => $name) {
-            $field_name = getlocations_get_fieldname($type, 'taxonomy_term');
-            $mkey = 'vocabulary_marker_' . $field_name;
-            $mmarker = (isset($getlocations_vocabulary_marker['vocabulary'][$type]['map_marker']) ? $getlocations_vocabulary_marker['vocabulary'][$type]['map_marker'] : $getlocations_defaults['vocabulary_map_marker']);
-            $options[$mkey] = array('default' => $mmarker);
-          }
-        }
-      }
-
-      // term markers
-      $getlocations_term_marker = variable_get('getlocations_term_marker', array('enable' => 0, 'vids' => 0, 'max_depth' => ''));
-      if ($getlocations_term_marker['enable'] && $getlocations_term_marker['vids']) {
-        $depth = is_numeric($getlocations_term_marker['max_depth']) && $getlocations_term_marker['max_depth'] > 0 ? $getlocations_term_marker['max_depth'] : NULL;
-        $vids = $getlocations_term_marker['vids'];
-        foreach ($vids AS $vid) {
-          $terms = taxonomy_get_tree($vid, 0, $depth);
-          foreach ($terms AS $term) {
-            $tid = $term->tid;
-            $mkey = 'term_marker_' . $tid;
-            $mmarker = (isset($getlocations_term_marker['vid'][$vid]['term'][$tid]['map_marker']) ? $getlocations_term_marker['vid'][$vid]['term'][$tid]['map_marker'] : $getlocations_defaults['term_map_marker']);
-            $options[$mkey] = array('default' => $mmarker);
-          }
-        }
-      }
-    }
-
     // empty_result
     $options['empty_result'] = array('default' => FALSE);
 
@@ -156,220 +111,47 @@ class getlocations_mapquest_plugin_style extends views_plugin_style {
     unset($form['nodezoom']['#options']['19']);
 
     // markers
-/*
-    if ($this->options['awesome'] && $this->options['marker_type'] == 'fa') {
-      // do awesome markers
-      // nodes
-      $labels = array(
-        'awesome_icon' => t('Node Awesome icon'),
-        'awesome_icon_color' => t('Node Awesome icon color'),
-        'awesome_marker_color' => t('Node Awesome marker color'),
-        'awesome_title' => t('Node Awesome Fonts icon settings'),
-        'awesome_icon_spin' => t('Node Awesome icon spin'),
-        'awesome_icon_size' => t('Node Awesome icon size'),
-        'awesome_icon_type' => t('Node Awesome icon type'),
-        'awesome_icon_flip' => t('Node Awesome icon flip and rotate'),
-      );
-      $form += getlocations_mapquest_awesome_markers_elements_get($this->options, $labels, "node");
-      // TODO per content type fieldname etc
-/////////////////
-      // node type markers
-      if ($types = getlocations_get_types()) {
-        $getlocations_node_marker = variable_get('getlocations_node_marker', array('enable' => 0));
-        if ($getlocations_node_marker['enable']) {
-          $typect = 0;
-          foreach ($types AS $type => $name) {
-            $field_names = getlocations_get_fieldname2($type, 'node');
-            foreach ($field_names AS $field_name) {
-              $label = t('%name Map marker, field %field' , array('%name' => $name, '%field' => $field_name));
-              $mkey = 'node_marker__' . drupal_strtolower($type) . '__' . $field_name;
-              $labels = array(
-                'awesome_icon'         => t($label . ' Awesome icon'),
-                'awesome_icon_color'   => t($label . ' Awesome icon color'),
-                'awesome_marker_color' => t($label . ' Awesome marker color'),
-                'awesome_title'        => t($label . ' Awesome Fonts icon settings'),
-                'awesome_icon_spin'    => t($label . ' Awesome icon spin'),
-                'awesome_icon_size'    => t($label . ' Awesome icon size'),
-                'awesome_icon_type'    => t($label . ' Awesome icon type'),
-                'awesome_icon_flip'    => t($label . ' Awesome icon flip and rotate'),
-              );
-              $form += getlocations_mapquest_awesome_markers_elements_get($this->options, $labels, $mkey);
+    $markers = getlocations_get_marker_titles();
+    $getlocations_markers = variable_get('getlocations_markers', array());
+    $type_markers = getlocations_get_type_markers();
+    $per_field_markers = FALSE;
+    foreach ($type_markers AS $entity_type => $bundles) {
+      if (isset($getlocations_markers[$entity_type]['enable']) && $getlocations_markers[$entity_type]['enable']) {
+        $per_field_markers = TRUE;
+        $entity_get_info = entity_get_info($entity_type);
+        $entity_type_label = $entity_get_info['label'];
+        foreach ($bundles AS $bundle => $field_names) {
+          foreach ($field_names AS $field_name => $marker_data) {
+            $bundle_label = $marker_data['bundle_label'];
+            $mkey = 'marker__' . $entity_type . '__' . $bundle . '__' . $field_name;
+            if (! isset($this->options[$mkey])) {
+              $this->options[$mkey] = (isset($getlocations_markers[$entity_type][$bundle][$field_name]['marker'] ) ? $getlocations_markers[$entity_type][$bundle][$field_name]['marker'] : (isset($getlocations_defaults[$entity_type . '_map_marker']) ? $this->options[$entity_type . '_map_marker'] : $this->options['map_marker']));
             }
-          }
-        }
-      }
-/////////////////
-      // users
-      if (getlocations_check_entity_type('user') || getlocations_check_entity_type('profile2')) {
-        $labels = array(
-          'awesome_icon' => t('User Awesome icon'),
-          'awesome_icon_color' => t('User Awesome icon color'),
-          'awesome_marker_color' => t('User Awesome marker color'),
-          'awesome_title' => t('User Awesome Fonts icon settings'),
-          'awesome_icon_spin' => t('User Awesome icon spin'),
-          'awesome_icon_size' => t('User Awesome icon size'),
-          'awesome_icon_type' => t('User Awesome icon type'),
-          'awesome_icon_flip' => t('User Awesome icon flip and rotate'),
-        );
-        $form += getlocations_mapquest_awesome_markers_elements_get($this->options, $labels, 'user');
-      }
-
-      if (module_exists('taxonomy')) {
-        if ($types = getlocations_get_machine_vocabularies()) {
-          // vocabulary
-          // TODO per vocab
-          $labels = array(
-            'awesome_icon' => t('Vocabulary Awesome icon'),
-            'awesome_icon_color' => t('Vocabulary Awesome icon color'),
-            'awesome_marker_color' => t('Vocabulary Awesome marker color'),
-            'awesome_title' => t('Vocabulary Awesome Fonts icon settings'),
-            'awesome_icon_spin' => t('Vocabulary Awesome icon spin'),
-            'awesome_icon_size' => t('Vocabulary Awesome icon size'),
-            'awesome_icon_type' => t('Vocabulary Awesome icon type'),
-            'awesome_icon_flip' => t('Vocabulary Awesome icon flip and rotate'),
-          );
-          $form += getlocations_mapquest_awesome_markers_elements_get($this->options, $labels, 'vocabulary');
-
-        }
-        // terms
-        // TODO per term
-        $labels = array(
-          'awesome_icon' => t('Term Awesome icon'),
-          'awesome_icon_color' => t('Term Awesome icon color'),
-          'awesome_marker_color' => t('Term Awesome marker color'),
-          'awesome_title' => t('Term Awesome Fonts icon settings'),
-          'awesome_icon_spin' => t('Term Awesome icon spin'),
-          'awesome_icon_size' => t('Term Awesome icon size'),
-          'awesome_icon_type' => t('Term Awesome icon type'),
-          'awesome_icon_flip' => t('Term Awesome icon flip and rotate'),
-        );
-        $form += getlocations_mapquest_awesome_markers_elements_get($this->options, $labels, 'term');
-      }
-      if (getlocations_check_entity_type('comment')) {
-        // comment
-        $labels = array(
-          'awesome_icon' => t('Comment Awesome icon'),
-          'awesome_icon_color' => t('Comment Awesome icon color'),
-          'awesome_marker_color' => t('Comment Awesome marker color'),
-          'awesome_title' => t('Comment Awesome Fonts icon settings'),
-          'awesome_icon_spin' => t('Comment Awesome icon spin'),
-          'awesome_icon_size' => t('Comment Awesome icon size'),
-          'awesome_icon_type' => t('Comment Awesome icon type'),
-          'awesome_icon_flip' => t('Comment Awesome icon flip and rotate'),
-        );
-        $form += getlocations_mapquest_awesome_markers_elements_get($this->options, $labels, 'comment');
-
-      }
-
-    }
-    else {
-*/
-      // do getlocations markers
-      $markers = getlocations_get_marker_titles();
-      // node markers
-      $getlocations_node_marker = variable_get('getlocations_node_marker', array('enable' => 0));
-      if ($getlocations_node_marker['enable']) {
-        if ($types = getlocations_get_types()) {
-          foreach ($types AS $type => $name) {
-            $field_names = getlocations_get_fieldname2($type, 'node');
-            foreach ($field_names AS $field_name) {
-              if (isset($getlocations_node_marker['content_type'][$type]['field_name'][$field_name]['map_marker']) ) {
-                $mkey = 'node_marker__' . drupal_strtolower($type) . '__' . $field_name;
-                $form[$mkey] = getlocations_element_map_marker(
-                  t('%name Content Map Marker, field %field', array('%name' => $name, '%field' => $field_name)),
-                  $markers,
-                  (isset($this->options[$mkey]) ? $this->options[$mkey] : $getlocations_node_marker['content_type'][$type]['field_name'][$field_name]['map_marker'])
-                );
-              }
-            }
-          }
-        }
-      }
-      else {
-        $form['node_map_marker'] = getlocations_element_map_marker(
-          t('Content Map marker'),
-          $markers,
-          $this->options['node_map_marker']
-        );
-      }
-      // user markers
-      if (getlocations_check_entity_type('user') || getlocations_check_entity_type('profile2')) {
-        $form['user_map_marker'] = getlocations_element_map_marker(
-          t('User Map Marker'),
-          $markers,
-          $this->options['user_map_marker']
-        );
-      }
-      // vocabulary markers
-      if (module_exists('taxonomy')) {
-        if ($types = getlocations_get_machine_vocabularies()) {
-          $types2 = getlocations_get_vocabularies();
-          $getlocations_vocabulary_marker = variable_get('getlocations_vocabulary_marker', array('enable' => 0));
-          if ($getlocations_vocabulary_marker['enable']) {
-            foreach ($types AS $type => $name) {
-              $field_name = getlocations_get_fieldname($name, 'taxonomy_term');
-              $mkey = 'vocabulary_marker_' . $field_name;
-              $form[$mkey] = getlocations_element_map_marker(
-                t('%name Vocabulary Marker', array('%name' => $types2[$type])),
-                $markers,
-                (isset($this->options[$mkey]) ? $this->options[$mkey] : $getlocations_vocabulary_marker['vocabulary'][$type]['map_marker'])
-              );
-            }
-          }
-          else {
-            $form['vocabulary_map_marker'] = getlocations_element_map_marker(
-              t('Vocabulary Map Marker'),
+            $form[$mkey] = getlocations_element_map_marker(
+              t('Type %etl, Bundle %name, Field %field Map marker', array('%etl' => $entity_type_label, '%name' => $bundle_label, '%field' => $field_name)),
               $markers,
-              $this->options['vocabulary_map_marker']
+              $this->options[$mkey]
             );
           }
         }
-
-        // term markers
-        $getlocations_term_marker = variable_get('getlocations_term_marker', array('enable' => 0, 'vids' => 0, 'max_depth' => ''));
-        if ($getlocations_term_marker['enable'] && $getlocations_term_marker['vids']) {
-          $depth = is_numeric($getlocations_term_marker['max_depth']) && $getlocations_term_marker['max_depth'] > 0 ? $getlocations_term_marker['max_depth'] : NULL;
-          $vids = $getlocations_term_marker['vids'];
-          foreach ($vids AS $vid) {
-            $terms = taxonomy_get_tree($vid, 0, $depth);
-            $tct = 0;
-            foreach ($terms AS $term) {
-              $name = $term->name;
-              $tid = $term->tid;
-              $mkey = 'term_marker_' . $tid;
-              $form[$mkey] = getlocations_element_map_marker(
-                t('%name Map Marker', array('%name' => $name)),
-                $markers,
-                $this->options[$mkey]
-              );
-              if (! $tct) {
-                $v = taxonomy_vocabulary_load($vid);
-                $vocab_name = $v->name;
-                $form[$mkey]['#prefix'] = t('Terms for %name', array('%name' => $vocab_name));
-              }
-              $tct++;
-            }
-          }
-        }
-        else {
-          $form['term_map_marker'] = getlocations_element_map_marker(
-            t('Term Map marker'),
+      }
+    }
+    if (! $per_field_markers) {
+      // markers
+      foreach ($fieldables AS $entity_type) {
+        $entity_get_info = entity_get_info($entity_type);
+        $label = $entity_get_info['label'];
+        $desc = '';
+        if (getlocations_check_entity_type($entity_type)) {
+          $form[$entity_type . '_map_marker'] = getlocations_element_map_marker(
+            t('Default !label Map marker', array('!label' => $label)),
             $markers,
-            $this->options['term_map_marker']
+            $this->options[$entity_type . '_map_marker'],
+            $desc
           );
         }
       }
-      // comments
-      if (getlocations_check_entity_type('comment')) {
-        // default comment marker
-        $form['comment_map_marker'] = getlocations_element_map_marker(
-          t('Comment Map marker'),
-          $markers,
-          $this->options['comment_map_marker']
-        );
-      }
-
-/*    } */
+    }
 
     // search markers
     if (module_exists('getlocations_fields') && module_exists('views')) {
@@ -425,18 +207,10 @@ class getlocations_mapquest_plugin_style extends views_plugin_style {
     $form['custom_content_source']['#prefix'] = '<div id="wrap-custom-content-source">';
     $form['custom_content_source']['#suffix'] = '</div>';
 
-
-#    $form['nodezoom'] = getlocations_element_map_zoom(
-#      t('Default Zoom for Single location'),
-#      $this->options['nodezoom'],
-#      t('The Default zoom level for a single marker.')
-#    );
-
     $form['empty_result'] = getlocations_element_map_checkbox(
       t('Show map even if view has no results'),
       $this->options['empty_result']
     );
-    #$form['empty_result'] = array('#type' => 'value', '#value' => 0);
 
     // munge the title and description
     $form['category_showhide_buttons']['#title'] = t('Enable category show/hide checkboxes');
@@ -489,6 +263,5 @@ class getlocations_mapquest_plugin_style extends views_plugin_style {
     }
     return parent::render();
   }
-
 
 }
