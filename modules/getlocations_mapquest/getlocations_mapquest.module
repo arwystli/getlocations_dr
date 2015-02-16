@@ -1802,24 +1802,6 @@ function _getlocations_mapquest_rebuild_marker_js_submit($form, &$form_state) {
  *
  */
 function getlocations_mapquest_entity_type_map($type, $entity_id) {
-/*
-  global $language;
-
-  $entity_type = getlocations_get_entity_type_from_path($type);
-  $entity_get_info = entity_get_info($entity_type);
-
-  // get key for entity_type
-  $entity_key = $entity_get_info['entity keys']['id']; // nid, cid, uid etc
-  $locations = getlocations_load_locations($entity_id, $entity_key);
-  $getlocations_mapquest_defaults = getlocations_mapquest_defaults();
-
-  $load_hook = $entity_get_info['load hook'];
-  $object = $load_hook($entity_id);
-  $lang = ($object->language ? $object->language : $language->language);
-  $locative_field_name = $object->field_mapquest_map[$lang][0]['locative_field_name'];
-  $typemarkers = getlocations_get_markertypes($entity_type);
-  $bundle = $object->type;
-*/
 
   $entity_type = getlocations_get_entity_type_from_path($type);
   $locations = getlocations_load_locations($entity_id, $entity_type);
@@ -1878,13 +1860,6 @@ function getlocations_mapquest_entity_type_map($type, $entity_id) {
     }
   }
 
-#  $marker = $getlocations_mapquest_defaults['node_map_marker'];
-#  if (isset($getlocations_mapquest_defaults[$entity_type . '_map_marker'])) {
-#    $marker = $getlocations_mapquest_defaults[$entity_type . '_map_marker'];
-#  }
-#  if (isset($typemarkers[$object->type]) && $typemarkers[$object->type]) {
-#    $marker = $typemarkers[$object->type];
-#  }
 
   $entity_title = '';
   if (isset($object->title)) {
