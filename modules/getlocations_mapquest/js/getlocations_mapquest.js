@@ -93,7 +93,7 @@
             latLng: latlon,
             zoom: parseInt(map_opts.zoom),
             mtype: map_opts.maps_default,
-            //bestFitMargin: parseInt(map_opts.bestfitmargin),
+            bestFitMargin: parseInt(map_opts.bestfitmargin),
             zoomOnDoubleClick: (map_opts.doubleClickZoom ? true : false)
           };
 
