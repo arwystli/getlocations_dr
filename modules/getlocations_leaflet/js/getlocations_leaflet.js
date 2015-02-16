@@ -526,6 +526,11 @@
 
           }
 
+          // leaflet hash
+          if (map_settings.hashurl && typeof(L.Hash) !== 'undefined') {
+            new L.Hash(Drupal.getlocations_leaflet_map[key]);
+          }
+
         } // end is there really a map?
       }); // end once
     } // end attach

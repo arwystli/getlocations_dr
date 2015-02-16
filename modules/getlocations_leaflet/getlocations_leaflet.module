@@ -110,6 +110,9 @@ function getlocations_leaflet_library() {
     );
   }
 
+
+
+
   $getlocations_leaflet_paths = getlocations_leaflet_paths_get();
   $getlocations_leaflet_plugins = getlocations_leaflet_plugins();
 
@@ -365,10 +368,29 @@ function getlocations_leaflet_library() {
     );
   }
 
+  // leaflet hash library
+  if ($getlocations_leaflet_plugins['hash_enable']) {
+    $hashfile = getlocations_leaflet_hash_library_check();
+    if ($hashfile) {
+      $jsarr += array(
+        $hashfile => array(
+          'type' => 'file',
+          'preprocess' => $aggr
+        ),
+      );
+    }
+  }
+
   // mapquest
   $mapquest_lic =  variable_get('getlocations_mapquest_lic', array('key' => '', 'type' => 'l'));
   if ($mapquest_lic['key']) {
-    global $is_https;
+    $defaults = getlocations_defaults();
+    if (! isset($defaults['is_https']) || ! $defaults['is_https']) {
+      global $is_https;
+    }
+    else {
+      $is_https = $defaults['is_https'];
+    }
     $scheme = ($is_https ? 'https' : 'http');
     if ($mapquest_lic['type'] == 'o') {
       $dom = 'open.mapquestapi.com/sdk/leaflet/v1.s';
@@ -1464,6 +1486,14 @@ function getlocations_leaflet_map_settings_do($map_settings, $defaults, $latlons
   $map_settings['map_settings']['views_search_center'] = $defaults['views_search_center'];
   $map_settings['map_settings']['geolocation_mobile_check'] = $defaults['geolocation_mobile_check'];
 
+  // leaflet hash
+  if ($getlocations_leaflet_plugins['hash_enable']) {
+    $map_settings['map_settings']['hashurl'] = $defaults['hashurl'];
+  }
+  else {
+    $map_settings['map_settings']['hashurl'] = 0;
+  }
+
   $getlocations_leaflet_paths = getlocations_leaflet_paths_get();
   // shapes
   // polygons
@@ -2212,6 +2242,9 @@ function getlocations_leaflet_defaults() {
   $newdefaults['mapquest_maps_hybridlayer']    = 1;
   $newdefaults['mapquest_maps_use']            = 1;
 
+  // leaflet hash
+  $newdefaults['hashurl'] = 0;
+
   $settings = variable_get('getlocations_leaflet_defaults', '');
 
   // mapquest
@@ -2252,6 +2285,7 @@ function getlocations_leaflet_plugins() {
     'mapquest_routing_enable' => 0,
     'mapquest_geocoder_enable' => 0,
     'mapquest_maps_enable' => 0,
+    'hash_enable'          => 0,
   );
   $settings = variable_get('getlocations_leaflet_plugins', $defaults);
   $return = getlocations_adjust_vars($defaults, $settings);
@@ -2286,6 +2320,7 @@ function getlocations_leaflet_display_options_form($defaults, $admin = FALSE) {
 
   $controlpositions = getlocations_leaflet_controlpositions();
   $getlocations_leaflet_plugins = getlocations_leaflet_plugins();
+  $mapquest_lic = variable_get('getlocations_mapquest_lic', array('key' => '', 'type' => 'l'));
 
   $form['nodezoom'] = getlocations_element_map_zoom(
     t('Default Zoom for Single location'),
@@ -2391,7 +2426,7 @@ function getlocations_leaflet_display_options_form($defaults, $admin = FALSE) {
     $form['mapquest_maps_hybridlayer'] = array('#type' => 'value', '#value' => 1);
   }
 
-  if ($getlocations_leaflet_plugins['mapquest_traffic_enable']) {
+  if ($getlocations_leaflet_plugins['mapquest_traffic_enable'] && $mapquest_lic['type'] == 'l') {
     $form['mapquest_traffic_flow'] = getlocations_element_map_checkbox(
       t('Enable traffic flow'),
       $defaults['mapquest_traffic_flow'],
@@ -3084,6 +3119,18 @@ function getlocations_leaflet_display_options_form($defaults, $admin = FALSE) {
     $form['zoomslider'] = array('#type' => 'value', '#value' => 0);
   }
 
+  // leaflet hash
+  if ($getlocations_leaflet_plugins['hash_enable']) {
+    $form['hashurl'] = getlocations_element_map_checkbox(
+      t('Hash Url'),
+      $defaults['hashurl'],
+      t('Enable Url Hash for the map.')
+    );
+  }
+  else {
+    $form['hashurl'] = array('#type' => 'value', '#value' => 0);
+  }
+
   $form['markeraction'] = getlocations_element_dd(
     t('Marker action'),
     $defaults['markeraction'],
@@ -3342,6 +3389,18 @@ function getlocations_leaflet_settings_form() {
     t('Enable Day/Night plugin'),
     $getlocations_leaflet_plugins['terminator_enable']
   );
+
+  // leaflet-hash
+  $leaflet_hash_file = getlocations_leaflet_hash_library_check();
+  if ($leaflet_hash_file) {
+    $form['getlocations_leaflet_plugins']['hash_enable'] = getlocations_element_map_checkbox(
+      t('Enable Leaflet hash plugin'),
+      $getlocations_leaflet_plugins['hash_enable']
+    );
+  }
+  else {
+    $form['getlocations_leaflet_plugins']['hash_enable'] = array('#type' => 'value', '#value' => 0);
+  }
 
   // mapquest
   $mapquest_lic =  variable_get('getlocations_mapquest_lic', array('key' => '', 'type' => 'l'));
@@ -4584,6 +4643,22 @@ function getlocations_leaflet_library_version() {
     }
   }
   return $version;
+}
+
+/**
+ * Check that the library exists
+ *
+ */
+function getlocations_leaflet_hash_library_check() {
+  if ($path = libraries_get_path('leaflet-hash')) {
+    $file = $path . '/leaflet-hash.js';
+  }
+  if ($path && file_exists($file)) {
+    return $file;
+  }
+  else {
+    return FALSE;
+  }
 }
 
 /**
