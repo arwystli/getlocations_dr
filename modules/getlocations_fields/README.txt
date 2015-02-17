@@ -106,6 +106,7 @@ If you set "Exposed form in block" to "no" it will appear with the map.
 
 All of the views may need to be limited to one or more content-types, depending on your use case.
 
+To show phone,fax or mobile fields add Getlocations_fields: Data to your fields list and select the field you want from the dropdown.
 
 An example of a PHP snippet in Getlocations Fields Distance / Proximity Filter
 to provide the latitude/longitude of the current user as supplied by the
