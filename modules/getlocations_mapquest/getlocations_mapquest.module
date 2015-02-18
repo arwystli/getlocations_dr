@@ -918,6 +918,9 @@ function getlocations_mapquest_map_settings_do($map_settings, $defaults, $latlon
   $map_settings['map_settings']['views_search_center'] = $defaults['views_search_center'];
   $map_settings['map_settings']['geolocation_mobile_check'] = $defaults['geolocation_mobile_check'];
 
+  // field group support;
+  $map_settings['map_settings']['field_group_enable'] = (module_exists('field_group') ? 1 : 0);
+
   return $map_settings;
 }
 

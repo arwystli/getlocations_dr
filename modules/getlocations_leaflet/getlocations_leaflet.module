@@ -1486,6 +1486,9 @@ function getlocations_leaflet_map_settings_do($map_settings, $defaults, $latlons
   $map_settings['map_settings']['views_search_center'] = $defaults['views_search_center'];
   $map_settings['map_settings']['geolocation_mobile_check'] = $defaults['geolocation_mobile_check'];
 
+  // field group support;
+  $map_settings['map_settings']['field_group_enable'] = (module_exists('field_group') ? 1 : 0);
+
   // leaflet hash
   if ($getlocations_leaflet_plugins['hash_enable']) {
     $map_settings['map_settings']['hashurl'] = $defaults['hashurl'];

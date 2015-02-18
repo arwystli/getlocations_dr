@@ -323,6 +323,27 @@
             Drupal.getlocations_mapquest.redoMap(key);
           }
 
+          // field_group support
+          if (map_settings.field_group_enable) {
+            // field group multipage support
+            if ($(".multipage-link-next,.multipage-link-previous").is('input')) {
+              $(".multipage-link-next,.multipage-link-previous").one('click', function(event) {
+                Drupal.getlocations_mapquest.redoMap(key);
+              });
+            }
+            // field group vert and horiz tabs
+            if ($(".vertical-tabs-list,.horizontal-tabs-list").is('ul')) {
+              $("li.vertical-tab-button a, li.horizontal-tab-button a").bind('click', function(event) {
+                Drupal.getlocations_mapquest.redoMap(key);
+              });
+            }
+            // field group accordion
+            if ($(".field-group-accordion").is('div')) {
+              $(".accordion-item").bind('click', function(event) {
+                Drupal.getlocations_mapquest.redoMap(key);
+              });
+            }
+          }
 
 
         } // end is there really a map?
