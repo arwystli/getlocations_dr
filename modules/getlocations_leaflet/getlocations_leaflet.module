@@ -1490,12 +1490,7 @@ function getlocations_leaflet_map_settings_do($map_settings, $defaults, $latlons
   $map_settings['map_settings']['field_group_enable'] = (module_exists('field_group') ? 1 : 0);
 
   // leaflet hash
-  if ($getlocations_leaflet_plugins['hash_enable']) {
-    $map_settings['map_settings']['hashurl'] = $defaults['hashurl'];
-  }
-  else {
-    $map_settings['map_settings']['hashurl'] = 0;
-  }
+  $map_settings['map_settings']['hashurl'] = ($getlocations_leaflet_plugins['hash_enable'] ? $defaults['hashurl'] : 0);
 
   $getlocations_leaflet_paths = getlocations_leaflet_paths_get();
   // shapes

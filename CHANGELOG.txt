@@ -1,9 +1,104 @@
-commit 2fd3656
+commit 1cbb13d
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Thu Feb 19 12:02:37 2015 +0000
+
+    simplify code
+
+modules/getlocations_leaflet/getlocations_leaflet.module
+
+commit b54ded0
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Feb 18 23:32:10 2015 +0000
+
+    more field_group module support
+
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/js/getlocations_leaflet.js
+modules/getlocations_leaflet/js/getlocations_leaflet.min.js
+modules/getlocations_mapquest/getlocations_mapquest.module
+modules/getlocations_mapquest/js/getlocations_mapquest.js
+modules/getlocations_mapquest/js/getlocations_mapquest.min.js
+
+commit 5424e70
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Tue Feb 17 10:16:35 2015 +0000
+
+    more info added to README
+
+modules/getlocations_fields/README.txt
+
+commit 88e8c34
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Mon Feb 16 17:17:59 2015 +0000
+
+    tidy up
+
+modules/getlocations_mapquest/getlocations_mapquest.module
+
+commit d9e3e3c
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Mon Feb 16 16:22:17 2015 +0000
+
+    enabled bestfitmargin
+
+modules/getlocations_mapquest/getlocations_mapquest.module
+modules/getlocations_mapquest/js/getlocations_mapquest.js
+modules/getlocations_mapquest/js/getlocations_mapquest.min.js
+
+commit d2e6e65
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Mon Feb 16 12:20:09 2015 +0000
+
+    mapquest fixes
+
+modules/getlocations_mapquest/getlocations_mapquest.module
+modules/getlocations_mapquest/views/getlocations_mapquest.views.inc
+modules/getlocations_mapquest/views/getlocations_mapquest_plugin_style.inc
+
+commit e78dfc4
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Mon Feb 16 09:08:32 2015 +0000
+
+    added leaflet-hash
+
+drush/getlocations.drush.inc
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/js/getlocations_leaflet.js
+modules/getlocations_leaflet/js/getlocations_leaflet.min.js
+
+commit 5dbd0f8
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Mon Feb 16 09:08:04 2015 +0000
+
+    added mapquest
+
+modules/getlocations_fields/getlocations_fields.functions.inc
+modules/getlocations_fields/js/getlocations_fields_search_views.js
+modules/getlocations_fields/js/getlocations_fields_search_views.min.js
+modules/getlocations_leaflet/views/getlocations_leaflet_plugin_style.inc
+modules/getlocations_mapquest/getlocations_mapquest.css
+modules/getlocations_mapquest/getlocations_mapquest.info
+modules/getlocations_mapquest/getlocations_mapquest.install
+modules/getlocations_mapquest/getlocations_mapquest.markerinfo.inc
+modules/getlocations_mapquest/getlocations_mapquest.module
+modules/getlocations_mapquest/js/getlocations_mapquest.js
+modules/getlocations_mapquest/js/getlocations_mapquest.min.js
+modules/getlocations_mapquest/js/getlocations_mapquest_formatter.js
+modules/getlocations_mapquest/js/getlocations_mapquest_formatter.min.js
+modules/getlocations_mapquest/js/getlocations_mapquest_preview.js
+modules/getlocations_mapquest/js/getlocations_mapquest_preview.min.js
+modules/getlocations_mapquest/views/getlocations-mapquest-view-map.tpl.php
+modules/getlocations_mapquest/views/getlocations_mapquest.views.inc
+modules/getlocations_mapquest/views/getlocations_mapquest.views_default.inc
+modules/getlocations_mapquest/views/getlocations_mapquest_plugin_style.inc
+
+commit c0d3e24
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Sat Feb 7 15:34:36 2015 +0000
 
     added mapquest support
 
+CHANGELOG.txt
 getlocations.admin.inc
 modules/getlocations_leaflet/getlocations_leaflet.module
 modules/getlocations_leaflet/js/getlocations_leaflet.js
