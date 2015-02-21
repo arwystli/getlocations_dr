@@ -143,7 +143,7 @@ eg
 theme_getlocations_fields_show() becomes MYTHEME_getlocations_fields_show() where MYTHEME is the name of your theme.
 You can edit it there to suit your needs.
 
-These functions can be found in the file getlocations_fields.theme.inc
+These functions can be found in the file getlocations_fields.module
 
 Theming the Getlocations Fields display.
 This is done with function theme_getlocations_fields_show()

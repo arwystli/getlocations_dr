@@ -131,6 +131,8 @@ class getlocations_leaflet_plugin_style extends views_plugin_style {
                 'awesome_icon_size'    => t($label . ' Awesome icon size'),
                 'awesome_icon_type'    => t($label . ' Awesome icon type'),
                 'awesome_icon_flip'    => t($label . ' Awesome icon flip and rotate'),
+                'awesome_icon_html'    => t($label . ' Awesome icon HTML'),
+                'awesome_icon_class'   => t($label . ' Awesome icon class'),
               );
               $form += getlocations_leaflet_awesome_markers_elements_get($this->options, $labels, $mkey);
             }
@@ -151,6 +153,8 @@ class getlocations_leaflet_plugin_style extends views_plugin_style {
               'awesome_icon_size'    => t($label . ' Awesome icon size'),
               'awesome_icon_type'    => t($label . ' Awesome icon type'),
               'awesome_icon_flip'    => t($label . ' Awesome icon flip and rotate'),
+              'awesome_icon_html'    => t($label . ' Awesome icon HTML'),
+              'awesome_icon_class'   => t($label . ' Awesome icon class'),
             );
             $form += getlocations_leaflet_awesome_markers_elements_get($this->options, $labels, $entity_type);
           }

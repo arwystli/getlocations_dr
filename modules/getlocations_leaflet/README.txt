@@ -113,3 +113,13 @@ http://brunob.github.com/leaflet.fullscreen
 https://github.com/turban/Leaflet.Sync
 https://github.com/Norkart/Leaflet-MiniMap
 https://github.com/ardhi/Leaflet.MousePosition
+
+Leaflet DivIcons
+
+Leaflet's DivIcon function can be used by doing the following:
+Enable Awesome markers.
+Select awesome markers as the marker type
+Select "Icon only" and add your html and/or class to the provided textfields
+an example html:<div class="divicon-test1">&nbsp;</div>
+ensure that your bespoke css class is in your theme's css and it should work.
+

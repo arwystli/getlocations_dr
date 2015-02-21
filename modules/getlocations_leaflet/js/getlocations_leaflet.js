@@ -609,7 +609,11 @@
         // icon only
         if (marker_type == 'i') {
           var px = parseInt(vicon.px);
-          var diopts = {className: 'getlocations-leaflet-div-icon', iconSize: [px, px], html: vicon.html};
+          var diopts = {
+            className: vicon.classname,
+            iconSize: [px, px],
+            html: vicon.html
+          };
           var thisVicon = L.divIcon(diopts);
         }
         else {
