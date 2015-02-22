@@ -1033,6 +1033,16 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
     $getlocations_js_weight++;
   }
 
+  if (module_exists('field_group') && !stristr($current_js, $getlocations_paths['getlocations_field_group_path'])) {
+    $js_opts = array();
+    $js_opts['weight'] = $getlocations_js_weight + 10;
+    $js_opts['type'] = 'file';
+    $js_opts['preprocess'] = $aggr;
+    drupal_add_js($getlocations_paths['getlocations_field_group_path'], $js_opts);
+    $getlocations_js_weight++;
+
+  }
+
 }
 
 /**
@@ -4851,6 +4861,7 @@ function getlocations_paths_get($reset = FALSE, $min = FALSE) {
       'getlocations_marker_box_path'    => GETLOCATIONS_PATH . '/js/getlocations_marker_box.min.js',
       'getlocations_views_path'         => GETLOCATIONS_PATH . '/js/getlocations_views.min.js',
       'getlocations_icons_path'         => GETLOCATIONS_PATH . '/js/icons.min.js',
+      'getlocations_field_group_path'   => GETLOCATIONS_PATH . '/js/getlocations_field_group.min.js',
     );
   }
   else {
@@ -4877,6 +4888,7 @@ function getlocations_paths_get($reset = FALSE, $min = FALSE) {
       'getlocations_marker_box_path'    => GETLOCATIONS_PATH . '/js/getlocations_marker_box.js',
       'getlocations_views_path'         => GETLOCATIONS_PATH . '/js/getlocations_views.js',
       'getlocations_icons_path'         => GETLOCATIONS_PATH . '/js/icons.js',
+      'getlocations_field_group_path'   => GETLOCATIONS_PATH . '/js/getlocations_field_group.js',
     );
 
   }

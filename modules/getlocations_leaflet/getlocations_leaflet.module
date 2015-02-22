@@ -422,9 +422,20 @@ function getlocations_leaflet_library() {
     ),
     $getlocations_leaflet_paths['getlocations_leaflet_path'] => array(
       'type' => 'file',
+      'weight' => 10,
       'preprocess' => $aggr
     ),
   );
+
+  if (module_exists('field_group')) {
+    $jsarr += array(
+      $getlocations_leaflet_paths['getlocations_leaflet_field_group_path'] => array(
+        'type' => 'file',
+        'weight' => 10,
+        'preprocess' => $aggr
+      ),
+    );
+  }
 
   $libraries['getlocations-leaflet']['js'] = $jsarr;
   if (! empty($cssarr)) {
@@ -870,16 +881,16 @@ function getlocations_leaflet_field_formatter_settings_summary($field, $instance
           $summary[] = t('Polylines clickable: Yes');
         }
       }
-      if ($settings['usermarker_enable']) {
+      if ($settings['usermarker']) {
         $summary[] = t('GPS button: Yes');
       }
-      if ($settings['bouncemarker_enable']) {
+      if ($settings['bouncemarker']) {
         $summary[] = t('Bounce markers: Yes');
       }
-      if ($settings['magnifyingglass_enable']) {
+      if ($settings['magnifyingglass']) {
         $summary[] = t('Magnifying Glass: Yes');
       }
-      if ($settings['terminator_enable']) {
+      if ($settings['terminator']) {
         $summary[] = t('Day/Night: Yes');
       }
 
@@ -3213,6 +3224,7 @@ function getlocations_leaflet_paths_get($reset = FALSE, $min = FALSE) {
       'getlocations_leaflet_geojson_path'    => GETLOCATIONS_LEAFLET_PATH . '/js/getlocations_leaflet_geojson.min.js',
       'getlocations_leaflet_providers_path'  => GETLOCATIONS_LEAFLET_PATH . '/js/getlocations_leaflet_providers.min.js',
       'getlocations_leaflet_preview_path'    => GETLOCATIONS_LEAFLET_PATH . '/js/getlocations_leaflet_preview.min.js',
+      'getlocations_leaflet_field_group_path'    => GETLOCATIONS_LEAFLET_PATH . '/js/getlocations_leaflet_field_group.min.js',
     );
   }
   else {
@@ -3226,6 +3238,7 @@ function getlocations_leaflet_paths_get($reset = FALSE, $min = FALSE) {
       'getlocations_leaflet_geojson_path'    => GETLOCATIONS_LEAFLET_PATH . '/js/getlocations_leaflet_geojson.js',
       'getlocations_leaflet_providers_path'  => GETLOCATIONS_LEAFLET_PATH . '/js/getlocations_leaflet_providers.js',
       'getlocations_leaflet_preview_path'    => GETLOCATIONS_LEAFLET_PATH . '/js/getlocations_leaflet_preview.js',
+      'getlocations_leaflet_field_group_path'    => GETLOCATIONS_LEAFLET_PATH . '/js/getlocations_leaflet_field_group.js',
     );
   }
 
