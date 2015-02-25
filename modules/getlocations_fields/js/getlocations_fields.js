@@ -235,7 +235,7 @@
               });
             }
             // field group accordion
-            if ($(".field-group-accordion").is('div')) {
+            if ($(".field-group-accordion,.field-group-accordion-wrapper").is('div')) {
               $(".accordion-item").bind('click', function(event) {
                 Drupal.getlocations.redoMap(key);
                 Drupal.getlocations_map[key].setCenter(point[key]);
