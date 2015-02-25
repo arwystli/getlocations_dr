@@ -28,9 +28,11 @@
             className: 'awesome-marker',
             prefix: 'glyphicon',
             spinClass: 'fa-spin',
+            extraClasses: '',
             icon: 'home',
             markerColor: 'blue',
-            iconColor: 'white'
+            iconColor: 'white',
+            html : ""
         },
 
         initialize: function (options) {
@@ -75,7 +77,7 @@
                 }
             }
 
-            return "<i " + iconColorStyle + "class='" + options.prefix + " " + iconClass + " " + iconSpinClass + " " + iconColorClass + "'></i>";
+            return "<i " + iconColorStyle + "class='" + options.extraClasses + ' ' + options.prefix + " " + iconClass + " " + iconSpinClass + " " + iconColorClass + "'>" + options.html + "</i>";
         },
 
         _setIconStyles: function (img, name) {
@@ -113,12 +115,9 @@
             return div;
       }
     });
-        
+
     L.AwesomeMarkers.icon = function (options) {
         return new L.AwesomeMarkers.Icon(options);
     };
 
 }(this, document));
-
-
-

@@ -4702,7 +4702,10 @@ function getlocations_leaflet_awesome_marker_get($defaults, $prefix = '') {
   elseif ($awesome_icon_type == 'm' ) {
     // marker only, do it by providing a nonexistent icon
     $markercolor = (isset($defaults[$prefix . 'awesome_marker_color']) ? $defaults[$prefix . 'awesome_marker_color'] : $defaults['awesome_marker_color']);
-    $vicon = array('icon' => 'fa-xxx', 'markerColor' => $markercolor, 'prefix' => 'fa', 'spin' => FALSE);
+    $selector = (isset($defaults[$prefix . 'awesome_icon_color_selector']) ? $defaults[$prefix . 'awesome_icon_color_selector'] : $defaults['awesome_icon_color_selector']);
+    $iconcolor = ($defaults[$prefix . 'awesome_icon_color'] ? $defaults[$prefix . 'awesome_icon_color'] : $selector);
+    $html = (isset($defaults[$prefix . 'awesome_icon_html']) ? $defaults[$prefix . 'awesome_icon_html'] : $defaults['awesome_icon_html']);
+    $vicon = array('icon' => 'fa-xxx', 'markerColor' => $markercolor, 'prefix' => 'fa', 'spin' => FALSE, 'html' => $html, 'iconColor' => $iconcolor);
   }
   else {
     // both
