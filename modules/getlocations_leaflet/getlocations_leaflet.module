@@ -2159,7 +2159,8 @@ function getlocations_leaflet_defaults() {
   $newdefaults['awesome_icon']                = 'fa-home';
   $newdefaults['awesome_icon_color_selector'] = 'white';
   $newdefaults['awesome_icon_color']          = '';
-  $newdefaults['awesome_icon_spin']           = FALSE;
+  $newdefaults['awesome_icon_spin']           = '';
+  $newdefaults['awesome_icon_pulse']          = '';
   $newdefaults['awesome_marker_color']        = 'blue';
   $newdefaults['awesome_icon_type']           = 'b';
   $newdefaults['awesome_icon_size']           = '';
@@ -2171,7 +2172,8 @@ function getlocations_leaflet_defaults() {
     $newdefaults[$entity_type . '_marker_awesome_icon']                = '';
     $newdefaults[$entity_type . '_marker_awesome_icon_color_selector'] = '';
     $newdefaults[$entity_type . '_marker_awesome_icon_color']          = '';
-    $newdefaults[$entity_type . '_marker_awesome_icon_spin']           = FALSE;
+    $newdefaults[$entity_type . '_marker_awesome_icon_spin']           = '';
+    $newdefaults[$entity_type . '_marker_awesome_icon_pulse']          = '';
     $newdefaults[$entity_type . '_marker_awesome_marker_color']        = '';
     $newdefaults[$entity_type . '_marker_awesome_icon_type']           = 'b';
     $newdefaults[$entity_type . '_marker_awesome_icon_size']           = '';
@@ -2188,7 +2190,8 @@ function getlocations_leaflet_defaults() {
             $newdefaults[$m . '_marker_awesome_icon']                = '';
             $newdefaults[$m . '_marker_awesome_icon_color_selector'] = '';
             $newdefaults[$m . '_marker_awesome_icon_color']          = '';
-            $newdefaults[$m . '_marker_awesome_icon_spin']           = FALSE;
+            $newdefaults[$m . '_marker_awesome_icon_spin']           = '';
+            $newdefaults[$m . '_marker_awesome_icon_pulse']          = '';
             $newdefaults[$m . '_marker_awesome_marker_color']        = '';
             $newdefaults[$m . '_marker_awesome_icon_type']           = 'b';
             $newdefaults[$m . '_marker_awesome_icon_size']           = '';
@@ -4610,9 +4613,10 @@ function getlocations_leaflet_awesome_markers_elements_get($defaults, $labels = 
     t('These Icon modifiers are only applied when "Icon only" has been selected in Awesome icon type.')
   );
 
-  $form[$prefix . 'awesome_icon_spin'] = getlocations_element_map_checkbox(
+  $form[$prefix . 'awesome_icon_spin'] = getlocations_element_dd(
     $labels['awesome_icon_spin'],
-    (isset($defaults[$prefix . 'awesome_icon_spin']) ? $defaults[$prefix . 'awesome_icon_spin'] : $defaults['awesome_icon_spin'])
+    (isset($defaults[$prefix . 'awesome_icon_spin']) ? $defaults[$prefix . 'awesome_icon_spin'] : $defaults['awesome_icon_spin']),
+    array('' => t('Normal'), 'fa-spin' => t('Spin'), 'fa-pulse' => t('Pulse'))
   );
 
   $form[$prefix . 'awesome_marker_color'] = getlocations_element_dd(
