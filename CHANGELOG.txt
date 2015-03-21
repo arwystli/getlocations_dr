@@ -1,9 +1,18 @@
-commit 9d7a951
+commit 53ee620
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sat Mar 21 15:49:51 2015 +0000
+
+    added missing info to README
+
+README.txt
+
+commit e442c4e
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Sat Mar 21 12:43:56 2015 +0000
 
     added loading gif
 
+CHANGELOG.txt
 modules/getlocations_search/getlocations_search.module
 modules/getlocations_search/js/getlocations_search.js
 modules/getlocations_search/js/getlocations_search.min.js

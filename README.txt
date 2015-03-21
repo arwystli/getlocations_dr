@@ -243,6 +243,41 @@ function template_preprocess_getlocations_marker_box() are for use in conjunctio
 with the colorbox module and use the files getlocations_box.tpl.php and
 getlocations_marker_box.tpl.php respectively.
 
+You can now categorise markers in Views by adding Content: type (output machine name)
+in the Fields section of a view. This will be passed on to the javascript, so you can add a button
+to getlocations-view-map.tpl.php (by copying this file to your theme folder)
+eg
+<p><input type="button" value="Location off" id="toggle_loc"></p>
+
+and adding something like:
+
+      // toggle location button
+      if ($("#toggle_loc").is("input")) {
+        $("#toggle_loc").click( function() {
+          k = 'key_1';
+          cat = 'location';
+          $.each(getlocations_markers[k].lids, function (lid, mark) {
+            if (getlocations_markers[k].cat[lid] == cat) {
+              vis = mark.getVisible();
+              if (vis) {
+                mark.setVisible(false);
+                $("#toggle_loc").val("Location on");
+              }
+              else {
+                mark.setVisible(true);
+                $("#toggle_loc").val("Location off");
+              }
+            }
+          });
+        });
+      }
+
+to your theme's javascript
+edit 'key_1' to whichever key your map is using
+edit 'location' to the machine name of your content type
+This will give you a button that can switch markers on/off
+
+
 More information on theming can be found on http://drupal.org/documentation/theme
 
 Polygons
