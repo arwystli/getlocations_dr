@@ -65,8 +65,8 @@
                 iconClass = options.prefix + "-" + options.icon;
             }
 
-            if(options.spin && typeof options.spinClass === "string") {
-                iconSpinClass = options.spinClass;
+            if(options.spin && typeof options.spin === "string") {
+                iconSpinClass = options.spin;
             }
 
             if(options.iconColor) {
@@ -77,7 +77,7 @@
                 }
             }
 
-            return "<i " + iconColorStyle + "class='" + options.extraClasses + ' ' + options.prefix + " " + iconClass + " " + iconSpinClass + " " + iconColorClass + "'>" + options.html + "</i>";
+            return "<i " + iconColorStyle + "class='" + options.prefix + " " + options.extraClasses + " " + iconClass + " " + iconSpinClass + " " + iconColorClass + "'>" + options.html + "</i>";
         },
 
         _setIconStyles: function (img, name) {
