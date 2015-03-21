@@ -20,7 +20,7 @@
       $.each(Drupal.settings.getlocations, function (key, settings) {
 
         // Drupal field_group module support
-        if (settings.map_settings.field_group_enable) {
+        if (settings.field_group_enable) {
           // field group multipage support
           if ($(".multipage-link-next,.multipage-link-previous").is('input')) {
             $(".multipage-link-next,.multipage-link-previous").one('click', function(event) {
