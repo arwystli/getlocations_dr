@@ -759,6 +759,7 @@ function theme_getlocations_search_form($variables) {
     $geolocation_button .= '<input type="button" value="' . t('Find current Location') . '" title="' . t('Get the latitude and longitude for this location from the browser') . '" id="getlocations_search_geolocation_button_' . $mapid . '" class="form-submit" />&nbsp;';
     $geolocation_button .= '<span id="getlocations_search_geolocation_status_ok_' . $mapid . '" class="js-hide" ><img src="' . base_path() . GETLOCATIONS_PATH . '/images/ok.png' . '" title="' . t('Geolocation OK') . '" /></span>';
     $geolocation_button .= '<span id="getlocations_search_geolocation_status_err_' . $mapid . '" class="js-hide" ><img src="' . base_path() . GETLOCATIONS_PATH . '/images/error.png' . '" title="' . t('Geolocation failed') . '" /></span>';
+    $geolocation_button .= '<span id="getlocations_search_geolocation_status_load_' . $mapid . '" class="js-hide" ><img src="' . base_path() . GETLOCATIONS_PATH . '/images/loading_small.gif' . '" title="' . t('Geolocation loading') . '" /></span>';
     $geolocation_button .= '</p>';
     $geolocation_button .= '<p>' . t('Use the browser to find your current location') . '</p></div>';
     $form['getlocations_search_geolocation_button_' . $mapid]['#markup'] = $geolocation_button;

@@ -1,9 +1,148 @@
-commit 1cbb13d
+commit 9d7a951
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sat Mar 21 12:43:56 2015 +0000
+
+    added loading gif
+
+modules/getlocations_search/getlocations_search.module
+modules/getlocations_search/js/getlocations_search.js
+modules/getlocations_search/js/getlocations_search.min.js
+
+commit d2b2fe9
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sat Mar 21 12:24:21 2015 +0000
+
+    added new image
+
+images/loading_small.gif
+
+commit 9edbdfa
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sat Mar 21 12:21:36 2015 +0000
+
+    simplified variable naming
+
+modules/getlocations_leaflet/js/getlocations_leaflet.js
+modules/getlocations_leaflet/js/getlocations_leaflet.min.js
+
+commit 2b773ea
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sat Mar 21 12:20:12 2015 +0000
+
+    fixed options bug
+
+modules/getlocations_leaflet/plugins/awesome-markers/leaflet.awesome-markers.js
+modules/getlocations_leaflet/plugins/awesome-markers/leaflet.awesome-markers.min.js
+
+commit 1b2427c
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sat Mar 21 12:19:11 2015 +0000
+
+    fixed bug in field_group js
+
+js/getlocations_field_group.js
+js/getlocations_field_group.min.js
+
+commit 6bf498f
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Feb 25 21:03:29 2015 +0000
+
+    added configurable awesome-markers html
+
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/plugins/awesome-markers/leaflet.awesome-markers.js
+modules/getlocations_leaflet/plugins/awesome-markers/leaflet.awesome-markers.min.js
+
+commit dbff61c
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Feb 25 18:50:24 2015 +0000
+
+    added awesome pulse
+
+modules/getlocations_leaflet/getlocations_leaflet.module
+
+commit 03c7c19
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Feb 25 11:08:29 2015 +0000
+
+    updated awesome fonts
+
+modules/getlocations_fields/js/getlocations_fields.js
+modules/getlocations_fields/js/getlocations_fields.min.js
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/plugins/font-awesome/css/font-awesome.css
+modules/getlocations_leaflet/plugins/font-awesome/css/font-awesome.min.css
+modules/getlocations_leaflet/plugins/font-awesome/fonts/FontAwesome.otf
+modules/getlocations_leaflet/plugins/font-awesome/fonts/fontawesome-webfont.eot
+modules/getlocations_leaflet/plugins/font-awesome/fonts/fontawesome-webfont.svg
+modules/getlocations_leaflet/plugins/font-awesome/fonts/fontawesome-webfont.ttf
+modules/getlocations_leaflet/plugins/font-awesome/fonts/fontawesome-webfont.woff
+modules/getlocations_leaflet/plugins/font-awesome/fonts/fontawesome-webfont.woff2
+modules/getlocations_leaflet/plugins/font-awesome/less/animated.less
+modules/getlocations_leaflet/plugins/font-awesome/less/core.less
+modules/getlocations_leaflet/plugins/font-awesome/less/extras.less
+modules/getlocations_leaflet/plugins/font-awesome/less/font-awesome.less
+modules/getlocations_leaflet/plugins/font-awesome/less/icons.less
+modules/getlocations_leaflet/plugins/font-awesome/less/mixins.less
+modules/getlocations_leaflet/plugins/font-awesome/less/path.less
+modules/getlocations_leaflet/plugins/font-awesome/less/spinning.less
+modules/getlocations_leaflet/plugins/font-awesome/less/variables.less
+modules/getlocations_leaflet/plugins/font-awesome/scss/_animated.scss
+modules/getlocations_leaflet/plugins/font-awesome/scss/_core.scss
+modules/getlocations_leaflet/plugins/font-awesome/scss/_extras.scss
+modules/getlocations_leaflet/plugins/font-awesome/scss/_icons.scss
+modules/getlocations_leaflet/plugins/font-awesome/scss/_mixins.scss
+modules/getlocations_leaflet/plugins/font-awesome/scss/_path.scss
+modules/getlocations_leaflet/plugins/font-awesome/scss/_spinning.scss
+modules/getlocations_leaflet/plugins/font-awesome/scss/_variables.scss
+modules/getlocations_leaflet/plugins/font-awesome/scss/font-awesome.scss
+
+commit a69c9f8
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Mon Feb 23 18:47:54 2015 +0000
+
+    adjusted colorbox support loading
+
+getlocations.module
+
+commit 51c48d0
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sun Feb 22 23:54:34 2015 +0000
+
+    moved field_group support to own files
+
+getlocations.module
+js/getlocations.js
+js/getlocations.min.js
+js/getlocations_field_group.js
+js/getlocations_field_group.min.js
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/js/getlocations_leaflet.js
+modules/getlocations_leaflet/js/getlocations_leaflet.min.js
+modules/getlocations_leaflet/js/getlocations_leaflet_field_group.js
+modules/getlocations_leaflet/js/getlocations_leaflet_field_group.min.js
+
+commit 6236730
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sat Feb 21 11:14:33 2015 +0000
+
+    added support for configurable divicon
+
+modules/getlocations_fields/README.txt
+modules/getlocations_fields/getlocations_fields.functions.inc
+modules/getlocations_leaflet/README.txt
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/js/getlocations_leaflet.js
+modules/getlocations_leaflet/js/getlocations_leaflet.min.js
+modules/getlocations_leaflet/views/getlocations_leaflet_plugin_style.inc
+
+commit eb51dd3
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Thu Feb 19 12:02:37 2015 +0000
 
     simplify code
 
+CHANGELOG.txt
 modules/getlocations_leaflet/getlocations_leaflet.module
 
 commit b54ded0

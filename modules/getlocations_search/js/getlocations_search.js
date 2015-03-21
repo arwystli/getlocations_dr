@@ -150,7 +150,7 @@
             }
             else if (gset.geocoder_enable == 1) {
               // google
-              do_Geocode(Drupal.getlocations_map[key], gset, {'address':fm_adrs}, key);
+              do_Geocode(Drupal.getlocations_map[key], gset, fm_adrs, key);
             }
             else {
               // just use place_adrs
@@ -173,7 +173,7 @@
             }
             else {
               // Create a Client Geocoder google
-              do_Geocode(Drupal.getlocations_map[key], gset, {'address':fm_adrs}, key);
+              do_Geocode(Drupal.getlocations_map[key], gset, fm_adrs, key);
             }
             return false;
           });
@@ -183,9 +183,12 @@
         if (navigator && navigator.geolocation) {
           $("#getlocations_search_geolocation_status_ok_" + key).hide();
           $("#getlocations_search_geolocation_status_err_" + key).hide();
+          $("#getlocations_search_geolocation_status_load_" + key).hide();
           $("#getlocations_search_geolocation_status_ok_" + key).removeClass('js-hide');
           $("#getlocations_search_geolocation_status_err_" + key).removeClass('js-hide');
+          $("#getlocations_search_geolocation_status_load_" + key).removeClass('js-hide');
           $("#getlocations_search_geolocation_button_" + key).click( function () {
+            $("#getlocations_search_geolocation_status_load_" + key).show();
             do_Geolocationbutton(Drupal.getlocations_map[key], gset, key);
           });
         }
@@ -196,7 +199,12 @@
         // Geocode button
         if ($("#getlocations_search_geocode_button_wrapper_" + key).is('div')) {
           $("#getlocations_search_geocode_button_" + key).click( function () {
-            do_Geocode(Drupal.getlocations_map[key], gset, fm_adrs, key);
+            if (gset.geocoder_enable == 2) {
+              do_geocoder_Geocode(Drupal.getlocations_map[key], gset, fm_adrs, key);
+            }
+            else {
+              do_Geocode(Drupal.getlocations_map[key], gset, fm_adrs, key);
+            }
           });
         }
 
@@ -311,9 +319,13 @@
     var units = $("#edit-getlocations-search-units-" + mapid2).val();
     var type = $("#edit-getlocations-search-type-" + mapid2).val();
     var limits = $("#edit-getlocations-search-limits-" + mapid2).val();
+    if (! adrs) {
+      adrs = $("#edit-getlocations-search-" + mapid2).val();
+    }
+    var adrs_o = {address: adrs};
     // start geocoder
     var geocoder = new google.maps.Geocoder();
-    geocoder.geocode(adrs, function (results, status) {
+    geocoder.geocode(adrs_o, function (results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
         var address = results[0].formatted_address;
         var slat = results[0].geometry.location.lat();
@@ -378,7 +390,7 @@
     var type = $("#edit-getlocations-search-type-" + mapid2).val();
     var limits = $("#edit-getlocations-search-limits-" + mapid2).val();
     // start geocoder
-    // nominatem
+    // nominatim
     var geocoder = GeocoderJS.createGeocoder('openstreetmap');
     geocoder.geocode(adrs, function (results) {
       if (results) {
@@ -395,6 +407,138 @@
         var msg = Drupal.t('Geocode for (!a) was not successful', prm);
         alert(msg);
       }
+    });
+
+  }
+
+  function do_reverse_Geocode(map, gs, adrs, mkey) {
+    if (! gs.showall) {
+      // are there any markers already?
+      if (search_markersArray.length) {
+        getlocations_search_deleteOverlays(gs);
+      }
+    }
+    // clear out search marker
+    if (gs.do_search_marker) {
+      oldslat = $("#getlocations_search_slat_" + mkey).html();
+      oldslon = $("#getlocations_search_slon_" + mkey).html();
+      if (oldslat) {
+        searchmarker[mkey].setMap();
+      }
+    }
+
+    // close any previous instances
+    for (var i in gs.infoBubbles) {
+      gs.infoBubbles[i].close();
+    }
+
+    // clear the results box
+    getlocations_search_clear_results(mkey, gs);
+    // get settings from the DOM
+    var mapid2 = mkey.replace("_", "-");
+    var distance = $("#edit-getlocations-search-distance-" + mapid2).val();
+    var units = $("#edit-getlocations-search-units-" + mapid2).val();
+    var type = $("#edit-getlocations-search-type-" + mapid2).val();
+    var limits = $("#edit-getlocations-search-limits-" + mapid2).val();
+
+    var adrs_o = {latLng: adrs};
+    // start geocoder
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode(adrs_o, function (results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        var address = results[0].formatted_address;
+        var slat = results[0].geometry.location.lat();
+        var slon = results[0].geometry.location.lng();
+
+        var accuracy = '';
+        if (gs.display_accuracy) {
+          if (results[0].geometry.location_type == 'APPROXIMATE') {
+            accuracy =  Drupal.t('Approximate');
+          }
+          else if (results[0].geometry.location_type == 'GEOMETRIC_CENTER') {
+            accuracy = Drupal.t('Center');
+          }
+          else if (results[0].geometry.location_type == 'RANGE_INTERPOLATED') {
+            accuracy = Drupal.t('Interpolated');
+          }
+          else if (results[0].geometry.location_type == 'ROOFTOP') {
+            accuracy = Drupal.t('Exact');
+          }
+        }
+
+        getlocations_search_get_data(slat, slon, distance, units, type, limits, accuracy, address, gs, map, mkey);
+
+      }
+      else {
+        var prm = {'!a': place_adrs, '!b': Drupal.getlocations.getGeoErrCode(status) };
+        var msg = Drupal.t('Geocode for (!a) was not successful for the following reason: !b', prm);
+        alert(msg);
+      }
+    });
+
+  }
+
+  function do_reverse_geocoder_Geocode(map, gs, lat, lon, mkey) {
+
+    if (! gs.showall) {
+      // are there any markers already?
+      if (search_markersArray.length) {
+        getlocations_search_deleteOverlays(gs);
+      }
+    }
+    // clear out search marker
+    if (gs.do_search_marker) {
+      oldslat = $("#getlocations_search_slat_" + mkey).html();
+      oldslon = $("#getlocations_search_slon_" + mkey).html();
+      if (oldslat) {
+        searchmarker[mkey].setMap();
+      }
+    }
+
+    // close any previous instances
+    for (var i in gs.infoBubbles) {
+      gs.infoBubbles[i].close();
+    }
+
+    // clear the results box
+    getlocations_search_clear_results(mkey, gs);
+    // get settings from the DOM
+    var mapid2 = mkey.replace("_", "-");
+    var distance = $("#edit-getlocations-search-distance-" + mapid2).val();
+    var units = $("#edit-getlocations-search-units-" + mapid2).val();
+    var type = $("#edit-getlocations-search-type-" + mapid2).val();
+    var limits = $("#edit-getlocations-search-limits-" + mapid2).val();
+
+    var geocoder = GeocoderJS.createGeocoder('openstreetmap');
+    geocoder.geodecode(lat, lon, function(results) {
+      if (results) {
+        var address = '';
+        if ( results[0].streetNumber !== undefined) {
+          address += results[0].streetNumber + ' ';
+        }
+        if ( results[0].streetName !== undefined) {
+          address += results[0].streetName + ' ';
+        }
+        if ( results[0].city !== undefined) {
+          address += results[0].city + ', ';
+        }
+        if ( results[0].region !== undefined) {
+          address += results[0].region + ', ';
+        }
+        if ( results[0].postal_code !== undefined) {
+          address += results[0].postal_code + '';
+        }
+        var accuracy = '';
+
+        getlocations_search_get_data(lat, lon, distance, units, type, limits, accuracy, address, gs, map, mkey);
+
+      }
+      else {
+        var prm = {'!a': place_adrs};
+        var msg = Drupal.t('Geocode for (!a) was not successful', prm);
+        alert(msg);
+      }
+
     });
 
   }
@@ -586,13 +730,20 @@
       function(position) {
         lat = position.coords.latitude;
         lng = position.coords.longitude;
-        var p = new google.maps.LatLng(parseFloat(lat), parseFloat(lng));
-        var fm_adrs = {'latLng': p};
-        do_Geocode(map, gs, fm_adrs, mkey);
+
+        if (gs.geocoder_enable == 2) {
+          do_reverse_geocoder_Geocode(map, gs, lat, lng, mkey);
+        }
+        else {
+          var p = new google.maps.LatLng(parseFloat(lat), parseFloat(lng));
+          do_reverse_Geocode(map, gs, p, mkey);
+        }
         $("#getlocations_search_geolocation_status_ok_" + mkey).show();
         $("#getlocations_search_geolocation_status_err_" + mkey).hide();
+        $("#getlocations_search_geolocation_status_load_" + mkey).hide();
       },
       function(error) {
+        $("#getlocations_search_geolocation_status_load_" + mkey).hide();
         $("#getlocations_search_geolocation_status_ok_" + mkey).hide();
         $("#getlocations_search_geolocation_status_err_" + mkey).show();
       }, {maximumAge:10000}
