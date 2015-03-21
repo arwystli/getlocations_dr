@@ -592,13 +592,11 @@
             iconSize: [px, px],
             html: vicon.html
           };
-          var thisVicon = L.divIcon(diopts);
+          var thisIcon = L.divIcon(diopts);
         }
         else {
-          var thisVicon = L.AwesomeMarkers.icon(vicon);
+          var thisIcon = L.AwesomeMarkers.icon(vicon);
         }
-        var Marker = L.marker(latLng, {icon: thisVicon});
-
       }
       else if (icon) {
         var thisIcon = L.icon({iconUrl: icon.iconUrl});
@@ -621,8 +619,8 @@
             thisIcon.options.shadowAnchor = L.point(parseInt(icon.shadowAnchor.x, 10), parseInt(icon.shadowAnchor.y, 10));
           }
         }
-        Marker = L.marker(latLng, {icon: thisIcon});
       }
+      Marker = L.marker(latLng, {icon: thisIcon});
     }
     else {
       // default leaflet marker
