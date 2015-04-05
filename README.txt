@@ -282,7 +282,7 @@ More information on theming can be found on http://drupal.org/documentation/them
 
 Polygons
 To use polygons on your map you will need to enable the feature either globally
-under admin/config/getlocations or per content type under Manage Display or
+under admin/config/services/getlocations or per content type under Manage Display or
 per map in a View under Format: Getlocations | Settings.
 You will need to supply coordinates as a pipe (|) delimited list of lat,lon pairs
 minimum 3 pairs.
