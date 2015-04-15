@@ -1486,12 +1486,14 @@ function getlocations_get_entity_info_from_glid($glid) {
       $row = $query->execute()->fetchAssoc();
       $field_name = $row['field_name'];
       $table = 'field_data_' . $field_name;
-      $col = $field_name . '_glid';
-      $query = db_select($table, 't')
+      if (db_table_exists($table)) {
+        $col = $field_name . '_glid';
+        $query = db_select($table, 't')
           ->fields('t', array('entity_type', 'bundle', 'entity_id'))
           ->condition('t.' . $col, $glid);
         $row = $query->execute()->fetchAssoc();
         return $row;
+      }
     }
   }
 }
