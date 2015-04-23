@@ -415,29 +415,29 @@
       case 'd':
         d = deg.toFixed(dp);     // round degrees
         if (d<100) d = '0' + d;  // pad with leading zeros
-    if (d<10) d = '0' + d;
-    dms = d + '°';
-    break;
+        if (d<10) d = '0' + d;
+        dms = d + '°';
+        break;
       case 'dm':
         var min = (deg*60).toFixed(dp);  // convert degrees to minutes & round
         d = Math.floor(min / 60);    // get component deg/min
         m = (min % 60).toFixed(dp);  // pad with trailing zeros
         if (d<100) d = '0' + d;          // pad with leading zeros
-    if (d<10) d = '0' + d;
-    if (m<10) m = '0' + m;
-    dms = d + '°' + m + '′';
-    break;
+        if (d<10) d = '0' + d;
+        if (m<10) m = '0' + m;
+        dms = d + '°' + m + '′';
+        break;
       case 'dms':
         var sec = (deg*3600).toFixed(dp);  // convert degrees to seconds & round
         d = Math.floor(sec / 3600);    // get component deg/min/sec
         m = Math.floor(sec/60) % 60;
         s = (sec % 60).toFixed(dp);    // pad with trailing zeros
         if (d<100) d = '0' + d;            // pad with leading zeros
-    if (d<10) d = '0' + d;
-    if (m<10) m = '0' + m;
-    if (s<10) s = '0' + s;
-    dms = d + '°' + m + '′' + s + '″';
-    break;
+        if (d<10) d = '0' + d;
+        if (m<10) m = '0' + m;
+        if (s<10) s = '0' + s;
+        dms = d + '°' + m + '′' + s + '″';
+        break;
     }
 
     return dms;
