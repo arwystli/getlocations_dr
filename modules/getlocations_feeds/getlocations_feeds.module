@@ -1,7 +1,8 @@
 <?php
 
 /**
- * @file getlocations_feeds.module
+ * @file
+ * getlocations_feeds.module
  * @author Bob Hutchinson http://drupal.org/user/52366
  * @copyright GNU GPL
  *
@@ -115,20 +116,21 @@ function getlocations_feeds_set_target($source, $entity, $target, $value) {
     list($sub_field, $last_field) = explode('][', $sub_field, 2);
   }
 
+  $language = (isset($entity->language) ? $entity->language : 'und');
 
   foreach ($value as $i => $val) {
     $val = trim($val);
     if (isset($last_field)) {
-      if (! isset($entity->{$field_name}['und'][$i]['settings'])) {
-        $entity->{$field_name}['und'][$i]['settings'] = getlocations_feeds_get_field_info($field_name);
+      if (! isset($entity->{$field_name}[$language][$i]['settings'])) {
+        $entity->{$field_name}[$language][$i]['settings'] = getlocations_feeds_get_field_info($field_name);
       }
-      $entity->{$field_name}['und'][$i][$sub_field][$last_field] = $val;
+      $entity->{$field_name}[$language][$i][$sub_field][$last_field] = $val;
     }
     else {
-      if (! isset($entity->{$field_name}['und'][$i]['settings'])) {
-        $entity->{$field_name}['und'][$i]['settings'] = getlocations_feeds_get_field_info($field_name);
+      if (! isset($entity->{$field_name}[$language][$i]['settings'])) {
+        $entity->{$field_name}[$language][$i]['settings'] = getlocations_feeds_get_field_info($field_name);
       }
-      $entity->{$field_name}['und'][$i][$sub_field] = $val;
+      $entity->{$field_name}[$language][$i][$sub_field] = $val;
     }
   }
 
