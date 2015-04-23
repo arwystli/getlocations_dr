@@ -4386,9 +4386,6 @@ function theme_getlocations_fields_field_widget_form($variables) {
 
   if ($mapid !== NULL && isset($form['geobutton']) ) {
     $geobutton = '<p><input type="button" value="' . t('Geocode this address') . '" title="' . t('Get the latitude and longitude for this address') . '" id="getlocations_geocodebutton_' . $mapid . '" class="form-submit" /></p>';
-    if ($settings['use_address'] < 1) {
-    $geobutton .= '<p>' . t('If you leave the address empty you can Geocode by moving the marker on the map') . '</p>';
-    }
     $form['geobutton']['#markup'] = $geobutton;
   }
 
@@ -4449,7 +4446,13 @@ function theme_getlocations_fields_field_widget_form($variables) {
   }
   $form['map']['#prefix'] = '<div class="getlocations_fields_map_wrapper">';
   $form['map']['#suffix'] = '</div>';
-  $form['map']['#markup'] = '<p>' . $msg . '</p><div class="getlocations_fields_map">' . $map . '</div>';
+  if ($settings['use_address'] < 1) {
+    $form['map']['#markup'] = '<p>' . t('If you leave the address empty you can Geocode by moving the marker on the map') . '</p>';
+  }
+  else {
+    $form['map']['#markup'] = '';
+  }
+  $form['map']['#markup'] .= '<p>' . $msg . '</p><div class="getlocations_fields_map">' . $map . '</div>';
 
   if (isset($settings['streetview_settings_allow'])) {
     $streetview_settings_allow = $settings['streetview_settings_allow'];

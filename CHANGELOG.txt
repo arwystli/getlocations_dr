@@ -1,9 +1,60 @@
-commit 53ee620
+commit 2651149
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Thu Apr 23 19:26:22 2015 +0100
+
+    fix misplaced message, see #2142689
+
+modules/getlocations_fields/getlocations_fields.module
+
+commit d1cd845
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Thu Apr 23 19:26:05 2015 +0100
+
+    cleaned up
+
+js/getlocations_geo.js
+
+commit 576ad87
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Thu Apr 23 19:25:49 2015 +0100
+
+    added $language variable to set_target
+
+modules/getlocations_feeds/getlocations_feeds.module
+
+commit d67988e
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Apr 15 20:42:08 2015 +0100
+
+    added table check
+
+getlocations.module
+
+commit 7a8f52b
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sun Apr 5 14:35:39 2015 +0100
+
+    make gps available to other modules
+
+modules/getlocations_gps/getlocations_gps.module
+modules/getlocations_gps/js/getlocations_gps.js
+modules/getlocations_gps/js/getlocations_gps.min.js
+
+commit 3826ffb
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sun Apr 5 14:32:15 2015 +0100
+
+    edit README
+
+README.txt
+
+commit 8a13f64
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Sat Mar 21 15:49:51 2015 +0000
 
     added missing info to README
 
+CHANGELOG.txt
 README.txt
 
 commit e442c4e
