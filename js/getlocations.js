@@ -819,26 +819,28 @@
         }
 
         function setupNewMap(k, blk) {
-          if (setting.baselayer_settings[blk] !== undefined) {
-            var tle = setting.baselayer_settings[blk].title;
-            if (setting.mtc == 'menu') {
-              tle = setting.baselayer_settings[blk].short_title;
+          if (setting.baselayer_settings != undefined) {
+            if (setting.baselayer_settings[blk] != undefined) {
+              var tle = setting.baselayer_settings[blk].title;
+              if (setting.mtc == 'menu') {
+                tle = setting.baselayer_settings[blk].short_title;
+              }
+              var tilesize = parseInt(setting.baselayer_settings[blk].tilesize);
+              var url_template = setting.baselayer_settings[blk].url;
+              Drupal.getlocations_map[k].mapTypes.set(blk, new google.maps.ImageMapType({
+                getTileUrl: function(coord, zoom) {
+                  var url = '';
+                  if (url_template) {
+                    url = url_template.replace(/__Z__/, zoom).replace(/__X__/, coord.x).replace(/__Y__/, coord.y);
+                  }
+                  return url;
+                },
+                tileSize: new google.maps.Size(tilesize, tilesize),
+                name: tle,
+                minZoom: parseInt(setting.baselayer_settings[blk].minzoom),
+                maxZoom: parseInt(setting.baselayer_settings[blk].maxzoom)
+              }));
             }
-            var tilesize = parseInt(setting.baselayer_settings[blk].tilesize);
-            var url_template = setting.baselayer_settings[blk].url;
-            Drupal.getlocations_map[k].mapTypes.set(blk, new google.maps.ImageMapType({
-              getTileUrl: function(coord, zoom) {
-                var url = '';
-                if (url_template) {
-                  url = url_template.replace(/__Z__/, zoom).replace(/__X__/, coord.x).replace(/__Y__/, coord.y);
-                }
-                return url;
-              },
-              tileSize: new google.maps.Size(tilesize, tilesize),
-              name: tle,
-              minZoom: parseInt(setting.baselayer_settings[blk].minzoom),
-              maxZoom: parseInt(setting.baselayer_settings[blk].maxzoom)
-            }));
           }
         }
 
