@@ -159,7 +159,7 @@
     attach: function (context, settings) {
 
       // doh
-      if (typeof(settings.getlocations_gps == 'undefined')) {
+      if (settings.getlocations_gps == undefined) {
         return;
       }
 

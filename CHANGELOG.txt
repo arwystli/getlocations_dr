@@ -1,9 +1,19 @@
-commit 4f67ade
+commit cc5b82f
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Fri Jun 12 14:49:59 2015 +0100
+
+    fixed gps detect bug
+
+modules/getlocations_gps/js/getlocations_gps.js
+modules/getlocations_gps/js/getlocations_gps.min.js
+
+commit b8c8b6e
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Fri May 1 08:50:58 2015 +0100
 
     fixed bug in function setupNewMap in getlocations.js
 
+CHANGELOG.txt
 js/getlocations.js
 js/getlocations.min.js
 
