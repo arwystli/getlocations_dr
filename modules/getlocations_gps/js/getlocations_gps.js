@@ -56,7 +56,7 @@
                 gps_in_dom(key, result['lat'], result['lon']);
                 var customContent = '';
 
-                if (gps_bubble) {
+                if (gps_bubble && result['formatted_address']) {
                   customContent = '<div class="location vcard">';
                   customContent += '<h4>' + gps_marker_title + '</h4>';
                   customContent += '<div class="adr">' + result['formatted_address'].replace(/[,]/g, ',<br />');
