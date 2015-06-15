@@ -18,7 +18,7 @@ define('GETLOCATIONS_GPS_PATH', drupal_get_path('module', 'getlocations_gps'));
 function getlocations_gps_help($path, $arg) {
   switch ($path) {
     case 'admin/help#getlocations_gps':
-      $output = '<p>' . t('Provide a gps faciliy on a map.') . '</p>';
+      $output = '<p>' . t('Provide a gps facility on a map.') . '</p>';
       return $output;
   }
 }
@@ -147,7 +147,10 @@ function getlocations_gps_settings_form() {
 
 }
 
-
+/**
+ * Admin settings form validation.
+ *
+ */
 function getlocations_gps_settings_validate($form, &$form_state) {
 
   $reset = $form_state['values']['getlocations_gps_paths']['reset'];
@@ -161,7 +164,16 @@ function getlocations_gps_settings_validate($form, &$form_state) {
 
 }
 
-
+/**
+ * Javascript paths.
+ * @param bool $reset
+ *  Set to true to force reset.
+ * @param bool $min
+ *  Set to true to provide minified versions.
+ *
+ * @return array
+ *
+ */
 function getlocations_gps_paths_get($reset = FALSE, $min = FALSE) {
   if ($min) {
     $defaults = array(
@@ -209,6 +221,10 @@ function getlocations_gps_js_settings_do($defaults, $mapid) {
   getlocations_gps_js_do();
 }
 
+/**
+ * Add js and css to page.
+ *
+ */
 function getlocations_gps_js_do() {
   static $getlocations_gps_js_done = FALSE;
   if (! $getlocations_gps_js_done) {
@@ -245,6 +261,10 @@ function getlocations_gps_map_display_options_form($defaults) {
 
 }
 
+/**
+ * Actual settings form.
+ *
+ */
 function _getlocations_gps_map_display_options_form($defaults) {
 
   $getlocations_gps_paths = getlocations_gps_paths_get();
