@@ -1237,6 +1237,22 @@
     }
   };
 
+  Drupal.getlocations.get_marker_from_latlon = function(k, lat, lon) {
+    var lid;
+    var gmark = false;
+    for (lid in Drupal.getlocations_markers[k].lids) {
+      mark = Drupal.getlocations_markers[k].lids[lid];
+      pos = mark.getPosition();
+      xlat = parseFloat(pos.lat());
+      xlon = parseFloat(pos.lng());
+      if (xlat.toFixed(6) == lat.toFixed(6) && xlon.toFixed(6) == lon.toFixed(6)) {
+        gmark = mark;
+        break;
+      }
+    }
+    return gmark;
+  };
+
   Drupal.getlocations.msiedetect = function() {
     var ieversion = '';
     if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)){ //test for MSIE x.x;
