@@ -31,9 +31,9 @@
     result['lon'] = '';
     gps_in_dom(key, '', '');
     result['formatted_address'] = '';
-    gs.markeraction = 0;
-    gs.useLink = false;
-    gs.useCustomContent = false;
+    //gs.markeraction = 0;
+    //gs.useLink = false;
+    //gs.useCustomContent = false;
     Drupal.getlocations_gps.marker = Drupal.getlocations_gps.marker || [];
     if (Drupal.getlocations_gps.marker[key] !== undefined) {
       Drupal.getlocations_gps.marker[key].setMap();
