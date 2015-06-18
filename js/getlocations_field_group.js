@@ -54,8 +54,18 @@
               }
             });
           }
+          // field-group-format-wrapper
+          if ($(".field-group-format, .field-group-format-wrapper").is('div')) {
+            $(".field-group-format-title").one('click', function(event) {
+              Drupal.getlocations.redoMap(key);
+              if (Drupal.getlocations_data[key].datanum == 1) {
+                var ll = Drupal.getlocations_data[key].latlons;
+                var ll2 = ll[0];
+                Drupal.getlocations_map[key].setCenter({lat: parseFloat(ll2[0]), lng: parseFloat(ll2[1])});
+              }
+            });
+          }
         }
-
       }); // end each
 
     } // end attach
