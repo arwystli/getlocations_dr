@@ -52,6 +52,8 @@
             useLink: false,
             markeraction: 0,
             markeractiontype: 1,
+            markeraction_click_zoom: -1,
+            markeraction_click_center: 0,
             show_maplinks: false,
             show_bubble_on_one_marker: false,
             infoBubbles: [],
@@ -206,6 +208,8 @@
           else if (global_settings.markeraction == 3) {
             global_settings.useLink = true;
           }
+          global_settings.markeraction_click_zoom = setting.markeraction_click_zoom;
+          global_settings.markeraction_click_center = setting.markeraction_click_center;
 
           if((global_settings.useInfoWindow || global_settings.useInfoBubble) && setting.custom_content_enable == 1) {
             global_settings.useCustomContent = true;
@@ -999,6 +1003,20 @@
                 });
               }
             }
+
+            if (gs.markeraction_click_center) {
+              var mp = m.getPosition();
+              if (gs.markeraction_click_center == 1) {
+                map.setCenter(mp);
+              }
+              else {
+                map.panTo(mp);
+              }
+            }
+            if (gs.markeraction_click_zoom > -1) {
+              map.setZoom(parseInt(gs.markeraction_click_zoom));
+            }
+
           }
         }, mouseoverTimeout);
       });
@@ -1139,7 +1157,6 @@
         }
       });
     }
-
     return m;
 
   };

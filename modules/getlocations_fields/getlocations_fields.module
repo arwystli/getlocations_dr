@@ -740,12 +740,7 @@ function getlocations_fields_field_formatter_settings_form($field, $instance, $v
   }
 
   // markeraction
-  $element['markeractiontype'] = getlocations_element_map_markeractiontype(
-    $settings['markeractiontype']
-  );
-  $element['markeraction'] = getlocations_element_map_markeraction(
-    $settings['markeraction']
-  );
+  $element += getlocations_markeraction_form($settings);
 
   if (module_exists('getdirections')) {
     $element['getdirections_link'] = getlocations_element_map_checkbox(
@@ -946,6 +941,15 @@ function getlocations_fields_field_formatter_settings_summary($field, $instance,
         $msg2 = t('Click');
       }
       $summary[] = t('Marker action: @a on @b', array('@a' => $msg, '@b' => $msg2));
+      if ($settings['markeraction_click_zoom'] > -1) {
+        $summary[] = t('Zoom on Marker click: @a', array('@a' => $settings['markeraction_click_zoom']));
+      }
+      if ($settings['markeraction_click_center'] == 1) {
+        $summary[] = t('Center on Marker click: Yes');
+      }
+      elseif ($settings['markeraction_click_center'] == 2) {
+        $summary[] = t('Pan to on Marker click: Yes');
+      }
     }
     $summary[] = t('Zoom level: @z', array('@z' => $settings['nodezoom']));
 
@@ -1656,6 +1660,8 @@ function getlocations_fields_getmap($settings, $active) {
   $getlocations_defaults['bicycleinfo']               = 0;
   $getlocations_defaults['transitinfo']               = 0;
   $getlocations_defaults['markeraction']              = 0;
+  $getlocations_defaults['markeraction_click_zoom']   = -1;
+  $getlocations_defaults['markeraction_click_center'] = 0;
   $getlocations_defaults['sv_show']                   = 0;
   $getlocations_defaults['weather_use']               = 0;
   $getlocations_defaults['weather_show']              = 0;
@@ -1770,6 +1776,8 @@ function getlocations_fields_getmap_show($settings, $lls = '', $minmaxes = '') {
   $getlocations_defaults['map_marker']                = $settings['map_marker'];
   $getlocations_defaults['markeraction']              = $settings['markeraction'];
   $getlocations_defaults['markeractiontype']          = $settings['markeractiontype'];
+  $getlocations_defaults['markeraction_click_zoom']   = $settings['markeraction_click_zoom'];
+  $getlocations_defaults['markeraction_click_center'] = $settings['markeraction_click_center'];
   $getlocations_defaults['nodezoom']                  = $settings['nodezoom'];
   $getlocations_defaults['weather_show']              = $settings['weather_show'];
   $getlocations_defaults['weather_state']             = $settings['weather_state'];
@@ -2892,6 +2900,8 @@ function getlocations_fields_field_formatter_info_defaults() {
     'map_marker'                => $getlocations_defaults['map_marker'],
     'markeraction'              => $getlocations_defaults['markeraction'],
     'markeractiontype'          => $getlocations_defaults['markeractiontype'],
+    'markeraction_click_zoom'   => $getlocations_defaults['markeraction_click_zoom'],
+    'markeraction_click_center' => $getlocations_defaults['markeraction_click_center'],
     'weather_use'               => $getlocations_defaults['weather_use'],
     'weather_show'              => $getlocations_defaults['weather_show'],
     'weather_state'             => $getlocations_defaults['weather_state'],

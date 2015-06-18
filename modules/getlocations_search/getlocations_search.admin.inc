@@ -406,12 +406,7 @@ function _getlocations_search_settings_form($defaults, $which = 'admin') {
 
   $form[$varname] += getlocations_map_display_options_form($defaults, FALSE, TRUE, 'getlocations_search');
 
-  $form[$varname]['markeractiontype'] = getlocations_element_map_markeractiontype(
-    $defaults['markeractiontype']
-  );
-  $form[$varname]['markeraction'] = getlocations_element_map_markeraction(
-    $defaults['markeraction']
-  );
+  $form[$varname] += getlocations_markeraction_form($defaults);
 
   if (module_exists('getdirections')) {
     $form[$varname]['getdirections_link'] = getlocations_element_map_checkbox(

@@ -1110,6 +1110,8 @@ function getlocations_defaults($reset = FALSE) {
     'vocabulary_map_marker'         => 'drupal',
     'markeraction'                  => 0,
     'markeractiontype'              => 1,
+    'markeraction_click_zoom'       => -1,
+    'markeraction_click_center'     => 0,
     'minzoom'                       => 6,
     'maxzoom'                       => 16,
     'nodezoom'                      => 12,
@@ -2393,6 +2395,8 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
       'map_marker'                => $defaults['map_marker'],
       'markeraction'              => $defaults['markeraction'],
       'markeractiontype'          => $defaults['markeractiontype'],
+      'markeraction_click_zoom'   => $defaults['markeraction_click_zoom'],
+      'markeraction_click_center' => $defaults['markeraction_click_center'],
       'minzoom'                   => $defaults['minzoom'],
       'maxzoom'                   => $defaults['maxzoom'],
       'nodezoom'                  => $defaults['nodezoom'],
@@ -4766,6 +4770,27 @@ function getlocations_geocoder_form($defaults) {
   else {
     $form['geocoder_enable'] = array('#type' => 'value', '#value' => 0);
   }
+  return $form;
+}
+
+function getlocations_markeraction_form($defaults) {
+  $form = array();
+  $form['markeractiontype'] = getlocations_element_map_markeractiontype($defaults['markeractiontype']);
+  $form['markeraction'] = getlocations_element_map_markeraction($defaults['markeraction']);
+
+  $form['markeraction_click_center'] = getlocations_element_dd(
+    t('Center or Pan on Marker click'),
+    $defaults['markeraction_click_center'],
+    array(0 => t('None'), 1 => t('Center'), 2 => t('Pan to'))
+  );
+
+  $form['markeraction_click_zoom'] = array(
+    '#type' => 'select',
+    '#title' => t('Zoom on Marker click'),
+    '#default_value' => $defaults['markeraction_click_zoom'],
+    '#options' => array('-1' => t('None')) + drupal_map_assoc(range(0, 21)),
+  );
+
   return $form;
 }
 
