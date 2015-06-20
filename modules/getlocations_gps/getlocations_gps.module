@@ -70,6 +70,8 @@ function getlocations_gps_defaults($settings = '') {
     'gps_bubble'       => 0, // checkbox
     'gps_geocode'      => 0, // checkbox
     'gps_center'       => 0, // checkbox
+    'gps_type'         => 0,
+    'gps_zoom'         => -1,
   );
 
   if ($settings) {
@@ -215,6 +217,8 @@ function getlocations_gps_js_settings_do($defaults, $mapid) {
     'gps_bubble'       => $defaults['gps_bubble'],
     'gps_geocode'      => $defaults['gps_geocode'],
     'gps_center'       => $defaults['gps_center'],
+    'gps_type'         => $defaults['gps_type'],
+    'gps_zoom'         => $defaults['gps_zoom'],
     ),
   );
   drupal_add_js(array('getlocations_gps' => $settings), 'setting');
@@ -253,6 +257,8 @@ function getlocations_gps_map_display_options_form($defaults) {
     $defaults['gps_bubble']       = $getlocations_gps_defaults['gps_bubble'];
     $defaults['gps_geocode']      = $getlocations_gps_defaults['gps_geocode'];
     $defaults['gps_center']       = $getlocations_gps_defaults['gps_center'];
+    $defaults['gps_type']         = $getlocations_gps_defaults['gps_type'];
+    $defaults['gps_zoom']         = $getlocations_gps_defaults['gps_zoom'];
   }
 
   $form = _getlocations_gps_map_display_options_form($defaults);
@@ -300,6 +306,12 @@ function _getlocations_gps_map_display_options_form($defaults) {
     TRUE
   );
 
+  $form['gps_type'] = getlocations_element_map_checkbox(
+    t('Watch the current location'),
+    $defaults['gps_geocode'],
+    t('Watch the location supplied by GPS and move the marker when the location changes.')
+  );
+
   $form['gps_geocode'] = getlocations_element_map_checkbox(
     t('Geocode the current location'),
     $defaults['gps_geocode'],
@@ -310,6 +322,13 @@ function _getlocations_gps_map_display_options_form($defaults) {
     t('Show bubble on GPS Marker click'),
     $defaults['gps_bubble'],
     t('This only applies if the location has been Geocoded.')
+  );
+
+  $form['gps_zoom'] = array(
+    '#type' => 'select',
+    '#title' => t('GPS marker Zoom'),
+    '#default_value' => $defaults['gps_zoom'],
+    '#options' => array('-1' => t('None')) + drupal_map_assoc(range(0, 21)),
   );
 
   $form['gps_center'] = getlocations_element_map_checkbox(

@@ -10,6 +10,7 @@
 
 (function ($) {
   Drupal.getlocations_gps = {};
+  var watchID = '';
   Drupal.getlocations_gps.dolocation = function(key, settings) {
     active_throbber(key);
     $("#getlocations_gps_lat_" + key).html('');
@@ -19,6 +20,8 @@
     var gps_bubble = settings.gps_bubble;
     var gps_geocode = settings.gps_geocode;
     var gps_center = settings.gps_center;
+    var gps_type = settings.gps_type;
+    var gps_zoom = settings.gps_zoom;
     var gs = Drupal.getlocations_settings[key];
     var accuracies = [];
     accuracies['APPROXIMATE'] = Drupal.t('Approximate');
@@ -31,104 +34,29 @@
     result['lon'] = '';
     gps_in_dom(key, '', '');
     result['formatted_address'] = '';
-    //gs.markeraction = 0;
-    //gs.useLink = false;
-    //gs.useCustomContent = false;
     Drupal.getlocations_gps.marker = Drupal.getlocations_gps.marker || [];
     if (Drupal.getlocations_gps.marker[key] !== undefined) {
       Drupal.getlocations_gps.marker[key].setMap();
       Drupal.getlocations_gps.marker = [];
     }
     if (navigator && navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        function(position) {
-          if (position.coords.latitude && position.coords.longitude) {
-            result['lat'] = parseFloat(position.coords.latitude);
-            result['lon'] = parseFloat(position.coords.longitude);
-            var p = new google.maps.LatLng(result['lat'], result['lon']);
-            if (gps_geocode) {
-              // start geocoder
-              var geocoder = new google.maps.Geocoder();
-              geocoder.geocode({'latLng': p}, function (results, status) {
-                if (status == google.maps.GeocoderStatus.OK) {
-                  result['formatted_address'] = results[0].formatted_address;
-                  result['lat'] = parseFloat(results[0].geometry.location.lat());
-                  result['lon'] = parseFloat(results[0].geometry.location.lng());
-                  gps_in_dom(key, result['lat'], result['lon']);
-                  var customContent = '';
-
-                  if (gps_bubble && result['formatted_address']) {
-                    customContent = '<div class="location vcard">';
-                    customContent += '<h4>' + gps_marker_title + '</h4>';
-                    customContent += '<div class="adr">' + result['formatted_address'].replace(/[,]/g, ',<br />');
-                    if (results[0].geometry.location_type) {
-                      customContent += '<br />' + Drupal.t('Accuracy') + ' : ' + accuracies[results[0].geometry.location_type];
-                    }
-                    customContent += '</div></div>';
-                    gs.useCustomContent = true;
-                    gs.useInfoBubble = (Drupal.settings.getlocations[key].markeraction == 2 ? true : false);
-                    gs.markeraction = (Drupal.settings.getlocations[key].markeraction == 2 ? 2 : 1);
-                  }
-
-                  var ll = new google.maps.LatLng(result['lat'], result['lon']);
-                  Drupal.getlocations_gps.marker[key] = Drupal.getlocations.makeMarker(Drupal.getlocations_map[key], gs, result['lat'], result['lon'], 0, gps_marker_title, '', customContent, '', key);
-                  //Drupal.getlocations_gps.marker[key].setVisible(true);
-                  if (gps_center) {
-                    Drupal.getlocations_map[key].setCenter(ll);
-                  }
-                  //gps_in_dom(key, result['lat'], result['lon']);
-                  // getlocations_search
-                  if (typeof(Drupal.getlocations_search) !== 'undefined') {
-                    var mapid2 = key.replace("_", "-");
-                    var distance = $("#edit-getlocations-search-distance-" + mapid2).val();
-                    var units = $("#edit-getlocations-search-units-" + mapid2).val();
-                    var type = $("#edit-getlocations-search-type-" + mapid2).val();
-                    var limits = $("#edit-getlocations-search-limits-" + mapid2).val();
-                    var accuracy = accuracies[results[0].geometry.location_type];
-                    var address = result['formatted_address'];
-                    Drupal.getlocations_search.getlocations_search_clear_results(key, gs);
-                    Drupal.getlocations_search.getlocations_search_get_data(result['lat'], result['lon'], distance, units, type, limits, accuracy, address, gs, Drupal.getlocations_map[key], key);
-                  }
-                  deactive_throbber(key);
-                }
-                else {
-                  deactive_throbber(key);
-                  var prm = {'!b': Drupal.getlocations.getGeoErrCode(status) };
-                  var msg = Drupal.t('Geocode was not successful for the following reason: !b', prm);
-                  alert(msg);
-                }
-              });
-            }
-            else {
-              gps_in_dom(key, result['lat'], result['lon']);
-              // no geocode done
-              if (Drupal.getlocations_gps.marker[key] !== undefined) {
-                Drupal.getlocations_gps.marker[key].setPosition(p);
-              }
-              else {
-                Drupal.getlocations_gps.marker[key] = Drupal.getlocations.makeMarker(Drupal.getlocations_map[key], gs, result['lat'], result['lon'], 0, gps_marker_title, '', '', '', key);
-                //Drupal.getlocations_gps.marker[key].setVisible(true);
-              }
-              if (gps_center) {
-                Drupal.getlocations_map[key].setCenter(p);
-              }
-              deactive_throbber(key);
-              //gps_in_dom(key, result['lat'], result['lon']);
-            }
+      if (gps_type) {
+        if (watchID !== '') {
+          navigator.geolocation.clearWatch(watchID);
+          if (Drupal.getlocations_gps.marker[key] !== undefined ) {
+            Drupal.getlocations_gps.marker[key].setMap();
           }
-          else {
-            deactive_throbber(key);
-          }
-        },
-        function(error) {
+          watchID = '';
           deactive_throbber(key);
-          msg = Drupal.t("Sorry, I couldn't find your location using the browser") + ' ' + Drupal.getlocations.geolocationErrorMessages(error) + ".";
-          alert(msg);
-        },
-        {
-          maximumAge:10000
         }
-      ); // end getCurrentPosition
+        else {
+          watchID = navigator.geolocation.watchPosition(gps_getpos, gps_poserror );
+        }
+      }
+      else {
+        navigator.geolocation.getCurrentPosition(gps_getpos, gps_poserror );
+      }
+
     } // end if navigator
     else {
       msg = Drupal.t('Sorry, no browser navigator available.');
@@ -136,6 +64,104 @@
     }
 
     // functions
+    function gps_getpos(position) {
+      if (position.coords.latitude && position.coords.longitude) {
+        result['lat'] = parseFloat(position.coords.latitude);
+        result['lon'] = parseFloat(position.coords.longitude);
+        var p = new google.maps.LatLng(result['lat'], result['lon']);
+
+        // remove any old markers
+        if (Drupal.getlocations_gps.marker[key] !== undefined ) {
+          Drupal.getlocations_gps.marker[key].setMap();
+        }
+
+        if (gps_geocode) {
+          // start geocoder
+          var geocoder = new google.maps.Geocoder();
+          geocoder.geocode({'latLng': p}, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+              result['formatted_address'] = results[0].formatted_address;
+              result['lat'] = parseFloat(results[0].geometry.location.lat());
+              result['lon'] = parseFloat(results[0].geometry.location.lng());
+              gps_in_dom(key, result['lat'], result['lon']);
+              var customContent = '';
+
+              if (gps_bubble && result['formatted_address']) {
+                customContent = '<div class="location vcard">';
+                customContent += '<h4>' + gps_marker_title + '</h4>';
+                customContent += '<div class="adr">' + result['formatted_address'].replace(/[,]/g, ',<br />');
+                if (results[0].geometry.location_type) {
+                  customContent += '<br />' + Drupal.t('Accuracy') + ' : ' + accuracies[results[0].geometry.location_type];
+                }
+                customContent += '</div></div>';
+                gs.useCustomContent = true;
+                gs.useInfoBubble = (Drupal.settings.getlocations[key].markeraction == 2 ? true : false);
+                gs.markeraction = (Drupal.settings.getlocations[key].markeraction == 2 ? 2 : 1);
+              }
+
+              var ll = new google.maps.LatLng(result['lat'], result['lon']);
+              Drupal.getlocations_gps.marker[key] = Drupal.getlocations.makeMarker(Drupal.getlocations_map[key], gs, result['lat'], result['lon'], 0, gps_marker_title, '', customContent, '', key);
+
+              if (gps_center) {
+                Drupal.getlocations_map[key].setCenter(ll);
+              }
+
+              if (gps_zoom > -1) {
+                Drupal.getlocations_map[key].setZoom(parseInt(gps_zoom));
+              }
+
+              // getlocations_search
+              if (typeof(Drupal.getlocations_search) !== 'undefined') {
+                var mapid2 = key.replace("_", "-");
+                var distance = $("#edit-getlocations-search-distance-" + mapid2).val();
+                var units = $("#edit-getlocations-search-units-" + mapid2).val();
+                var type = $("#edit-getlocations-search-type-" + mapid2).val();
+                var limits = $("#edit-getlocations-search-limits-" + mapid2).val();
+                var accuracy = accuracies[results[0].geometry.location_type];
+                var address = result['formatted_address'];
+                Drupal.getlocations_search.getlocations_search_clear_results(key, gs);
+                Drupal.getlocations_search.getlocations_search_get_data(result['lat'], result['lon'], distance, units, type, limits, accuracy, address, gs, Drupal.getlocations_map[key], key);
+              }
+              deactive_throbber(key);
+            }
+            else {
+              deactive_throbber(key);
+              var prm = {'!b': Drupal.getlocations.getGeoErrCode(status) };
+              var msg = Drupal.t('Geocode was not successful for the following reason: !b', prm);
+              alert(msg);
+            }
+          });
+        }
+        else {
+          gps_in_dom(key, result['lat'], result['lon']);
+          // no geocode done
+          if (Drupal.getlocations_gps.marker[key] !== undefined) {
+            Drupal.getlocations_gps.marker[key].setPosition(p);
+          }
+          else {
+            Drupal.getlocations_gps.marker[key] = Drupal.getlocations.makeMarker(Drupal.getlocations_map[key], gs, result['lat'], result['lon'], 0, gps_marker_title, '', '', '', key);
+          }
+          if (gps_center) {
+            Drupal.getlocations_map[key].setCenter(p);
+          }
+          if (gps_zoom > -1) {
+            Drupal.getlocations_map[key].setZoom(parseInt(gps_zoom));
+          }
+
+          deactive_throbber(key);
+        }
+      }
+      else {
+        deactive_throbber(key);
+      }
+
+    }
+    function gps_poserror(error) {
+      deactive_throbber(key);
+      msg = Drupal.t("Sorry, I couldn't find your location using the browser") + ' ' + Drupal.getlocations.geolocationErrorMessages(error) + ".";
+      alert(msg);
+    }
+
     function deactive_throbber(k) {
       $("#getlocations_gps_throbber_" + k).removeClass('getlocations_gps_throbber_active').addClass('getlocations_gps_throbber_inactive');
     }
@@ -177,14 +203,7 @@
           $("#getlocations_map_wrapper_" + key).append(lladd);
           // gps button
           $("#getlocations_gps_show_" + key).click( function() {
-            var s = {
-              gps_marker: settings.getlocations_gps[key].gps_marker,
-              gps_marker_title: settings.getlocations_gps[key].gps_marker_title,
-              gps_bubble: settings.getlocations_gps[key].gps_bubble,
-              gps_geocode: settings.getlocations_gps[key].gps_geocode,
-              gps_center: settings.getlocations_gps[key]. gps_center
-            };
-            Drupal.getlocations_gps.dolocation(key, s);
+            Drupal.getlocations_gps.dolocation(key, settings.getlocations_gps[key]);
           }); // end button click
         } //  end is there really a map?
       }); // end once

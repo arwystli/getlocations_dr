@@ -1885,6 +1885,8 @@ function getlocations_fields_getmap_show($settings, $lls = '', $minmaxes = '') {
   $getlocations_defaults['gps_bubble']                = $settings['gps_bubble'];
   $getlocations_defaults['gps_geocode']               = $settings['gps_geocode'];
   $getlocations_defaults['gps_center']                = $settings['gps_center'];
+  $getlocations_defaults['gps_type']                  = $settings['gps_type'];
+  $getlocations_defaults['gps_zoom']                  = $settings['gps_zoom'];
 
   $fieldables = getlocations_get_fieldable_entity_types();
   foreach ($fieldables AS $entity_type) {
@@ -2631,6 +2633,8 @@ function getlocations_fields_defaults() {
     'gps_bubble'                => $getlocations_defaults['gps_bubble'],
     'gps_geocode'               => $getlocations_defaults['gps_geocode'],
     'gps_center'                => $getlocations_defaults['gps_center'],
+    'gps_type'                  => $getlocations_defaults['gps_type'],
+    'gps_zoom'                  => $getlocations_defaults['gps_zoom'],
     'geocoder_enable' => $getlocations_defaults['geocoder_enable'],
   );
   foreach ($getlocations_defaults['kml_group'] AS $key => $layer) {
@@ -2840,6 +2844,8 @@ function getlocations_fields_field_info_defaults() {
         'gps_bubble'                      => $getlocations_fields_defaults['gps_bubble'],
         'gps_geocode'                     => $getlocations_fields_defaults['gps_geocode'],
         'gps_center'                      => $getlocations_fields_defaults['gps_center'],
+        'gps_type'                        => $getlocations_fields_defaults['gps_type'],
+        'gps_zoom'                        => $getlocations_fields_defaults['gps_zoom'],
         'geocoder_enable'                 => $getlocations_fields_defaults['geocoder_enable'],
       ),
     ),
@@ -3023,6 +3029,8 @@ function getlocations_fields_field_formatter_info_defaults() {
     'gps_bubble'                => $getlocations_defaults['gps_bubble'],
     'gps_geocode'               => $getlocations_defaults['gps_geocode'],
     'gps_center'                => $getlocations_defaults['gps_center'],
+    'gps_type'                  => $getlocations_defaults['gps_type'],
+    'gps_zoom'                  => $getlocations_defaults['gps_zoom'],
     'geocoder_enable' => $getlocations_defaults['geocoder_enable'],
   );
 

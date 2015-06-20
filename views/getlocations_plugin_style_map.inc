@@ -202,6 +202,8 @@ class getlocations_plugin_style_map extends views_plugin_style {
     $options['gps_bubble']       = array('default' => $getlocations_defaults['gps_bubble']);
     $options['gps_geocode']      = array('default' => $getlocations_defaults['gps_geocode']);
     $options['gps_center']       = array('default' => $getlocations_defaults['gps_center']);
+    $options['gps_type']         = array('default' => $getlocations_defaults['gps_type']);
+    $options['gps_zoom']         = array('default' => $getlocations_defaults['gps_zoom']);
 
     $options['show_search_distance']                = array('default' => $getlocations_defaults['show_search_distance']);
     $options['views_search_marker_enable']          = array('default' => $getlocations_defaults['views_search_marker_enable']);

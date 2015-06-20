@@ -817,6 +817,8 @@ function getlocations_map_defaults() {
     'gps_bubble'                    => $getlocations_defaults['gps_bubble'],
     'gps_geocode'                   => $getlocations_defaults['gps_geocode'],
     'gps_center'                    => $getlocations_defaults['gps_center'],
+    'gps_type'                      => $getlocations_defaults['gps_type'],
+    'gps_zoom'                      => $getlocations_defaults['gps_zoom'],
   );
 
   $newdefaults = getlocations_adjust_vars($getlocations_defaults, $defaults);
@@ -922,4 +924,3 @@ function theme_getlocations_map_link($variables) {
   return $output;
 
 }
-
