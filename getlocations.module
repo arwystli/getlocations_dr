@@ -7347,6 +7347,11 @@ function theme_getlocations_plugin_style_map_options_form($variables) {
 #        $form['comment_map_marker']['#field_suffix'] = '&nbsp;' . $link;
 #      }
 
+      if (isset($form['gps_marker'])) {
+        $link = getlocations_markerpicker_link($form['gps_marker']['#id'], 'g');
+        $form['gps_marker']['#field_suffix'] = '&nbsp;' . $link;
+      }
+
     }
   }
 

@@ -367,6 +367,9 @@ function getlocations_gps_theme() {
 function theme_getlocations_gps_settings_form($variables) {
   $form = $variables['form'];
   $output = '';
+  $link = getlocations_markerpicker_link($form['getlocations_gps_defaults']['gps_marker']['#id'], 'g');
+  $form['getlocations_gps_defaults']['gps_marker']['#field_suffix'] = '&nbsp;' . $link;
+
   $output .= drupal_render_children($form);
   return $output;
 }

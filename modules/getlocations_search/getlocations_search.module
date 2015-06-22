@@ -855,6 +855,11 @@ function theme_getlocations_search_settings_form($variables) {
     if ($getlocations_colorbox['marker_enable']) {
       $link = getlocations_markerpicker_link($form[$varname]['search_marker']['#id'], 's');
       $form[$varname]['search_marker']['#field_suffix'] = '&nbsp;' . $link;
+
+      if (isset($form[$varname]['gps_marker'])) {
+        $link = getlocations_markerpicker_link($form[$varname]['gps_marker']['#id'], 'g');
+        $form[$varname]['gps_marker']['#field_suffix'] = '&nbsp;' . $link;
+      }
     }
   }
 
