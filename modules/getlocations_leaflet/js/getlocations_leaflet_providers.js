@@ -534,4 +534,4 @@
   L.control.layers.provided = function (baseLayers, overlays, options) {
     return new L.Control.Layers.Provided(baseLayers, overlays, options);
   };
-}());
+})();

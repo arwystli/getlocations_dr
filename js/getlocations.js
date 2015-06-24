@@ -1320,4 +1320,4 @@
     return ret;
   };
 
-}(jQuery));
+})(jQuery);

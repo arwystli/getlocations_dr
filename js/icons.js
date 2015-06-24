@@ -198,4 +198,4 @@
     return icons;
   };
 
-}(jQuery));
+})(jQuery);

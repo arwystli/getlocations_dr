@@ -23,6 +23,7 @@
     var gps_type = settings.gps_type;
     var gps_zoom = settings.gps_zoom;
     var gs = Drupal.getlocations_settings[key];
+    gs.show_maplinks = false;
     var accuracies = [];
     accuracies['APPROXIMATE'] = Drupal.t('Approximate');
     accuracies['GEOMETRIC_CENTER'] = Drupal.t('Center');
@@ -52,7 +53,6 @@
       else {
         navigator.geolocation.getCurrentPosition(gps_getpos, gps_poserror );
       }
-
     } // end if navigator
     else {
       msg = Drupal.t('Sorry, no browser navigator available.');
@@ -159,6 +159,7 @@
       }
 
     }
+
     function gps_poserror(error) {
       // remove any old markers
       gps_marker_kill();
@@ -170,6 +171,7 @@
     function deactive_throbber(k) {
       $("#getlocations_gps_throbber_" + k).removeClass('getlocations_gps_throbber_active').addClass('getlocations_gps_throbber_inactive');
     }
+
     function active_throbber(k) {
       $("#getlocations_gps_throbber_" + k).removeClass('getlocations_gps_throbber_inactive').addClass('getlocations_gps_throbber_active');
     }
@@ -227,4 +229,4 @@
       }); // end once
     } // end attach
   }; // end behaviors
-}(jQuery));
+})(jQuery);

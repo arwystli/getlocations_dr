@@ -483,4 +483,4 @@
     return (brng === null ? '–' : brng.replace('360', '0'));  // just in case rounding took us up to 360°!
   };
 
-}(jQuery));
+})(jQuery);

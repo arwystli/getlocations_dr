@@ -222,4 +222,4 @@
     $("#search_places_results_" + key).html('');
   };
 
-}(jQuery));
+})(jQuery);
