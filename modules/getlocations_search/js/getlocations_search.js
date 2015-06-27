@@ -228,7 +228,7 @@
         // search area shape
         if (searchsettings.search_radshape_enable) {
           if (searchsettings.search_radshape_toggle) {
-            if ( searchsettings.search_radshape_toggle_active) {
+            if (searchsettings.search_radshape_toggle_active) {
               shapetoggleState[key] = true;
             }
             else {
@@ -358,6 +358,7 @@
     });
   }
 
+
   // cleans out any existing markers, sets up a new geocoder and runs it, filling in the results.
   // this one is for openstreetmap search
   function do_geocoder_Geocode(map, gs, adrs, mkey) {
@@ -380,6 +381,7 @@
     for (var i in gs.infoBubbles) {
       gs.infoBubbles[i].close();
     }
+
     // clear the results box
     getlocations_search_clear_results(mkey, gs);
 
@@ -408,7 +410,6 @@
         alert(msg);
       }
     });
-
   }
 
   function do_reverse_Geocode(map, gs, adrs, mkey) {
@@ -476,6 +477,9 @@
       }
     });
 
+
+
+
   }
 
   function do_reverse_geocoder_Geocode(map, gs, lat, lon, mkey) {
@@ -542,6 +546,7 @@
     });
 
   }
+
 
   function do_PlaceAdrs(map, gs, place_adrs, mkey) {
     if (! gs.showall) {
@@ -615,11 +620,26 @@
       lonout = infoarr[4];
       distance_meters = infoarr[5];
       locationct = 0;
+      markerdata = [];
       for (var i = 0; i < locations.length; i++) {
         lidkey = 'nid';
         lid = 0;
-        lidkey = locations[i].entity_key;
-        lid = locations[i].entity_id;
+        if (locations[i].nid > 0) {
+          lidkey = 'nid';
+          lid = locations[i].nid;
+        }
+        else if (locations[i].uid > 0) {
+          lidkey = 'uid';
+          lid = locations[i].uid;
+        }
+        else if (locations[i].tid > 0) {
+          lidkey = 'tid';
+          lid = locations[i].tid;
+        }
+        else if (locations[i].cid > 0) {
+          lidkey = 'cid';
+          lid = locations[i].cid;
+        }
         if (locations[i].glid > 0) {
           lid = locations[i].glid;
         }
@@ -636,6 +656,7 @@
           // make a marker
           marker = Drupal.getlocations.makeMarker(map, gs, locations[i].latitude, locations[i].longitude, lid, title, lidkey, '', '', mkey);
           search_markersArray.push(marker);
+          markerdata.push(locations[i].latitude + ',' + locations[i].longitude + ',' + lid);
         }
         locationct++;
       }
@@ -665,6 +686,7 @@
       $("#getlocations_search_slat_" + mkey).html(slat);
       $("#getlocations_search_slon_" + mkey).html(slon);
       $("#getlocations_search_sunit_" + mkey).html(units);
+      $("#getlocations_search_markerdata_" + mkey).html(markerdata.join('|'));
 
       if (! gs.showall) {
         // markermanagers add batchr
@@ -721,9 +743,36 @@
         makeRadShape(slat, slon, distance_meters, gs, mkey);
       }
 
+      // show_maplinks
+      if (gs.show_maplinks && gs.show_maplinks_viewport && (gs.useInfoWindow || gs.useInfoBubble || gs.useLink)) {
+        google.maps.event.addListener(map, 'bounds_changed', function() {
+          var b = map.getBounds();
+          var md1 = $("#getlocations_search_markerdata_" + mkey).html();
+          if (md1 !== '') {
+            var md2 = md1.split("|");
+            for (var i = 0; i < md2.length; i++) {
+              var md3 = md2[i].split(',');
+              var lat = md3[0];
+              var lon = md3[1];
+              var lid = md3[2];
+              var p = new google.maps.LatLng(lat, lon);
+              // is this point within the bounds?
+              if (b.contains(p)) {
+                // hide and show the links for markers in the current viewport
+                $("li a.lid-" + lid).show();
+              }
+              else {
+                $("li a.lid-" + lid).hide();
+              }
+            }
+          }
+        });
+      }
+
     });
 
   }
+
 
   function do_Geolocationbutton(map, gs, mkey) {
     navigator.geolocation.getCurrentPosition(

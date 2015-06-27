@@ -55,6 +55,7 @@
             markeraction_click_zoom: -1,
             markeraction_click_center: 0,
             show_maplinks: false,
+            show_maplinks_viewport: false,
             show_bubble_on_one_marker: false,
             infoBubbles: [],
             datanum: 0,
@@ -147,6 +148,7 @@
           // mobiles
           global_settings.is_mobile = setting.is_mobile;
           global_settings.show_maplinks = setting.show_maplinks;
+          global_settings.show_maplinks_viewport = (setting.show_maplinks_viewport ? true : false);
           global_settings.show_search_distance = setting.show_search_distance;
 
           // streetview overlay settings
@@ -675,8 +677,29 @@
 
           // markers and bounding
           if (! setting.inputmap && ! setting.extcontrol) {
-            //setTimeout(function() { doAllMarkers(Drupal.getlocations_map[key], global_settings, key) }, 300);
+
             doAllMarkers(Drupal.getlocations_map[key], global_settings, key);
+
+            if (global_settings.show_maplinks && global_settings.show_maplinks_viewport && (global_settings.useInfoWindow || global_settings.useInfoBubble || global_settings.useLink)) {
+              google.maps.event.addListener(Drupal.getlocations_map[key], 'bounds_changed', function() {
+                var b = Drupal.getlocations_map[key].getBounds();
+                for (var i = 0; i < Drupal.getlocations_data[key].latlons.length; i++) {
+                  var a = Drupal.getlocations_data[key].latlons[i];
+                  var lat = a[0];
+                  var lon = a[1];
+                  var lid = a[2];
+                  var p = new google.maps.LatLng(lat, lon);
+                  // is this point within the bounds?
+                  if (b.contains(p)) {
+                    // hide and show the links for markers in the current viewport
+                    $("li a.lid-" + lid).show();
+                  }
+                  else {
+                    $("li a.lid-" + lid).hide();
+                  }
+                }
+              });
+            }
 
             // Bounding
             Drupal.getlocations.redoMap(key);

@@ -1149,6 +1149,7 @@ function getlocations_defaults($reset = FALSE) {
     'weather_info'                  => 1,
     'map_backgroundcolor'           => '',
     'show_maplinks'                 => 0,
+    'show_maplinks_viewport'        => 0,
     'fullscreen'                    => 0,
     'show_bubble_on_one_marker'     => 0,
     'polygons_enable'               => 0,
@@ -2422,6 +2423,7 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
       'weather_use'               => $defaults['weather_use'],
       'map_backgroundcolor'       => $defaults['map_backgroundcolor'],
       'show_maplinks'             => $defaults['show_maplinks'],
+      'show_maplinks_viewport'    => $defaults['show_maplinks_viewport'],
       'js_path'                   => base_path() . GETLOCATIONS_PATH . '/js/',
       'images_path'               => base_path() . GETLOCATIONS_PATH . '/images/',
       'info_path'                 => url("getlocations_cb/info"),
@@ -3922,11 +3924,18 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
     );
     $form['svcontrolposition']['#suffix'] = '</div>';
 
+    // show_maplinks
     $form['show_maplinks'] = getlocations_element_map_checkbox(
       t('Show map links'),
       $defaults['show_maplinks'],
       t('Show a list of links to popup InfoWindow/InfoBubble/Link on the map.')
     );
+    $form['show_maplinks']['#suffix'] = '<div id="wrap-getlocations-maplinks">';
+    $form['show_maplinks_viewport'] = getlocations_element_map_checkbox(
+      t('Only Show map links in Viewport'),
+      $defaults['show_maplinks_viewport']
+    );
+    $form['show_maplinks_viewport']['#suffix'] = '</div>';
 
     $form['show_bubble_on_one_marker'] = getlocations_element_map_checkbox(
       t('Show bubble automatically'),

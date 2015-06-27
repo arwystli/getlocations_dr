@@ -581,6 +581,24 @@
         });
       }
 
+      //edit-getlocations-default-show-maplinks-viewport
+      if ($("#edit-getlocations-default-show-maplinks").is('input')) {
+        if ($("#edit-getlocations-default-show-maplinks").attr('checked')) {
+          $("#wrap-getlocations-maplinks").show();
+        }
+        else {
+          $("#wrap-getlocations-maplinks").hide();
+        }
+        $("#edit-getlocations-default-show-maplinks").change(function() {
+          if ($(this).attr('checked')) {
+            $("#wrap-getlocations-maplinks").show();
+          }
+          else {
+            $("#wrap-getlocations-maplinks").hide();
+          }
+        });
+      }
+
     }
   };
 

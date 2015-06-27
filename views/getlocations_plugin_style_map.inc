@@ -63,11 +63,12 @@ class getlocations_plugin_style_map extends views_plugin_style {
     $options['overview_opened']       = array('default' => $getlocations_defaults['overview_opened']);
     $options['scrollwheel']           = array('default' => $getlocations_defaults['scrollwheel']);
     $options['show_maplinks']         = array('default' => $getlocations_defaults['show_maplinks']);
-    $options['sv_show']       = array('default' => $getlocations_defaults['sv_show']);
-    $options['sv_showfirst']  = array('default' => $getlocations_defaults['sv_showfirst']);
-    $options['sv_heading']    = array('default' => $getlocations_defaults['sv_heading']);
-    $options['sv_zoom']       = array('default' => $getlocations_defaults['sv_zoom']);
-    $options['sv_pitch']      = array('default' => $getlocations_defaults['sv_pitch']);
+    $options['show_maplinks_viewport'] = array('default' => $getlocations_defaults['show_maplinks_viewport']);
+    $options['sv_show']               = array('default' => $getlocations_defaults['sv_show']);
+    $options['sv_showfirst']          = array('default' => $getlocations_defaults['sv_showfirst']);
+    $options['sv_heading']            = array('default' => $getlocations_defaults['sv_heading']);
+    $options['sv_zoom']               = array('default' => $getlocations_defaults['sv_zoom']);
+    $options['sv_pitch']              = array('default' => $getlocations_defaults['sv_pitch']);
     $options['fullscreen']            = array('default' => $getlocations_defaults['fullscreen']);
     $options['show_bubble_on_one_marker'] = array('default' => $getlocations_defaults['show_bubble_on_one_marker']);
     $options['trafficinfo']           = array('default' => $getlocations_defaults['trafficinfo']);
