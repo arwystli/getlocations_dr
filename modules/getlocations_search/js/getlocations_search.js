@@ -884,6 +884,7 @@
     $("#getlocations_search_slat_" + k).html('');
     $("#getlocations_search_slon_" + k).html('');
     $("#getlocations_search_sunit_" + k).html('');
+    $("#getlocations_search_markerdata_" + k).html('');
     if (gs.show_maplinks) {
       $("div#getlocations_map_links_" + k + " ul").html("");
     }
