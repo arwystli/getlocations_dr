@@ -135,7 +135,7 @@
         else {
           gps_in_dom(key, result['lat'], result['lon']);
           // no geocode done
-          if (Drupal.getlocations_gps.marker[key] !== undefined) {
+          if (Drupal.getlocations_gps.marker[key] !== undefined && Drupal.getlocations_gps.marker[key].length > 0) {
             Drupal.getlocations_gps.marker[key].setPosition(p);
           }
           else {
