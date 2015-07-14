@@ -262,7 +262,6 @@ function getlocations_gps_map_display_options_form($defaults) {
   }
 
   $form = _getlocations_gps_map_display_options_form($defaults);
-  $form['#theme'][] = 'getlocations_gps_map_display_options_form';
   return $form;
 
 }
@@ -308,7 +307,7 @@ function _getlocations_gps_map_display_options_form($defaults) {
 
   $form['gps_type'] = getlocations_element_map_checkbox(
     t('Watch the current location'),
-    $defaults['gps_geocode'],
+    $defaults['gps_type'],
     t('Watch the location supplied by GPS and move the marker when the location changes.')
   );
 
@@ -352,9 +351,6 @@ function getlocations_gps_theme() {
     'getlocations_gps_settings_form' => array(
       'render element' => 'form',
     ),
-    'getlocations_gps_map_display_options_form' => array(
-      'render element' => 'form',
-    ),
     'getlocations_gps_button' => array(
       'variables' => array(
         'defaults' => array(),
@@ -370,16 +366,6 @@ function theme_getlocations_gps_settings_form($variables) {
   $link = getlocations_markerpicker_link($form['getlocations_gps_defaults']['gps_marker']['#id'], 'g');
   $form['getlocations_gps_defaults']['gps_marker']['#field_suffix'] = '&nbsp;' . $link;
 
-  $output .= drupal_render_children($form);
-  return $output;
-}
-
-function theme_getlocations_gps_map_display_options_form($variables) {
-  $form = $variables['form'];
-  $form['gps_button']['#prefix'] = '<fieldset class="collapsible getlocations_fieldset form-wrapper"><legend><span class="fieldset-legend">' . t('GPS Button') . '</span></legend><div class="fieldset-wrapper">';
-  $tsuf = $form['gps_center']['#suffix'];
-  $form['gps_center']['#suffix'] = $tsuf . '</div></fieldset>';
-  $output = '';
   $output .= drupal_render_children($form);
   return $output;
 }

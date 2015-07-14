@@ -206,6 +206,15 @@ class getlocations_plugin_style_map extends views_plugin_style {
     $options['gps_type']         = array('default' => $getlocations_defaults['gps_type']);
     $options['gps_zoom']         = array('default' => $getlocations_defaults['gps_zoom']);
 
+    $options['smartip_button']       = array('default' => 0);
+    $options['smartip_button_label'] = array('default' => $getlocations_defaults['smartip_button_label']);
+    $options['smartip_marker']       = array('default' => $getlocations_defaults['smartip_marker']);
+    $options['smartip_marker_title'] = array('default' => $getlocations_defaults['smartip_marker_title']);
+    $options['smartip_bubble']       = array('default' => $getlocations_defaults['smartip_bubble']);
+    $options['smartip_center']       = array('default' => $getlocations_defaults['smartip_center']);
+    $options['smartip_zoom']         = array('default' => $getlocations_defaults['smartip_zoom']);
+    $options['smartip_callback']     = array('default' => $getlocations_defaults['smartip_callback']);
+
     $options['show_search_distance']                = array('default' => $getlocations_defaults['show_search_distance']);
     $options['views_search_marker_enable']          = array('default' => $getlocations_defaults['views_search_marker_enable']);
     $options['views_search_marker']                 = array('default' => $getlocations_defaults['views_search_marker']);

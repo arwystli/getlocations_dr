@@ -1,0 +1,8 @@
+name = Getlocations Smartip
+description = Integrates the smart_ip module.
+core = 7.x
+package = "Location"
+php = 5
+dependencies[] = getlocations
+dependencies[] = smart_ip
+configure = admin/config/services/getlocations/smartip

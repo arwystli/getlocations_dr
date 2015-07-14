@@ -1,9 +1,68 @@
-commit cbfffa3
+commit 2fa8c25
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Tue Jul 14 18:22:26 2015 +0100
+
+    added getlocations_smartip module
+
+getlocations.module
+modules/getlocations_gps/getlocations_gps.module
+modules/getlocations_search/getlocations_search.module
+modules/getlocations_smartip/README.txt
+modules/getlocations_smartip/getlocations_smartip.css
+modules/getlocations_smartip/getlocations_smartip.info
+modules/getlocations_smartip/getlocations_smartip.install
+modules/getlocations_smartip/getlocations_smartip.module
+modules/getlocations_smartip/js/getlocations_smartip.js
+modules/getlocations_smartip/js/getlocations_smartip.min.js
+modules/getlocations_smartip/js/getlocations_smartip_admin.js
+modules/getlocations_smartip/js/getlocations_smartip_admin.min.js
+views/getlocations_plugin_style_map.inc
+
+commit e634ed3
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sat Jul 11 11:23:00 2015 +0100
+
+    fixed undefined bug
+
+modules/getlocations_gps/js/getlocations_gps.js
+modules/getlocations_gps/js/getlocations_gps.min.js
+
+commit 5ca550c
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sat Jul 11 11:22:37 2015 +0100
+
+    added search_markerdata
+
+modules/getlocations_search/js/getlocations_search.js
+modules/getlocations_search/js/getlocations_search.min.js
+
+commit 6b25826
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sat Jun 27 15:26:11 2015 +0100
+
+    added show_maplinks_viewport
+
+getlocations.module
+js/getlocations.js
+js/getlocations.min.js
+js/getlocations_admin.js
+js/getlocations_admin.min.js
+js/getlocations_views.js
+js/getlocations_views.min.js
+modules/getlocations_search/getlocations_search.module
+modules/getlocations_search/js/getlocations_search.js
+modules/getlocations_search/js/getlocations_search.min.js
+modules/getlocations_search/js/getlocations_search_admin.js
+modules/getlocations_search/js/getlocations_search_admin.min.js
+views/getlocations_plugin_style_map.inc
+
+commit 26d63e5
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Wed Jun 24 10:15:57 2015 +0100
 
     js tidyup
 
+CHANGELOG.txt
 js/getlocations.js
 js/getlocations.min.js
 js/getlocations_admin.js
