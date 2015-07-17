@@ -706,5 +706,114 @@ function getlocations_fields_views_search_form($defaults, $map_type = '') {
   return $form;
 }
 
+/**
+ * Implements hook_token_info().
+ * derived from location_cck module
+ */
+function getlocations_fields_token_info() {
+  $module = 'getlocations_fields';
+  $supported_entities = getlocations_get_supported_entities($module);
+  $columns = getlocations_fields_columns();
+  $info = array();
+  $fields = field_info_field_map();
+  // Loop over the entities and fields and setup tokens.
+  foreach ($fields as $field_key => $field_value) {
+    if ($field_value['type'] == $module) {
+      foreach ($supported_entities AS $entity) {
+        $info['types'][$field_key] = array(
+          'name' => t('GetLocations fields: !field', array('!field' => $field_key)),
+          'description' => t('Tokens for the field: !field. Replace the "?" with the delta you want. Defaults to delta 0..', array('!field' => $field_key)),
+          'needs-data' => $entity,
+        );
+        $info['tokens'][$entity][$field_key] = array(
+          'name' => t('GetLocations field: !field', array('!field' => $field_key)),
+          'description' => t('Tokens for the field: !field. Replace the "?" with the delta you want. Defaults to delta 0.', array('!field' => $field_key)),
+          'type' => $field_key,
+        );
+      }
+      foreach ($columns as $col_key => $col_value) {
+        $info['tokens'][$field_key][$col_key . ":?"] = array(
+          'name' => t($col_value),
+          'description' => t($col_value),
+        );
+      }
+    }
+  }
+  return $info;
+}
 
+/**
+ * Implements hook_tokens().
+ */
+function getlocations_fields_tokens($type, $tokens, array $data = array(), array $options = array()) {
 
+  // Setup our replacements array.
+  $sanitize = ( isset($options['sanitize']) && $options['sanitize'] ? TRUE : FALSE);
+  $replacements = array();
+  $module = 'getlocations_fields';
+
+  // Make sure we have an entity.
+  if (isset($data['entity_type']) && isset($data['entity'])) {
+
+    $obj = $data['entity'];
+    $lang = (isset($obj->language) ? $obj->language : LANGUAGE_NONE);
+
+    // Loop through the tokens.
+    foreach ($tokens as $name => $original) {
+      // Break token into an array.
+      $pieces = explode(':', str_replace(array('[', ']'), '', $original));
+
+      // Must have entity, field, and item to be a getlocations_fields token.
+      if (count($pieces) < 3) {
+        continue;
+      }
+      $entity = $pieces[0];
+      $field = $pieces[1];
+      $item = $pieces[2];
+      $delta = (isset($pieces[3]) && is_numeric($pieces[3]) ? $pieces[3] : 0);
+
+      $field_info = field_info_field($field);
+      $supported_entities = getlocations_get_supported_entities($module);
+      $fieldnames = getlocations_get_fieldnames();
+      $col_keys = getlocations_fields_columns(TRUE);
+      // Make sure this is a field and it is a getlocations_fields field.
+      if (!isset($field_info) || (isset($field_info) && $field_info['type'] != $module)
+        || ! in_array($field, $fieldnames)
+        || ! in_array($item, $col_keys)
+        || ! in_array($entity, $supported_entities)
+        ) {
+        continue;
+      }
+      $content = (isset($obj->{$field}[$lang][$delta][$item]) ? $obj->{$field}[$lang][$delta][$item] : '');
+      if ($content && $sanitize) {
+        $content = getlocations_apoclean($content);
+      }
+      $replacements[$original] = $content;
+    }
+  }
+
+  return $replacements;
+
+}
+
+function getlocations_fields_columns($keyonly = FALSE) {
+  $columns = array(
+    'name'         => t('Name'),
+    'street'       => t('Street'),
+    'additional'   => t('Additional'),
+    'city'         => t('City'),
+    'province'     => t('Province'),
+    'postal_code'  => t('Postal code'),
+    'latitude'     => t('Latitude'),
+    'longitude'    => t('Longitude'),
+    'country'      => t('Country'),
+    'country_name' => t('Country name'),
+    'phone'        => t('Phone'),
+    'mobile'       => t('Mobile'),
+    'fax'          => t('Fax')
+  );
+  if ($keyonly) {
+    return array_keys($columns);
+  }
+  return $columns;
+}

@@ -2076,6 +2076,35 @@ function getlocations_get_fieldname2($bundle, $entity_type='node') {
 }
 
 /**
+ * Function to collect entities being used by the given module
+ *
+ * @param string $module
+ *
+ * @return
+ *   Returns array of entity names or FALSE
+ *
+ */
+function getlocations_get_supported_entities($module = FALSE) {
+  if (! $module) {
+    $module = getlocations_get_current_supported_module();
+  }
+  if ($module) {
+    $query = db_select('field_config', 'f');
+    $query->fields('i', array('entity_type'));
+    $query->join('field_config_instance', 'i', 'f.id = i.field_id');
+    $query->condition('f.module', $module)
+      ->condition('f.active', 1);
+    $rows = $query->execute();
+    $data = array();
+    foreach ($rows AS $row) {
+      $data[$row->entity_type] = $row->entity_type;
+    }
+    return (count($data) ? array_keys($data) : FALSE);
+  }
+  return FALSE;
+}
+
+/**
  * Function is an entity_type location enabled?
  *
  * @param string $entity_type

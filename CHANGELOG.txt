@@ -1,9 +1,19 @@
-commit 2fa8c25
+commit 0e7526c
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Fri Jul 17 09:02:34 2015 +0100
+
+    added tokens support
+
+getlocations.module
+modules/getlocations_fields/getlocations_fields.functions.inc
+
+commit 577b4e5
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Tue Jul 14 18:22:26 2015 +0100
 
     added getlocations_smartip module
 
+CHANGELOG.txt
 getlocations.module
 modules/getlocations_gps/getlocations_gps.module
 modules/getlocations_search/getlocations_search.module
