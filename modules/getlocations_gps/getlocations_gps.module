@@ -50,6 +50,12 @@ function getlocations_gps_menu() {
     'type' => MENU_LOCAL_TASK,
     'weight' => 14,
   );
+  // ajax callbacks
+  $items['getlocations_gps/latlon'] = array(
+    'page callback' => 'getlocations_gps_callback',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
 
   return $items;
 }
@@ -72,6 +78,7 @@ function getlocations_gps_defaults($settings = '') {
     'gps_center'       => 0, // checkbox
     'gps_type'         => 0,
     'gps_zoom'         => -1,
+    'gps_latlon_path'  => url('getlocations_gps/latlon'),
   );
 
   if ($settings) {
@@ -219,6 +226,7 @@ function getlocations_gps_js_settings_do($defaults, $mapid) {
     'gps_center'       => $defaults['gps_center'],
     'gps_type'         => $defaults['gps_type'],
     'gps_zoom'         => $defaults['gps_zoom'],
+    'gps_latlon_path'  => $defaults['gps_latlon_path'],
     ),
   );
   drupal_add_js(array('getlocations_gps' => $settings), 'setting');
@@ -262,6 +270,7 @@ function getlocations_gps_map_display_options_form($defaults) {
   }
 
   $form = _getlocations_gps_map_display_options_form($defaults);
+  $form['#theme'][] = 'getlocations_gps_map_display_options_form';
   return $form;
 
 }
@@ -340,6 +349,40 @@ function _getlocations_gps_map_display_options_form($defaults) {
 
 }
 
+function getlocations_gps_callback() {
+
+  if (isset($_GET['gps_lat']) && ! empty($_GET['gps_lat']) && isset($_GET['gps_lon']) && ! empty($_GET['gps_lon'])) {
+    $latlon = $_GET['gps_lat'] . ',' . $_GET['gps_lon'];
+    $latlon = getlocations_latlon_check($latlon);
+    if (! empty($latlon)) {
+      $ll = explode(',', $latlon);
+      $lat = (isset( $ll[0]) ? $ll[0] : FALSE);
+      $lon = (isset( $ll[1]) ? $ll[1] : FALSE);
+      session_start();
+      $_SESSION['getlocations_gps'] = array();
+      $_SESSION['getlocations_gps']['lat'] = $lat;
+      $_SESSION['getlocations_gps']['lon'] = $lon;
+    }
+  }
+  return FALSE;
+
+}
+
+function getlocations_gps_coords() {
+
+  if (isset($_SESSION) && isset($_SESSION['getlocations_gps'])) {
+    $lat = $_SESSION['getlocations_gps']['lat'];
+    $lon = $_SESSION['getlocations_gps']['lon'];
+  }
+  if (isset($lat)) {
+    $coordinates = array();
+    $coordinates['latitude'] = (float) $lat;
+    $coordinates['longitude'] = (float) $lon;
+    return $coordinates;
+  }
+  return FALSE;
+
+}
 
 /**
  * Implements hook_theme().
@@ -349,6 +392,9 @@ function _getlocations_gps_map_display_options_form($defaults) {
 function getlocations_gps_theme() {
   return array(
     'getlocations_gps_settings_form' => array(
+      'render element' => 'form',
+    ),
+    'getlocations_gps_map_display_options_form' => array(
       'render element' => 'form',
     ),
     'getlocations_gps_button' => array(
@@ -366,6 +412,16 @@ function theme_getlocations_gps_settings_form($variables) {
   $link = getlocations_markerpicker_link($form['getlocations_gps_defaults']['gps_marker']['#id'], 'g');
   $form['getlocations_gps_defaults']['gps_marker']['#field_suffix'] = '&nbsp;' . $link;
 
+  $output .= drupal_render_children($form);
+  return $output;
+}
+
+function theme_getlocations_gps_map_display_options_form($variables) {
+  $form = $variables['form'];
+  $form['gps_button']['#prefix'] = '<fieldset class="collapsible getlocations_fieldset form-wrapper"><legend><span class="fieldset-legend">' . t('GPS Button') . '</span></legend><div class="fieldset-wrapper">';
+  $tsuf = $form['gps_center']['#suffix'];
+  $form['gps_center']['#suffix'] = $tsuf . '</div></fieldset>';
+  $output = '';
   $output .= drupal_render_children($form);
   return $output;
 }

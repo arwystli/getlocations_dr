@@ -1,7 +1,8 @@
 <?php
 
 /**
- * @file getlocations_fields_handler_filter_distance.inc
+ * @file
+ * getlocations_fields_handler_filter_distance.inc
  * @author Bob Hutchinson http://drupal.org/user/52366
  * @copyright GNU GPL
  *
@@ -31,22 +32,23 @@ class getlocations_fields_handler_filter_distance extends views_handler_filter {
 
     $options['value'] = array(
       'default' => array(
-        'latitude' => '',
-        'longitude' => '',
+        'latitude'        => '',
+        'longitude'       => '',
 #        'postal_code' => '',
 #        'country' => '',
-        'php_code' => '',
-        'nid_arg' => '',
-        'nid_loc_field' => 'node',
-        'uid_arg' => '',
-        'uid_loc_field' => 'user',
-        'tid_arg' => '',
-        'tid_loc_field' => 'taxonomy_term',
-        'cid_arg' => '',
-        'cid_loc_field' => 'comment',
+        'php_code'        => '',
+        'nid_arg'         => '',
+        'nid_loc_field'   => 'node',
+        'uid_arg'         => '',
+        'uid_loc_field'   => 'user',
+        'tid_arg'         => '',
+        'tid_loc_field'   => 'taxonomy_term',
+        'cid_arg'         => '',
+        'cid_loc_field'   => 'comment',
         'search_distance' => 100,
-        'search_units' => 'km',
-        'search_field' => '',
+        'search_units'    => 'km',
+        'search_field'    => '',
+        'gps'             => '',
       ),
     );
 
@@ -185,11 +187,20 @@ class getlocations_fields_handler_filter_distance extends views_handler_filter {
     $form['value']['longitude'] = getlocations_fields_element_longitude($this->value['longitude']);
     if ($this->options['origin'] == 'search') {
       $form['value']['latitude']['#prefix'] = '<div class="js-hide">';
-       $form['value']['longitude']['#suffix'] = '</div>';
+      $form['value']['longitude']['#suffix'] = '</div>';
     }
     #$form['value']['postal_code'] = getlocations_fields_element_postal_code($this->value['postal_code']);
     #$form['value']['country'] = getlocations_fields_element_country($this->value['country']);
     $form['value']['php_code'] = getlocations_fields_element_php_code($this->value['php_code']);
+
+    // hide something in the DOM so that js knows this is a gps origin
+    if ($this->options['origin'] == 'gps') {
+      $form['value']['gps'] = array(
+        '#type' => 'hidden',
+        '#value' => 'origin',
+        '#dependency' => array('edit-options-origin' => array('gps')),
+      );
+    }
 
     list($nid_argument_options, $uid_argument_options, $tid_argument_options, $cid_argument_options) = getlocations_fields_views_proximity_get_argument_options($this->view);
     $loc_field_options = getlocations_fields_views_proximity_get_location_field_options();
@@ -280,7 +291,9 @@ class getlocations_fields_handler_filter_distance extends views_handler_filter {
     // We need to merge with $this->options['value'] for filter values
     // and $this->value for exposed filter values.
     $options = array_merge($this->options, $this->options['value'], $this->value);
+
     $coordinates = getlocations_fields_views_proximity_get_reference_location($this->view, $options);
+
     // If we don't have any coordinates or distance, there's nothing to filter by, so don't modify the query at all.
     if (empty($coordinates) || ! $coordinates['latitude'] || ! $coordinates['longitude'] || empty($this->value['search_distance'])) {
       return;

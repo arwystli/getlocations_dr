@@ -1,7 +1,8 @@
 <?php
 
 /**
- * @file getlocations_fields.functions.inc
+ * @file
+ * getlocations_fields.functions.inc
  * @author Bob Hutchinson http://drupal.org/user/52366
  * @copyright GNU GPL
  *
@@ -33,6 +34,9 @@ function getlocations_fields_element_origin($default, $distance=FALSE) {
   }
   if ($distance) {
     $options += array('distance_arg' => t("Lat/Lon from views argument"));
+  }
+  if (module_exists('getlocations_gps')) {
+    $options += array('gps' => t("Lat/Lon from Getlocations GPS"));
   }
   $options += array(
     'user' => t("User's Lat/Lon (blank if unset)"),
@@ -577,6 +581,7 @@ function getlocations_fields_views_search_form($defaults, $map_type = '') {
           'awesome_icon_type' => t('Search Awesome icon type'),
           'awesome_icon_flip' => t('Search Awesome icon flip and rotate'),
           'awesome_icon_html' => t('Search Awesome icon HTML'),
+          'awesome_icon_class' => t('Search Awesome icon class'),
         );
         $prefix = 'search';
         $form += getlocations_leaflet_awesome_markers_elements_get($defaults, $labels, $prefix);

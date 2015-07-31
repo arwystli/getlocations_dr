@@ -421,6 +421,13 @@ function getlocations_fields_views_proximity_get_reference_location($view, $opti
       }
       break;
 
+    // getlocations_gps
+    case 'gps':
+      if (module_exists('getlocations_gps')) {
+        $coordinates = getlocations_gps_coords();
+      }
+      break;
+
     // used by sort when argument is lat/lon
     case 'distance_arg':
       $coordinates = array();
