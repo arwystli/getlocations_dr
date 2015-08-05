@@ -2339,6 +2339,9 @@ function getlocations_leaflet_get_map_layers($map_settings) {
 function getlocations_leaflet_display_options_form($defaults, $admin = FALSE) {
   $form = array();
   $form['#theme'][] = 'getlocations_leaflet_display_options_form';
+  $getlocations_leaflet_paths = getlocations_leaflet_paths_get();
+  #$form['#attached']['js'] = array($getlocations_leaflet_paths['getlocations_leaflet_formatter_path'] => array('type' => 'file' ) );
+  drupal_add_js($getlocations_leaflet_paths['getlocations_leaflet_formatter_path']);
 
   $controlpositions = getlocations_leaflet_controlpositions();
   $getlocations_leaflet_plugins = getlocations_leaflet_plugins();
