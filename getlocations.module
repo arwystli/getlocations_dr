@@ -3705,7 +3705,7 @@ function getlocations_map_display_basics_form($defaults, $labels = array()) {
   $form['width'] = getlocations_element_map_tf(
     $label['width'],
     $defaults['width'],
-    t('The default width of a Google map, as a CSS length or percentage. Examples: <em>50px</em>, <em>5em</em>, <em>2.5in</em>, <em>95%</em>'),
+    t('The default width of a map, as a CSS length or percentage. Examples: <em>50px</em>, <em>5em</em>, <em>2.5in</em>, <em>95%</em>'),
     10,
     10,
     TRUE
@@ -3714,7 +3714,7 @@ function getlocations_map_display_basics_form($defaults, $labels = array()) {
   $form['height'] = getlocations_element_map_tf(
     $label['height'],
     $defaults['height'],
-    t('The default height of a Google map, as a CSS length or percentage. Examples: <em>50px</em>, <em>5em</em>, <em>2.5in</em>, <em>95%</em>'),
+    t('The default height of a map, as a CSS length or percentage. Examples: <em>50px</em>, <em>5em</em>, <em>2.5in</em>, <em>95%</em>'),
     10,
     10,
     TRUE
@@ -3743,7 +3743,7 @@ function getlocations_map_display_basics_form($defaults, $labels = array()) {
   $form['latlong'] = getlocations_element_map_tf(
     $label['latlong'],
     $defaults['latlong'],
-    t('The default center coordinates of a Google map, expressed as a decimal latitude and longitude, separated by a comma. This must not be 0,0'),
+    t('The default center coordinates of a map, expressed as a decimal latitude and longitude, separated by a comma. This must not be 0,0'),
     40,
     50,
     TRUE
@@ -3752,17 +3752,17 @@ function getlocations_map_display_basics_form($defaults, $labels = array()) {
   $form['zoom'] = getlocations_element_map_zoom(
     $label['zoom'],
     $defaults['zoom'],
-    t('The default zoom level of a Google map.')
+    t('The default zoom level of a map.')
   );
   $form['minzoom_map'] = getlocations_element_map_zoom_map(
     $label['minzoom_map'],
     $defaults['minzoom_map'],
-    t('The default Minimum zoom level of a Google map.')
+    t('The default Minimum zoom level of a map.')
   );
   $form['maxzoom_map'] = getlocations_element_map_zoom_map(
     $label['maxzoom_map'],
     $defaults['maxzoom_map'],
-    t('The default Maximum zoom level of a Google map.')
+    t('The default Maximum zoom level of a map.')
   );
 
   return $form;
@@ -4045,7 +4045,7 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
       $form['panoramio_use'] = getlocations_element_map_checkbox(
         t('Load Panoramio Library'),
         $defaults['panoramio_use'],
-        t('Provide Google panoramio library to all maps.')
+        t('Provide Google panoramio library to all Google maps.')
       );
       $form['panoramio_use']['#suffix'] = '<div id="wrap-getlocations-panoramio-use">';
       $form['panoramio_show'] = getlocations_element_map_checkbox(
@@ -4080,7 +4080,7 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
       $form['weather_use'] = getlocations_element_map_checkbox(
         t('Load Weather Library'),
         $defaults['weather_use'],
-        t('Provide Google Weather library to all maps.')
+        t('Provide Google Weather library to all Google maps.')
       );
       $form['weather_use']['#suffix'] = '<div id="wrap-getlocations-weather-use">';
       $form['weather_show'] = getlocations_element_map_checkbox(
@@ -4756,7 +4756,7 @@ function getlocations_google_places_form($defaults, $config) {
   // enable
   $desc = t('Provide a textfield to query Google Places Search.');
   if ($config) {
-    $desc .= ' ' . t('This will be enabled for all maps if enabled here.');
+    $desc .= ' ' . t('This will be enabled for all Google maps if enabled here.');
   }
   $form['search_places'] = getlocations_element_map_checkbox(
     t('Enable Google Places Search'),
