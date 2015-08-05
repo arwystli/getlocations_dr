@@ -1,9 +1,65 @@
-commit 0e7526c
+commit 8c5b840
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Aug 5 15:58:52 2015 +0100
+
+    fixed namefield
+
+modules/getlocations_fields/js/getlocations_fields.js
+modules/getlocations_fields/js/getlocations_fields.min.js
+
+commit 4b7dd3a
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Aug 5 15:57:49 2015 +0100
+
+    fixed add_js
+
+modules/getlocations_leaflet/getlocations_leaflet.module
+
+commit 9ae987d
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Aug 5 15:56:45 2015 +0100
+
+    fixed header
+
+modules/getlocations_fields/js/getlocations_fields_search_views.js
+
+commit 5c014fc
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Aug 5 15:54:20 2015 +0100
+
+    edited some descriptions
+
+getlocations.module
+
+commit 2de8616
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Tue Aug 4 21:07:14 2015 +0100
+
+    fixed jquery
+
+modules/getlocations_fields/js/getlocations_fields_admin.js
+modules/getlocations_fields/js/getlocations_fields_admin.min.js
+
+commit 7724eec
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Fri Jul 31 17:31:12 2015 +0100
+
+    fixed getlocations_gps as orgin in distance filter
+
+modules/getlocations_fields/getlocations_fields.functions.inc
+modules/getlocations_fields/handlers/getlocations_fields_handler_filter_distance.inc
+modules/getlocations_fields/views/getlocations_fields.views.inc
+modules/getlocations_gps/getlocations_gps.module
+modules/getlocations_gps/js/getlocations_gps.js
+modules/getlocations_gps/js/getlocations_gps.min.js
+
+commit 9e8b0b5
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Fri Jul 17 09:02:34 2015 +0100
 
     added tokens support
 
+CHANGELOG.txt
 getlocations.module
 modules/getlocations_fields/getlocations_fields.functions.inc
 

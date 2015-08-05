@@ -273,7 +273,9 @@
                     if (use_adrs > 0) {
                       set_address_components2(kk, results);
                       // Get name property and fill name field
-                      $("#" + namefield + kk).val(adrs.name);
+                      if ($("#" + namefield + kk).val() == '') {
+                        $("#" + namefield + kk).val(adrs.name);
+                      }
                     }
                   }
                 }
@@ -300,7 +302,9 @@
                   if (use_adrs > 0) {
                     set_address_components(kk, adrs.address_components);
                     // Get name property and fill name field
-                    $("#" + namefield + kk).val(adrs.name);
+                    if ($("#" + namefield + kk).val() == '') {
+                      $("#" + namefield + kk).val(adrs.name);
+                    }
                   }
                 }
                 else {
@@ -319,7 +323,9 @@
               updateMap(mmap, point[kk], kk);
               streetviewSetupButtonDo(kk);
               set_address_components(kk, adrs.address_components);
-              $("#" + namefield + kk).val(adrs.name);
+              if ($("#" + namefield + kk).val() == '') {
+                $("#" + namefield + kk).val(adrs.name);
+              }
             }
 
           }
