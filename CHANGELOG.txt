@@ -1,9 +1,18 @@
-commit 8c5b840
+commit e4a1231
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Thu Aug 6 09:19:24 2015 +0100
+
+    notice avoidance
+
+modules/getlocations_fields/getlocations_fields.module
+
+commit a69c252
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Wed Aug 5 15:58:52 2015 +0100
 
     fixed namefield
 
+CHANGELOG.txt
 modules/getlocations_fields/js/getlocations_fields.js
 modules/getlocations_fields/js/getlocations_fields.min.js
 

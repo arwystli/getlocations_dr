@@ -634,13 +634,13 @@ function getlocations_fields_field_formatter_view($entity_type, $entity, $field,
     $bundle = $entity->type;
   }
   // field_collection
-  elseif (isset($entity_get_info['entity keys']['bundle'])) {
+  elseif (isset($entity_get_info['entity keys']['bundle']) && ! empty($entity->{$entity_get_info['entity keys']['bundle']})) {
     $bundle = $entity->{$entity_get_info['entity keys']['bundle']};
   }
 
   $getlocations_markers = variable_get('getlocations_markers', array());
 
-  if (isset($getlocations_markers[$entity_type]['enable']) && $getlocations_markers[$entity_type]['enable']) {
+  if ($bundle && isset($getlocations_markers[$entity_type]['enable']) && $getlocations_markers[$entity_type]['enable']) {
     if (isset($getlocations_markers[$entity_type][$bundle][$field_name]['marker']) && $getlocations_markers[$entity_type][$bundle][$field_name]['marker']) {
       $marker = $getlocations_markers[$entity_type][$bundle][$field_name]['marker'];
     }
@@ -2087,12 +2087,13 @@ function getlocations_fields_save_locations($locations, $criteria, $settings, $m
       }
       elseif ($mode == 'update') {
         if (isset($locations[$key]['active']) && $locations[$key]['active']) {
-
           // check for elusive glid in feed imports
           if ( $criteria['entity_id'] && (! isset($locations[$key]['glid']) || ! is_numeric($locations[$key]['glid']))) {
             // eek
             $loc = getlocations_fields_load_locations($criteria['entity_type'], $criteria['entity_id']);
-            $locations[$key]['glid'] = $loc[$key]['glid'];
+            if (isset($loc[$key]['glid']) ) {
+              $locations[$key]['glid'] = $loc[$key]['glid'];
+            }
           }
 
           $result = getlocations_fields_update_record($locations[$key], $criteria);
