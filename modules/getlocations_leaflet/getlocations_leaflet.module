@@ -269,10 +269,6 @@ function getlocations_leaflet_library() {
 
   if ($getlocations_leaflet_plugins['minimap_enable']) {
     $jsarr += array(
-      GETLOCATIONS_LEAFLET_PATH . '/plugins/sync/L.Map.Sync.min.js' => array(
-        'type' => 'file',
-        'preprocess' => $aggr
-      ),
       GETLOCATIONS_LEAFLET_PATH . '/plugins/minimap/L.Control.Layers.Minimap.min.js' => array(
         'type' => 'file',
         'preprocess' => $aggr
