@@ -1294,6 +1294,12 @@ function getlocations_leaflet_map_settings_do($map_settings, $defaults, $latlons
     $map_settings['map_settings']['geocodersrc'] = $defaults['geocodersrc'];
     $map_settings['map_settings']['geocodercollapsed'] = $defaults['geocodercollapsed'];
     $map_settings['map_settings']['geocoder_bing_key'] = $defaults['geocoder_bing_key'];
+    $map_settings['map_settings']['geocoder_mapquest_key'] = $defaults['geocoder_mapquest_key'];
+    $map_settings['map_settings']['geocoder_mapbox_key'] = $defaults['geocoder_mapbox_key'];
+    $map_settings['map_settings']['geocoder_what3words_key'] = $defaults['geocoder_what3words_key'];
+    $map_settings['map_settings']['geocoder_google_key'] = $defaults['geocoder_google_key'];
+    $map_settings['map_settings']['geocoder_placeholder'] = $defaults['geocoder_placeholder'];
+    $map_settings['map_settings']['geocoder_errormessage'] = $defaults['geocoder_errormessage'];
   }
   else {
     $map_settings['map_settings']['geocoder'] = FALSE;
@@ -1475,6 +1481,7 @@ function getlocations_leaflet_map_settings_do($map_settings, $defaults, $latlons
   }
 
   $map_settings['map_settings']['show_maplinks'] = $defaults['show_maplinks'];
+  $map_settings['map_settings']['show_maplinks_viewport'] = $defaults['show_maplinks_viewport'];
 
   $map_settings['map_settings']['show_search_distance'] = $defaults['show_search_distance'];
   $map_settings['map_settings']['views_search_marker_enable'] = $defaults['views_search_marker_enable'];
@@ -2064,6 +2071,7 @@ function getlocations_leaflet_defaults() {
     'jquery_colorpicker_enabled' => $getlocations_defaults['jquery_colorpicker_enabled'],
     'getdirections_link'         => $getlocations_defaults['getdirections_link'],
     'show_maplinks'              => $getlocations_defaults['show_maplinks'],
+    'show_maplinks_viewport'     => $getlocations_defaults['show_maplinks_viewport'],
     'show_search_distance'      => $getlocations_defaults['show_search_distance'],
     'views_search_marker_enable'           => $getlocations_defaults['views_search_marker_enable'],
     'views_search_marker'                  => $getlocations_defaults['views_search_marker'],
@@ -2149,8 +2157,13 @@ function getlocations_leaflet_defaults() {
   $newdefaults['geocodersrc']                 = 'n'; // n = nominatim, b = bing, m = mapquest
   $newdefaults['geocodercollapsed']           = 1;
   $newdefaults['geocoder_bing_key']           = ''; // required for bing
-#  $newdefaults['geocoder_mapquest_key']       = ''; // required for mapquest
-
+  $newdefaults['geocoder_mapquest_key']       = ''; // required for mapquest
+  $newdefaults['geocoder_mapbox_key']         = ''; // required for mapbox
+  $newdefaults['geocoder_what3words_key']     = ''; // required for what3words
+  $apikey = variable_get('getlocations_api3_key', '');
+  $newdefaults['geocoder_google_key']         = $apikey; // required for google
+  $newdefaults['geocoder_errormessage']       = t("Nothing found.");
+  $newdefaults['geocoder_placeholder']        = t("Search...");
   $newdefaults['awesome']                     = 0;
   $newdefaults['awesome_icon']                = 'fa-home';
   $newdefaults['awesome_icon_color_selector'] = 'white';
@@ -2533,11 +2546,25 @@ function getlocations_leaflet_display_options_form($defaults, $admin = FALSE) {
       $defaults['geocoderposition'],
       $controlpositions
     );
+    $apikey = variable_get('getlocations_api3_key', '');
+    $mapquest_lic =  variable_get('getlocations_mapquest_lic', array('key' => '', 'type' => 'l'));
+    $sources = array(
+      'n' => t('Nominatim'),
+      'b' => t('Bing'),
+      'x' => t('Mapbox'),
+      'w' => t('What3Words'),
+    );
+    if ($apikey) {
+      $sources['g'] = t('Google');
+    }
+    if ($mapquest_lic['key']) {
+      $sources['m'] = t('Mapquest');
+    }
     $form['geocodersrc'] = getlocations_element_dd(
       t('Geocoding source'),
       $defaults['geocodersrc'],
-      array('n' => t('Nominatim'), 'b' => t('Bing'), 'm' => t('Mapquest')),
-      t('Nominatim is GPL, Mapquest and Bing are not GPL')
+      $sources,
+      t('Only Nominatim is GPL')
     );
     $form['geocoder_bing_key'] = getlocations_element_map_tf(
       t('Bing Geocoder key'),
@@ -2545,6 +2572,31 @@ function getlocations_leaflet_display_options_form($defaults, $admin = FALSE) {
       t('A Geocoder key is required for Bing.'),
       40
     );
+    $form['geocoder_mapbox_key'] = getlocations_element_map_tf(
+      t('Mapbox Geocoder key'),
+      $defaults['geocoder_mapbox_key'],
+      t('A Geocoder key is required for Mapbox.'),
+      40
+    );
+    $form['geocoder_what3words_key'] = getlocations_element_map_tf(
+      t('What3Words Geocoder key'),
+      $defaults['geocoder_what3words_key'],
+      t('A Geocoder key is required for What3Words.'),
+      40
+    );
+    $form['geocoder_placeholder'] = getlocations_element_map_tf(
+      t('Placeholder'),
+      $defaults['geocoder_placeholder'],
+      '',
+      30
+    );
+    $form['geocoder_errormessage'] = getlocations_element_map_tf(
+      t('Error Message'),
+      $defaults['geocoder_errormessage'],
+      '',
+      30
+    );
+
     $form['geocodercollapsed'] = getlocations_element_map_checkbox(
       t('Geocoder Collapsed'),
       $defaults['geocodercollapsed']
@@ -3167,6 +3219,12 @@ function getlocations_leaflet_display_options_form($defaults, $admin = FALSE) {
     $defaults['show_maplinks'],
     t('Show a list of links to show Popup or go to Link on the map.')
   );
+  $form['show_maplinks']['#suffix'] = '<div id="wrap-getlocations-maplinks">';
+  $form['show_maplinks_viewport'] = getlocations_element_map_checkbox(
+    t('Only Show map links in Viewport'),
+    $defaults['show_maplinks_viewport']
+  );
+  $form['show_maplinks_viewport']['#suffix'] = '</div>';
 
   if (module_exists('getdirections')) {
     $form['getdirections_link'] = getlocations_element_map_checkbox(

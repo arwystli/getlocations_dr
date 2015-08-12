@@ -331,23 +331,39 @@
           // Geocoder control
           if (map_settings.geocoder) {
             var geo_opts = {};
-            geo_opts.placeholder = Drupal.t("Search...");
-            geo_opts.errorMessage = Drupal.t("Nothing found.");
+            geo_opts.placeholder = map_settings.geocoder_placeholder;
+            geo_opts.errorMessage = map_settings.geocoder_errormessage;
             geo_opts.collapsed = (map_settings.geocodercollapsed ? true : false);
             if (map_settings.geocoderposition) {
               geo_opts.position = map_settings.geocoderposition;
             }
             if (map_settings.geocodersrc == 'b' && map_settings.geocoder_bing_key) {
               geo_opts.geocoder = L.Control.Geocoder.bing(map_settings.geocoder_bing_key);
+              var geocoder_msg = Drupal.t('Geocoding by Bing');
             }
             else if (map_settings.geocodersrc == 'm' && map_settings.mapquest_key) {
               geo_opts.geocoder = L.Control.Geocoder.mapQuest(map_settings.mapquest_key);
+              var geocoder_msg = Drupal.t('Geocoding by MapQuest');
+            }
+            else if (map_settings.geocodersrc == 'x' && map_settings.mapbox_key) {
+              geo_opts.geocoder = L.Control.Geocoder.mapbox(map_settings.mapbox_key);
+              var geocoder_msg = Drupal.t('Geocoding by Mapbox');
+            }
+            else if (map_settings.geocodersrc == 'w' && map_settings.what3words_key) {
+              geo_opts.geocoder = L.Control.Geocoder.what3words(map_settings.what3words_key);
+              var geocoder_msg = Drupal.t('Geocoding by What3Words');
+            }
+            else if (map_settings.geocodersrc == 'g' && map_settings.google_key) {
+              geo_opts.geocoder = L.Control.Geocoder.google(map_settings.google_key);
+              var geocoder_msg = Drupal.t('Geocoding by Google');
             }
             else {
               geo_opts.geocoder = L.Control.Geocoder.nominatim();
+              var geocoder_msg = Drupal.t('Geocoding by Nominatim');
             }
             Drupal.getlocations_leaflet_geocoder[key] = L.Control.geocoder(geo_opts);
             Drupal.getlocations_leaflet_map[key].addControl(Drupal.getlocations_leaflet_geocoder[key]);
+            $(".leaflet-control-geocoder .leaflet-control-geocoder-icon").attr({title: geocoder_msg});
           }
 
           // latlons data
@@ -529,6 +545,27 @@
           // leaflet hash
           if (map_settings.hashurl && typeof(L.Hash) !== 'undefined') {
             L.hash(Drupal.getlocations_leaflet_map[key]);
+          }
+
+          // show_maplinks_viewport
+          if (map_settings.show_maplinks && map_settings.show_maplinks_viewport) {
+            Drupal.getlocations_leaflet_map[key].on('moveend zoomend', function() {
+              var b = Drupal.getlocations_leaflet_map[key].getBounds();
+              for (var i = 0; i < latlons.length; i++) {
+                var latlon = latlons[i];
+                var lat = latlon[0];
+                var lon = latlon[1];
+                var glid = latlon[4];
+                var p = L.latLng(lat, lon);
+                if (b.contains(p)) {
+                  // hide and show the links for markers in the current viewport
+                  $("li a.glid-" + glid).show();
+                }
+                else {
+                  $("li a.glid-" + glid).hide();
+                }
+              }
+            });
           }
 
         } // end is there really a map?
