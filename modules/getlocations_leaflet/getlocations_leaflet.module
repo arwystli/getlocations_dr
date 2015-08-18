@@ -731,7 +731,7 @@ function getlocations_leaflet_field_formatter_view($entity_type, $entity, $field
       // add in some more
       $map_settings = getlocations_leaflet_map_settings_do($map_settings, $default, $latlons, $mapid);
 
-      $map_settings['map_settings']['nodezoom'] = ($nodezoom ? $nodezoom : FALSE);
+      $map_settings['map_settings']['nodezoom'] = ($nodezoom ? $nodezoom : $defaults['nodezoom']);
       $map_settings['map_settings']['minmaxes'] = (empty($minmaxes) ? FALSE : implode(',', $minmaxes));
 
       $map_settings['icons'] = $iconlist;
@@ -1296,7 +1296,6 @@ function getlocations_leaflet_map_settings_do($map_settings, $defaults, $latlons
     $map_settings['map_settings']['geocoder_bing_key'] = $defaults['geocoder_bing_key'];
     $map_settings['map_settings']['geocoder_mapquest_key'] = $defaults['geocoder_mapquest_key'];
     $map_settings['map_settings']['geocoder_mapbox_key'] = $defaults['geocoder_mapbox_key'];
-    $map_settings['map_settings']['geocoder_what3words_key'] = $defaults['geocoder_what3words_key'];
     $map_settings['map_settings']['geocoder_google_key'] = $defaults['geocoder_google_key'];
     $map_settings['map_settings']['geocoder_placeholder'] = $defaults['geocoder_placeholder'];
     $map_settings['map_settings']['geocoder_errormessage'] = $defaults['geocoder_errormessage'];
@@ -1511,6 +1510,30 @@ function getlocations_leaflet_map_settings_do($map_settings, $defaults, $latlons
   $map_settings['map_settings']['hashurl'] = ($getlocations_leaflet_plugins['hash_enable'] ? $defaults['hashurl'] : 0);
 
   $getlocations_leaflet_paths = getlocations_leaflet_paths_get();
+
+  // What3Words
+  $what3words_lic = variable_get('getlocations_what3words_lic', array('key' => ''));
+  if ($what3words_lic['key'] && $defaults['what3words_enable']) {
+    $icon = getlocations_leaflet_get_marker($defaults['what3words_map_marker']);
+
+    #$map_settings['map_settings']['what3words_key'] = $what3words_lic['key'];
+    $map_settings['map_settings']['what3words_enable']      = $defaults['what3words_enable'];
+    $map_settings['map_settings']['what3words_search']      = $defaults['what3words_search'];
+    #$map_settings['map_settings']['what3words_map_marker']  = $defaults['what3words_map_marker'];
+    $map_settings['map_settings']['what3words_map_marker']  = $icon;
+    $map_settings['map_settings']['what3words_center']      = $defaults['what3words_center'];
+    $map_settings['map_settings']['what3words_zoom']        = $defaults['what3words_zoom'];
+    $map_settings['map_settings']['what3words_show']        = $defaults['what3words_show'];
+    $map_settings['map_settings']['what3words_marker_show'] = $defaults['what3words_marker_show'];
+    $map_settings['map_settings']['what3words_click']       = $defaults['what3words_click'];
+    $map_settings['map_settings']['what3words_size']        = $defaults['what3words_size'];
+    $map_settings['map_settings']['what3words_path']        = url($defaults['what3words_path']);
+    drupal_add_js($getlocations_leaflet_paths['getlocations_leaflet_what3words_path']);
+  }
+  else {
+    $map_settings['map_settings']['what3words_enable'] = 0;
+  }
+
   // shapes
   // polygons
   if ($defaults['polygons_enable'] && ! empty($defaults['polygons_coords'])) {
@@ -2087,6 +2110,16 @@ function getlocations_leaflet_defaults() {
     'views_search_radshape_toggle_active'  => $getlocations_defaults['views_search_radshape_toggle_active'],
     'views_search_center'                  => $getlocations_defaults['views_search_center'],
     'geolocation_mobile_check'             => $getlocations_defaults['geolocation_mobile_check'],
+    'what3words_enable'      => $getlocations_defaults['what3words_enable'],
+    'what3words_search'      => $getlocations_defaults['what3words_search'],
+    'what3words_size'        => $getlocations_defaults['what3words_size'],
+    'what3words_map_marker'  => $getlocations_defaults['what3words_map_marker'],
+    'what3words_marker_show' => $getlocations_defaults['what3words_marker_show'],
+    'what3words_center'      => $getlocations_defaults['what3words_center'],
+    'what3words_zoom'        => $getlocations_defaults['what3words_zoom'],
+    'what3words_show'        => $getlocations_defaults['what3words_show'],
+    'what3words_click'       => $getlocations_defaults['what3words_click'],
+    'what3words_path'        => $getlocations_defaults['what3words_path'],
   );
 
   $fieldables = getlocations_get_fieldable_entity_types();
@@ -2159,7 +2192,6 @@ function getlocations_leaflet_defaults() {
   $newdefaults['geocoder_bing_key']           = ''; // required for bing
   $newdefaults['geocoder_mapquest_key']       = ''; // required for mapquest
   $newdefaults['geocoder_mapbox_key']         = ''; // required for mapbox
-  $newdefaults['geocoder_what3words_key']     = ''; // required for what3words
   $apikey = variable_get('getlocations_api3_key', '');
   $newdefaults['geocoder_google_key']         = $apikey; // required for google
   $newdefaults['geocoder_errormessage']       = t("Nothing found.");
@@ -2552,7 +2584,6 @@ function getlocations_leaflet_display_options_form($defaults, $admin = FALSE) {
       'n' => t('Nominatim'),
       'b' => t('Bing'),
       'x' => t('Mapbox'),
-      'w' => t('What3Words'),
     );
     if ($apikey) {
       $sources['g'] = t('Google');
@@ -2576,12 +2607,6 @@ function getlocations_leaflet_display_options_form($defaults, $admin = FALSE) {
       t('Mapbox Geocoder key'),
       $defaults['geocoder_mapbox_key'],
       t('A Geocoder key is required for Mapbox.'),
-      40
-    );
-    $form['geocoder_what3words_key'] = getlocations_element_map_tf(
-      t('What3Words Geocoder key'),
-      $defaults['geocoder_what3words_key'],
-      t('A Geocoder key is required for What3Words.'),
       40
     );
     $form['geocoder_placeholder'] = getlocations_element_map_tf(
@@ -3241,6 +3266,8 @@ function getlocations_leaflet_display_options_form($defaults, $admin = FALSE) {
   $form += getlocations_geojson_form($defaults);
   $form['geojson_options']['#type'] = 'hidden';
 
+  $form += getlocations_what3words_form($defaults);
+
   if ($getlocations_leaflet_plugins['awesome_enable']) {
     $form['marker_type'] = getlocations_element_dd(
       t('Default Marker type'),
@@ -3285,6 +3312,7 @@ function getlocations_leaflet_paths_get($reset = FALSE, $min = FALSE) {
       'getlocations_leaflet_providers_path'  => GETLOCATIONS_LEAFLET_PATH . '/js/getlocations_leaflet_providers.min.js',
       'getlocations_leaflet_preview_path'    => GETLOCATIONS_LEAFLET_PATH . '/js/getlocations_leaflet_preview.min.js',
       'getlocations_leaflet_field_group_path'    => GETLOCATIONS_LEAFLET_PATH . '/js/getlocations_leaflet_field_group.min.js',
+      'getlocations_leaflet_what3words_path' => GETLOCATIONS_LEAFLET_PATH . '/js/getlocations_leaflet_what3words.min.js',
     );
   }
   else {
@@ -3299,6 +3327,7 @@ function getlocations_leaflet_paths_get($reset = FALSE, $min = FALSE) {
       'getlocations_leaflet_providers_path'  => GETLOCATIONS_LEAFLET_PATH . '/js/getlocations_leaflet_providers.js',
       'getlocations_leaflet_preview_path'    => GETLOCATIONS_LEAFLET_PATH . '/js/getlocations_leaflet_preview.js',
       'getlocations_leaflet_field_group_path'    => GETLOCATIONS_LEAFLET_PATH . '/js/getlocations_leaflet_field_group.js',
+      'getlocations_leaflet_what3words_path' => GETLOCATIONS_LEAFLET_PATH . '/js/getlocations_leaflet_what3words.js',
     );
   }
 
@@ -3728,6 +3757,13 @@ function getlocations_leaflet_settings_form() {
     128,
     t('Where the Getlocations leaflet preview javascript file is located.')
   );
+  $form['getlocations_leaflet_paths']['getlocations_leaflet_what3words_path'] = getlocations_element_path(
+    t('Path to Getlocations leaflet what3words javascript file'),
+    $getlocations_leaflet_paths['getlocations_leaflet_what3words_path'],
+    80,
+    128,
+    t('Where the Getlocations leaflet what3words javascript file is located.')
+  );
 
   $form['getlocations_leaflet_paths']['reset'] = getlocations_element_dd(
     t('Reset'),
@@ -4004,7 +4040,7 @@ function getlocations_leaflet_entity_type_map($type, $entity_id) {
 
     // add in some more
     $map_settings = getlocations_leaflet_map_settings_do($map_settings, $settings, $latlons, $mapid);
-    $map_settings['map_settings']['nodezoom'] = ($nodezoom ? $nodezoom : FALSE);
+    $map_settings['map_settings']['nodezoom'] = ($nodezoom ? $nodezoom : $settings['nodezoom']);
     $map_settings['map_settings']['minmaxes'] = (empty($minmaxes) ? FALSE : implode(',', $minmaxes));
 
     $map_settings['icons'] = $iconlist;
@@ -4968,6 +5004,21 @@ function theme_getlocations_leaflet_map($variables) {
     $output .= '</div>';
   }
 
+  // What3Words
+  $what3words_lic = variable_get('getlocations_what3words_lic', array('key' => ''));
+  if ($what3words_lic['key'] && $map_settings['map_settings']['what3words_enable']) {
+    $output .= '<div class="getlocations_leaflet_what3words container-inline">';
+    if ($map_settings['map_settings']['what3words_search']) {
+      // textbox
+      $output .= t('What3Words') . '&nbsp;&nbsp;<input type="text" id="edit-getlocations-leaflet-what3words-search" name="edit-getlocations-leaflet-what3words-search" value="" size="' . $map_settings['map_settings']['what3words_size'] . '" class="form-text" />';
+      $output .= '&nbsp;&nbsp;<input type="button" value="' . t('Search') . '" id="edit-getlocations-leaflet-what3words-search-submit" class="form-submit" /><br />';
+    }
+    if ($map_settings['map_settings']['what3words_show']) {
+      $output .= '<div id="edit-getlocations-leaflet-what3words-show"></div>';
+    }
+    $output .= '</div>';
+  }
+
   return $output;
 
 }
@@ -5055,7 +5106,7 @@ function theme_getlocations_leaflet_settings_form($variables) {
     $map_settings['map_settings']['dragging'] = TRUE;
     // add in some more
     $map_settings = getlocations_leaflet_map_settings_do($map_settings, $getlocations_leaflet_defaults, $latlons, $mapid);
-    $map_settings['map_settings']['nodezoom'] = ($nodezoom ? $nodezoom : FALSE);
+    $map_settings['map_settings']['nodezoom'] = ($nodezoom ? $nodezoom : $getlocations_leaflet_defaults['nodezoom']);
     $map_settings['map_settings']['minmaxes'] = (empty($minmaxes) ? FALSE : implode(',', $minmaxes));
     $map_settings['icons'] = $iconlist;
     $map_settings['datanum'] = 0;

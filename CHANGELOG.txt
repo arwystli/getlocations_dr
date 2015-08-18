@@ -1,9 +1,100 @@
-commit e4a1231
+commit d2b959c
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Tue Aug 18 09:40:03 2015 +0100
+
+    added what3words support
+
+getlocations.admin.inc
+getlocations.module
+js/getlocations_admin.js
+js/getlocations_admin.min.js
+js/getlocations_views.js
+js/getlocations_views.min.js
+js/getlocations_what3words.js
+js/getlocations_what3words.min.js
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/js/getlocations_leaflet.js
+modules/getlocations_leaflet/js/getlocations_leaflet.min.js
+modules/getlocations_leaflet/js/getlocations_leaflet_formatter.js
+modules/getlocations_leaflet/js/getlocations_leaflet_formatter.min.js
+modules/getlocations_leaflet/js/getlocations_leaflet_what3words.js
+modules/getlocations_leaflet/js/getlocations_leaflet_what3words.min.js
+views/getlocations_plugin_style_map.inc
+
+commit 35b5b01
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Aug 12 15:49:36 2015 +0100
+
+    fixed geocoder
+
+modules/getlocations_leaflet/js/getlocations_leaflet.js
+modules/getlocations_leaflet/js/getlocations_leaflet.min.js
+
+commit 2afa783
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Aug 12 12:18:25 2015 +0100
+
+    added show_maplinks_viewport
+
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/js/getlocations_leaflet.js
+modules/getlocations_leaflet/js/getlocations_leaflet.min.js
+modules/getlocations_leaflet/js/getlocations_leaflet_formatter.js
+modules/getlocations_leaflet/js/getlocations_leaflet_formatter.min.js
+
+commit 419d75d
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sun Aug 9 21:32:12 2015 +0100
+
+    updated leaflet plugins
+
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/plugins/bouncemarker/bouncemarker.js
+modules/getlocations_leaflet/plugins/bouncemarker/bouncemarker.min.js
+modules/getlocations_leaflet/plugins/fullscreen/Control.FullScreen.css
+modules/getlocations_leaflet/plugins/fullscreen/Control.FullScreen.js
+modules/getlocations_leaflet/plugins/fullscreen/Control.FullScreen.min.css
+modules/getlocations_leaflet/plugins/fullscreen/Control.FullScreen.min.js
+modules/getlocations_leaflet/plugins/fullscreen/icon-fullscreen-2x.png
+modules/getlocations_leaflet/plugins/fullscreen/icon-fullscreen.png
+modules/getlocations_leaflet/plugins/geocoder/Control.Geocoder.css
+modules/getlocations_leaflet/plugins/geocoder/Control.Geocoder.js
+modules/getlocations_leaflet/plugins/geocoder/Control.Geocoder.min.css
+modules/getlocations_leaflet/plugins/geocoder/Control.Geocoder.min.js
+modules/getlocations_leaflet/plugins/geocoder/images/geocoder.png
+modules/getlocations_leaflet/plugins/graticule/L.Graticule.js
+modules/getlocations_leaflet/plugins/markercluster/leaflet.markercluster-src.js
+modules/getlocations_leaflet/plugins/markercluster/leaflet.markercluster.js
+modules/getlocations_leaflet/plugins/minimap/L.Control.Layers.Minimap.js
+modules/getlocations_leaflet/plugins/minimap/L.Control.Layers.Minimap.min.js
+modules/getlocations_leaflet/plugins/minimap/control.layers.minimap.css
+modules/getlocations_leaflet/plugins/minimap/control.layers.minimap.min.css
+modules/getlocations_leaflet/plugins/pancontrol/L.Control.Pan.css
+modules/getlocations_leaflet/plugins/pancontrol/L.Control.Pan.ie.css
+modules/getlocations_leaflet/plugins/pancontrol/L.Control.Pan.ie.min.css
+modules/getlocations_leaflet/plugins/pancontrol/L.Control.Pan.js
+modules/getlocations_leaflet/plugins/pancontrol/L.Control.Pan.min.css
+modules/getlocations_leaflet/plugins/pancontrol/L.Control.Pan.min.js
+modules/getlocations_leaflet/plugins/zoomslider/L.Control.Zoomslider.css
+modules/getlocations_leaflet/plugins/zoomslider/L.Control.Zoomslider.js
+modules/getlocations_leaflet/plugins/zoomslider/L.Control.Zoomslider.min.css
+modules/getlocations_leaflet/plugins/zoomslider/L.Control.Zoomslider.min.js
+
+commit 2432249
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Fri Aug 7 11:09:37 2015 +0100
+
+    new cdn for leafletjs
+
+drush/getlocations.drush.inc
+
+commit e5c15a4
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Thu Aug 6 09:19:24 2015 +0100
 
     notice avoidance
 
+CHANGELOG.txt
 modules/getlocations_fields/getlocations_fields.module
 
 commit a69c252

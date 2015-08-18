@@ -174,7 +174,11 @@ function getlocations_menu() {
     'page callback' => 'getlocations_markerinfo',
     'type' => MENU_CALLBACK,
   );
-
+  $items['getlocations/cb_w3w'] = array(
+    'access callback' => TRUE,
+    'page callback' => 'getlocations_cb_w3w',
+    'type' => MENU_CALLBACK,
+  );
 
   return $items;
 }
@@ -1043,6 +1047,17 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
     $getlocations_js_weight++;
 
   }
+  // What3Words
+  if ($defaults['what3words_enable']) {
+    if (!stristr($current_js, $getlocations_paths['getlocations_what3words_path'])) {
+      $js_opts = array();
+      $js_opts['weight'] = $getlocations_js_weight;
+      $js_opts['type'] = 'file';
+      $js_opts['preprocess'] = $aggr;
+      drupal_add_js($getlocations_paths['getlocations_what3words_path'], $js_opts);
+      $getlocations_js_weight++;
+    }
+  }
 
 }
 
@@ -1266,6 +1281,16 @@ function getlocations_defaults($reset = FALSE) {
     'views_search_radshape_toggle_active'  => 0,
     'views_search_center'                  => 0,
     'geocoder_enable'                      => 0,
+    'what3words_enable'      => 0,
+    'what3words_search'      => 1,
+    'what3words_size'        => '40',
+    'what3words_map_marker'  => 'drupal',
+    'what3words_marker_show' => 0,
+    'what3words_center'      => 1,
+    'what3words_zoom'        => 12,
+    'what3words_show'        => 1,
+    'what3words_click'       => 1,
+    'what3words_path'        => 'getlocations/cb_w3w',
   );
 
   $providers = getlocations_get_map_providers();
@@ -1721,6 +1746,56 @@ function getlocations_markerinfo() {
   $output = theme('getlocations_marker_box', array('content' => $content));
   print $output;
   exit;
+}
+
+function getlocations_cb_w3w() {
+  $data = FALSE;
+  $content = FALSE;
+  if (isset($_REQUEST['data'])) {
+    $data = $_REQUEST['data'];
+  }
+  if ($data) {
+    if ($latlon = getlocations_latlon_check($data)) {
+      # we have a latlon
+      $type = 'position';
+    }
+    else {
+      # must be a w3w
+      $type = 'w3w';
+    }
+    $content = getlocations_cb_w3w_get($data, $type);
+  }
+  print $content;
+  exit;
+}
+
+function getlocations_cb_w3w_get($data, $type) {
+  $types = array('w3w', 'position');
+  if (in_array($type, $types)) {
+    $what3words_lic = variable_get('getlocations_what3words_lic', array('key' => ''));
+    $key = $what3words_lic['key'];
+    if ($key) {
+      $w3w_url = "http://api.what3words.com";
+      $url = $w3w_url . '/' . $type;
+      $opts = array(
+        'method' => 'POST',
+        'headers' => array('Content-Type' => 'application/x-www-form-urlencoded')
+      );
+      $datastr = 'key=' . $key;
+      if ($type == 'position') {
+        $datastr .= '&position=' . $data;
+      }
+      else {
+        $datastr .= '&string=' . $data;
+      }
+      $opts['data'] = $datastr;
+      $response = drupal_http_request($url, $opts);
+      if ($response->code == '200') {
+        return $response->data;
+      }
+    }
+  }
+  return FALSE;
 }
 
 /**
@@ -2572,6 +2647,21 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
 
   // geocoder-js
   $settings[$mapid]['geocoder_enable'] = $defaults['geocoder_enable'];
+
+  // What3Words
+  $what3words_lic = variable_get('getlocations_what3words_lic', array('key' => ''));
+  if ($what3words_lic['key'] && $defaults['what3words_enable']) {
+    #$settings[$mapid]['what3words_key'] = $what3words_lic['key'];
+    $settings[$mapid]['what3words_enable']      = $defaults['what3words_enable'];
+    $settings[$mapid]['what3words_search']      = $defaults['what3words_search'];
+    $settings[$mapid]['what3words_map_marker']  = $defaults['what3words_map_marker'];
+    $settings[$mapid]['what3words_center']      = $defaults['what3words_center'];
+    $settings[$mapid]['what3words_zoom']        = $defaults['what3words_zoom'];
+    $settings[$mapid]['what3words_show']        = $defaults['what3words_show'];
+    $settings[$mapid]['what3words_marker_show'] = $defaults['what3words_marker_show'];
+    $settings[$mapid]['what3words_click']       = $defaults['what3words_click'];
+    $settings[$mapid]['what3words_path']        = url($defaults['what3words_path']);
+  }
 
   // baselayer settings
   $providers = getlocations_get_map_providers();
@@ -4187,6 +4277,8 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
 
     $form += getlocations_google_places_form($defaults, $config);
 
+    $form += getlocations_what3words_form($defaults);
+
     if ($config) {
       $form['places'] = array(
         '#type' => 'value',
@@ -4914,6 +5006,85 @@ function getlocations_markercluster_form($defaults) {
 }
 
 /**
+ * What3words config form
+ *
+ */
+function getlocations_what3words_form($defaults) {
+
+  $form = array();
+
+  $what3words_lic = variable_get('getlocations_what3words_lic', array('key' => ''));
+  if ($what3words_lic['key']) {
+
+    $form['what3words_enable'] = getlocations_element_map_checkbox(
+      t('Enable What3Words service'),
+      $defaults['what3words_enable'],
+      t('This service requires an API key')
+    );
+    $form['what3words_enable']['#suffix'] = '<div id="wrap-getlocations-what3words">';
+    // what3words_search
+    $form['what3words_search'] = getlocations_element_map_checkbox(
+      t('Show What3Words search box'),
+      $defaults['what3words_search']
+    );
+    // what3words_size
+    $form['what3words_size'] = getlocations_element_map_tf(
+      t('What3Words search box width'),
+      $defaults['what3words_size'],
+      '',
+      10
+    );
+
+    // what3words_marker_show
+    $form['what3words_marker_show'] = getlocations_element_map_checkbox(
+      t('Display What3Words marker'),
+      $defaults['what3words_marker_show']
+    );
+
+    // what3words_map_marker
+    $markers = getlocations_get_marker_titles();
+    $form['what3words_map_marker'] = getlocations_element_map_marker(
+      t('What3Words Map marker'),
+      $markers,
+      $defaults['what3words_map_marker']
+    );
+    // what3words_center
+    $form['what3words_center'] = getlocations_element_map_checkbox(
+      t('Center map on What3Words location'),
+      $defaults['what3words_center'],
+      t('Center the map on Search success')
+    );
+    // what3words_zoom
+    #$form['what3words_zoom'] = getlocations_element_map_zoom_map(
+    #  t('Zoom for What3Words location'),
+    #  $defaults['what3words_zoom']
+    #);
+    $opts = array('-2' => t('Keep current zoom'), '-1' => t('Use map type settings')) + drupal_map_assoc(range(0, 21));
+    $form['what3words_zoom'] = array(
+      '#type' => 'select',
+      '#title' => t('Zoom for What3Words location'),
+      '#default_value' => $defaults['what3words_zoom'],
+      '#options' => $opts,
+    );
+    // what3words_click
+    $form['what3words_click'] = getlocations_element_map_checkbox(
+      t('Click on map to find What3Words'),
+      $defaults['what3words_click']
+    );
+    // what3words_show
+    $form['what3words_show'] = getlocations_element_map_checkbox(
+      t('Display What3Words for current location'),
+      $defaults['what3words_show']
+    );
+    $form['what3words_show']['#suffix'] = '</div>';
+  }
+  else {
+    $form['what3words_enable'] = array('#type' => 'value', '#value' => 0);
+  }
+  return $form;
+}
+
+/**
  * Function
  *
  * @param
@@ -4948,6 +5119,7 @@ function getlocations_paths_get($reset = FALSE, $min = FALSE) {
       'getlocations_views_path'         => GETLOCATIONS_PATH . '/js/getlocations_views.min.js',
       'getlocations_icons_path'         => GETLOCATIONS_PATH . '/js/icons.min.js',
       'getlocations_field_group_path'   => GETLOCATIONS_PATH . '/js/getlocations_field_group.min.js',
+      'getlocations_what3words_path'    => GETLOCATIONS_PATH . '/js/getlocations_what3words.min.js',
     );
   }
   else {
@@ -4975,6 +5147,7 @@ function getlocations_paths_get($reset = FALSE, $min = FALSE) {
       'getlocations_views_path'         => GETLOCATIONS_PATH . '/js/getlocations_views.js',
       'getlocations_icons_path'         => GETLOCATIONS_PATH . '/js/icons.js',
       'getlocations_field_group_path'   => GETLOCATIONS_PATH . '/js/getlocations_field_group.js',
+      'getlocations_what3words_path'    => GETLOCATIONS_PATH . '/js/getlocations_what3words.js',
     );
 
   }
@@ -6916,6 +7089,21 @@ function theme_getlocations_show($variables) {
   // search_places
   if ($defaults['search_places'] && $defaults['search_places_position'] == 'outside_below') {
     $output .= $sp;
+  }
+
+  // What3Words
+  $what3words_lic = variable_get('getlocations_what3words_lic', array('key' => ''));
+  if ($what3words_lic['key'] && $defaults['what3words_enable']) {
+    $output .= '<div class="getlocations_what3words container-inline">';
+    if ($defaults['what3words_search']) {
+      // textbox
+      $output .= t('What3Words') . '&nbsp;&nbsp;<input type="text" id="edit-getlocations-what3words-search" name="edit-getlocations-what3words-search" value="" size="' . $defaults['what3words_size'] . '" class="form-text" />';
+      $output .= '&nbsp;&nbsp;<input type="button" value="' . t('Search') . '" id="edit-getlocations-what3words-search-submit" class="form-submit" /><br />';
+    }
+    if ($defaults['what3words_show']) {
+      $output .= '<div id="edit-getlocations-what3words-show"></div>';
+    }
+    $output .= '</div>';
   }
 
   return $output;

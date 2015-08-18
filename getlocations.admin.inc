@@ -109,6 +109,23 @@ function getlocations_settings_form() {
     array('o' => t('Open'), 'l' => t('Licensed'))
   );
 
+  // $what3words
+  $what3words_lic = variable_get('getlocations_what3words_lic', array('key' => ''));
+  $form['getlocations_what3words_lic'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('What3Words API key'),
+    '#description' => t('This key is required if you want to use !u services.', array('!u' => l(t('What3Words'), 'http://developer.what3words.com/', array('attributes' => array('target' => '_blank'))))),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#tree' => TRUE,
+  );
+  $form['getlocations_what3words_lic']['key'] = getlocations_element_map_tf(
+    t('What3Words key'),
+    $what3words_lic['key'],
+    t('After entering the key you should save the form, this will present further settings.'),
+    40
+  );
+
   // map version
   $map_version = variable_get('getlocations_map_version', '');
   $form['map_version'] =  array(
@@ -558,6 +575,14 @@ function getlocations_settings_form() {
     60,
     128,
     t('Where the getlocations icons javascript file is located.')
+  );
+  // what3words
+  $form['getlocations_paths']['getlocations_what3words_path'] = getlocations_element_path(
+    t('Path to getlocations What3Words javascript file'),
+    $getlocations_paths['getlocations_what3words_path'],
+    60,
+    128,
+    t('Where the getlocations what3words javascript file is located.')
   );
 
   $form['getlocations_paths']['getlocations_path'] = getlocations_element_path(

@@ -349,10 +349,6 @@
               geo_opts.geocoder = L.Control.Geocoder.mapbox(map_settings.geocoder_mapbox_key);
               var geocoder_msg = Drupal.t('Geocoding by Mapbox');
             }
-            else if (map_settings.geocodersrc == 'w' && map_settings.geocoder_what3words_key) {
-              geo_opts.geocoder = L.Control.Geocoder.what3words(map_settings.geocoder_what3words_key);
-              var geocoder_msg = Drupal.t('Geocoding by What3Words');
-            }
             else if (map_settings.geocodersrc == 'g' && map_settings.geocoder_google_key) {
               geo_opts.geocoder = L.Control.Geocoder.google(map_settings.geocoder_google_key);
               var geocoder_msg = Drupal.t('Geocoding by Google');
