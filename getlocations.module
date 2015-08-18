@@ -7098,7 +7098,9 @@ function theme_getlocations_show($variables) {
     if ($defaults['what3words_search']) {
       // textbox
       $output .= t('What3Words') . '&nbsp;&nbsp;<input type="text" id="edit-getlocations-what3words-search" name="edit-getlocations-what3words-search" value="" size="' . $defaults['what3words_size'] . '" class="form-text" />';
-      $output .= '&nbsp;&nbsp;<input type="button" value="' . t('Search') . '" id="edit-getlocations-what3words-search-submit" class="form-submit" /><br />';
+      $output .= '&nbsp;&nbsp;<input type="button" value="' . t('Search') . '" id="edit-getlocations-what3words-search-submit" class="form-submit" />';
+      $output .= '<div class="getlocations_w3w_throbber getlocations_w3w_throbber_inactive" id="getlocations_w3w_throbber_' . $mapid . '">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
+      $output .= '<br />';
     }
     if ($defaults['what3words_show']) {
       $output .= '<div id="edit-getlocations-what3words-show"></div>';

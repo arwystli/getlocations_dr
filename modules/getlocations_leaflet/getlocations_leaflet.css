@@ -49,3 +49,14 @@
 }
 .getlocations_leaflet_map_buttons {
 }
+.getlocations_w3w_throbber {
+  background-image: url('/misc/throbber.gif');
+  background-position: 100% 2px;
+  background-repeat: repeat-y;
+}
+.getlocations_w3w_throbber_active {
+  background-position: 100% -18px;
+}
+.getlocations_w3w_throbber_inactive {
+  background-position: 100% 2px;
+}

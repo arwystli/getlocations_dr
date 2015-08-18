@@ -26,6 +26,7 @@
           if (settings.what3words_enable) {
             if (settings.what3words_search && $("#edit-getlocations-what3words-search").is('input')) {
               $("#edit-getlocations-what3words-search-submit").click( function() {
+                $("#getlocations_w3w_throbber_" + key).removeClass('getlocations_w3w_throbber_inactive').addClass('getlocations_w3w_throbber_active');
                 var s = $("#edit-getlocations-what3words-search").val();
                 // validate the string, 3 words sep by spaces or dots
                 // first replace spaces with dots
@@ -64,13 +65,18 @@
                       }
 
                     }
+                    $("#getlocations_w3w_throbber_" + key).removeClass('getlocations_w3w_throbber_active').addClass('getlocations_w3w_throbber_inactive');
                   });
+                }
+                else {
+                  $("#getlocations_w3w_throbber_" + key).removeClass('getlocations_w3w_throbber_active').addClass('getlocations_w3w_throbber_inactive');
                 }
               });
             }
 
             if (settings.what3words_click) {
               Drupal.getlocations_map[key].addListener('click', function(e) {
+                $("#getlocations_w3w_throbber_" + key).removeClass('getlocations_w3w_throbber_inactive').addClass('getlocations_w3w_throbber_active');
                 var ll = e.latLng;
                 var wlat = ll.lat();
                 var wlon = ll.lng();
@@ -101,6 +107,7 @@
                       Drupal.getlocations_map[key].setCenter(ll);
                     }
                   }
+                  $("#getlocations_w3w_throbber_" + key).removeClass('getlocations_w3w_throbber_active').addClass('getlocations_w3w_throbber_inactive');
                 });
               }); // end map click listener
             }
