@@ -740,6 +740,7 @@ function getlocations_fields_token_info() {
         $info['tokens'][$field_key][$col_key . ":?"] = array(
           'name' => t($col_value),
           'description' => t($col_value),
+          'type' => $field_key,
         );
       }
     }
@@ -761,7 +762,7 @@ function getlocations_fields_tokens($type, $tokens, array $data = array(), array
   if (isset($data['entity_type']) && isset($data['entity'])) {
 
     $obj = $data['entity'];
-    $lang = (isset($obj->language) ? $obj->language : LANGUAGE_NONE);
+    $lang = (isset($obj->language) && $obj->language ? $obj->language : LANGUAGE_NONE);
 
     // Loop through the tokens.
     foreach ($tokens as $name => $original) {
