@@ -47,7 +47,10 @@
     'v' => t('Getlocations Vocabulary marker'),
     'c' => t('Getlocations Comment marker'),
     'i' => t('Getlocations Input marker'),
-    'g' => t('Getlocations GPS marker')
+    'g' => t('Getlocations GPS marker'),
+    'm' => t('Getlocations Smartip marker'),
+    's' => t('Getlocations Search marker'),
+    't' => t('Getlocations Term marker'),
   );
   if (isset($content['cat']) && isset($titles[$content['cat']])) {
     $title = $titles[$content['cat']];
