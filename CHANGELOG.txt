@@ -1,9 +1,49 @@
-commit d2b959c
+commit 8486b56
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sun Aug 23 16:32:35 2015 +0100
+
+    fixed current-user in tokens
+
+modules/getlocations_fields/getlocations_fields.functions.inc
+
+commit 667d52c
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Thu Aug 20 12:23:39 2015 +0100
+
+    more marker box headings
+
+getlocations_marker_box.tpl.php
+
+commit ef306d0
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Aug 19 23:06:27 2015 +0100
+
+    fixed token bug
+
+modules/getlocations_fields/getlocations_fields.functions.inc
+
+commit 0171acc
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Tue Aug 18 16:11:13 2015 +0100
+
+    added throbber to w3w
+
+getlocations.css
+getlocations.module
+js/getlocations_what3words.js
+js/getlocations_what3words.min.js
+modules/getlocations_leaflet/getlocations_leaflet.css
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/js/getlocations_leaflet_what3words.js
+modules/getlocations_leaflet/js/getlocations_leaflet_what3words.min.js
+
+commit 7fba457
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Tue Aug 18 09:40:03 2015 +0100
 
     added what3words support
 
+CHANGELOG.txt
 getlocations.admin.inc
 getlocations.module
 js/getlocations_admin.js

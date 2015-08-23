@@ -757,6 +757,7 @@ function getlocations_fields_tokens($type, $tokens, array $data = array(), array
   $sanitize = ( isset($options['sanitize']) && $options['sanitize'] ? TRUE : FALSE);
   $replacements = array();
   $module = 'getlocations_fields';
+  $obj = FALSE;
 
   // Make sure we have an entity.
   if (isset($data['entity_type']) && isset($data['entity'])) {
@@ -764,6 +765,9 @@ function getlocations_fields_tokens($type, $tokens, array $data = array(), array
     $obj = $data['entity'];
     $lang = (isset($obj->language) && $obj->language ? $obj->language : LANGUAGE_NONE);
 
+  }
+
+  if ($obj) {
     // Loop through the tokens.
     foreach ($tokens as $name => $original) {
       // Break token into an array.
@@ -773,13 +777,24 @@ function getlocations_fields_tokens($type, $tokens, array $data = array(), array
       if (count($pieces) < 3) {
         continue;
       }
-      $entity = $pieces[0];
-      $field = $pieces[1];
-      $item = $pieces[2];
-      $delta = (isset($pieces[3]) && is_numeric($pieces[3]) ? $pieces[3] : 0);
+      if (count($pieces) > 3 && $pieces[0] == 'user' && $pieces[1] == 'original' ) {
+        $entity = $pieces[0];
+        $field = $pieces[2];
+        $item = $pieces[3];
+        $delta = (isset($pieces[4]) && is_numeric($pieces[4]) ? $pieces[4] : 0);
+      }
+      else {
+        $entity = $pieces[0];
+        $field = $pieces[1];
+        $item = $pieces[2];
+        $delta = (isset($pieces[3]) && is_numeric($pieces[3]) ? $pieces[3] : 0);
+      }
 
       $field_info = field_info_field($field);
       $supported_entities = getlocations_get_supported_entities($module);
+      if ($entity == 'current-user') {
+        $supported_entities[] = 'current-user';
+      }
       $fieldnames = getlocations_get_fieldnames();
       $col_keys = getlocations_fields_columns(TRUE);
       // Make sure this is a field and it is a getlocations_fields field.
