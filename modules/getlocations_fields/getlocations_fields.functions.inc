@@ -831,7 +831,8 @@ function getlocations_fields_columns($keyonly = FALSE) {
     'country_name' => t('Country name'),
     'phone'        => t('Phone'),
     'mobile'       => t('Mobile'),
-    'fax'          => t('Fax')
+    'fax'          => t('Fax'),
+    'marker'       => t('Marker'),
   );
   if ($keyonly) {
     return array_keys($columns);

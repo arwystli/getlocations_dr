@@ -4396,7 +4396,7 @@ function theme_getlocations_fields_field_widget_form($variables) {
   );
   foreach ($fieldlist AS $field) {
     if (isset($form[$field])) {
-      $form[$field]['#attributes'] = array('id' => 'getlocations_' . $field . '_' . $mapid);
+      $form[$field]['#attributes'] = array('class' => array('getlocations_' . $field . '_' . $mapid));
     }
   }
   if (isset($form['address'])) {

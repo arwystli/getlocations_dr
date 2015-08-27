@@ -1,9 +1,21 @@
-commit 8486b56
+commit f96b501
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Thu Aug 27 09:03:00 2015 +0100
+
+    fixed drupal update bug #2556379
+
+modules/getlocations_fields/getlocations_fields.functions.inc
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_fields/js/getlocations_fields.js
+modules/getlocations_fields/js/getlocations_fields.min.js
+
+commit 1bd0729
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Sun Aug 23 16:32:35 2015 +0100
 
     fixed current-user in tokens
 
+CHANGELOG.txt
 modules/getlocations_fields/getlocations_fields.functions.inc
 
 commit 667d52c

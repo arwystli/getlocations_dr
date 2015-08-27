@@ -72,8 +72,8 @@
           streetview_setup_buttondone[key] = false;
 
           // we need to see if this is an update
-          lat = $("#" + latfield + key).val();
-          lng = $("#" + lonfield + key).val();
+          lat = $("." + latfield + key).val();
+          lng = $("." + lonfield + key).val();
           if (lat && lng) {
             point[key] = new google.maps.LatLng(parseFloat(lat), parseFloat(lng));
             updateMap(Drupal.getlocations_inputmap[key], point[key], key);
@@ -173,7 +173,7 @@
           if (settings.latlon_warning > 0) {
             // warn on empty Latitude/Longitude
             $("input.form-submit#edit-submit").click( function () {
-              if ($("#" + latfield + key).val() == '' && $("#" + lonfield + key).val() == '') {
+              if ($("." + latfield + key).val() == '' && $("." + lonfield + key).val() == '') {
                 if (use_address > 0) {
                   msg = Drupal.t('You must fill in the Latitude/Longitude fields. Use the Search or move the marker.');
                 }
@@ -189,31 +189,31 @@
 
           if (settings.getlocations_fields[key].map_settings_allow) {
             // monitor zoom
-            if ($("#getlocations_mapzoom_" + key).is('input')) {
-              if ( $("#getlocations_mapzoom_" + key).val() == '') {
-                $("#getlocations_mapzoom_" + key).val(Drupal.getlocations_map[key].getZoom());
+            if ($(".getlocations_mapzoom_" + key).is('input')) {
+              if ($(".getlocations_mapzoom_" + key).val() == '') {
+                $(".getlocations_mapzoom_" + key).val(Drupal.getlocations_map[key].getZoom());
               }
-              Drupal.getlocations_map[key].setZoom(parseInt($("#getlocations_mapzoom_" + key).val()));
+              Drupal.getlocations_map[key].setZoom(parseInt($(".getlocations_mapzoom_" + key).val()));
               google.maps.event.addListener(Drupal.getlocations_map[key], 'zoom_changed', function() {
-                $("#getlocations_mapzoom_" + key).val(Drupal.getlocations_map[key].getZoom());
+                $(".getlocations_mapzoom_" + key).val(Drupal.getlocations_map[key].getZoom());
               });
             }
             // monitor maptype
-            if ($("#getlocations_map_maptype_" + key).is('input')) {
-              if ( $("#getlocations_map_maptype_" + key).val() == '') {
+            if ($(".getlocations_map_maptype_" + key).is('input')) {
+              if ($(".getlocations_map_maptype_" + key).val() == '') {
                 var m = Drupal.getlocations_map[key].getMapTypeId();
                 var maptype = getmaptype(m);
-                $("#getlocations_map_maptype_" + key).val(maptype);
+                $(".getlocations_map_maptype_" + key).val(maptype);
               }
               else {
-                var maptype = $("#getlocations_map_maptype_" + key).val();
+                var maptype = $(".getlocations_map_maptype_" + key).val();
                 var m = gettypemap(maptype);
                 Drupal.getlocations_map[key].setMapTypeId(m);
               }
               google.maps.event.addListener(Drupal.getlocations_map[key], 'maptypeid_changed', function() {
                 var m = Drupal.getlocations_map[key].getMapTypeId();
                 var maptype = getmaptype(m);
-                $("#getlocations_map_maptype_" + key).val(maptype);
+                $(".getlocations_map_maptype_" + key).val(maptype);
               });
             }
           }
@@ -265,16 +265,16 @@
                   lat = (results[0].latitude !== undefined ? parseFloat(results[0].latitude) : 0);
                   lng = (results[0].longitude !== undefined ? parseFloat(results[0].longitude) : 0);
                   if (lat && lng) {
-                    $("#" + latfield + kk).val(lat);
-                    $("#" + lonfield + kk).val(lng);
+                    $("." + latfield + kk).val(lat);
+                    $("." + lonfield + kk).val(lng);
                     point[kk] = new google.maps.LatLng(parseFloat(lat), parseFloat(lng));
                     updateMap(mmap, point[kk], kk);
                     streetviewSetupButtonDo(kk);
                     if (use_adrs > 0) {
                       set_address_components2(kk, results);
                       // Get name property and fill name field
-                      if ($("#" + namefield + kk).val() == '') {
-                        $("#" + namefield + kk).val(adrs.name);
+                      if ($("." + namefield + kk).val() == '') {
+                        $("." + namefield + kk).val(adrs.name);
                       }
                     }
                   }
@@ -295,15 +295,15 @@
                   point[kk] = results[0].geometry.location;
                   lat = results[0].geometry.location.lat();
                   lng = results[0].geometry.location.lng();
-                  $("#" + latfield + kk).val(lat);
-                  $("#" + lonfield + kk).val(lng);
+                  $("." + latfield + kk).val(lat);
+                  $("." + lonfield + kk).val(lng);
                   updateMap(mmap, point[kk], kk);
                   streetviewSetupButtonDo(kk);
                   if (use_adrs > 0) {
                     set_address_components(kk, adrs.address_components);
                     // Get name property and fill name field
-                    if ($("#" + namefield + kk).val() == '') {
-                      $("#" + namefield + kk).val(adrs.name);
+                    if ($("." + namefield + kk).val() == '') {
+                      $("." + namefield + kk).val(adrs.name);
                     }
                   }
                 }
@@ -318,21 +318,21 @@
               point[kk] = adrs.geometry.location;
               lat = adrs.geometry.location.lat();
               lng = adrs.geometry.location.lng();
-              $("#" + latfield + kk).val(lat);
-              $("#" + lonfield + kk).val(lng);
+              $("." + latfield + kk).val(lat);
+              $("." + lonfield + kk).val(lng);
               updateMap(mmap, point[kk], kk);
               streetviewSetupButtonDo(kk);
               set_address_components(kk, adrs.address_components);
-              if ($("#" + namefield + kk).val() == '') {
-                $("#" + namefield + kk).val(adrs.name);
+              if ($("." + namefield + kk).val() == '') {
+                $("." + namefield + kk).val(adrs.name);
               }
             }
 
           }
-          else if ( ($("#" + latfield + k).val() !== '') && ($("#" + lonfield + k).val() !== '')  ) {
+          else if (($("#" + latfield + k).val() !== '') && ($("#" + lonfield + k).val() !== '')) {
             // reverse geocoding
-            lat = $("#" + latfield + k).val();
-            lng = $("#" + lonfield + k).val();
+            lat = $("." + latfield + k).val();
+            lng = $("." + lonfield + k).val();
             point[k] = new google.maps.LatLng(parseFloat(lat), parseFloat(lng));
             if (gsettings[k].geocoder_enable > 0) {
               // nominatem
@@ -412,10 +412,10 @@
           }
 
           if (street_num_pos == 1) {
-            $("#" + streetfield + k).val((streetnumber_value ? streetnumber_value + ' ' : '') + streetfield_value);
+            $("." + streetfield + k).val((streetnumber_value ? streetnumber_value + ' ' : '') + streetfield_value);
           }
           else {
-            $("#" + streetfield + k).val(streetfield_value + (streetnumber_value ? ' ' + streetnumber_value : ''));
+            $("." + streetfield + k).val(streetfield_value + (streetnumber_value ? ' ' + streetnumber_value : ''));
           }
 
           if (admin_area_level_1) {
@@ -437,33 +437,33 @@
             provincefield_value = admin_area_level_3;
           }
 
-          $("#" + provincefield + k).val(provincefield_value);
-          $("#" + additionalfield + k).val((additionalfield_value ? additionalfield_value : neighborhood_value));
-          $("#" + cityfield + k).val(cityfield_value);
+          $("." + provincefield + k).val(provincefield_value);
+          $("." + additionalfield + k).val((additionalfield_value ? additionalfield_value : neighborhood_value));
+          $("." + cityfield + k).val(cityfield_value);
           if (postal_codefield_value) {
-            $("#" + postal_codefield + k).val(postal_codefield_value);
+            $("." + postal_codefield + k).val(postal_codefield_value);
           }
           else {
-            $("#" + postal_codefield + k).val(postal_code_prefix_field_value);
+            $("." + postal_codefield + k).val(postal_code_prefix_field_value);
           }
 
           // input or select box
-          if ($("#" + countryfield + k).is("input")) {
-            $("#" + countryfield + k).val(countryfield_value);
+          if ($("." + countryfield + k).is("input")) {
+            $("." + countryfield + k).val(countryfield_value);
           }
-          else if ($("#" + countryfield + k).is("select")) {
+          else if ($("." + countryfield + k).is("select")) {
             // give two letter code precedence
             if (countryfield_value_s) {
-              $("#" + countryfield + k).val(countryfield_value_s).attr('selected', 'selected');
+              $("." + countryfield + k).val(countryfield_value_s).attr('selected', 'selected');
             }
             else {
-              $("#" + countryfield + k + " option").each( function(index) {
+              $("." + countryfield + k + " option").each( function(index) {
                 if (countryfield_value == $(this).text()) {
-                  $("#" + countryfield + k).val($(this).val()).attr('selected', 'selected');
+                  $("." + countryfield + k).val($(this).val()).attr('selected', 'selected');
                 }
                 // fix 'The Netherlands' which is what google returns
                 if (countryfield_value == 'The Netherlands') {
-                  $("#" + countryfield + k).val('NL').attr('selected', 'selected');
+                  $("." + countryfield + k).val('NL').attr('selected', 'selected');
                 }
               });
             }
@@ -474,23 +474,23 @@
         function set_address_components2(k, results) {
           var cityfield_value = (results[0].city !== undefined ? results[0].city : '');
           if (cityfield_value) {
-            $("#" + cityfield + k).val(cityfield_value);
+            $("." + cityfield + k).val(cityfield_value);
           }
           var postal_codefield_value = (results[0].postal_code !== undefined ? results[0].postal_code : '');
           if (postal_codefield_value) {
-            $("#" + postal_codefield + k).val(postal_codefield_value);
+            $("." + postal_codefield + k).val(postal_codefield_value);
           }
           var provincefield_value = (results[0].region !== undefined ? results[0].region : '');
           if (provincefield_value) {
-            $("#" + provincefield + k).val(provincefield_value);
+            $("." + provincefield + k).val(provincefield_value);
           }
           var streetnumber_value = (results[0].streetNumber !== undefined ? results[0].streetNumber : '');
           var streetfield_value = (results[0].streetName !== undefined ? results[0].streetName : '');
           if (street_num_pos == 1) {
-            $("#" + streetfield + k).val((streetnumber_value ? streetnumber_value + ' ' : '') + streetfield_value);
+            $("." + streetfield + k).val((streetnumber_value ? streetnumber_value + ' ' : '') + streetfield_value);
           }
           else {
-            $("#" + streetfield + k).val(streetfield_value + (streetnumber_value ? ' ' + streetnumber_value : ''));
+            $("." + streetfield + k).val(streetfield_value + (streetnumber_value ? ' ' + streetnumber_value : ''));
           }
 
         }
@@ -522,8 +522,8 @@
             mmmap.panTo(p);
             lat = p.lat();
             lng = p.lng();
-            $("#" + latfield + mmkey).val(lat);
-            $("#" + lonfield + mmkey).val(lng);
+            $("." + latfield + mmkey).val(lat);
+            $("." + lonfield + mmkey).val(lng);
             streetviewSetupButtonDo(mkey);
           });
           movelistener = google.maps.event.addListener(mmap, "click", function (e) {
@@ -532,8 +532,8 @@
             mark[mmkey].setPosition(p);
             lat = p.lat();
             lng = p.lng();
-            $("#" + latfield + mmkey).val(lat);
-            $("#" + lonfield + mmkey).val(lng);
+            $("." + latfield + mmkey).val(lat);
+            $("." + lonfield + mmkey).val(lng);
             streetviewSetupButtonDo(mkey);
           });
         }
@@ -552,12 +552,12 @@
             streetview_setup_buttondone[k] = true;
             $("#getlocations_streetview_setupbutton_" + k).click( function() {
               // fetch lat/lon from DOM
-              var lat = $("#" + latfield + k).val();
-              var lng = $("#" + lonfield + k).val();
+              var lat = $("." + latfield + k).val();
+              var lng = $("." + lonfield + k).val();
               var pos = new google.maps.LatLng(parseFloat(lat), parseFloat(lng));
-              var h = ($("#getlocations_sv_heading_" + k).val() ? $("#getlocations_sv_heading_" + k).val() : 0);
-              var z = ($("#getlocations_sv_zoom_" + k).val() ? $("#getlocations_sv_zoom_" + k).val() : 1);
-              var p = ($("#getlocations_sv_pitch_" + k).val() ? $("#getlocations_sv_pitch_" + k).val() : 1);
+              var h = ($(".getlocations_sv_heading_" + k).val() ? $(".getlocations_sv_heading_" + k).val() : 0);
+              var z = ($(".getlocations_sv_zoom_" + k).val() ? $(".getlocations_sv_zoom_" + k).val() : 1);
+              var p = ($(".getlocations_sv_pitch_" + k).val() ? $(".getlocations_sv_pitch_" + k).val() : 1);
               var popt = {
                 position: pos,
                 pov: {
@@ -586,7 +586,7 @@
                 while (ph > 360) {
                   ph = ph - 360;
                 }
-                $("#getlocations_sv_heading_" + k).val(parseInt(ph));
+                $(".getlocations_sv_heading_" + k).val(parseInt(ph));
                 var pp = Drupal.getlocations_pano[k].getPov().pitch;
                 if (pp < -90) {
                   pp = -90;
@@ -594,13 +594,13 @@
                 if (pp > 90) {
                   pp = 90;
                 }
-                $("#getlocations_sv_pitch_" + k).val(parseInt(pp));
+                $(".getlocations_sv_pitch_" + k).val(parseInt(pp));
               });
 
               // handler for zoom
               google.maps.event.addListener(Drupal.getlocations_pano[k], "zoom_changed", function() {
                 var pz = Drupal.getlocations_pano[k].getZoom();
-                $("#getlocations_sv_zoom_" + k).val(parseInt(pz));
+                $(".getlocations_sv_zoom_" + k).val(parseInt(pz));
               });
             });
           }
@@ -613,24 +613,24 @@
               lat = loc.latitude;
               lng = loc.longitude;
               if (lat && lng) {
-                $("#" + latfield + kk).val(lat);
-                $("#" + lonfield + kk).val(lng);
+                $("." + latfield + kk).val(lat);
+                $("." + lonfield + kk).val(lng);
                 if (loc.city) {
-                  $("#" + cityfield + kk).val(loc.city);
+                  $("." + cityfield + kk).val(loc.city);
                 }
                 if (loc.region) {
-                  $("#" + provincefield + kk).val(loc.region);
+                  $("." + provincefield + kk).val(loc.region);
                 }
                 if (loc.zip && loc.zip != '-') {
-                  $("#" + postal_codefield + kk).val(loc.zip);
+                  $("." + postal_codefield + kk).val(loc.zip);
                 }
 
-                if ($("#" + countryfield + kk).is("input")) {
+                if ($("." + countryfield + kk).is("input")) {
                   if (loc.country) {
-                    $("#" + countryfield + kk).val(loc.country);
+                    $("." + countryfield + kk).val(loc.country);
                   }
                 }
-                else if ($("#" + countryfield + kk).is("select")) {
+                else if ($("." + countryfield + kk).is("select")) {
                   // do we already have countrycode?
                   cc = '';
                   if (loc.country_code) {
@@ -642,16 +642,16 @@
                     }
                   }
                   if (cc) {
-                    $("#" + countryfield + kk).val(cc).attr('selected', 'selected');
+                    $("." + countryfield + kk).val(cc).attr('selected', 'selected');
                   }
                   else if (loc.country) {
-                    $("#" + countryfield + kk + " option").each( function(index) {
+                    $("." + countryfield + kk + " option").each( function(index) {
                       if (loc.country == $(this).text()) {
-                        $("#" + countryfield + kk).val($(this).val()).attr('selected', 'selected');
+                        $("." + countryfield + kk).val($(this).val()).attr('selected', 'selected');
                       }
                       // fix 'The Netherlands' which is what google returns
                       if (loc.country == 'The Netherlands') {
-                        $("#" + countryfield + kk).val('NL').attr('selected', 'selected');
+                        $("." + countryfield + kk).val('NL').attr('selected', 'selected');
                       }
                     });
                   }
@@ -675,8 +675,8 @@
             function(position) {
               lat = position.coords.latitude;
               lng = position.coords.longitude;
-              $("#" + latfield + k).val(lat);
-              $("#" + lonfield + k).val(lng);
+              $("." + latfield + k).val(lat);
+              $("." + lonfield + k).val(lng);
               point[k] = new google.maps.LatLng(parseFloat(lat), parseFloat(lng));
               updateMap(Drupal.getlocations_inputmap[k], point[k], k);
               streetviewSetupButtonDo(k);
@@ -700,8 +700,8 @@
           geocoder.geocode(input_ll, function (results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
               if (results[0]) {
-                if ($("#" + namefield + kk).val() == '') {
-                  $("#" + namefield + kk).val(results[0].formatted_address);
+                if ($("." + namefield + kk).val() == '') {
+                  $("." + namefield + kk).val(results[0].formatted_address);
                 }
                 set_address_components(kk, results[0].address_components);
               }
@@ -738,39 +738,39 @@
         // Clear form
         function clearForm(k) {
           $("#" + adrsfield + k).val("");
-          $("#" + namefield + k).val("");
-          $("#" + streetfield + k).val("");
-          $("#" + additionalfield + k).val("");
-          $("#" + cityfield + k).val("");
-          $("#" + provincefield + k).val("");
-          $("#" + postal_codefield + k).val("");
-          $("#" + countryfield + k).val(search_country);
+          $("." + namefield + k).val("");
+          $("." + streetfield + k).val("");
+          $("." + additionalfield + k).val("");
+          $("." + cityfield + k).val("");
+          $("." + provincefield + k).val("");
+          $("." + postal_codefield + k).val("");
+          $("." + countryfield + k).val(search_country);
         }
 
         var get_input_address = function(k) {
           // pull the address out of the form
           var input_adrs_arr = [];
-          var streetfield_value = $("#" + streetfield + k).val();
+          var streetfield_value = $("." + streetfield + k).val();
           if (streetfield_value) {
             input_adrs_arr.push(streetfield_value);
           }
-          var additionalfield_value = $("#" + additionalfield + k).val();
+          var additionalfield_value = $("." + additionalfield + k).val();
           if (additionalfield_value) {
             input_adrs_arr.push(additionalfield_value);
           }
-          var cityfield_value = $("#" + cityfield + k).val();
+          var cityfield_value = $("." + cityfield + k).val();
           if (cityfield_value) {
             input_adrs_arr.push(cityfield_value);
           }
-          var provincefield_value = $("#" + provincefield + k).val();
+          var provincefield_value = $("." + provincefield + k).val();
           if (provincefield_value) {
             input_adrs_arr.push(provincefield_value);
           }
-          var postal_codefield_value = $("#" + postal_codefield + k).val();
+          var postal_codefield_value = $("." + postal_codefield + k).val();
           if (postal_codefield_value) {
             input_adrs_arr.push(postal_codefield_value);
           }
-          var countryfield_value = $("#" + countryfield + k).val();
+          var countryfield_value = $("." + countryfield + k).val();
           if (countryfield_value && streetfield_value) {
             if (countryfield_value == 'GB' ) {
               countryfield_value = 'UK';
@@ -782,7 +782,6 @@
         };
 
         // end functions
-
       }); // end once
     } // end attach
   }; // end behaviors
