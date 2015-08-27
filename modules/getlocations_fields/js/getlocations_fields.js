@@ -329,7 +329,7 @@
             }
 
           }
-          else if (($("#" + latfield + k).val() !== '') && ($("#" + lonfield + k).val() !== '')) {
+          else if (($("." + latfield + k).val() !== '') && ($("." + lonfield + k).val() !== '')) {
             // reverse geocoding
             lat = $("." + latfield + k).val();
             lng = $("." + lonfield + k).val();

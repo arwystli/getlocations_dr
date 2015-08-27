@@ -1,9 +1,19 @@
-commit f96b501
+commit 7db9c2c
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Thu Aug 27 12:09:26 2015 +0100
+
+    more fixes for #2556379
+
+modules/getlocations_fields/js/getlocations_fields.js
+modules/getlocations_fields/js/getlocations_fields.min.js
+
+commit 37b273e
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Thu Aug 27 09:03:00 2015 +0100
 
     fixed drupal update bug #2556379
 
+CHANGELOG.txt
 modules/getlocations_fields/getlocations_fields.functions.inc
 modules/getlocations_fields/getlocations_fields.module
 modules/getlocations_fields/js/getlocations_fields.js
