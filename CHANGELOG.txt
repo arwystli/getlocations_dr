@@ -1,9 +1,19 @@
-commit 7db9c2c
+commit 999617d
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Tue Sep 1 09:53:16 2015 +0100
+
+    fix bug #2560885
+
+js/getlocations.js
+js/getlocations.min.js
+
+commit e5b54cc
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Thu Aug 27 12:09:26 2015 +0100
 
     more fixes for #2556379
 
+CHANGELOG.txt
 modules/getlocations_fields/js/getlocations_fields.js
 modules/getlocations_fields/js/getlocations_fields.min.js
 

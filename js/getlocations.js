@@ -1265,7 +1265,7 @@
     google.maps.event.trigger(Drupal.getlocations_map[key], "resize");
     if (! settings.inputmap && ! settings.extcontrol) {
       if (settings.pansetting == 1) {
-        Drupal.getlocations.doBounds(Drupal.Drupal.getlocations_map[key], minlat, minlon, maxlat, maxlon, true);
+        Drupal.getlocations.doBounds(Drupal.getlocations_map[key], minlat, minlon, maxlat, maxlon, true);
       }
       else if (settings.pansetting == 2) {
         Drupal.getlocations.doBounds(Drupal.getlocations_map[key], minlat, minlon, maxlat, maxlon, false);
