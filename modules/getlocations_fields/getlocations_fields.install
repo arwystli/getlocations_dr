@@ -172,7 +172,7 @@ function getlocations_fields_enable() {
 /**
  * Add marker field.
  */
-function getlocations_fields_update_7100() {
+function getlocations_fields_update_7200() {
   $spec = array(
     'description' => 'Marker.',
     'type' => 'varchar',
@@ -186,7 +186,7 @@ function getlocations_fields_update_7100() {
 /**
  * Add field_name field.
  */
-function getlocations_fields_update_7101() {
+function getlocations_fields_update_7201() {
   $spec = array(
     'description' => 'Field name.',
     'type' => 'varchar',
@@ -215,7 +215,7 @@ function getlocations_fields_update_7101() {
 /**
  * Add data field.
  */
-function getlocations_fields_update_7201() {
+function getlocations_fields_update_7202() {
   if ($result = db_field_exists('getlocations_fields', 'data')) {
     return;
   }
@@ -234,7 +234,7 @@ function getlocations_fields_update_7201() {
 /**
  * Convert float to decimal.
  */
-function getlocations_fields_update_7202() {
+function getlocations_fields_update_7203() {
   $spec = array(
     'type' => 'numeric',
     'precision' => 10,

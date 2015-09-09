@@ -1,9 +1,18 @@
-commit 999617d
+commit 8aa90c4
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Sep 9 09:37:14 2015 +0100
+
+    Issue #2565365 by COBadger: Module getlocations_fields updates don't all apply
+
+modules/getlocations_fields/getlocations_fields.install
+
+commit 0c4c986
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Tue Sep 1 09:53:16 2015 +0100
 
     fix bug #2560885
 
+CHANGELOG.txt
 js/getlocations.js
 js/getlocations.min.js
 
