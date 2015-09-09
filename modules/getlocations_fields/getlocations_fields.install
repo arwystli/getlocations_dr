@@ -173,6 +173,9 @@ function getlocations_fields_enable() {
  * Add marker field.
  */
 function getlocations_fields_update_7200() {
+  if ($result = db_field_exists('getlocations_fields', 'marker')) {
+    return;
+  }
   $spec = array(
     'description' => 'Marker.',
     'type' => 'varchar',
@@ -187,6 +190,9 @@ function getlocations_fields_update_7200() {
  * Add field_name field.
  */
 function getlocations_fields_update_7201() {
+  if ($result = db_field_exists('getlocations_fields', 'field_name')) {
+    return;
+  }
   $spec = array(
     'description' => 'Field name.',
     'type' => 'varchar',

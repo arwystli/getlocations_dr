@@ -37,7 +37,7 @@ function getlocations_enable() {
   }
 }
 
-function getlocations_update_7100() {
+function getlocations_update_7200() {
   $module = '';
   if (module_exists('getlocations_fields')) {
     $module = 'getlocations_fields';
@@ -97,7 +97,7 @@ function getlocations_update_7100() {
   }
 }
 
-function getlocations_update_7101() {
+function getlocations_update_7201() {
   $getlocations_term_marker = variable_get('getlocations_term_marker', array('enable' => 0, 'vid' => 0, 'max_depth' => ''));
   if ($getlocations_term_marker['enable']) {
     if ($getlocations_term_marker['vid']) {
@@ -121,6 +121,6 @@ function getlocations_update_7101() {
   }
 }
 
-function getlocations_update_7102() {
+function getlocations_update_7202() {
   menu_rebuild();
 }
