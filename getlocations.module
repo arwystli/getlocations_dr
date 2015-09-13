@@ -1772,11 +1772,10 @@ function getlocations_cb_w3w() {
 function getlocations_cb_w3w_get($data, $type) {
   $types = array('w3w', 'position');
   if (in_array($type, $types)) {
-    $what3words_lic = variable_get('getlocations_what3words_lic', array('key' => ''));
+    $what3words_lic = variable_get('getlocations_what3words_lic', array('key' => '', 'url' => 'http://api.what3words.com'));
     $key = $what3words_lic['key'];
     if ($key) {
-      $w3w_url = "http://api.what3words.com";
-      $url = $w3w_url . '/' . $type;
+      $url = $what3words_lic['url'] . '/' . $type;
       $opts = array(
         'method' => 'POST',
         'headers' => array('Content-Type' => 'application/x-www-form-urlencoded')
@@ -2649,7 +2648,7 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
   $settings[$mapid]['geocoder_enable'] = $defaults['geocoder_enable'];
 
   // What3Words
-  $what3words_lic = variable_get('getlocations_what3words_lic', array('key' => ''));
+  $what3words_lic = variable_get('getlocations_what3words_lic', array('key' => '', 'url' => 'http://api.what3words.com'));
   if ($what3words_lic['key'] && $defaults['what3words_enable']) {
     #$settings[$mapid]['what3words_key'] = $what3words_lic['key'];
     $settings[$mapid]['what3words_enable']      = $defaults['what3words_enable'];
@@ -5013,7 +5012,7 @@ function getlocations_what3words_form($defaults) {
 
   $form = array();
 
-  $what3words_lic = variable_get('getlocations_what3words_lic', array('key' => ''));
+  $what3words_lic = variable_get('getlocations_what3words_lic', array('key' => '', 'url' => 'http://api.what3words.com'));
   if ($what3words_lic['key']) {
 
     $form['what3words_enable'] = getlocations_element_map_checkbox(
@@ -7092,7 +7091,7 @@ function theme_getlocations_show($variables) {
   }
 
   // What3Words
-  $what3words_lic = variable_get('getlocations_what3words_lic', array('key' => ''));
+  $what3words_lic = variable_get('getlocations_what3words_lic', array('key' => '', 'url' => 'http://api.what3words.com'));
   if ($what3words_lic['key'] && $defaults['what3words_enable']) {
     $output .= '<div class="getlocations_what3words container-inline">';
     if ($defaults['what3words_search']) {

@@ -231,7 +231,7 @@ class getlocations_plugin_style_map extends views_plugin_style {
     $options['views_search_center']                 = array('default' => $getlocations_defaults['views_search_center']);
 
     // what3words
-    $what3words_lic = variable_get('getlocations_what3words_lic', array('key' => ''));
+    $what3words_lic = variable_get('getlocations_what3words_lic', array('key' => '', 'url' => 'http://api.what3words.com'));
     if ($what3words_lic['key'] ) {
       $options['what3words_key']         = array('default' =>  $what3words_lic['key']);
       $options['what3words_enable']      = array('default' =>  $getlocations_defaults['what3words_enable']);

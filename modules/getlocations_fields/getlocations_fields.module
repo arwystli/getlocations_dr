@@ -499,6 +499,17 @@ function getlocations_fields_field_settings_form($field, $instance, $has_data) {
   else {
     $form['use_smart_ip_latlon'] = array('#type' => 'value', '#value' => 0);
   }
+
+  // what3words
+  $what3words_lic = variable_get('getlocations_what3words_lic', array('key' => '', 'url' => 'http://api.what3words.com'));
+  if ($what3words_lic['key']) {
+    $form['what3words_collect'] = getlocations_element_map_checkbox(
+      t('Collect What3Words'),
+      $settings['what3words_collect'],
+      ''
+    );
+  }
+
   // input form marker
   $markers = getlocations_get_marker_titles();
   $form['input_map_marker'] = getlocations_element_map_marker(
@@ -2065,6 +2076,18 @@ function getlocations_fields_save_locations($locations, $criteria, $settings, $m
         }
       }
 
+      // what3words
+      $what3words_lic = variable_get('getlocations_what3words_lic', array('key' => '', 'url' => 'http://api.what3words.com'));
+      if ($what3words_lic['key'] && $settings['what3words_collect']) {
+        $ll = $locations[$key]['latitude'] . ',' . $locations[$key]['longitude'];
+        $ll = getlocations_latlon_check($ll);
+        if ($ll) {
+          $jd = json_decode(getlocations_cb_w3w_get($ll, 'position'));
+          $locations[$key]['what3words'] = implode('.', $jd->words);
+          $data['data']['what3words'] = $locations[$key]['what3words'];
+        }
+      }
+
       if (count($data)) {
         $locations[$key]['data'] = $data;
       }
@@ -2355,6 +2378,12 @@ function getlocations_fields_load_location($glid) {
         }
       }
 
+      // what3words
+      $what3words_lic = variable_get('getlocations_what3words_lic', array('key' => '', 'url' => 'http://api.what3words.com'));
+      if ($what3words_lic['key'] && is_array($data) && isset($data['data']['what3words'])) {
+        $location['what3words'] = $data['data']['what3words'];
+      }
+
       // need to find entity_type and entity_id and bundle
       $entity_info = getlocations_get_entity_info_from_glid($location['glid']);
       $location['entity_type'] = $entity_info['entity_type'];
@@ -2642,6 +2671,10 @@ function getlocations_fields_defaults() {
     $defaults['kml_group'][$key] = $layer;
   }
 
+  // what3words
+  $defaults['what3words_display'] = 0;
+  $defaults['what3words_collect'] = 0;
+
   $getlocations_fields_defaults = variable_get('getlocations_fields_defaults', $defaults);
   $newdefaults = getlocations_adjust_vars($defaults, $getlocations_fields_defaults);
   return $newdefaults;
@@ -2848,6 +2881,7 @@ function getlocations_fields_field_info_defaults() {
         'gps_type'                        => $getlocations_fields_defaults['gps_type'],
         'gps_zoom'                        => $getlocations_fields_defaults['gps_zoom'],
         'geocoder_enable'                 => $getlocations_fields_defaults['geocoder_enable'],
+        'what3words_collect'              => $getlocations_fields_defaults['what3words_collect'],
       ),
     ),
   );
@@ -2878,6 +2912,7 @@ function getlocations_fields_field_formatter_info_defaults() {
     'display_dms'               => $getlocations_fields_defaults['display_dms'],
     'display_geo_microformat'   => $getlocations_fields_defaults['display_geo_microformat'],
     'display_onemap'            => $getlocations_fields_defaults['display_onemap'],
+    'what3words_display'        => $getlocations_fields_defaults['what3words_display'],
     'controltype'               => $getlocations_defaults['controltype'],
     'pancontrol'                => $getlocations_defaults['pancontrol'],
     'mtc'                       => $getlocations_defaults['mtc'],
@@ -3580,6 +3615,19 @@ function getlocations_fields_display_settings_form($defaults) {
     ''
   );
 
+  // what3words
+  $what3words_lic = variable_get('getlocations_what3words_lic', array('key' => '', 'url' => 'http://api.what3words.com'));
+  if ($what3words_lic['key']) {
+    $form['what3words_display'] = getlocations_element_map_checkbox(
+      t('Show What3Words in display'),
+      $defaults['what3words_display'],
+      ''
+    );
+  }
+  else {
+    $form['what3words_display'] = array('#type' => 'value', '#value' => 0);
+  }
+
   $form['nodezoom'] = getlocations_element_map_zoom(
     t('Zoom'),
     $defaults['nodezoom'],
@@ -4009,6 +4057,12 @@ function theme_getlocations_fields_show($variables) {
     }
 
     $output .= '</div>';
+
+    // what3words
+    $what3words_lic = variable_get('getlocations_what3words_lic', array('key' => '', 'url' => 'http://api.what3words.com'));
+    if ($what3words_lic['key'] && isset($location['what3words']) && $location['what3words'] && $settings['what3words_display'] ) {
+      $output .= '<div class="w3w"><span class="w3w_label">' . t('What3Words') . '</span>' . $location['what3words'] . '</div>';
+    }
 
     if ($settings['display_latlong']) {
       $lat = $location['latitude'];

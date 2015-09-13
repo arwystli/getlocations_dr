@@ -110,7 +110,7 @@ function getlocations_settings_form() {
   );
 
   // $what3words
-  $what3words_lic = variable_get('getlocations_what3words_lic', array('key' => ''));
+  $what3words_lic = variable_get('getlocations_what3words_lic', array('key' => '', 'url' => 'http://api.what3words.com'));
   $form['getlocations_what3words_lic'] = array(
     '#type' => 'fieldset',
     '#title' => t('What3Words API key'),
@@ -123,6 +123,12 @@ function getlocations_settings_form() {
     t('What3Words key'),
     $what3words_lic['key'],
     t('After entering the key you should save the form, this will present further settings.'),
+    40
+  );
+  $form['getlocations_what3words_lic']['url'] = getlocations_element_map_tf(
+    t('What3Words URL'),
+    (! empty($what3words_lic['url']) ? $what3words_lic['url'] : 'http://api.what3words.com'),
+    '',
     40
   );
 

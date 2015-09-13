@@ -1512,7 +1512,7 @@ function getlocations_leaflet_map_settings_do($map_settings, $defaults, $latlons
   $getlocations_leaflet_paths = getlocations_leaflet_paths_get();
 
   // What3Words
-  $what3words_lic = variable_get('getlocations_what3words_lic', array('key' => ''));
+  $what3words_lic = variable_get('getlocations_what3words_lic', array('key' => '', 'url' => 'http://api.what3words.com'));
   if ($what3words_lic['key'] && $defaults['what3words_enable']) {
     $icon = getlocations_leaflet_get_marker($defaults['what3words_map_marker']);
 
@@ -5005,7 +5005,7 @@ function theme_getlocations_leaflet_map($variables) {
   }
 
   // What3Words
-  $what3words_lic = variable_get('getlocations_what3words_lic', array('key' => ''));
+  $what3words_lic = variable_get('getlocations_what3words_lic', array('key' => '', 'url' => 'http://api.what3words.com'));
   if ($what3words_lic['key'] && $map_settings['map_settings']['what3words_enable']) {
     $output .= '<div class="getlocations_leaflet_what3words container-inline">';
     if ($map_settings['map_settings']['what3words_search']) {
