@@ -1,9 +1,42 @@
-commit 8aa90c4
+commit de2479b
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Mon Sep 28 19:06:17 2015 +0100
+
+    added old_controlstyle option
+
+getlocations.module
+js/getlocations.js
+js/getlocations.min.js
+
+commit 9951c6e
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Sun Sep 13 09:14:25 2015 +0100
+
+    more w3w
+
+getlocations.admin.inc
+getlocations.module
+modules/getlocations_fields/getlocations_fields.css
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_leaflet/getlocations_leaflet.module
+views/getlocations_plugin_style_map.inc
+
+commit 98813ea
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Sep 9 18:15:22 2015 +0100
+
+    more update fixes
+
+getlocations.install
+modules/getlocations_fields/getlocations_fields.install
+
+commit 13e2d6b
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Wed Sep 9 09:37:14 2015 +0100
 
     Issue #2565365 by COBadger: Module getlocations_fields updates don't all apply
 
+CHANGELOG.txt
 modules/getlocations_fields/getlocations_fields.install
 
 commit 0c4c986
