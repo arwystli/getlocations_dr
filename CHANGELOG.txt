@@ -1,9 +1,22 @@
-commit de2479b
+commit 7b1ad19
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Tue Oct 6 17:27:24 2015 +0100
+
+    updated mapbox to v4
+
+getlocations.module
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/js/getlocations_leaflet_providers.js
+modules/getlocations_leaflet/js/getlocations_leaflet_providers.min.js
+modules/getlocations_mapbox/getlocations_mapbox.module
+
+commit 7eb4321
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Mon Sep 28 19:06:17 2015 +0100
 
     added old_controlstyle option
 
+CHANGELOG.txt
 getlocations.module
 js/getlocations.js
 js/getlocations.min.js

@@ -945,7 +945,10 @@ function getlocations_leaflet_field_formatter_settings_form($field, $instance, $
         'height' => t('Height'),
       );
 
+      $settings['google_old_controlstyle'] = 0;
+      $settings['google_old_controlstyle_show'] = 0;
       $element += getlocations_map_display_basics_form($settings, $labels);
+      #unset($element['google_old_controlstyle']);
       unset($element['map_resize']);
       unset($element['fullscreen_disable']);
       unset($element['styles']);
