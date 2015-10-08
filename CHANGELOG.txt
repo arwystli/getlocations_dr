@@ -1,9 +1,26 @@
-commit 7b1ad19
+commit 7ce0756
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Thu Oct 8 10:08:51 2015 +0100
+
+    update leaflet version
+
+drush/getlocations.drush.inc
+
+commit e22160e
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Thu Oct 8 10:08:31 2015 +0100
+
+    tidy up
+
+getlocations.module
+
+commit 7b75ddb
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Tue Oct 6 17:27:24 2015 +0100
 
     updated mapbox to v4
 
+CHANGELOG.txt
 getlocations.module
 modules/getlocations_leaflet/getlocations_leaflet.module
 modules/getlocations_leaflet/js/getlocations_leaflet_providers.js
