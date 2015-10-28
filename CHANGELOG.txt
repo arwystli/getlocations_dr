@@ -1,9 +1,43 @@
-commit 7ce0756
+commit 687aaf9
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Oct 28 16:10:50 2015 +0000
+
+    fixed google_old_controlstyle
+
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/views/getlocations_leaflet_plugin_style.inc
+
+commit 45a667a
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Oct 28 16:09:25 2015 +0000
+
+    improved getlocations_map module
+
+modules/getlocations_map/getlocations_map.module
+
+commit a10d82c
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Oct 28 16:07:55 2015 +0000
+
+    devel_generate support added, see #2603376
+
+modules/getlocations_fields/getlocations_fields.devel_generate.inc
+
+commit 69f5d9d
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Oct 28 00:03:37 2015 +0000
+
+    fixed bug #2603022
+
+modules/getlocations_fields/getlocations_fields.module
+
+commit ddbbaa6
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Thu Oct 8 10:08:51 2015 +0100
 
     update leaflet version
 
+CHANGELOG.txt
 drush/getlocations.drush.inc
 
 commit e22160e
