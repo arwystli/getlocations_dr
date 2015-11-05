@@ -116,7 +116,7 @@ function getlocations_feeds_set_target($source, $entity, $target, $value) {
     list($sub_field, $last_field) = explode('][', $sub_field, 2);
   }
 
-  $language = (isset($entity->language) ? $entity->language : 'und');
+  $language = (isset($entity->language) ? $entity->language : LANGUAGE_NONE);
 
   foreach ($value as $i => $val) {
     $val = trim($val);
