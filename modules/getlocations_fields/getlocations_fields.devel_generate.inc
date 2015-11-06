@@ -2,7 +2,12 @@
 
 /**
  * @file
- * Getlocations field Devel Generate code.
+ * getlocations_fields.devel_generate.inc
+ * @author Bob Hutchinson https://www.drupal.org/u/hutch
+ * @copyright GNU GPL
+ *
+ * Provides Getlocations field Devel Generate code, see issue #2603376.
+ * Contributed by https://www.drupal.org/u/drikc
  */
 
 /**
@@ -34,6 +39,14 @@ function _get_locations_get_random_places($quantity = 1) {
     $url = 'http://ws.geonames.org/findNearbyPlaceNameJSON?' . http_build_query($qs);
     $result = drupal_http_request($url);
     $data = json_decode($result->data);
+    if (!empty($data->status)) {
+      drupal_set_message(t('Warning: getlocations random places generator function (%f) failed to use geonames web service; status: "%message" with url @url.', array(
+        '%f' => __FUNCTION__,
+        '%message' => $data->status->message,
+        '@url' => $url,
+      )), 'warning');
+      break;
+    }
     if (!empty($data->geonames)) {
       foreach ($data->geonames as $geoname) {
         $places[] = array(
