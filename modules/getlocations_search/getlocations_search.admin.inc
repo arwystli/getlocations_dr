@@ -154,6 +154,10 @@ function _getlocations_search_settings_form($defaults, $which = 'admin') {
       $vocab_opts
     );
   }
+  else {
+    $form[$varname]['vocab'] = array('#type' => 'value', '#value' => $defaults['vocab']);
+    $form[$varname]['vocab_element'] = array('#type' => 'value', '#value' => $defaults['vocab_element']);
+  }
 
   $form[$varname]['search_distance'] = getlocations_element_search_distance(
     $defaults['search_distance'],
