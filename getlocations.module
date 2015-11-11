@@ -3812,17 +3812,17 @@ function getlocations_map_display_basics_form($defaults, $labels = array()) {
     TRUE
   );
 
-  if ( isset($defaults['google_old_controlstyle_show']) && $defaults['google_old_controlstyle_show']) {
-    $form['google_old_controlstyle'] = getlocations_element_map_checkbox(
+  if ( (isset($defaults['google_old_controlstyle_show']) && ! $defaults['google_old_controlstyle_show']) || ! isset($defaults['google_old_controlstyle_show'])) {
+    $form['google_old_controlstyle'] = array('#type' => 'value', '#value' => 0);
+    $form['google_old_controlstyle_show'] = array('#type' => 'value', '#value' => 0);
+  }
+  else {
+      $form['google_old_controlstyle'] = getlocations_element_map_checkbox(
       t('Use the old style of controls on the map'),
-      $defaults['google_old_controlstyle'],
+      (isset($defaults['google_old_controlstyle']) ? $defaults['google_old_controlstyle'] : 0),
       t('Check this to retain the old style google map controls, this will no longer work after August 2016.')
     );
     $form['google_old_controlstyle_show'] = array('#type' => 'value', '#value' => 1);
-  }
-  else {
-    $form['google_old_controlstyle'] = array('#type' => 'value', '#value' => 0);
-    $form['google_old_controlstyle_show'] = array('#type' => 'value', '#value' => 0);
   }
 
   // map_resize
