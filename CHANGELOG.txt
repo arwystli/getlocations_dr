@@ -1,9 +1,67 @@
-commit 687aaf9
+commit dc22579
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Nov 11 21:43:16 2015 +0000
+
+    better devel_generate, see #2603376
+
+modules/getlocations_fields/getlocations_fields.devel_generate.inc
+
+commit 546f1df
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Nov 11 21:42:45 2015 +0000
+
+    bug in js, see #2613536
+
+modules/getlocations_fields/js/getlocations_fields.js
+modules/getlocations_fields/js/getlocations_fields.min.js
+
+commit 9299905
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Nov 11 12:46:21 2015 +0000
+
+    better google_old_controlstyle
+
+getlocations.module
+
+commit 132dff6
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Mon Nov 9 16:59:50 2015 +0000
+
+    added vocab defaults
+
+modules/getlocations_search/getlocations_search.admin.inc
+
+commit 929552d
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Mon Nov 9 16:56:48 2015 +0000
+
+    added getlocations_search_block to uninstall
+
+modules/getlocations_search/getlocations_search.install
+
+commit 15c3fc0
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Fri Nov 6 10:05:27 2015 +0000
+
+    better devel_generate, see #2603376
+
+modules/getlocations_fields/getlocations_fields.devel_generate.inc
+
+commit 5ebccff
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Thu Nov 5 15:14:22 2015 +0000
+
+    applied constant for undefined language
+
+modules/getlocations_feeds/getlocations_feeds.module
+
+commit 487b1d9
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Wed Oct 28 16:10:50 2015 +0000
 
     fixed google_old_controlstyle
 
+CHANGELOG.txt
 modules/getlocations_leaflet/getlocations_leaflet.module
 modules/getlocations_leaflet/views/getlocations_leaflet_plugin_style.inc
 

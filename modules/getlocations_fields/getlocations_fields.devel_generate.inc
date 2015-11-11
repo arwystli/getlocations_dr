@@ -53,6 +53,7 @@ function _get_locations_get_random_places($quantity = 1) {
           'name' => $geoname->name,
           'latitude' => $geoname->lat,
           'longitude' => $geoname->lng,
+          'country' => $geoname->countryCode,
         );
       }
     }
