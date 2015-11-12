@@ -133,54 +133,6 @@
         });
       }
 
-      if ($("#edit-getlocations-search-defaults-panoramio-show, #edit-getlocations-search-block-defaults-panoramio-show").is('input')) {
-        if ($("#edit-getlocations-search-defaults-panoramio-show, #edit-getlocations-search-block-defaults-panoramio-show").attr('checked')) {
-          $("#wrap-getlocations-panoramio").show();
-        }
-        else {
-          $("#wrap-getlocations-panoramio").hide();
-        }
-        $("#edit-getlocations-search-defaults-panoramio-show, #edit-getlocations-search-block-defaults-panoramio-show").change(function() {
-          if ($(this).attr('checked')) {
-            $("#wrap-getlocations-panoramio").show();
-          }
-          else {
-            $("#wrap-getlocations-panoramio").hide();
-          }
-        });
-      }
-
-      if ($("#edit-getlocations-search-defaults-weather-show, #edit-getlocations-search-block-defaults-weather-show").is('input')) {
-        if ($("#edit-getlocations-search-defaults-weather-show, #edit-getlocations-search-block-defaults-weather-show").attr('checked')) {
-          $("#wrap-getlocations-weather").show();
-        }
-        else {
-          $("#wrap-getlocations-weather").hide();
-        }
-        $("#edit-getlocations-search-defaults-weather-show, #edit-getlocations-search-block-defaults-weather-show").change(function() {
-          if ($(this).attr('checked')) {
-            $("#wrap-getlocations-weather").show();
-          }
-          else {
-            $("#wrap-getlocations-weather").hide();
-          }
-        });
-
-        if ($("#edit-getlocations-search-defaults-weather-cloud, #edit-getlocations-search-block-defaults-weather-cloud").attr('checked')) {
-          $("#wrap-getlocations-weather-cloud").show();
-        }
-        else {
-          $("#wrap-getlocations-weather-cloud").hide();
-        }
-        $("#edit-getlocations-search-defaults-weather-cloud, #edit-getlocations-search-block-defaults-weather-cloud").change(function() {
-          if ($(this).attr('checked')) {
-            $("#wrap-getlocations-weather-cloud").show();
-          }
-          else {
-            $("#wrap-getlocations-weather-cloud").hide();
-          }
-        });
-      }
       if ($("#edit-getlocations-search-defaults-polygons-enable, #edit-getlocations-search-block-defaults-polygons-enable").attr('checked')) {
         $("#wrap-getlocations-polygons").show();
       }

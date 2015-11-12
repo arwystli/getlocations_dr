@@ -891,9 +891,6 @@ function getlocations_fields_field_formatter_settings_summary($field, $instance,
     if ($settings['transitinfo']) {
       $info_display[] = t('Transit');
     }
-    if ($settings['panoramio_show']) {
-      $info_display[] = t('Panoramio');
-    }
     if ($settings['poi_show']) {
       $info_display[] = t('Points of Interest');
     }
@@ -1665,8 +1662,6 @@ function getlocations_fields_getmap($settings, $active) {
   $getlocations_defaults = getlocations_defaults();
 
   // we do not want these on an input map
-  $getlocations_defaults['panoramio_use']             = 0;
-  $getlocations_defaults['panoramio_show']            = 0;
   $getlocations_defaults['trafficinfo']               = 0;
   $getlocations_defaults['bicycleinfo']               = 0;
   $getlocations_defaults['transitinfo']               = 0;
@@ -1674,8 +1669,6 @@ function getlocations_fields_getmap($settings, $active) {
   $getlocations_defaults['markeraction_click_zoom']   = -1;
   $getlocations_defaults['markeraction_click_center'] = 0;
   $getlocations_defaults['sv_show']                   = 0;
-  $getlocations_defaults['weather_use']               = 0;
-  $getlocations_defaults['weather_show']              = 0;
   $getlocations_defaults['show_maplinks']             = 0;
   $getlocations_defaults['minzoom_map']               = -1;
   $getlocations_defaults['maxzoom_map']               = -1;
@@ -1780,8 +1773,6 @@ function getlocations_fields_getmap_show($settings, $lls = '', $minmaxes = '') {
   $getlocations_defaults['bicycleinfo_state']         = $settings['bicycleinfo_state'];
   $getlocations_defaults['transitinfo']               = $settings['transitinfo'];
   $getlocations_defaults['transitinfo_state']         = $settings['transitinfo_state'];
-  $getlocations_defaults['panoramio_show']            = $settings['panoramio_show'];
-  $getlocations_defaults['panoramio_state']           = $settings['panoramio_state'];
   $getlocations_defaults['poi_show']                  = $settings['poi_show'];
   $getlocations_defaults['transit_show']              = $settings['transit_show'];
   $getlocations_defaults['map_marker']                = $settings['map_marker'];
@@ -1790,10 +1781,6 @@ function getlocations_fields_getmap_show($settings, $lls = '', $minmaxes = '') {
   $getlocations_defaults['markeraction_click_zoom']   = $settings['markeraction_click_zoom'];
   $getlocations_defaults['markeraction_click_center'] = $settings['markeraction_click_center'];
   $getlocations_defaults['nodezoom']                  = $settings['nodezoom'];
-  $getlocations_defaults['weather_show']              = $settings['weather_show'];
-  $getlocations_defaults['weather_state']             = $settings['weather_state'];
-  $getlocations_defaults['weather_cloud']             = $settings['weather_cloud'];
-  $getlocations_defaults['weather_cloud_state']       = $settings['weather_cloud_state'];
   $getlocations_defaults['map_backgroundcolor']       = $settings['map_backgroundcolor'];
   $getlocations_defaults['show_maplinks']             = $settings['show_maplinks'];
   $getlocations_defaults['minzoom_map']               = $settings['minzoom_map'];
@@ -2934,9 +2921,6 @@ function getlocations_fields_field_formatter_info_defaults() {
     'bicycleinfo_state'         => $getlocations_defaults['bicycleinfo_state'],
     'transitinfo'               => $getlocations_defaults['transitinfo'],
     'transitinfo_state'         => $getlocations_defaults['transitinfo_state'],
-    'panoramio_use'             => $getlocations_defaults['panoramio_use'],
-    'panoramio_show'            => $getlocations_defaults['panoramio_show'],
-    'panoramio_state'           => $getlocations_defaults['panoramio_state'],
     'poi_show'                  => $getlocations_defaults['poi_show'],
     'transit_show'              => $getlocations_defaults['transit_show'],
     'map_marker'                => $getlocations_defaults['map_marker'],
@@ -2944,11 +2928,6 @@ function getlocations_fields_field_formatter_info_defaults() {
     'markeractiontype'          => $getlocations_defaults['markeractiontype'],
     'markeraction_click_zoom'   => $getlocations_defaults['markeraction_click_zoom'],
     'markeraction_click_center' => $getlocations_defaults['markeraction_click_center'],
-    'weather_use'               => $getlocations_defaults['weather_use'],
-    'weather_show'              => $getlocations_defaults['weather_show'],
-    'weather_state'             => $getlocations_defaults['weather_state'],
-    'weather_cloud'             => $getlocations_defaults['weather_cloud'],
-    'weather_cloud_state'       => $getlocations_defaults['weather_cloud_state'],
     'map_backgroundcolor'       => $getlocations_defaults['map_backgroundcolor'],
     'show_maplinks'             => $getlocations_defaults['show_maplinks'],
     'display_name'              => $getlocations_fields_defaults['display_name'],

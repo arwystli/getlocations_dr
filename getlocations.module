@@ -732,14 +732,8 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
   }
 
   $libraries = array();
-  if ($defaults['panoramio_use']) {
-    $libraries['panoramio'] = 'panoramio';
-  }
   if ($defaults['places'] || module_exists('getlocations_search')) {
     $libraries['places'] = 'places';
-  }
-  if ($defaults['weather_use']) {
-    $libraries['weather'] = 'weather';
   }
 
   // not active but can be used by other modules
@@ -757,17 +751,6 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
   }
 
   // more libraries here
-
-  // compat with getdirections
-  if ($defaults['getdirections_enabled']) {
-    $getdirections_misc_defaults = getdirections_misc_defaults();
-    if (isset($getdirections_misc_defaults['panoramio_use']) && $getdirections_misc_defaults['panoramio_use']) {
-      $libraries['panoramio'] = 'panoramio';
-    }
-    if (isset($getdirections_misc_defaults['weather_use']) && $getdirections_misc_defaults['weather_use']) {
-      $libraries['weather'] = 'weather';
-    }
-  }
 
   // check for places library
   if (getlocations_places_check()) {
@@ -1114,9 +1097,6 @@ function getlocations_defaults($reset = FALSE) {
     'bicycleinfo_state'             => 0,
     'transitinfo'                   => 0,
     'transitinfo_state'             => 0,
-    'panoramio_use'                 => 0,
-    'panoramio_show'                => 0,
-    'panoramio_state'               => 0,
     'places'                        => 0,
     'poi_show'                      => 1,
     'transit_show'                  => 1,
@@ -1152,16 +1132,6 @@ function getlocations_defaults($reset = FALSE) {
     'visualization'                 => 0,
     'drawing'                       => 0,
     'adsense'                       => 0,
-    'weather_use'                   => 0,
-    'weather_show'                  => 0,
-    'weather_state'                 => 0,
-    'weather_temp'                  => 1,
-    'weather_speed'                 => 1,
-    'weather_label'                 => 0,
-    'weather_cloud'                 => 1,
-    'weather_cloud_state'           => 0,
-    'weather_clickable'             => 1,
-    'weather_info'                  => 1,
     'map_backgroundcolor'           => '',
     'show_maplinks'                 => 0,
     'show_maplinks_viewport'        => 0,
@@ -2502,10 +2472,6 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
       'sv_zoom'                   => $defaults['sv_zoom'],
       'sv_pitch'                  => $defaults['sv_pitch'],
       'pancontrol'                => $defaults['pancontrol'],
-      'panoramio_use'             => $defaults['panoramio_use'],
-      'panoramio_show'            => $defaults['panoramio_show'],
-      'panoramio_state'           => $defaults['panoramio_state'],
-      'weather_use'               => $defaults['weather_use'],
       'poi_show'                  => $defaults['poi_show'],
       'transit_show'              => $defaults['transit_show'],
       'map_marker'                => $defaults['map_marker'],
@@ -2533,7 +2499,6 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
       'custom_content_enable'     => $defaults['custom_content_enable'],
       'preload_data'              => $defaults['preload_data'],
       'is_mobile'                 => (getlocations_is_mobile() ? 1 : 0),
-      'weather_use'               => $defaults['weather_use'],
       'map_backgroundcolor'       => $defaults['map_backgroundcolor'],
       'show_maplinks'             => $defaults['show_maplinks'],
       'show_maplinks_viewport'    => $defaults['show_maplinks_viewport'],
@@ -2580,17 +2545,6 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
     $settings[$mapid]['kml_url_button']       = $defaults['kml_group']['kml_url_button'];
     $settings[$mapid]['kml_url_button_label'] = $defaults['kml_group']['kml_url_button_label'];
     $settings[$mapid]['kml_url_button_state'] = $defaults['kml_group']['kml_url_button_state'];
-  }
-  if ($defaults['weather_use']) {
-    $settings[$mapid]['weather_show']        = $defaults['weather_show'];
-    $settings[$mapid]['weather_state']       = $defaults['weather_state'];
-    $settings[$mapid]['weather_temp']        = $defaults['weather_temp'];
-    $settings[$mapid]['weather_speed']       = $defaults['weather_speed'];
-    $settings[$mapid]['weather_label']       = $defaults['weather_label'];
-    $settings[$mapid]['weather_cloud']       = $defaults['weather_cloud'];
-    $settings[$mapid]['weather_cloud_state'] = $defaults['weather_cloud_state'];
-    $settings[$mapid]['weather_clickable']   = $defaults['weather_clickable'];
-    $settings[$mapid]['weather_info']        = $defaults['weather_info'];
   }
   if ($defaults['search_places']) {
     $settings[$mapid]['search_places_size']        = $defaults['search_places_size'];
@@ -4145,129 +4099,6 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
       t('Activate Transit layer when map is first displayed.')
     );
     $form['transitinfo_state']['#suffix'] = '</div>';
-
-    if ($config) {
-      $form['panoramio_use'] = getlocations_element_map_checkbox(
-        t('Load Panoramio Library'),
-        $defaults['panoramio_use'],
-        t('Provide Google panoramio library to all Google maps.')
-      );
-      $form['panoramio_use']['#suffix'] = '<div id="wrap-getlocations-panoramio-use">';
-      $form['panoramio_show'] = getlocations_element_map_checkbox(
-        t('Enable Panoramio'),
-        $defaults['panoramio_show'],
-        t('Google panoramio picture links.')
-      );
-      $form['panoramio_show']['#suffix'] = '<div id="wrap-getlocations-panoramio">';
-      $form['panoramio_state'] = getlocations_element_map_checkbox(
-        t('Activate Panoramio'),
-        $defaults['panoramio_state'],
-        t('Activate Panoramio when map is first displayed.')
-      );
-      $form['panoramio_state']['#suffix'] = '</div></div>';
-    }
-    elseif ($getlocations_defaults['panoramio_use']) {
-      $form['panoramio_show'] = getlocations_element_map_checkbox(
-        t('Enable Panoramio'),
-        $defaults['panoramio_show'],
-        t('Google panoramio picture links.')
-      );
-      $form['panoramio_show']['#suffix'] = '<div id="wrap-getlocations-panoramio">';
-      $form['panoramio_state'] = getlocations_element_map_checkbox(
-        t('Activate Panoramio'),
-        $defaults['panoramio_state'],
-        t('Activate Panoramio when map is first displayed.')
-      );
-      $form['panoramio_state']['#suffix'] = '</div>';
-    }
-    // weather
-    if ($config) {
-      $form['weather_use'] = getlocations_element_map_checkbox(
-        t('Load Weather Library'),
-        $defaults['weather_use'],
-        t('Provide Google Weather library to all Google maps.')
-      );
-      $form['weather_use']['#suffix'] = '<div id="wrap-getlocations-weather-use">';
-      $form['weather_show'] = getlocations_element_map_checkbox(
-        t('Enable Weather information'),
-        $defaults['weather_show'],
-        t('Google Weather information.')
-      );
-      $form['weather_show']['#suffix'] = '<div id="wrap-getlocations-weather">';
-      $form['weather_state'] = getlocations_element_map_checkbox(
-        t('Activate Weather information'),
-        $defaults['weather_state'],
-        t('Activate Weather information when map is first displayed.')
-      );
-
-      $form['weather_temp'] = getlocations_element_dd(
-        t('Temperature units'),
-        $defaults['weather_temp'],
-        array(1 => t('Celsius'), 2 => t('Fahrenheit'))
-      );
-      $form['weather_speed'] = getlocations_element_dd(
-        t('Windspeed units'),
-        $defaults['weather_speed'],
-        array(1 => t('Kilometers per hour'), 2 => t('Meters per second'), 3 => t('Miles per hour'))
-      );
-      $form['weather_label'] = getlocations_element_dd(
-        t('Label colour'),
-        $defaults['weather_label'],
-        array(0 => t('Auto'),  1 => t('Black'), 2 => t('White'))
-      );
-
-      $form['weather_clickable'] = getlocations_element_map_checkbox(
-        t('Enable clicking on maps'),
-        $defaults['weather_clickable']
-      );
-      $form['weather_info'] = getlocations_element_map_checkbox(
-        t('Enable weather InfoWindows'),
-        $defaults['weather_info']
-      );
-      $form['weather_info']['#suffix'] = '</div>';
-
-      $form['weather_cloud'] = getlocations_element_map_checkbox(
-        t('Enable Cloud Layer'),
-        $defaults['weather_cloud'],
-        t('Google Cloud information.')
-      );
-      $form['weather_cloud']['#suffix'] = '<div id="wrap-getlocations-weather-cloud">';
-      $form['weather_cloud_state'] = getlocations_element_map_checkbox(
-        t('Activate Cloud Layer'),
-        $defaults['weather_cloud_state'],
-        t('Activate Cloud layer when map is first displayed.')
-      );
-      $form['weather_cloud_state']['#suffix'] = '</div></div>';
-
-    }
-    elseif ($getlocations_defaults['weather_use']) {
-      $form['weather_show'] = getlocations_element_map_checkbox(
-        t('Enable Weather information'),
-        $defaults['weather_show'],
-        t('Google Weather information.')
-      );
-      $form['weather_show']['#suffix'] = '<div id="wrap-getlocations-weather">';
-      $form['weather_state'] = getlocations_element_map_checkbox(
-        t('Activate Weather information'),
-        $defaults['weather_state'],
-        t('Activate Weather information when map is first displayed.')
-      );
-      $form['weather_state']['#suffix'] = '</div>';
-
-      $form['weather_cloud'] = getlocations_element_map_checkbox(
-        t('Enable Cloud Layer'),
-        $defaults['weather_cloud'],
-        t('Google cloud information.')
-      );
-      $form['weather_cloud']['#suffix'] = '<div id="wrap-getlocations-weather-cloud">';
-      $form['weather_cloud_state'] = getlocations_element_map_checkbox(
-        t('Activate Cloud Layer'),
-        $defaults['weather_cloud_state'],
-        t('Activate Cloud layer when map is first displayed.')
-      );
-      $form['weather_cloud_state']['#suffix'] = '</div>';
-
-    }
 
     $form['poi_show'] = getlocations_element_map_checkbox(
       t('Show Points of Interest'),
@@ -7032,17 +6863,6 @@ function theme_getlocations_show($variables) {
   }
   if ($defaults['transitinfo']) {
     $buttons[] = '<input type="button" value="' . t('Transit Info !t', array('!t' => ($defaults['transitinfo_state'] ? t('Off') : t('On')))) . '" title="' . t('Limited Availability') . '" id="getlocations_toggleTransit_' . $mapid . '" class="form-submit" />';
-  }
-  if ($defaults['panoramio_use'] && $defaults['panoramio_show']) {
-    $buttons[] = '<input type="button" value="' . t('Panoramio !t', array('!t' => ($defaults['panoramio_state'] ? t('Off') : t('On')))) . '" id="getlocations_togglePanoramio_' . $mapid . '" class="form-submit" />';
-  }
-  if ($defaults['weather_use']) {
-    if ($defaults['weather_show']) {
-      $buttons[] = '<input type="button" value="' . t('Weather !t', array('!t' => ($defaults['weather_state'] ? t('Off') : t('On')))) . '" id="getlocations_toggleWeather_' . $mapid . '" class="form-submit" />';
-    }
-    if ($defaults['weather_cloud']) {
-      $buttons[] = '<input type="button" value="' . t('Clouds !t', array('!t' => ($defaults['weather_cloud_state'] ? t('Off') : t('On')))) . '" id="getlocations_toggleCloud_' . $mapid . '" class="form-submit" />';
-    }
   }
 
   // views_search_marker

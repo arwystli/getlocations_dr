@@ -56,52 +56,6 @@
         }
       });
 
-      if ($("input[id$=settings-panoramio-show]").attr('checked')) {
-        $("#wrap-getlocations-panoramio").show();
-      }
-      else {
-        $("#wrap-getlocations-panoramio").hide();
-      }
-      $("input[id$=settings-panoramio-show]").change(function() {
-        if ($(this).attr('checked')) {
-          $("#wrap-getlocations-panoramio").show();
-        }
-        else {
-          $("#wrap-getlocations-panoramio").hide();
-        }
-      });
-
-      if ($("input[id$=settings-weather-show]").attr('checked')) {
-        $("#wrap-getlocations-weather").show();
-      }
-      else {
-        $("#wrap-getlocations-weather").hide();
-      }
-      $("input[id$=settings-weather-show]").change(function() {
-        if ($(this).attr('checked')) {
-          $("#wrap-getlocations-weather").show();
-        }
-        else {
-          $("#wrap-getlocations-weather").hide();
-        }
-      });
-
-      if ($("input[id$=settings-weather-cloud]").attr('checked')) {
-        $("#wrap-getlocations-weather-cloud").show();
-      }
-      else {
-        $("#wrap-getlocations-weather-cloud").hide();
-      }
-      $("input[id$=settings-weather-cloud]").change(function() {
-        if ($(this).attr('checked')) {
-          $("#wrap-getlocations-weather-cloud").show();
-        }
-        else {
-          $("#wrap-getlocations-weather-cloud").hide();
-        }
-      });
-
-
       if ($("input[id*=polygons-enable]").attr('checked')) {
         $("#wrap-getlocations-polygons").show();
       }

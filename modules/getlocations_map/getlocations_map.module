@@ -415,9 +415,6 @@ function getlocations_map_field_formatter_settings_summary($field, $instance, $v
       if ($settings['transitinfo']) {
         $info_display[] = t('Transit');
       }
-      if ($settings['panoramio_show']) {
-        $info_display[] = t('Panoramio');
-      }
       if ($settings['poi_show']) {
         $info_display[] = t('Points of Interest');
       }
@@ -768,15 +765,6 @@ function getlocations_map_defaults() {
     'bicycleinfo_state'             => $getlocations_defaults['bicycleinfo_state'],
     'transitinfo'                   => $getlocations_defaults['transitinfo'],
     'transitinfo_state'             => $getlocations_defaults['transitinfo_state'],
-    'weather_show'                  => $getlocations_defaults['weather_show'],
-    'weather_state'                 => $getlocations_defaults['weather_state'],
-    'weather_temp'                  => $getlocations_defaults['weather_temp'],
-    'weather_speed'                 => $getlocations_defaults['weather_speed'],
-    'weather_label'                 => $getlocations_defaults['weather_label'],
-    'weather_cloud'                 => $getlocations_defaults['weather_cloud'],
-    'weather_cloud_state'           => $getlocations_defaults['weather_cloud_state'],
-    'weather_clickable'             => $getlocations_defaults['weather_clickable'],
-    'weather_info'                  => $getlocations_defaults['weather_info'],
     'poi_show'                      => $getlocations_defaults['poi_show'],
     'transit_show'                  => $getlocations_defaults['transit_show'],
     'polygons_enable'               => $getlocations_defaults['polygons_enable'],
