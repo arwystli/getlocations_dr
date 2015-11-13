@@ -87,6 +87,12 @@ function getlocations_settings_form() {
     FALSE
   );
 
+  $form['api3']['getlocations_api3_signed_in'] = getlocations_element_map_checkbox(
+    t('Signed in'),
+    variable_get('getlocations_api3_signed_in', 0),
+    t('Provide the Sign in link on the map.')
+  );
+
   // mapquest
   $mapquest_lic =  variable_get('getlocations_mapquest_lic', array('key' => '', 'type' => 'l'));
   $form['getlocations_mapquest_lic'] = array(

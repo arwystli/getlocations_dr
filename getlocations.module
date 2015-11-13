@@ -708,6 +708,7 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
   }
 
   $key = variable_get('getlocations_api3_key', '');
+  $signed_in = variable_get('getlocations_api3_signed_in', 0);
 
   $aggr = (getlocations_aggr_get() ? TRUE : FALSE);
 
@@ -715,6 +716,9 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
   $query = array();
   if (! empty($key)) {
     $query['key'] = $key;
+    if ($signed_in) {
+      $query['signed_in'] = 'true';
+    }
   }
   $query['sensor'] = (getlocations_is_mobile() ? 'true' : 'false');
 
