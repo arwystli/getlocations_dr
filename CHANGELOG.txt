@@ -1,9 +1,102 @@
-commit dc22579
+commit 46b97b5
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Mon Dec 14 14:30:36 2015 +0000
+
+    updated font-awesome to 4.5.0
+
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/plugins/font-awesome/css/font-awesome.css
+modules/getlocations_leaflet/plugins/font-awesome/css/font-awesome.css.map
+modules/getlocations_leaflet/plugins/font-awesome/css/font-awesome.min.css
+modules/getlocations_leaflet/plugins/font-awesome/fonts/FontAwesome.otf
+modules/getlocations_leaflet/plugins/font-awesome/fonts/fontawesome-webfont.eot
+modules/getlocations_leaflet/plugins/font-awesome/fonts/fontawesome-webfont.svg
+modules/getlocations_leaflet/plugins/font-awesome/fonts/fontawesome-webfont.ttf
+modules/getlocations_leaflet/plugins/font-awesome/fonts/fontawesome-webfont.woff
+modules/getlocations_leaflet/plugins/font-awesome/fonts/fontawesome-webfont.woff2
+modules/getlocations_leaflet/plugins/font-awesome/less/font-awesome.less
+modules/getlocations_leaflet/plugins/font-awesome/less/icons.less
+modules/getlocations_leaflet/plugins/font-awesome/less/variables.less
+modules/getlocations_leaflet/plugins/font-awesome/scss/_icons.scss
+modules/getlocations_leaflet/plugins/font-awesome/scss/_variables.scss
+modules/getlocations_leaflet/plugins/font-awesome/scss/font-awesome.scss
+
+commit a390d16
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Nov 18 11:40:44 2015 +0000
+
+    updated font-awesome to 4.4.0
+
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/plugins/font-awesome/css/font-awesome.css
+modules/getlocations_leaflet/plugins/font-awesome/css/font-awesome.min.css
+modules/getlocations_leaflet/plugins/font-awesome/fonts/FontAwesome.otf
+modules/getlocations_leaflet/plugins/font-awesome/fonts/fontawesome-webfont.eot
+modules/getlocations_leaflet/plugins/font-awesome/fonts/fontawesome-webfont.svg
+modules/getlocations_leaflet/plugins/font-awesome/fonts/fontawesome-webfont.ttf
+modules/getlocations_leaflet/plugins/font-awesome/fonts/fontawesome-webfont.woff
+modules/getlocations_leaflet/plugins/font-awesome/fonts/fontawesome-webfont.woff2
+modules/getlocations_leaflet/plugins/font-awesome/less/bordered-pulled.less
+modules/getlocations_leaflet/plugins/font-awesome/less/core.less
+modules/getlocations_leaflet/plugins/font-awesome/less/font-awesome.less
+modules/getlocations_leaflet/plugins/font-awesome/less/icons.less
+modules/getlocations_leaflet/plugins/font-awesome/less/mixins.less
+modules/getlocations_leaflet/plugins/font-awesome/less/variables.less
+modules/getlocations_leaflet/plugins/font-awesome/scss/_bordered-pulled.scss
+modules/getlocations_leaflet/plugins/font-awesome/scss/_core.scss
+modules/getlocations_leaflet/plugins/font-awesome/scss/_icons.scss
+modules/getlocations_leaflet/plugins/font-awesome/scss/_mixins.scss
+modules/getlocations_leaflet/plugins/font-awesome/scss/_variables.scss
+modules/getlocations_leaflet/plugins/font-awesome/scss/font-awesome.scss
+
+commit a991f23
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Tue Nov 17 11:16:49 2015 +0000
+
+    added compassPoint to geo
+
+js/getlocations_geo.js
+js/getlocations_geo.min.js
+
+commit a670b47
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Fri Nov 13 16:13:23 2015 +0000
+
+    added signed_in feature to google maps
+
+getlocations.admin.inc
+getlocations.module
+
+commit c0e5847
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Thu Nov 12 17:57:02 2015 +0000
+
+    removed panoramio and weather
+
+getlocations.module
+js/getlocations.js
+js/getlocations.min.js
+js/getlocations_admin.js
+js/getlocations_admin.min.js
+js/getlocations_views.js
+js/getlocations_views.min.js
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_fields/js/getlocations_fields_formatter.js
+modules/getlocations_fields/js/getlocations_fields_formatter.min.js
+modules/getlocations_map/getlocations_map.module
+modules/getlocations_map/js/getlocations_map_formatter.js
+modules/getlocations_search/getlocations_search.module
+modules/getlocations_search/js/getlocations_search_admin.js
+modules/getlocations_search/js/getlocations_search_admin.min.js
+views/getlocations_plugin_style_map.inc
+
+commit d81f454
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Wed Nov 11 21:43:16 2015 +0000
 
     better devel_generate, see #2603376
 
+CHANGELOG.txt
 modules/getlocations_fields/getlocations_fields.devel_generate.inc
 
 commit 546f1df
