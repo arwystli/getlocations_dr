@@ -3302,12 +3302,12 @@ function getlocations_leaflet_display_options_form($defaults, $admin = FALSE) {
 }
 
 function getlocations_leaflet_paths_get($reset = FALSE, $min = FALSE) {
-
+  $jq_upd = getlocations_check_jquery_version(TRUE);
   if ($min) {
     $defaults = array(
       'getlocations_leaflet_path'            => GETLOCATIONS_LEAFLET_PATH . '/js/getlocations_leaflet.min.js',
       'getlocations_leaflet_circles_path'    => GETLOCATIONS_LEAFLET_PATH . '/js/getlocations_leaflet_circles.min.js',
-      'getlocations_leaflet_formatter_path'  => GETLOCATIONS_LEAFLET_PATH . '/js/getlocations_leaflet_formatter.min.js',
+      'getlocations_leaflet_formatter_path'  => GETLOCATIONS_LEAFLET_PATH . ($jq_upd ? '/js/getlocations_leaflet_formatter_1.min.js' : '/js/getlocations_leaflet_formatter.min.js'),
       'getlocations_leaflet_polygons_path'   => GETLOCATIONS_LEAFLET_PATH . '/js/getlocations_leaflet_polygons.min.js',
       'getlocations_leaflet_polylines_path'  => GETLOCATIONS_LEAFLET_PATH . '/js/getlocations_leaflet_polylines.min.js',
       'getlocations_leaflet_rectangles_path' => GETLOCATIONS_LEAFLET_PATH . '/js/getlocations_leaflet_rectangles.min.js',
@@ -3322,7 +3322,7 @@ function getlocations_leaflet_paths_get($reset = FALSE, $min = FALSE) {
     $defaults = array(
       'getlocations_leaflet_path'            => GETLOCATIONS_LEAFLET_PATH . '/js/getlocations_leaflet.js',
       'getlocations_leaflet_circles_path'    => GETLOCATIONS_LEAFLET_PATH . '/js/getlocations_leaflet_circles.js',
-      'getlocations_leaflet_formatter_path'  => GETLOCATIONS_LEAFLET_PATH . '/js/getlocations_leaflet_formatter.js',
+      'getlocations_leaflet_formatter_path'  => GETLOCATIONS_LEAFLET_PATH . ($jq_upd ? '/js/getlocations_leaflet_formatter_1.js' : '/js/getlocations_leaflet_formatter.js'),
       'getlocations_leaflet_polygons_path'   => GETLOCATIONS_LEAFLET_PATH . '/js/getlocations_leaflet_polygons.js',
       'getlocations_leaflet_polylines_path'  => GETLOCATIONS_LEAFLET_PATH . '/js/getlocations_leaflet_polylines.js',
       'getlocations_leaflet_rectangles_path' => GETLOCATIONS_LEAFLET_PATH . '/js/getlocations_leaflet_rectangles.js',
@@ -3343,7 +3343,6 @@ function getlocations_leaflet_paths_get($reset = FALSE, $min = FALSE) {
   }
   return $getlocations_leaflet_paths;
 }
-
 
 function getlocations_leaflet_settings_form() {
 

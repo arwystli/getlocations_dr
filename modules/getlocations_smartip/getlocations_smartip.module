@@ -183,16 +183,18 @@ function getlocations_smartip_settings_validate($form, &$form_state) {
  *
  */
 function getlocations_smartip_paths_get($reset = FALSE, $min = FALSE) {
+  $jq_upd = getlocations_check_jquery_version(TRUE);
+
   if ($min) {
     $defaults = array(
       'getlocations_smartip_path'       => GETLOCATIONS_SMARTIP_PATH . '/js/getlocations_smartip.min.js',
-      'getlocations_smartip_admin_path' => GETLOCATIONS_SMARTIP_PATH . '/js/getlocations_smartip_admin.min.js',
+      'getlocations_smartip_admin_path' => GETLOCATIONS_SMARTIP_PATH . ($jq_upd '/js/getlocations_smartip_admin_1.min.js' : '/js/getlocations_smartip_admin.min.js'),
     );
   }
   else {
     $defaults = array(
       'getlocations_smartip_path'       => GETLOCATIONS_SMARTIP_PATH . '/js/getlocations_smartip.js',
-      'getlocations_smartip_admin_path' => GETLOCATIONS_SMARTIP_PATH . '/js/getlocations_smartip_admin.js',
+      'getlocations_smartip_admin_path' => GETLOCATIONS_SMARTIP_PATH . ($jq_upd '/js/getlocations_smartip_admin_1.js' : '/js/getlocations_smartip_admin.js'),
     );
   }
   if ($reset || $min) {

@@ -69,7 +69,8 @@ function getlocations_blocks_block_info() {
  * This hook declares configuration options for blocks provided by this module.
  */
 function getlocations_blocks_block_configure($delta = '') {
-  drupal_add_js(GETLOCATIONS_BLOCKS_PATH . '/js/getlocations_blocks_admin.js');
+  $jq_upd = getlocations_check_jquery_version(TRUE);
+  drupal_add_js(GETLOCATIONS_BLOCKS_PATH . ($jq_upd ? '/js/getlocations_blocks_admin_1.min.js' : '/js/getlocations_blocks_admin.min.js'));
   // The $delta parameter tells us which block is being configured.
   $options = array('dropdown' => t('Dropdown'), 'autocomplete' => t('Autocomplete'));
   $settings = getlocations_blocks_get_var();

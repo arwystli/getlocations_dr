@@ -506,7 +506,8 @@ function getlocations_map_field_formatter_settings_summary($field, $instance, $v
  *   The form elements for the formatter settings.
  */
 function getlocations_map_field_formatter_settings_form($field, $instance, $view_mode, $form, &$form_state) {
-  drupal_add_js(GETLOCATIONS_MAP_PATH . '/js/getlocations_map_formatter.js');
+  $jq_upd = getlocations_check_jquery_version(TRUE);
+  drupal_add_js(GETLOCATIONS_MAP_PATH . ($jq_upd ? '/js/getlocations_map_formatter_1.min.js' : '/js/getlocations_map_formatter.min.js'));
   $display = $instance['display'][$view_mode];
   $settings = $display['settings'];
   $element = array();

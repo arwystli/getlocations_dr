@@ -1280,16 +1280,18 @@ function getlocations_search_term_get() {
 }
 
 function getlocations_search_paths_get($reset = FALSE, $min = FALSE) {
+  $jq_upd = getlocations_check_jquery_version(TRUE);
+
   if ($min) {
     $defaults = array(
       'getlocations_search_path' => GETLOCATIONS_SEARCH_PATH . '/js/getlocations_search.min.js',
-      'getlocations_search_admin_path' => GETLOCATIONS_SEARCH_PATH . '/js/getlocations_search_admin.min.js',
+      'getlocations_search_admin_path' => GETLOCATIONS_SEARCH_PATH . ($jq_upd ? '/js/getlocations_search_admin_1.min.js' : '/js/getlocations_search_admin.min.js'),
     );
   }
   else {
     $defaults = array(
       'getlocations_search_path' => GETLOCATIONS_SEARCH_PATH . '/js/getlocations_search.js',
-      'getlocations_search_admin_path' => GETLOCATIONS_SEARCH_PATH . '/js/getlocations_search_admin.js',
+      'getlocations_search_admin_path' => GETLOCATIONS_SEARCH_PATH . ($jq_upd ? '/js/getlocations_search_admin_1.js' : '/js/getlocations_search_admin.js'),
     );
   }
   if ($reset || $min) {

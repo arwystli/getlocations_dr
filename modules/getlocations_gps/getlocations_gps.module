@@ -184,16 +184,17 @@ function getlocations_gps_settings_validate($form, &$form_state) {
  *
  */
 function getlocations_gps_paths_get($reset = FALSE, $min = FALSE) {
+  $jq_upd = getlocations_check_jquery_version(TRUE);
   if ($min) {
     $defaults = array(
       'getlocations_gps_path'       => GETLOCATIONS_GPS_PATH . '/js/getlocations_gps.min.js',
-      'getlocations_gps_admin_path' => GETLOCATIONS_GPS_PATH . '/js/getlocations_gps_admin.min.js',
+      'getlocations_gps_admin_path' => GETLOCATIONS_GPS_PATH . ($jq_upd ? '/js/getlocations_gps_admin_1.min.js' : '/js/getlocations_gps_admin.min.js'),
     );
   }
   else {
     $defaults = array(
       'getlocations_gps_path'       => GETLOCATIONS_GPS_PATH . '/js/getlocations_gps.js',
-      'getlocations_gps_admin_path' => GETLOCATIONS_GPS_PATH . '/js/getlocations_gps_admin.js',
+      'getlocations_gps_admin_path' => GETLOCATIONS_GPS_PATH . ($jq_upd ? '/js/getlocations_gps_admin_1.js' : '/js/getlocations_gps_admin.js'),
     );
   }
   if ($reset || $min) {

@@ -4944,6 +4944,7 @@ function getlocations_what3words_form($defaults) {
  *
  */
 function getlocations_paths_get($reset = FALSE, $min = FALSE) {
+  $jq_upd = getlocations_check_jquery_version(TRUE);
   if ($min) {
     $defaults = array(
       'infobubble_path'                 => GETLOCATIONS_PATH . '/js/infobubble.min.js',
@@ -4962,11 +4963,11 @@ function getlocations_paths_get($reset = FALSE, $min = FALSE) {
       'getlocations_geo_path'           => GETLOCATIONS_PATH . '/js/getlocations_geo.min.js',
       'getlocations_preview_path'       => GETLOCATIONS_PATH . '/js/getlocations_preview.min.js',
       'getlocations_geojson_path'       => GETLOCATIONS_PATH . '/js/getlocations_geojson.min.js',
-      'getlocations_admin_path'         => GETLOCATIONS_PATH . '/js/getlocations_admin.min.js',
+      'getlocations_admin_path'         => GETLOCATIONS_PATH . ($jq_upd ? '/js/getlocations_admin_1.min.js' : '/js/getlocations_admin.min.js'),
       'getlocations_box_path'           => GETLOCATIONS_PATH . '/js/getlocations_box.min.js',
       'getlocations_colorbox_path'      => GETLOCATIONS_PATH . '/js/getlocations_colorbox.min.js',
       'getlocations_marker_box_path'    => GETLOCATIONS_PATH . '/js/getlocations_marker_box.min.js',
-      'getlocations_views_path'         => GETLOCATIONS_PATH . '/js/getlocations_views.min.js',
+      'getlocations_views_path'         => GETLOCATIONS_PATH . ($jq_upd ? '/js/getlocations_views_1.min.js' : '/js/getlocations_views.min.js'),
       'getlocations_icons_path'         => GETLOCATIONS_PATH . '/js/icons.min.js',
       'getlocations_field_group_path'   => GETLOCATIONS_PATH . '/js/getlocations_field_group.min.js',
       'getlocations_what3words_path'    => GETLOCATIONS_PATH . '/js/getlocations_what3words.min.js',
@@ -4990,11 +4991,13 @@ function getlocations_paths_get($reset = FALSE, $min = FALSE) {
       'getlocations_geo_path'           => GETLOCATIONS_PATH . '/js/getlocations_geo.js',
       'getlocations_preview_path'       => GETLOCATIONS_PATH . '/js/getlocations_preview.js',
       'getlocations_geojson_path'       => GETLOCATIONS_PATH . '/js/getlocations_geojson.js',
-      'getlocations_admin_path'         => GETLOCATIONS_PATH . '/js/getlocations_admin.js',
+      #'getlocations_admin_path'         => GETLOCATIONS_PATH . '/js/getlocations_admin.js',
+      'getlocations_admin_path'         => GETLOCATIONS_PATH . ($jq_upd ? '/js/getlocations_admin_1.js' : '/js/getlocations_admin.js'),
       'getlocations_box_path'           => GETLOCATIONS_PATH . '/js/getlocations_box.js',
       'getlocations_colorbox_path'      => GETLOCATIONS_PATH . '/js/getlocations_colorbox.js',
       'getlocations_marker_box_path'    => GETLOCATIONS_PATH . '/js/getlocations_marker_box.js',
-      'getlocations_views_path'         => GETLOCATIONS_PATH . '/js/getlocations_views.js',
+      #'getlocations_views_path'         => GETLOCATIONS_PATH . '/js/getlocations_views.js',
+      'getlocations_views_path'         => GETLOCATIONS_PATH . ($jq_upd ? '/js/getlocations_views_1.js' : '/js/getlocations_views.js'),
       'getlocations_icons_path'         => GETLOCATIONS_PATH . '/js/icons.js',
       'getlocations_field_group_path'   => GETLOCATIONS_PATH . '/js/getlocations_field_group.js',
       'getlocations_what3words_path'    => GETLOCATIONS_PATH . '/js/getlocations_what3words.js',
@@ -6531,6 +6534,32 @@ function getlocations_get_exact_distance_sql($latitude, $longitude, $tbl_alias =
   $sinlat = sin($lat);
   $sql = "(IFNULL(ACOS(($sinlat * SIN(RADIANS($latfield))) + ($coslat * COS(RADIANS($latfield)) * COS(RADIANS($longitude - $lonfield)))), 0.00000) * $radius)";
   return $sql;
+}
+
+function getlocations_check_jquery_version($admin=TRUE) {
+  $version = '1.4.4';
+  $v = FALSE;
+  if (module_exists('jquery_update')) {
+    if ($admin) {
+      $version = variable_get('jquery_update_jquery_admin_version', FALSE);
+      if ($version == 0) {
+        $version = variable_get('jquery_update_jquery_version', FALSE);
+      }
+    }
+    else {
+      $version = variable_get('jquery_update_jquery_version', FALSE);
+    }
+  }
+  if ($version) {
+    $a = explode(".", $version);
+    if ($a[0] > 1) {
+      $v = TRUE;
+    }
+    elseif ($a[1] > 5) {
+      $v = TRUE;
+    }
+  }
+  return $v;
 }
 
 // Theming functions

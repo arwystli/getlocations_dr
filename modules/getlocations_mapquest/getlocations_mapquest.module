@@ -1569,18 +1569,18 @@ function getlocations_mapquest_display_options_form($defaults, $admin = FALSE) {
  *
  */
 function getlocations_mapquest_paths_get($reset = FALSE, $min = FALSE) {
-
+  $jq_upd = getlocations_check_jquery_version(TRUE);
   if ($min) {
     $defaults = array(
       'getlocations_mapquest_path'            => GETLOCATIONS_MAPQUEST_PATH . '/js/getlocations_mapquest.min.js',
-      'getlocations_mapquest_formatter_path'  => GETLOCATIONS_MAPQUEST_PATH . '/js/getlocations_mapquest_formatter.min.js',
+      'getlocations_mapquest_formatter_path'  => GETLOCATIONS_MAPQUEST_PATH . ($jq_upd ? '/js/getlocations_mapquest_formatter_1.min.js' : '/js/getlocations_mapquest_formatter.min.js'),
       'getlocations_mapquest_preview_path'    => GETLOCATIONS_MAPQUEST_PATH . '/js/getlocations_mapquest_preview.min.js',
     );
   }
   else {
     $defaults = array(
       'getlocations_mapquest_path'            => GETLOCATIONS_MAPQUEST_PATH . '/js/getlocations_mapquest.js',
-      'getlocations_mapquest_formatter_path'  => GETLOCATIONS_MAPQUEST_PATH . '/js/getlocations_mapquest_formatter.js',
+      'getlocations_mapquest_formatter_path'  => GETLOCATIONS_MAPQUEST_PATH . ($jq_upd ? '/js/getlocations_mapquest_formatter_1.js' : '/js/getlocations_mapquest_formatter.js'),
       'getlocations_mapquest_preview_path'    => GETLOCATIONS_MAPQUEST_PATH . '/js/getlocations_mapquest_preview.js',
     );
   }
@@ -1594,7 +1594,6 @@ function getlocations_mapquest_paths_get($reset = FALSE, $min = FALSE) {
   }
   return $getlocations_mapquest_paths;
 }
-
 
 /**
  * Function

@@ -3705,14 +3705,15 @@ function getlocations_fields_get_countries_list($upper = TRUE) {
 }
 
 function getlocations_fields_paths_get($reset = FALSE, $min = FALSE) {
+  $jq_upd = getlocations_check_jquery_version(TRUE);
   if ($min) {
     $defaults = array(
       'getlocations_fields_path'            => GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields.min.js',
       'getlocations_fields_preview_path'    => GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields_preview.min.js',
       'getlocations_fields_streetview_path' => GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields_streetview.min.js',
-      'getlocations_fields_admin_path'      => GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields_admin.min.js',
-      'getlocations_fields_formatter_path'  => GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields_formatter.min.js',
-      'getlocations_fields_views_path'      => GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields_views.min.js',
+      'getlocations_fields_admin_path'      => GETLOCATIONS_FIELDS_PATH . ($jq_upd ? '/js/getlocations_fields_admin_1.min.js' : '/js/getlocations_fields_admin.min.js'),
+      'getlocations_fields_formatter_path'  => GETLOCATIONS_FIELDS_PATH . ($jq_upd ? '/js/getlocations_fields_formatter_1.min.js' : '/js/getlocations_fields_formatter.min.js'),
+      'getlocations_fields_views_path'      => GETLOCATIONS_FIELDS_PATH . ($jq_upd ? '/js/getlocations_fields_views_1.min.js' : '/js/getlocations_fields_views.min.js'),
       'getlocations_fields_search_views_path' => GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields_search_views.min.js',
     );
   }
@@ -3721,9 +3722,9 @@ function getlocations_fields_paths_get($reset = FALSE, $min = FALSE) {
       'getlocations_fields_path'            => GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields.js',
       'getlocations_fields_preview_path'    => GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields_preview.js',
       'getlocations_fields_streetview_path' => GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields_streetview.js',
-      'getlocations_fields_admin_path'      => GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields_admin.js',
-      'getlocations_fields_formatter_path'  => GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields_formatter.js',
-      'getlocations_fields_views_path'      => GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields_views.js',
+      'getlocations_fields_admin_path'      => GETLOCATIONS_FIELDS_PATH . ($jq_upd ? '/js/getlocations_fields_admin_1.js' : '/js/getlocations_fields_admin.js'),
+      'getlocations_fields_formatter_path'  => GETLOCATIONS_FIELDS_PATH . ($jq_upd ? '/js/getlocations_fields_formatter_1.js' : '/js/getlocations_fields_formatter.js'),
+      'getlocations_fields_views_path'      => GETLOCATIONS_FIELDS_PATH . ($jq_upd ? '/js/getlocations_fields_views_1.js' : '/js/getlocations_fields_views.js'),
       'getlocations_fields_search_views_path' => GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields_search_views.js',
     );
   }
