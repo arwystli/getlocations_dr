@@ -1188,6 +1188,12 @@
     return gmark;
   };
 
+  Drupal.getlocations.divScrollIntoView = function (node) {
+    var fudge = 28; // allow for admin bar
+    var posY = $(node).offset().top;
+    window.scrollTo(0, posY-fudge);
+  };
+
   Drupal.getlocations.msiedetect = function() {
     var ieversion = '';
     if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)){ //test for MSIE x.x;

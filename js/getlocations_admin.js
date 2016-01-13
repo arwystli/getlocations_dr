@@ -81,7 +81,16 @@
       }
       $("#edit-getlocations-colorbox-enable").change(function() {
         if ($(this).attr('checked')) {
-          $("#wrap-getlocations-colorbox").show();
+          //$("#wrap-getlocations-colorbox").show();
+          var cg = $(this);
+          $("#wrap-getlocations-colorbox").slideDown({
+            duration: 'fast',
+            easing: 'linear',
+            complete: function () {
+              Drupal.getlocations.divScrollIntoView(cg);
+              cg.animating = false;
+            }
+          });
         }
         else {
           $("#wrap-getlocations-colorbox").hide();
@@ -96,7 +105,16 @@
       }
       $("#edit-getlocations-colorbox-marker-enable").change(function() {
         if ($(this).attr('checked')) {
-          $("#wrap-getlocations-marker-colorbox").show();
+          //$("#wrap-getlocations-marker-colorbox").show();
+          var cg = $(this);
+          $("#wrap-getlocations-marker-colorbox").slideDown({
+            duration: 'fast',
+            easing: 'linear',
+            complete: function () {
+              Drupal.getlocations.divScrollIntoView(cg);
+              cg.animating = false;
+            }
+          });
         }
         else {
           $("#wrap-getlocations-marker-colorbox").hide();
@@ -246,7 +264,16 @@
       }
       $("#edit-getlocations-default-polygons-enable").change(function() {
         if ($(this).attr('checked')) {
-          $("#wrap-getlocations-polygons").show();
+          //$("#wrap-getlocations-polygons").show();
+          var cg = $(this);
+          $("#wrap-getlocations-polygons").slideDown({
+            duration: 'fast',
+            easing: 'linear',
+            complete: function () {
+              Drupal.getlocations.divScrollIntoView(cg);
+              cg.animating = false;
+            }
+          });
         }
         else {
           $("#wrap-getlocations-polygons").hide();
@@ -260,7 +287,17 @@
       }
       $("#edit-getlocations-default-rectangles-enable").change(function() {
         if ($(this).attr('checked')) {
-          $("#wrap-getlocations-rectangles").show();
+          //$("#wrap-getlocations-rectangles").show();
+          var cg = $(this);
+          $("#wrap-getlocations-rectangles").slideDown({
+            duration: 'fast',
+            easing: 'linear',
+            complete: function () {
+              Drupal.getlocations.divScrollIntoView(cg);
+              cg.animating = false;
+            }
+          });
+
         }
         else {
           $("#wrap-getlocations-rectangles").hide();
@@ -275,7 +312,16 @@
       }
       $("#edit-getlocations-default-circles-enable").change(function() {
         if ($(this).attr('checked')) {
-          $("#wrap-getlocations-circles").show();
+          //$("#wrap-getlocations-circles").show();
+          var cg = $(this);
+          $("#wrap-getlocations-circles").slideDown({
+            duration: 'fast',
+            easing: 'linear',
+            complete: function () {
+              Drupal.getlocations.divScrollIntoView(cg);
+              cg.animating = false;
+            }
+          });
         }
         else {
           $("#wrap-getlocations-circles").hide();
@@ -290,7 +336,17 @@
       }
       $("#edit-getlocations-default-polylines-enable").change(function() {
         if ($(this).attr('checked')) {
-          $("#wrap-getlocations-polylines").show();
+          //$("#wrap-getlocations-polylines").show();
+          var cg = $(this);
+          $("#wrap-getlocations-polylines").slideDown({
+            duration: 'fast',
+            easing: 'linear',
+            complete: function () {
+              Drupal.getlocations.divScrollIntoView(cg);
+              cg.animating = false;
+            }
+          });
+
         }
         else {
           $("#wrap-getlocations-polylines").hide();
@@ -305,12 +361,22 @@
       }
       $("#edit-getlocations-default-search-places").change(function() {
         if ($(this).attr('checked')) {
-          $("#wrap-getlocations-search-places").show();
+          //$("#wrap-getlocations-search-places").show();
+          var cg = $(this);
+          $("#wrap-getlocations-search-places").slideDown({
+            duration: 'fast',
+            easing: 'linear',
+            complete: function () {
+              Drupal.getlocations.divScrollIntoView(cg);
+              cg.animating = false;
+            }
+          });
         }
         else {
           $("#wrap-getlocations-search-places").hide();
         }
       });
+
       // geojson
       if ($("#edit-getlocations-default-geojson-enable").attr('checked')) {
         $("#wrap-getlocations-geojson-enable").show();
@@ -320,7 +386,16 @@
       }
       $("#edit-getlocations-default-geojson-enable").change(function() {
         if ($(this).attr('checked')) {
-          $("#wrap-getlocations-geojson-enable").show();
+          //$("#wrap-getlocations-geojson-enable").show();
+          var cg = $(this);
+          $("#wrap-getlocations-geojson-enable").slideDown({
+            duration: 'fast',
+            easing: 'linear',
+            complete: function () {
+              Drupal.getlocations.divScrollIntoView(cg);
+              cg.animating = false;
+            }
+          });
         }
         else {
           $("#wrap-getlocations-geojson-enable").hide();
@@ -336,7 +411,16 @@
         }
         $("#edit-getlocations-default-pancontrol").change(function() {
           if ($(this).attr('checked')) {
-            $("#wrap-getlocations-pancontrol").show();
+            //$("#wrap-getlocations-pancontrol").show();
+            var cg = $(this);
+            $("#wrap-getlocations-pancontrol").slideDown({
+              duration: 'fast',
+              easing: 'linear',
+              complete: function () {
+                Drupal.getlocations.divScrollIntoView(cg);
+                cg.animating = false;
+              }
+            });
           }
           else {
             $("#wrap-getlocations-pancontrol").hide();
@@ -455,7 +539,16 @@
         }
         $("#edit-getlocations-default-highlight-enable").change(function() {
           if ($(this).attr('checked')) {
-            $("#wrap-getlocations-highlight").show();
+            //$("#wrap-getlocations-highlight").show();
+            var cg = $(this);
+            $("#wrap-getlocations-highlight").slideDown({
+              duration: 'fast',
+              easing: 'linear',
+              complete: function () {
+                Drupal.getlocations.divScrollIntoView(cg);
+                cg.animating = false;
+              }
+            });
           }
           else {
             $("#wrap-getlocations-highlight").hide();
@@ -473,7 +566,17 @@
         }
         $("#edit-getlocations-default-views-search-marker-enable").change(function() {
           if ($(this).attr('checked')) {
-            $("#wrap-getlocations-views-search-marker").show();
+            //$("#wrap-getlocations-views-search-marker").show();
+            var cg = $(this);
+            $("#wrap-getlocations-views-search-marker").slideDown({
+              duration: 'fast',
+              easing: 'linear',
+              complete: function () {
+                Drupal.getlocations.divScrollIntoView(cg);
+                cg.animating = false;
+              }
+            });
+
           }
           else {
             $("#wrap-getlocations-views-search-marker").hide();
@@ -491,7 +594,16 @@
         }
         $("#edit-getlocations-default-views-search-radshape-enable").change(function() {
           if ($(this).attr('checked')) {
-            $("#wrap-getlocations-views-search-radshape").show();
+            //$("#wrap-getlocations-views-search-radshape").show();
+            var cg = $(this);
+            $("#wrap-getlocations-views-search-radshape").slideDown({
+              duration: 'fast',
+              easing: 'linear',
+              complete: function () {
+                Drupal.getlocations.divScrollIntoView(cg);
+                cg.animating = false;
+              }
+            });
           }
           else {
             $("#wrap-getlocations-views-search-radshape").hide();
@@ -534,6 +646,7 @@
           }
         });
       }
+
 
     }
   };
