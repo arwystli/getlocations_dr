@@ -1,9 +1,72 @@
-commit 46b97b5
+commit 5c3b6c7
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Jan 13 10:29:20 2016 +0000
+
+    added info to README #2634048
+
+README.txt
+
+commit 47cc382
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Jan 13 10:29:05 2016 +0000
+
+    added divScrollIntoView() feature
+
+js/getlocations.js
+js/getlocations.min.js
+js/getlocations_admin.js
+js/getlocations_admin.min.js
+js/getlocations_admin_1.js
+js/getlocations_admin_1.min.js
+
+commit a71c8f8
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Thu Dec 17 17:39:37 2015 +0000
+
+    jquery update prop function
+
+getlocations.module
+js/getlocations_admin_1.js
+js/getlocations_admin_1.min.js
+js/getlocations_views_1.js
+js/getlocations_views_1.min.js
+modules/getlocations_blocks/getlocations_blocks.module
+modules/getlocations_blocks/js/getlocations_blocks_admin_1.js
+modules/getlocations_blocks/js/getlocations_blocks_admin_1.min.js
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_fields/js/getlocations_fields_admin_1.js
+modules/getlocations_fields/js/getlocations_fields_admin_1.min.js
+modules/getlocations_fields/js/getlocations_fields_formatter_1.js
+modules/getlocations_fields/js/getlocations_fields_formatter_1.min.js
+modules/getlocations_fields/js/getlocations_fields_views_1.js
+modules/getlocations_fields/js/getlocations_fields_views_1.min.js
+modules/getlocations_gps/getlocations_gps.module
+modules/getlocations_gps/js/getlocations_gps_admin_1.js
+modules/getlocations_gps/js/getlocations_gps_admin_1.min.js
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/js/getlocations_leaflet_formatter_1.js
+modules/getlocations_leaflet/js/getlocations_leaflet_formatter_1.min.js
+modules/getlocations_map/getlocations_map.module
+modules/getlocations_map/js/getlocations_map_formatter.min.js
+modules/getlocations_map/js/getlocations_map_formatter_1.js
+modules/getlocations_map/js/getlocations_map_formatter_1.min.js
+modules/getlocations_mapquest/getlocations_mapquest.module
+modules/getlocations_mapquest/js/getlocations_mapquest_formatter_1.js
+modules/getlocations_mapquest/js/getlocations_mapquest_formatter_1.min.js
+modules/getlocations_search/getlocations_search.module
+modules/getlocations_search/js/getlocations_search_admin_1.js
+modules/getlocations_search/js/getlocations_search_admin_1.min.js
+modules/getlocations_smartip/getlocations_smartip.module
+modules/getlocations_smartip/js/getlocations_smartip_admin_1.js
+modules/getlocations_smartip/js/getlocations_smartip_admin_1.min.js
+
+commit 1e06539
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Mon Dec 14 14:30:36 2015 +0000
 
     updated font-awesome to 4.5.0
 
+CHANGELOG.txt
 modules/getlocations_leaflet/getlocations_leaflet.module
 modules/getlocations_leaflet/plugins/font-awesome/css/font-awesome.css
 modules/getlocations_leaflet/plugins/font-awesome/css/font-awesome.css.map

@@ -339,3 +339,12 @@ var key = 'key_1';
 var tp = 'grocery_or_supermarket';
 $("#search_places_select_" + key).val(tp);
 
+Content type Markers
+If you have selected "Enable Markers for Content types" in admin/config/services/getlocations
+and you wish to use these markers in a View you need to ensure that you have enabled
+
+Getlocations Fields: Field name
+Content: Type (set to Output machine name)
+
+in the view's Fields list
+
