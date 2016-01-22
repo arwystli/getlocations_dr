@@ -6216,8 +6216,8 @@ function getlocations_is_mobile($override = FALSE) {
   $getlocations_ua = getlocations_ua_get();
   $str = "/" . $getlocations_ua['ua_string'] . "/i";
   $is_mobile = FALSE;
-  $ua = $_SERVER['HTTP_USER_AGENT'];
-  if (preg_match($str, $ua)) {
+  $ua = (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : "");
+  if ($ua && preg_match($str, $ua)) {
     $is_mobile = TRUE;
   }
   return $is_mobile;
