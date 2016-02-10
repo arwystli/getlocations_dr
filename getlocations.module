@@ -708,6 +708,9 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
   }
 
   $key = variable_get('getlocations_api3_key', '');
+  $clientID = variable_get('getlocations_api3_clientID', '');
+  $signature = variable_get('getlocations_api3_signature', '');
+  $channel = variable_get('getlocations_api3_channel', '');
   $signed_in = variable_get('getlocations_api3_signed_in', 0);
 
   $aggr = (getlocations_aggr_get() ? TRUE : FALSE);
@@ -720,6 +723,16 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
       $query['signed_in'] = 'true';
     }
   }
+  if (! empty($clientID)) {
+    $query['client'] = $clientID;
+  }
+  if (! empty($signature)) {
+    $query['signature'] = $signature;
+  }
+  if (! empty($channel)) {
+    $query['channel'] = $channel;
+  }
+
   $query['sensor'] = (getlocations_is_mobile() ? 'true' : 'false');
 
   $map_version = variable_get('getlocations_map_version', '');

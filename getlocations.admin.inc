@@ -69,6 +69,11 @@ function getlocations_settings_form() {
 
   // google api3 key
   $apikey = variable_get('getlocations_api3_key', '');
+  $apiclientID = variable_get('getlocations_api3_clientID', '');
+  $apisignature = variable_get('getlocations_api3_signature', '');
+  $apichannel = variable_get('getlocations_api3_channel', '');
+  $apisigned_in = variable_get('getlocations_api3_signed_in', 0);
+
   $form['api3'] = array(
     '#type' => 'fieldset',
     '#title' => t('Google API key'),
@@ -77,7 +82,6 @@ function getlocations_settings_form() {
     #'#collapsed' => ($apikey ? TRUE : FALSE),
     '#collapsed' => TRUE,
   );
-
   $form['api3']['getlocations_api3_key'] = getlocations_element_map_tf(
     t('Your Google maps API Version 3 key'),
     $apikey,
@@ -86,10 +90,33 @@ function getlocations_settings_form() {
     255,
     FALSE
   );
-
+  $form['api3']['getlocations_api3_clientID'] = getlocations_element_map_tf(
+    t('Your Google maps API Version 3 clientID'),
+    $apiclientID,
+    t('For more information about this see this !u', array('!u' => l(t('page on google'), 'https://developers.google.com/maps/documentation/javascript/get-api-key#client-id', array('attributes' => array('target' => '_blank'))))),
+    95,
+    255,
+    FALSE
+  );
+  $form['api3']['getlocations_api3_signature'] = getlocations_element_map_tf(
+    t('Your Google maps API Version 3 signature'),
+    $apisignature,
+    t('For more information about this see this !u', array('!u' => l(t('page on google'), 'https://developers.google.com/maps/documentation/javascript/get-api-key#client_id_and_signature', array('attributes' => array('target' => '_blank'))))),
+    95,
+    255,
+    FALSE
+  );
+  $form['api3']['getlocations_api3_channel'] = getlocations_element_map_tf(
+    t('Your Google maps API Version 3 channel'),
+    $apichannel,
+    t('For more information about this see this !u', array('!u' => l(t('page on google'), 'https://developers.google.com/maps/documentation/javascript/get-api-key#channel-reports', array('attributes' => array('target' => '_blank'))))),
+    95,
+    255,
+    FALSE
+  );
   $form['api3']['getlocations_api3_signed_in'] = getlocations_element_map_checkbox(
     t('Signed in'),
-    variable_get('getlocations_api3_signed_in', 0),
+    $apisigned_in,
     t('Provide the Sign in link on the map.')
   );
 
