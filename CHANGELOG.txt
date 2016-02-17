@@ -1,9 +1,39 @@
-commit 5c3b6c7
+commit b59517f
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Feb 17 14:41:56 2016 +0000
+
+    removed old_controlstyle
+
+getlocations.module
+js/getlocations.js
+js/getlocations.min.js
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/views/getlocations_leaflet_plugin_style.inc
+
+commit c49b298
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Wed Feb 10 10:55:47 2016 +0000
+
+    improved api3
+
+getlocations.admin.inc
+getlocations.module
+
+commit 71968fe
+Author: hutch <hutch@52366.no-reply.drupal.org>
+Date:   Fri Jan 22 12:29:35 2016 +0000
+
+    notice avoidance #2312661
+
+getlocations.module
+
+commit c2ee511
 Author: hutch <hutch@52366.no-reply.drupal.org>
 Date:   Wed Jan 13 10:29:20 2016 +0000
 
     added info to README #2634048
 
+CHANGELOG.txt
 README.txt
 
 commit 47cc382

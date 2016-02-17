@@ -48,9 +48,6 @@ class getlocations_leaflet_plugin_style extends views_plugin_style {
     // empty_result
     $options['empty_result'] = array('default' => FALSE);
 
-    $options['google_old_controlstyle_show'] = array('default' => 0);
-    $options['google_old_controlstyle'] = array('default' => 0);
-
     return $options;
   }
 
@@ -84,10 +81,6 @@ class getlocations_leaflet_plugin_style extends views_plugin_style {
       'width' => t('Width'),
       'height' => t('Height'),
     );
-
-    // force it
-    $this->options['google_old_controlstyle_show'] = 0;
-    $this->options['google_old_controlstyle'] = 0;
 
     $form += getlocations_map_display_basics_form($this->options, $labels);
     unset($form['map_resize']);

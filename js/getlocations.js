@@ -389,11 +389,6 @@
             mapOpts.streetViewControl = false;
           }
 
-          // google_old_controlstyle
-          if (setting.google_old_controlstyle) {
-            google.maps.controlStyle = 'azteca';
-          }
-
           // make the map
           Drupal.getlocations_map[key] = new google.maps.Map(document.getElementById("getlocations_map_canvas_" + key), mapOpts);
           // another way
