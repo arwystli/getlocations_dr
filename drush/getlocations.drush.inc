@@ -9,14 +9,17 @@
  * drush integration for getlocations.
  * 'drush getlocations-markers' will install the basic getlocations marker set
  * 'drush getlocations-geojson' will install the GeoJSON javascript library
+ * 'drush getlocations-geocoder' will install the geocoder-js javascript library
  * 'drush getlocations-leaflet' will install the Leafletjs javascript library
+ * 'drush getlocations-leaflet-hash' will install the Leaflet-hash library
  */
 
 define('GETLOCATIONS_MARKERS_DOWNLOAD_URI', 'http://dl.dropboxusercontent.com/u/41489105/Drupal/getlocations/getlocations-markers.zip');
 define('GETLOCATIONS_GEOJSON_DOWNLOAD_URI', 'https://github.com/JasonSanford/GeoJSON-to-Google-Maps/archive/master.zip');
-define('GETLOCATIONS_LEAFLET_DOWNLOAD_URI', 'http://cdn.leafletjs.com/downloads/leaflet-0.7.5.zip');
 define('GETLOCATIONS_GEOCODER_DOWNLOAD_URI', 'https://github.com/geocoder-php/geocoder-js/archive/master.zip');
+define('GETLOCATIONS_LEAFLET_DOWNLOAD_URI', 'http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.zip');
 define('GETLOCATIONS_LEAFLET_HASH_DOWNLOAD_URI', 'https://github.com/mlevans/leaflet-hash/archive/master.zip');
+define('GETLOCATIONS_LIBRARY_PATH', 'sites/all/libraries');
 
 /**
  * Implements hook_drush_command().
@@ -101,15 +104,15 @@ function getlocations_drush_command() {
 function getlocations_drush_help($section) {
   switch ($section) {
     case 'drush:getlocations-markers':
-      return dt('Download and install the basic set of getlocations markers from Dropbox, default location is sites/all/libraries.');
+      return dt('Download and install the basic set of getlocations markers from Dropbox, default location is ' . GETLOCATIONS_LIBRARY_PATH . '.');
     case 'drush:getlocations-geojson':
-      return dt('Download and install the GeoJSON javascript library from Github, default location is sites/all/libraries.');
+      return dt('Download and install the GeoJSON javascript library from Github, default location is ' . GETLOCATIONS_LIBRARY_PATH . '.');
     case 'drush:getlocations-geocoder':
-      return dt('Download and install the geocoder-js javascript library from Github, default location is sites/all/libraries.');
+      return dt('Download and install the geocoder-js javascript library from Github, default location is ' . GETLOCATIONS_LIBRARY_PATH . '.');
     case 'drush:getlocations-leaflet':
-      return dt('Download and install the Leafletjs library from http://leafletjs.com, default location is sites/all/libraries.');
+      return dt('Download and install the Leafletjs library from http://leafletjs.com, default location is ' . GETLOCATIONS_LIBRARY_PATH . '.');
     case 'drush:getlocations-leaflet-hash':
-      return dt('Download and install the Leaflet-hash library from Github, default location is sites/all/libraries.');
+      return dt('Download and install the Leaflet-hash library from Github, default location is ' . GETLOCATIONS_LIBRARY_PATH . '.');
   }
 }
 
@@ -118,18 +121,7 @@ function getlocations_drush_help($section) {
  */
 function drush_getlocations_markers() {
   $args = func_get_args();
-  if (!empty($args[0])) {
-    $path = $args[0];
-  }
-  else {
-    $path = 'sites/all/libraries';
-  }
-
-  // Create the path if it does not exist.
-  if (!is_dir($path)) {
-    drush_op('mkdir', $path);
-    drush_log(dt('Directory @path was created', array('@path' => $path)), 'notice');
-  }
+  $path = drush_getlocations_lib_path($args);
 
   // Set the directory to the download location.
   $olddir = getcwd();
@@ -169,18 +161,7 @@ function drush_getlocations_markers() {
  */
 function drush_getlocations_geojson() {
   $args = func_get_args();
-  if (!empty($args[0])) {
-    $path = $args[0];
-  }
-  else {
-    $path = 'sites/all/libraries';
-  }
-
-  // Create the path if it does not exist.
-  if (!is_dir($path)) {
-    drush_op('mkdir', $path);
-    drush_log(dt('Directory @path was created', array('@path' => $path)), 'notice');
-  }
+  $path = drush_getlocations_lib_path($args);
 
   // Set the directory to the download location.
   $olddir = getcwd();
@@ -223,18 +204,7 @@ function drush_getlocations_geojson() {
  */
 function drush_getlocations_geocoder() {
   $args = func_get_args();
-  if (!empty($args[0])) {
-    $path = $args[0];
-  }
-  else {
-    $path = 'sites/all/libraries';
-  }
-
-  // Create the path if it does not exist.
-  if (!is_dir($path)) {
-    drush_op('mkdir', $path);
-    drush_log(dt('Directory @path was created', array('@path' => $path)), 'notice');
-  }
+  $path = drush_getlocations_lib_path($args);
 
   // Set the directory to the download location.
   $olddir = getcwd();
@@ -281,18 +251,7 @@ function drush_getlocations_geocoder() {
  */
 function drush_getlocations_leaflet() {
   $args = func_get_args();
-  if (!empty($args[0])) {
-    $path = $args[0];
-  }
-  else {
-    $path = 'sites/all/libraries';
-  }
-
-  // Create the path if it does not exist.
-  if (!is_dir($path)) {
-    drush_op('mkdir', $path);
-    drush_log(dt('Directory @path was created', array('@path' => $path)), 'notice');
-  }
+  $path = drush_getlocations_lib_path($args);
 
   // Set the directory to the download location.
   $olddir = getcwd();
@@ -332,18 +291,7 @@ function drush_getlocations_leaflet() {
  */
 function drush_getlocations_leaflet_hash() {
   $args = func_get_args();
-  if (!empty($args[0])) {
-    $path = $args[0];
-  }
-  else {
-    $path = 'sites/all/libraries';
-  }
-
-  // Create the path if it does not exist.
-  if (!is_dir($path)) {
-    drush_op('mkdir', $path);
-    drush_log(dt('Directory @path was created', array('@path' => $path)), 'notice');
-  }
+  $path = drush_getlocations_lib_path($args);
 
   // Set the directory to the download location.
   $olddir = getcwd();
@@ -383,4 +331,19 @@ function drush_getlocations_leaflet_hash() {
 
   // Set working directory back to the previous working directory.
   chdir($olddir);
+}
+
+function drush_getlocations_lib_path($args) {
+  $path = GETLOCATIONS_LIBRARY_PATH;
+  if (! empty($args[0])) {
+    $path = $args[0];
+  }
+
+  // Create the path if it does not exist.
+  if (! is_dir($path)) {
+    drush_op('mkdir', $path);
+    drush_log(dt('Directory @path was created', array('@path' => $path)), 'notice');
+  }
+  return $path;
+
 }
