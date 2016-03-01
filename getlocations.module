@@ -733,7 +733,7 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
     $query['channel'] = $channel;
   }
 
-  $query['sensor'] = (getlocations_is_mobile() ? 'true' : 'false');
+  #$query['sensor'] = (getlocations_is_mobile() ? 'true' : 'false');
 
   $map_version = variable_get('getlocations_map_version', '');
   if($map_version) {
@@ -1278,6 +1278,8 @@ function getlocations_defaults($reset = FALSE) {
     'what3words_show'        => 1,
     'what3words_click'       => 1,
     'what3words_path'        => 'getlocations/cb_w3w',
+    'google_old_controlstyle' => 0,
+    'google_old_controlstyle_show' => 1,
   );
 
   $providers = getlocations_get_map_providers();
@@ -2549,6 +2551,7 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
       'sv_scrollwheel'            => $defaults['sv_scrollwheel'],
       'sv_clicktogo'              => $defaults['sv_clicktogo'],
       'input_map_show'            => $defaults['input_map_show'],
+      'google_old_controlstyle'   => $defaults['google_old_controlstyle'],
     ),
   );
   // only set these if wanted
@@ -3779,6 +3782,19 @@ function getlocations_map_display_basics_form($defaults, $labels = array()) {
     10,
     TRUE
   );
+
+  if ( (isset($defaults['google_old_controlstyle_show']) && ! $defaults['google_old_controlstyle_show']) || ! isset($defaults['google_old_controlstyle_show'])) {
+    $form['google_old_controlstyle'] = array('#type' => 'value', '#value' => 0);
+    $form['google_old_controlstyle_show'] = array('#type' => 'value', '#value' => 0);
+  }
+  else {
+      $form['google_old_controlstyle'] = getlocations_element_map_checkbox(
+      t('Use the old style of controls on the map'),
+      (isset($defaults['google_old_controlstyle']) ? $defaults['google_old_controlstyle'] : 0),
+      t('Check this to retain the old style google map controls, this will no longer work after August 2016.')
+    );
+    $form['google_old_controlstyle_show'] = array('#type' => 'value', '#value' => 1);
+  }
 
   // map_resize
   $form['map_resize'] = getlocations_element_map_checkbox(

@@ -237,6 +237,10 @@ class getlocations_plugin_style_map extends views_plugin_style {
       $options['what3words_size']        = array('default' =>  $getlocations_defaults['what3words_size']);
     }
 
+    // google_old_controlstyle
+    $options['google_old_controlstyle'] = array('default' =>  $getlocations_defaults['google_old_controlstyle']);
+    $options['google_old_controlstyle_show'] = array('default' =>  $getlocations_defaults['google_old_controlstyle_show']);
+
     $fieldables = getlocations_get_fieldable_entity_types();
     foreach ($fieldables AS $entity_type) {
       $options[$entity_type . '_map_marker'] = array('default' => $getlocations_defaults[$entity_type . '_map_marker']);

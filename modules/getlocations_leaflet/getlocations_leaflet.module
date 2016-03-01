@@ -945,6 +945,9 @@ function getlocations_leaflet_field_formatter_settings_form($field, $instance, $
         'height' => t('Height'),
       );
 
+      $settings['google_old_controlstyle'] = 0;
+      $settings['google_old_controlstyle_show'] = 0;
+
       $element += getlocations_map_display_basics_form($settings, $labels);
       unset($element['map_resize']);
       unset($element['fullscreen_disable']);
@@ -3577,6 +3580,9 @@ function getlocations_leaflet_settings_form() {
     'width' => t('Width'),
     'height' => t('Height'),
   );
+
+  $settings['google_old_controlstyle'] = 0;
+  $settings['google_old_controlstyle_show'] = 0;
 
   $form['getlocations_leaflet_defaults'] += getlocations_map_display_basics_form($settings, $labels);
   unset($form['getlocations_leaflet_defaults']['map_resize']);
