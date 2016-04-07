@@ -1759,6 +1759,7 @@ function getlocations_cb_w3w() {
 }
 
 function getlocations_cb_w3w_get($data, $type) {
+  global $language;
   $types = array('w3w', 'position');
   if (in_array($type, $types)) {
     $what3words_lic = variable_get('getlocations_what3words_lic', array('key' => '', 'url' => 'http://api.what3words.com'));
@@ -1776,6 +1777,7 @@ function getlocations_cb_w3w_get($data, $type) {
       else {
         $datastr .= '&string=' . $data;
       }
+      $datastr .= '&lang=' . (isset($language->language ) ? $language->language : 'en');
       $opts['data'] = $datastr;
       $response = drupal_http_request($url, $opts);
       if ($response->code == '200') {
