@@ -1465,7 +1465,7 @@ function getlocations_fields_field_widget_form(&$form, &$form_state, $field, $in
         '#default_value' => (isset($items[$delta]['latitude']) ? $items[$delta]['latitude'] : (isset($instance['default_value'][$delta]['latitude']) ? $instance['default_value'][$delta]['latitude'] : NULL)),
         '#size' => $settings['input_latitude_width'],
         '#title' => t('Latitude'),
-        '#maxlength' => 20,
+        '#maxlength' => 24,
       );
       if (! empty($settings['input_latitude_weight'])) {
         $element['latitude']['#weight'] = $settings['input_latitude_weight'];
@@ -1476,7 +1476,7 @@ function getlocations_fields_field_widget_form(&$form, &$form_state, $field, $in
         '#default_value' => (isset($items[$delta]['longitude']) ? $items[$delta]['longitude'] : (isset($instance['default_value'][$delta]['longitude']) ? $instance['default_value'][$delta]['longitude'] : NULL)),
         '#size' => $settings['input_longitude_width'],
         '#title' => t('Longitude'),
-        '#maxlength' => 20,
+        '#maxlength' => 24,
       );
       if (! empty($settings['input_longitude_weight'])) {
         $element['longitude']['#weight'] = $settings['input_longitude_weight'];

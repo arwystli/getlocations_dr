@@ -1,9 +1,18 @@
-commit ea5b590
+commit 74b0c61
+Author: hutch <hutch@arwystli.net>
+Date:   Sun Apr 24 23:14:43 2016 +0100
+
+    bigger maxlength for lat and lon
+
+modules/getlocations_fields/getlocations_fields.module
+
+commit 51cd73e
 Author: hutch <hutch@arwystli.net>
 Date:   Thu Apr 7 14:20:01 2016 +0100
 
     added lang to w3w function
 
+CHANGELOG.txt
 getlocations.module
 
 commit 41eda3b
