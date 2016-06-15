@@ -40,8 +40,8 @@
                   $.get(settings.what3words_path, data, function(r) {
                     response = JSON.parse(r);
                     if (response) {
-                      var lat = response.position[0];
-                      var lon = response.position[1];
+                      var lat = response.geometry.lat;
+                      var lon = response.geometry.lng;
                       if (settings.what3words_marker_show && lat && lon ) {
                         if (marker) {
                           Drupal.getlocations_leaflet_map[key].removeLayer(marker);
@@ -83,7 +83,8 @@
                 $.get(settings.what3words_path, data, function(r) {
                   response = JSON.parse(r);
                   if (response) {
-                    w3w = response.words.join('.');
+                    w3w = response.words;
+
                     if (settings.what3words_marker_show && wlat && wlon ) {
                       if (marker) {
                         // kill marker

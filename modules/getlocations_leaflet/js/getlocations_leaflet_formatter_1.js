@@ -484,7 +484,6 @@
       }
 
       // #edit-getlocations-leaflet-defaults-what3words-enable
-      // What3Words #edit-getlocations-leaflet-default-what3words-enable
       if ($("#edit-getlocations-leaflet-defaults-what3words-enable").is('input')) {
         if ($("#edit-getlocations-leaflet-defaults-what3words-enable").prop('checked')) {
           $("#wrap-getlocations-what3words").show();

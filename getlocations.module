@@ -14,6 +14,7 @@
 define('GETLOCATIONS_PATH', drupal_get_path('module', 'getlocations'));
 define('GETLOCATIONS_ADMIN_PATH', 'admin/config/services/getlocations');
 define('GETLOCATIONS_VERSION', '7.x-2.x');
+define('GETLOCATIONS_W3W_URL', 'https://api.what3words.com');
 
 /**
  * Implements hook_help().
@@ -1047,7 +1048,7 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
     $getlocations_js_weight++;
 
   }
-  // What3Words
+  // what3words
   if ($defaults['what3words_enable']) {
     if (!stristr($current_js, $getlocations_paths['getlocations_what3words_path'])) {
       $js_opts = array();
@@ -1746,11 +1747,11 @@ function getlocations_cb_w3w() {
   if ($data) {
     if ($latlon = getlocations_latlon_check($data)) {
       # we have a latlon
-      $type = 'position';
+      $type = 'reverse';
     }
     else {
       # must be a w3w
-      $type = 'w3w';
+      $type = 'forward';
     }
     $content = getlocations_cb_w3w_get($data, $type);
   }
@@ -1760,25 +1761,30 @@ function getlocations_cb_w3w() {
 
 function getlocations_cb_w3w_get($data, $type) {
   global $language;
-  $types = array('w3w', 'position');
+  $types = array('forward', 'reverse');
   if (in_array($type, $types)) {
-    $what3words_lic = variable_get('getlocations_what3words_lic', array('key' => '', 'url' => 'http://api.what3words.com'));
+    $what3words_lic = variable_get('getlocations_what3words_lic', array('key' => '', 'url' => GETLOCATIONS_W3W_URL));
     $key = $what3words_lic['key'];
     if ($key) {
-      $url = $what3words_lic['url'] . '/' . $type;
+      // this is for v2 API
+      $url = $what3words_lic['url'] . '/v2/' . $type;
       $opts = array(
-        'method' => 'POST',
-        'headers' => array('Content-Type' => 'application/x-www-form-urlencoded')
+        'method' => 'GET',
+        'headers' => array(
+          'Content-Type' => 'application/x-www-form-urlencoded',
+          'X-Api-Key' => $key
+        )
       );
-      $datastr = 'key=' . $key;
-      if ($type == 'position') {
-        $datastr .= '&position=' . $data;
+      $datarr = array();
+      if ($type == 'reverse') {
+        $datarr[] = "coords=$data";
       }
       else {
-        $datastr .= '&string=' . $data;
+        $datarr[] = "addr=$data";
       }
-      $datastr .= '&lang=' . (isset($language->language ) ? $language->language : 'en');
-      $opts['data'] = $datastr;
+      $datarr[] = "lang=" . (isset($language->language ) ? $language->language : 'en');
+      $datastr = implode('&', $datarr);
+      $url = $url . '?' . $datastr;
       $response = drupal_http_request($url, $opts);
       if ($response->code == '200') {
         return $response->data;
@@ -2623,8 +2629,8 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
   // geocoder-js
   $settings[$mapid]['geocoder_enable'] = $defaults['geocoder_enable'];
 
-  // What3Words
-  $what3words_lic = variable_get('getlocations_what3words_lic', array('key' => '', 'url' => 'http://api.what3words.com'));
+  // what3words
+  $what3words_lic = variable_get('getlocations_what3words_lic', array('key' => '', 'url' => GETLOCATIONS_W3W_URL));
   if ($what3words_lic['key'] && $defaults['what3words_enable']) {
     #$settings[$mapid]['what3words_key'] = $what3words_lic['key'];
     $settings[$mapid]['what3words_enable']      = $defaults['what3words_enable'];
@@ -4878,23 +4884,23 @@ function getlocations_what3words_form($defaults) {
 
   $form = array();
 
-  $what3words_lic = variable_get('getlocations_what3words_lic', array('key' => '', 'url' => 'http://api.what3words.com'));
+  $what3words_lic = variable_get('getlocations_what3words_lic', array('key' => '', 'url' => GETLOCATIONS_W3W_URL));
   if ($what3words_lic['key']) {
 
     $form['what3words_enable'] = getlocations_element_map_checkbox(
-      t('Enable What3Words service'),
+      t('Enable what3words service'),
       $defaults['what3words_enable'],
       t('This service requires an API key')
     );
     $form['what3words_enable']['#suffix'] = '<div id="wrap-getlocations-what3words">';
     // what3words_search
     $form['what3words_search'] = getlocations_element_map_checkbox(
-      t('Show What3Words search box'),
+      t('Show what3words search box'),
       $defaults['what3words_search']
     );
     // what3words_size
     $form['what3words_size'] = getlocations_element_map_tf(
-      t('What3Words search box width'),
+      t('what3words search box width'),
       $defaults['what3words_size'],
       '',
       10
@@ -4902,43 +4908,43 @@ function getlocations_what3words_form($defaults) {
 
     // what3words_marker_show
     $form['what3words_marker_show'] = getlocations_element_map_checkbox(
-      t('Display What3Words marker'),
+      t('Display what3words marker'),
       $defaults['what3words_marker_show']
     );
 
     // what3words_map_marker
     $markers = getlocations_get_marker_titles();
     $form['what3words_map_marker'] = getlocations_element_map_marker(
-      t('What3Words Map marker'),
+      t('what3words Map marker'),
       $markers,
       $defaults['what3words_map_marker']
     );
     // what3words_center
     $form['what3words_center'] = getlocations_element_map_checkbox(
-      t('Center map on What3Words location'),
+      t('Center map on what3words location'),
       $defaults['what3words_center'],
       t('Center the map on Search success')
     );
     // what3words_zoom
     #$form['what3words_zoom'] = getlocations_element_map_zoom_map(
-    #  t('Zoom for What3Words location'),
+    #  t('Zoom for what3words location'),
     #  $defaults['what3words_zoom']
     #);
     $opts = array('-2' => t('Keep current zoom'), '-1' => t('Use map type settings')) + drupal_map_assoc(range(0, 21));
     $form['what3words_zoom'] = array(
       '#type' => 'select',
-      '#title' => t('Zoom for What3Words location'),
+      '#title' => t('Zoom for what3words location'),
       '#default_value' => $defaults['what3words_zoom'],
       '#options' => $opts,
     );
     // what3words_click
     $form['what3words_click'] = getlocations_element_map_checkbox(
-      t('Click on map to find What3Words'),
+      t('Click on map to find what3words'),
       $defaults['what3words_click']
     );
     // what3words_show
     $form['what3words_show'] = getlocations_element_map_checkbox(
-      t('Display What3Words for current location'),
+      t('Display what3words for current location'),
       $defaults['what3words_show']
     );
     $form['what3words_show']['#suffix'] = '</div>';
@@ -6974,13 +6980,13 @@ function theme_getlocations_show($variables) {
     $output .= $sp;
   }
 
-  // What3Words
-  $what3words_lic = variable_get('getlocations_what3words_lic', array('key' => '', 'url' => 'http://api.what3words.com'));
+  // what3words
+  $what3words_lic = variable_get('getlocations_what3words_lic', array('key' => '', 'url' => GETLOCATIONS_W3W_URL));
   if ($what3words_lic['key'] && $defaults['what3words_enable']) {
     $output .= '<div class="getlocations_what3words container-inline">';
     if ($defaults['what3words_search']) {
       // textbox
-      $output .= t('What3Words') . '&nbsp;&nbsp;<input type="text" id="edit-getlocations-what3words-search" name="edit-getlocations-what3words-search" value="" size="' . $defaults['what3words_size'] . '" class="form-text" />';
+      $output .= t('what3words') . '&nbsp;&nbsp;<input type="text" id="edit-getlocations-what3words-search" name="edit-getlocations-what3words-search" value="" size="' . $defaults['what3words_size'] . '" class="form-text" />';
       $output .= '&nbsp;&nbsp;<input type="button" value="' . t('Search') . '" id="edit-getlocations-what3words-search-submit" class="form-submit" />';
       $output .= '<div class="getlocations_w3w_throbber getlocations_w3w_throbber_inactive" id="getlocations_w3w_throbber_' . $mapid . '">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
       $output .= '<br />';

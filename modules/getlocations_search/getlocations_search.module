@@ -1193,6 +1193,18 @@ function getlocations_search_defaults() {
     'smartip_callback'              => $getlocations_defaults['smartip_callback'],
     'geolocation_mobile_check'      => $getlocations_defaults['geolocation_mobile_check'],
     'geocoder_enable'               => $getlocations_defaults['geocoder_enable'],
+    'what3words_enable'             => $getlocations_defaults['what3words_enable'],
+    'what3words_search'             => $getlocations_defaults['what3words_search'],
+    'what3words_size'               => $getlocations_defaults['what3words_size'],
+    'what3words_map_marker'         => $getlocations_defaults['what3words_map_marker'],
+    'what3words_marker_show'        => $getlocations_defaults['what3words_marker_show'],
+    'what3words_center'             => $getlocations_defaults['what3words_center'],
+    'what3words_zoom'               => $getlocations_defaults['what3words_zoom'],
+    'what3words_show'               => $getlocations_defaults['what3words_show'],
+    'what3words_click'              => $getlocations_defaults['what3words_click'],
+    'what3words_path'               => $getlocations_defaults['what3words_path'],
+    'google_old_controlstyle'       => $getlocations_defaults['google_old_controlstyle'],
+    'google_old_controlstyle_show'  => $getlocations_defaults['google_old_controlstyle_show'],
   );
 
   $settings = variable_get('getlocations_search_defaults', $defaults);

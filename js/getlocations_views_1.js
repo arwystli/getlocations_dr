@@ -452,7 +452,7 @@
         });
       }
 
-      // What3Words #edit-style-options-what3words-enable
+      // #edit-style-options-what3words-enable
       if ($("#edit-style-options-what3words-enable").is('input')) {
         if ($("#edit-style-options-what3words-enable").prop('checked')) {
           $("#wrap-getlocations-what3words").show();

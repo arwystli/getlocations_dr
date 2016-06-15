@@ -629,7 +629,7 @@
         });
       }
 
-      // What3Words #edit-getlocations-default-what3words-enable
+      // #edit-getlocations-default-what3words-enable
       if ($("#edit-getlocations-default-what3words-enable").is('input')) {
         if ($("#edit-getlocations-default-what3words-enable").attr('checked')) {
           $("#wrap-getlocations-what3words").show();

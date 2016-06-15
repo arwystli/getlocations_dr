@@ -40,8 +40,8 @@
                   $.get(settings.what3words_path, data, function(r) {
                     response = JSON.parse(r);
                     if (response) {
-                      var lat = response.position[0];
-                      var lon = response.position[1];
+                      var lat = response.geometry.lat;
+                      var lon = response.geometry.lng;
                       if (settings.what3words_marker_show && lat && lon ) {
                         if (marker) {
                           marker.setMap();
@@ -67,6 +67,7 @@
                     }
                     $("#getlocations_w3w_throbber_" + key).removeClass('getlocations_w3w_throbber_active').addClass('getlocations_w3w_throbber_inactive');
                   });
+                  //$("#getlocations_w3w_throbber_" + key).removeClass('getlocations_w3w_throbber_active').addClass('getlocations_w3w_throbber_inactive');
                 }
                 else {
                   $("#getlocations_w3w_throbber_" + key).removeClass('getlocations_w3w_throbber_active').addClass('getlocations_w3w_throbber_inactive');
@@ -85,7 +86,7 @@
                $.get(settings.what3words_path, data, function(r) {
                   response = JSON.parse(r);
                   if (response) {
-                    w3w = response.words.join('.');
+                    w3w = response.words;
                     if (settings.what3words_marker_show && wlat && wlon ) {
                       if (marker) {
                         // kill marker

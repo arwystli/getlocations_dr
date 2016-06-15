@@ -1,9 +1,77 @@
-commit 74b0c61
+commit faa9fa6
+Author: hutch <hutch@arwystli.net>
+Date:   Wed Jun 15 09:56:06 2016 +0100
+
+    updated w3w to v2
+
+getlocations.admin.inc
+getlocations.module
+js/getlocations_admin.js
+js/getlocations_admin_1.js
+js/getlocations_views.js
+js/getlocations_views_1.js
+js/getlocations_what3words.js
+js/getlocations_what3words.min.js
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/js/getlocations_leaflet_formatter.js
+modules/getlocations_leaflet/js/getlocations_leaflet_formatter_1.js
+modules/getlocations_leaflet/js/getlocations_leaflet_what3words.js
+modules/getlocations_leaflet/js/getlocations_leaflet_what3words.min.js
+modules/getlocations_search/getlocations_search.module
+modules/getlocations_search/js/getlocations_search_admin.js
+modules/getlocations_search/js/getlocations_search_admin.min.js
+views/getlocations_plugin_style_map.inc
+
+commit 852f2ea
+Author: hutch <hutch@arwystli.net>
+Date:   Wed Jun 15 08:53:11 2016 +0100
+
+    applied drupal_static to getlocations_setup_map
+
+getlocations.module
+
+commit 55e36d4
+Author: hutch <hutch@arwystli.net>
+Date:   Wed Jun 15 08:46:48 2016 +0100
+
+    added what3words to data list
+
+modules/getlocations_fields/getlocations_fields.module
+
+commit 6b9ae3f
+Author: hutch <hutch@arwystli.net>
+Date:   Wed Jun 15 08:41:33 2016 +0100
+
+    updated fontawesome
+
+modules/getlocations_leaflet/plugins/font-awesome/css/font-awesome.css
+modules/getlocations_leaflet/plugins/font-awesome/css/font-awesome.min.css
+modules/getlocations_leaflet/plugins/font-awesome/fonts/FontAwesome.otf
+modules/getlocations_leaflet/plugins/font-awesome/fonts/fontawesome-webfont.eot
+modules/getlocations_leaflet/plugins/font-awesome/fonts/fontawesome-webfont.svg
+modules/getlocations_leaflet/plugins/font-awesome/fonts/fontawesome-webfont.ttf
+modules/getlocations_leaflet/plugins/font-awesome/fonts/fontawesome-webfont.woff
+modules/getlocations_leaflet/plugins/font-awesome/fonts/fontawesome-webfont.woff2
+modules/getlocations_leaflet/plugins/font-awesome/less/font-awesome.less
+modules/getlocations_leaflet/plugins/font-awesome/less/icons.less
+modules/getlocations_leaflet/plugins/font-awesome/less/mixins.less
+modules/getlocations_leaflet/plugins/font-awesome/less/path.less
+modules/getlocations_leaflet/plugins/font-awesome/less/screen-reader.less
+modules/getlocations_leaflet/plugins/font-awesome/less/variables.less
+modules/getlocations_leaflet/plugins/font-awesome/scss/_icons.scss
+modules/getlocations_leaflet/plugins/font-awesome/scss/_mixins.scss
+modules/getlocations_leaflet/plugins/font-awesome/scss/_screen-reader.scss
+modules/getlocations_leaflet/plugins/font-awesome/scss/_variables.scss
+modules/getlocations_leaflet/plugins/font-awesome/scss/font-awesome.scss
+
+commit 0aaf642
 Author: hutch <hutch@arwystli.net>
 Date:   Sun Apr 24 23:14:43 2016 +0100
 
     bigger maxlength for lat and lon
 
+CHANGELOG.txt
 modules/getlocations_fields/getlocations_fields.module
 
 commit 51cd73e

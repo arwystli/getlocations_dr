@@ -434,6 +434,24 @@
         });
       }
 
+      // #edit-getlocations-search-default-what3words-enable
+      if ($("#edit-getlocations-search-defaults-what3words-enable").is('input')) {
+        if ($("#edit-getlocations-search-defaults-what3words-enable").attr('checked')) {
+          $("#wrap-getlocations-what3words").show();
+        }
+        else {
+          $("#wrap-getlocations-what3words").hide();
+        }
+        $("#edit-getlocations-search-defaults-what3words-enable").change(function() {
+          if ($(this).attr('checked')) {
+            $("#wrap-getlocations-what3words").show();
+          }
+          else {
+            $("#wrap-getlocations-what3words").hide();
+          }
+        });
+      }
+
 
     }
   };

@@ -1514,8 +1514,8 @@ function getlocations_leaflet_map_settings_do($map_settings, $defaults, $latlons
 
   $getlocations_leaflet_paths = getlocations_leaflet_paths_get();
 
-  // What3Words
-  $what3words_lic = variable_get('getlocations_what3words_lic', array('key' => '', 'url' => 'http://api.what3words.com'));
+  // what3words
+  $what3words_lic = variable_get('getlocations_what3words_lic', array('key' => '', 'url' => GETLOCATIONS_W3W_URL));
   if ($what3words_lic['key'] && $defaults['what3words_enable']) {
     $icon = getlocations_leaflet_get_marker($defaults['what3words_map_marker']);
 
@@ -5095,13 +5095,13 @@ function theme_getlocations_leaflet_map($variables) {
     $output .= '</div>';
   }
 
-  // What3Words
-  $what3words_lic = variable_get('getlocations_what3words_lic', array('key' => '', 'url' => 'http://api.what3words.com'));
+  // what3words
+  $what3words_lic = variable_get('getlocations_what3words_lic', array('key' => '', 'url' => GETLOCATIONS_W3W_URL));
   if ($what3words_lic['key'] && $map_settings['map_settings']['what3words_enable']) {
     $output .= '<div class="getlocations_leaflet_what3words container-inline">';
     if ($map_settings['map_settings']['what3words_search']) {
       // textbox
-      $output .= t('What3Words') . '&nbsp;&nbsp;<input type="text" id="edit-getlocations-leaflet-what3words-search" name="edit-getlocations-leaflet-what3words-search" value="" size="' . $map_settings['map_settings']['what3words_size'] . '" class="form-text" />';
+      $output .= t('what3words') . '&nbsp;&nbsp;<input type="text" id="edit-getlocations-leaflet-what3words-search" name="edit-getlocations-leaflet-what3words-search" value="" size="' . $map_settings['map_settings']['what3words_size'] . '" class="form-text" />';
       $output .= '&nbsp;&nbsp;<input type="button" value="' . t('Search') . '" id="edit-getlocations-leaflet-what3words-search-submit" class="form-submit" />';
       $output .= '<div class="getlocations_w3w_throbber getlocations_w3w_throbber_inactive" id="getlocations_w3w_throbber_' . $mapid . '">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
       $output .= '<br />';
@@ -5324,4 +5324,3 @@ function getlocations_leaflet_display_options_fieldsets($form) {
 
   return $form;
 }
-
