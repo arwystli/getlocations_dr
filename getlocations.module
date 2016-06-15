@@ -678,7 +678,7 @@ function getlocations_setlocations($latlons, $minmaxes='', $entity_info = '', $o
  * Sets up the call to googlemaps, css and the relevant getlocations js in html head
  */
 function getlocations_setup_map($defaults, $googleonly = FALSE, $sv = FALSE, $keyonly = FALSE) {
-  static $getlocations_mapid = 0;
+  $getlocations_mapid = &drupal_static('getlocations_mapid', 0);
   // Generate unique Map ID.
   $getlocations_mapid++;
   $mapid = 'key_' . $getlocations_mapid;
