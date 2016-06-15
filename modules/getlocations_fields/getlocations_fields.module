@@ -3748,6 +3748,11 @@ function getlocations_fields_column_check($field) {
 }
 
 function getlocations_fields_data_keys($type = 'dd') {
+
+  // check what3words
+  $getlocations_defaults = getlocations_defaults();
+  $what3words_enable = $getlocations_defaults['what3words_enable'];
+
   if ($type == 'dd') {
     // for dropdowns
     $keys = array(
@@ -3760,8 +3765,11 @@ function getlocations_fields_data_keys($type = 'dd') {
       'mapzoom'             => t('Map zoom'),
       'map_maptype'         => t('Map type'),
       'sv_enable'           => t('Streetview Enable'),
-      'sv_showfirst' => t('Showfirst Enable'),
+      'sv_showfirst'        => t('Showfirst Enable'),
     );
+    if ($what3words_enable) {
+      $keys['what3words'] = t('what3words');
+    }
   }
   elseif ($type == 'd') {
     // default values
@@ -3776,8 +3784,11 @@ function getlocations_fields_data_keys($type = 'dd') {
       'map_maptype'         => 'Map',
       'map_settings_allow'  => 0,
       'sv_enable'           => 0,
-      'sv_showfirst' => 0,
+      'sv_showfirst'        => 0,
     );
+    if ($what3words_enable) {
+      $keys['what3words'] = 1;
+    }
     $keys += getlocations_fields_get_display_settings_defaults();
   }
   return $keys;
