@@ -31,8 +31,7 @@
             extraClasses: '',
             icon: 'home',
             markerColor: 'blue',
-            iconColor: 'white',
-            html : ""
+            iconColor: 'white'
         },
 
         initialize: function (options) {
@@ -65,8 +64,8 @@
                 iconClass = options.prefix + "-" + options.icon;
             }
 
-            if(options.spin && typeof options.spin === "string") {
-                iconSpinClass = options.spin;
+            if(options.spin && typeof options.spinClass === "string") {
+                iconSpinClass = options.spinClass;
             }
 
             if(options.iconColor) {
@@ -77,7 +76,7 @@
                 }
             }
 
-            return "<i " + iconColorStyle + "class='" + options.prefix + " " + options.extraClasses + " " + iconClass + " " + iconSpinClass + " " + iconColorClass + "'>" + options.html + "</i>";
+            return "<i " + iconColorStyle + "class='" + options.extraClasses + " " + options.prefix + " " + iconClass + " " + iconSpinClass + " " + iconColorClass + "'></i>";
         },
 
         _setIconStyles: function (img, name) {
@@ -115,9 +114,12 @@
             return div;
       }
     });
-
+        
     L.AwesomeMarkers.icon = function (options) {
         return new L.AwesomeMarkers.Icon(options);
     };
 
 }(this, document));
+
+
+
