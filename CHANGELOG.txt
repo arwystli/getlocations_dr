@@ -1,9 +1,52 @@
-commit faa9fa6
+commit 5f2e0ce
+Author: hutch <hutch@arwystli.net>
+Date:   Thu Jul 21 08:30:10 2016 +0100
+
+    removed google_old_controlstyle
+
+getlocations.admin.inc
+getlocations.module
+js/getlocations.js
+js/getlocations.min.js
+modules/getlocations_leaflet/views/getlocations_leaflet_plugin_style.inc
+modules/getlocations_search/getlocations_search.module
+views/getlocations_plugin_style_map.inc
+
+commit bb32b43
+Author: hutch <hutch@arwystli.net>
+Date:   Thu Jul 21 08:28:31 2016 +0100
+
+    updated leaflet plugins
+
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/plugins/awesome-markers/images/markers-soft.png
+modules/getlocations_leaflet/plugins/awesome-markers/images/markers-soft@2x.png
+modules/getlocations_leaflet/plugins/awesome-markers/leaflet.awesome-markers.css
+modules/getlocations_leaflet/plugins/awesome-markers/leaflet.awesome-markers.js
+modules/getlocations_leaflet/plugins/awesome-markers/leaflet.awesome-markers.min.css
+modules/getlocations_leaflet/plugins/awesome-markers/leaflet.awesome-markers.min.js
+modules/getlocations_leaflet/plugins/font-awesome/css/font-awesome.css
+modules/getlocations_leaflet/plugins/font-awesome/css/font-awesome.min.css
+modules/getlocations_leaflet/plugins/font-awesome/fonts/FontAwesome.otf
+modules/getlocations_leaflet/plugins/font-awesome/fonts/fontawesome-webfont.eot
+modules/getlocations_leaflet/plugins/font-awesome/fonts/fontawesome-webfont.svg
+modules/getlocations_leaflet/plugins/font-awesome/fonts/fontawesome-webfont.ttf
+modules/getlocations_leaflet/plugins/font-awesome/fonts/fontawesome-webfont.woff
+modules/getlocations_leaflet/plugins/font-awesome/fonts/fontawesome-webfont.woff2
+modules/getlocations_leaflet/plugins/font-awesome/less/font-awesome.less
+modules/getlocations_leaflet/plugins/font-awesome/less/icons.less
+modules/getlocations_leaflet/plugins/font-awesome/less/variables.less
+modules/getlocations_leaflet/plugins/font-awesome/scss/_icons.scss
+modules/getlocations_leaflet/plugins/font-awesome/scss/_variables.scss
+modules/getlocations_leaflet/plugins/font-awesome/scss/font-awesome.scss
+
+commit 52f4160
 Author: hutch <hutch@arwystli.net>
 Date:   Wed Jun 15 09:56:06 2016 +0100
 
     updated w3w to v2
 
+CHANGELOG.txt
 getlocations.admin.inc
 getlocations.module
 js/getlocations_admin.js

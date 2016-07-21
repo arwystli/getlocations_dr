@@ -884,6 +884,54 @@ function theme_getlocations_search_settings_form($variables) {
     }
   }
 
+  if (isset($form[$varname]['highlight_enable']) && $form[$varname]['highlight_enable']['#type'] !== 'value' ) {
+    $form[$varname]['highlight_enable']['#prefix'] = '<fieldset class="collapsible getlocations_fieldset form-wrapper"><legend><span class="fieldset-legend">' . t('Marker Highlighting') . '</span></legend><div class="fieldset-wrapper">';
+    $tsuf = $form[$varname]['highlight_radius']['#suffix'];
+    $form[$varname]['highlight_radius']['#suffix'] = $tsuf . '</div></fieldset>';
+  }
+
+  // google search places
+  if (isset($form[$varname]['search_places']) && $form[$varname]['search_places']['#type'] !== 'value' ) {
+    $form[$varname]['search_places']['#prefix'] = '<fieldset class="collapsible getlocations_fieldset form-wrapper"><legend><span class="fieldset-legend">' . t('Google Search Places') . '</span></legend><div class="fieldset-wrapper">';
+    $tsuf = $form[$varname]['search_places_dd']['#suffix'];
+    $form[$varname]['search_places_dd']['#suffix'] = $tsuf . '</div></fieldset>';
+  }
+
+  // polygons
+  if (isset($form[$varname]['polygons_enable']) && $form[$varname]['polygons_enable']['#type'] !== 'value' ) {
+    $form[$varname]['polygons_enable']['#prefix'] = '<fieldset class="collapsible getlocations_fieldset form-wrapper"><legend><span class="fieldset-legend">' . t('Polygons') . '</span></legend><div class="fieldset-wrapper">';
+    $tsuf = $form[$varname]['polygons_coords']['#suffix'];
+    $form[$varname]['polygons_coords']['#suffix'] = $tsuf . '</div></fieldset>';
+  }
+
+  // rectangles
+  if (isset($form[$varname]['rectangles_enable']) && $form[$varname]['rectangles_enable']['#type'] !== 'value' ) {
+    $form[$varname]['rectangles_enable']['#prefix'] = '<fieldset class="collapsible getlocations_fieldset form-wrapper"><legend><span class="fieldset-legend">' . t('Rectangles') . '</span></legend><div class="fieldset-wrapper">';
+    $tsuf = $form[$varname]['rectangles_coords']['#suffix'];
+    $form[$varname]['rectangles_coords']['#suffix'] = $tsuf . '</div></fieldset>';
+  }
+
+  // circles
+  if (isset($form[$varname]['circles_enable']) && $form[$varname]['circles_enable']['#type'] !== 'value' ) {
+    $form[$varname]['circles_enable']['#prefix'] = '<fieldset class="collapsible getlocations_fieldset form-wrapper"><legend><span class="fieldset-legend">' . t('Circles') . '</span></legend><div class="fieldset-wrapper">';
+    $tsuf = $form[$varname]['circles_coords']['#suffix'];
+    $form[$varname]['circles_coords']['#suffix'] = $tsuf . '</div></fieldset>';
+  }
+
+  // polylines
+  if (isset($form[$varname]['polylines_enable']) && $form[$varname]['polylines_enable']['#type'] !== 'value' ) {
+    $form[$varname]['polylines_enable']['#prefix'] = '<fieldset class="collapsible getlocations_fieldset form-wrapper"><legend><span class="fieldset-legend">' . t('Polylines') . '</span></legend><div class="fieldset-wrapper">';
+    $tsuf = $form[$varname]['polylines_coords']['#suffix'];
+    $form[$varname]['polylines_coords']['#suffix'] = $tsuf . '</div></fieldset>';
+  }
+
+  // what3words
+  if (isset($form[$varname]['what3words_enable']) && $form[$varname]['what3words_enable']['#type'] !== 'value' ) {
+    $form[$varname]['what3words_enable']['#prefix'] = '<fieldset class="collapsible getlocations_fieldset form-wrapper"><legend><span class="fieldset-legend">' . t('What3words') . '</span></legend><div class="fieldset-wrapper">';
+    $tsuf = $form[$varname]['what3words_show']['#suffix'];
+    $form['getlocations_default']['what3words_show']['#suffix'] = $tsuf . '</div></fieldset>';
+  }
+
   $output .= drupal_render_children($form);
   return $output;
 
@@ -1203,8 +1251,6 @@ function getlocations_search_defaults() {
     'what3words_show'               => $getlocations_defaults['what3words_show'],
     'what3words_click'              => $getlocations_defaults['what3words_click'],
     'what3words_path'               => $getlocations_defaults['what3words_path'],
-    'google_old_controlstyle'       => $getlocations_defaults['google_old_controlstyle'],
-    'google_old_controlstyle_show'  => $getlocations_defaults['google_old_controlstyle_show'],
   );
 
   $settings = variable_get('getlocations_search_defaults', $defaults);

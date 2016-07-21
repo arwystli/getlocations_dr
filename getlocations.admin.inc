@@ -433,7 +433,7 @@ function getlocations_settings_form() {
   $getlocations_aggr = getlocations_aggr_get();
   $form['getlocations_agg'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Javescript Aggregation'),
+    '#title' => t('Javascript Aggregation'),
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
     // This will store all the defaults in one variable.

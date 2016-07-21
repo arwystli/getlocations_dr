@@ -68,10 +68,7 @@
 
           var selzoom = parseInt(setting.zoom);
           var controltype = setting.controltype;
-          var pancontrol = setting.pancontrol;
           var scale = setting.scale;
-          var overview = setting.overview;
-          var overview_opened = setting.overview_opened;
           var sv_show = setting.sv_show;
           var scrollw = setting.scrollwheel;
           var maptype = (setting.maptype ? setting.maptype : '');
@@ -91,7 +88,6 @@
           var useOpenStreetMap = false;
           var nokeyboard = (setting.nokeyboard ? true : false);
           var nodoubleclickzoom = (setting.nodoubleclickzoom ? true : false);
-          var pancontrolposition = setting.pancontrolposition;
           var mapcontrolposition = setting.mapcontrolposition;
           var zoomcontrolposition = setting.zoomcontrolposition;
           var scalecontrolposition = setting.scalecontrolposition;
@@ -118,8 +114,8 @@
           global_settings.nodezoom = parseInt(setting.nodezoom);
 
           // highlighting
+          global_settings.highlight_enable = setting.highlight_enable;
           if (setting.highlight_enable) {
-            global_settings.highlight_enable = setting.highlight_enable;
             global_settings.highlight_strokecolor = setting.highlight_strokecolor;
             global_settings.highlight_strokeopacity = setting.highlight_strokeopacity;
             global_settings.highlight_strokeweight = setting.highlight_strokeweight;
@@ -298,6 +294,8 @@
           controlpositions['lt'] = google.maps.ControlPosition.LEFT_TOP;
           global_settings.controlpositions = controlpositions;
 
+            //overviewMapControl: (overview ? true : false),
+            //overviewMapControlOptions: {opened: (overview_opened ? true : false)},
           var mapOpts = {
             zoom: selzoom,
             minZoom: global_settings.minzoom_map,
@@ -307,8 +305,6 @@
             scrollwheel: (scrollw ? true : false),
             draggable: (draggable ? true : false),
             styles: styles,
-            overviewMapControl: (overview ? true : false),
-            overviewMapControlOptions: {opened: (overview_opened ? true : false)},
             keyboardShortcuts: (nokeyboard ? false : true),
             disableDoubleClickZoom: nodoubleclickzoom
           };
@@ -334,17 +330,6 @@
             if (zco) {
               mapOpts.zoomControlOptions = zco;
             }
-          }
-
-          // pancontrol
-          if (pancontrol) {
-            mapOpts.panControl = true;
-            if (pancontrolposition) {
-              mapOpts.panControlOptions = {position: controlpositions[pancontrolposition]};
-            }
-          }
-          else {
-            mapOpts.panControl = false;
           }
 
           // map control
@@ -387,11 +372,6 @@
           }
           else {
             mapOpts.streetViewControl = false;
-          }
-
-          // google_old_controlstyle
-          if (setting.google_old_controlstyle) {
-            google.maps.controlStyle = 'azteca';
           }
 
           // make the map
@@ -968,11 +948,11 @@
         clickable: false
       };
       var circ =  new google.maps.Circle(circOpts);
-      google.maps.event.addListener(m,'mouseover', function() {
+      google.maps.event.addListener(m, 'mouseover', function() {
         circ.setRadius(parseInt(gs.highlight_radius * conv[map.getZoom()] * 0.1));
         circ.setVisible(true);
       });
-      google.maps.event.addListener(m,'mouseout', function() {
+      google.maps.event.addListener(m, 'mouseout', function() {
         circ.setVisible(false);
       });
     }
