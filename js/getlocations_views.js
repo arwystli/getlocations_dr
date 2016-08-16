@@ -262,36 +262,19 @@
         });
       }
 
-      if ($("#edit-style-options-controltype").is('select')) {
-        if ($("#edit-style-options-controltype").val() == 'none') {
-          $("#wrap-getlocations-zoomcontrol").hide();
-        }
-        else {
+      if ($("#edit-style-options-controltype").is('input')) {
+        if ($("#edit-style-options-controltype").attr('checked')) {
           $("#wrap-getlocations-zoomcontrol").show();
         }
+        else {
+          $("#wrap-getlocations-zoomcontrol").hide();
+        }
         $("#edit-style-options-controltype").change(function() {
-          if ($(this).val() == 'none') {
-            $("#wrap-getlocations-zoomcontrol").hide();
-          }
-          else {
+          if ($(this).attr('checked')) {
             $("#wrap-getlocations-zoomcontrol").show();
           }
-        });
-      }
-
-      if ($("#edit-style-options-pancontrol").is('input')) {
-        if ($("#edit-style-options-pancontrol").attr('checked')) {
-          $("#wrap-getlocations-pancontrol").show();
-        }
-        else {
-          $("#wrap-getlocations-pancontrol").hide();
-        }
-        $("#edit-style-options-pancontrol").change(function() {
-          if ($(this).attr('checked')) {
-            $("#wrap-getlocations-pancontrol").show();
-          }
           else {
-            $("#wrap-getlocations-pancontrol").hide();
+            $("#wrap-getlocations-zoomcontrol").hide();
           }
         });
       }
@@ -326,23 +309,6 @@
           }
           else {
             $("#wrap-getlocations-scale").hide();
-          }
-        });
-      }
-
-      if ($("#edit-style-options-overview").is('input')) {
-        if ($("#edit-style-options-overview").attr('checked')) {
-          $("#wrap-getlocations-overview").show();
-        }
-        else {
-          $("#wrap-getlocations-overview").hide();
-        }
-        $("#edit-style-options-overview").change(function() {
-          if ($(this).attr('checked')) {
-            $("#wrap-getlocations-overview").show();
-          }
-          else {
-            $("#wrap-getlocations-overview").hide();
           }
         });
       }

@@ -402,45 +402,19 @@
         }
       });
 
-      if ($("#edit-getlocations-default-pancontrol").is('input')) {
-        if ($("#edit-getlocations-default-pancontrol").attr('checked')) {
-          $("#wrap-getlocations-pancontrol").show();
-        }
-        else {
-          $("#wrap-getlocations-pancontrol").hide();
-        }
-        $("#edit-getlocations-default-pancontrol").change(function() {
-          if ($(this).attr('checked')) {
-            //$("#wrap-getlocations-pancontrol").show();
-            var cg = $(this);
-            $("#wrap-getlocations-pancontrol").slideDown({
-              duration: 'fast',
-              easing: 'linear',
-              complete: function () {
-                Drupal.getlocations.divScrollIntoView(cg);
-                cg.animating = false;
-              }
-            });
-          }
-          else {
-            $("#wrap-getlocations-pancontrol").hide();
-          }
-        });
-      }
-
-      if ($("#edit-getlocations-default-controltype").is('select')) {
-        if ($("#edit-getlocations-default-controltype").val() == 'none') {
-          $("#wrap-getlocations-zoomcontrol").hide();
-        }
-        else {
+      if ($("#edit-getlocations-default-controltype").is('input')) {
+        if ($("#edit-getlocations-default-controltype").attr('checked')) {
           $("#wrap-getlocations-zoomcontrol").show();
         }
+        else {
+          $("#wrap-getlocations-zoomcontrol").hide();
+        }
         $("#edit-getlocations-default-controltype").change(function() {
-          if ($(this).val() == 'none') {
-            $("#wrap-getlocations-zoomcontrol").hide();
+          if ($(this).attr('checked')) {
+            $("#wrap-getlocations-zoomcontrol").show();
           }
           else {
-            $("#wrap-getlocations-zoomcontrol").show();
+            $("#wrap-getlocations-zoomcontrol").hide();
           }
         });
       }
@@ -475,23 +449,6 @@
           }
           else {
             $("#wrap-getlocations-scale").hide();
-          }
-        });
-      }
-
-      if ($("#edit-getlocations-default-overview").is('input')) {
-        if ($("#edit-getlocations-default-overview").attr('checked')) {
-          $("#wrap-getlocations-overview").show();
-        }
-        else {
-          $("#wrap-getlocations-overview").hide();
-        }
-        $("#edit-getlocations-default-overview").change(function() {
-          if ($(this).attr('checked')) {
-            $("#wrap-getlocations-overview").show();
-          }
-          else {
-            $("#wrap-getlocations-overview").hide();
           }
         });
       }

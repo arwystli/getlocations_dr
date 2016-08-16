@@ -78,7 +78,7 @@ function getlocations_settings_form() {
   $form['api3'] = array(
     '#type' => 'fieldset',
     '#title' => t('Google API key'),
-    '#description' => t('This key is currently not required by Google.'),
+    '#description' => t('This key may be required by Google for full functionality.'),
     '#collapsible' => TRUE,
     #'#collapsed' => ($apikey ? TRUE : FALSE),
     '#collapsed' => TRUE,

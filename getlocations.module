@@ -1408,17 +1408,13 @@ function getlocations_defaults($reset = FALSE) {
     'zoom'                          => 3,
     'minzoom_map'                   => -1,
     'maxzoom_map'                   => -1,
-    'controltype'                   => 'small',
+    'controltype'                   => 1,
     'zoomcontrolposition'           => '',
-    'pancontrol'                    => 1,
-    'pancontrolposition'            => '',
     'mapcontrolposition'            => '',
     'latlong'                       => '40,0',
     'maptype'                       => 'Map',
     'mtc'                           => 'standard',
     'scale'                         => 0,
-    'overview'                      => 0,
-    'overview_opened'               => 0,
     'scrollwheel'                   => 0,
     'scalecontrolposition'          => '',
     'sv_show'                       => 0, // Pegman
@@ -2784,8 +2780,6 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
       'mtc'                       => $defaults['mtc'],
       'baselayers'                => $defaults['baselayers'],
       'scale'                     => $defaults['scale'],
-      'overview'                  => $defaults['overview'],
-      'overview_opened'           => $defaults['overview_opened'],
       'scrollwheel'               => $defaults['scrollwheel'],
       'trafficinfo'               => $defaults['trafficinfo'],
       'trafficinfo_state'         => $defaults['trafficinfo_state'],
@@ -2798,7 +2792,6 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
       'sv_heading'                => $defaults['sv_heading'],
       'sv_zoom'                   => $defaults['sv_zoom'],
       'sv_pitch'                  => $defaults['sv_pitch'],
-      'pancontrol'                => $defaults['pancontrol'],
       'poi_show'                  => $defaults['poi_show'],
       'transit_show'              => $defaults['transit_show'],
       'map_marker'                => $defaults['node_map_marker'],
@@ -2847,7 +2840,6 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
       'nodoubleclickzoom'         => $defaults['nodoubleclickzoom'],
       'zoomcontrolposition'       => $defaults['zoomcontrolposition'],
       'mapcontrolposition'        => $defaults['mapcontrolposition'],
-      'pancontrolposition'        => $defaults['pancontrolposition'],
       'scalecontrolposition'      => $defaults['scalecontrolposition'],
       'svcontrolposition'         => $defaults['svcontrolposition'],
       'sv_addresscontrol'         => $defaults['sv_addresscontrol'], // sv overlay controls
@@ -3429,19 +3421,9 @@ function getlocations_element_map_zoom_map($title, $default, $description='') {
 function getlocations_element_map_zoom_controltype($default, $title = '') {
 
   if (empty($title)) {
-    $title = t('Zoom Control type');
+    $title = t('Zoom Control');
   }
-  $element = array(
-    '#type' => 'select',
-    '#title' => $title,
-    '#options' => array(
-      'none' => t('None'),
-      'default' => t('Default'),
-      'small' => t('Small'),
-      'large' => t('Large'),
-    ),
-    '#default_value' => $default,
-  );
+  $element = getlocations_element_map_checkbox($title, $default);
   return $element;
 }
 
@@ -4181,15 +4163,6 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
   );
   $form['zoomcontrolposition']['#suffix'] = '</div>';
 
-  $form['pancontrol'] = getlocations_element_map_checkbox(t('Show Pan control'), $defaults['pancontrol']);
-  $form['pancontrol']['#suffix'] = '<div id="wrap-getlocations-pancontrol">';
-  $form['pancontrolposition'] = getlocations_element_dd(
-    t('Position of Pan Control'),
-    $defaults['pancontrolposition'],
-    $controlpositions
-  );
-  $form['pancontrolposition']['#suffix'] = '</div>';
-
   $form['mtc'] = getlocations_element_map_mtc($defaults['mtc']);
   $form['mtc']['#suffix'] = '<div id="wrap-getlocations-mapcontrol">';
   $form['mapcontrolposition'] = getlocations_element_dd(
@@ -4255,19 +4228,6 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
     $controlpositions
   );
   $form['scalecontrolposition']['#suffix'] = '</div>';
-
-  $form['overview'] = getlocations_element_map_checkbox(
-    t('Overview map'),
-    $defaults['overview'],
-    t('Show overview map.')
-  );
-  $form['overview']['#suffix'] = '<div id="wrap-getlocations-overview">';
-  $form['overview_opened'] = getlocations_element_map_checkbox(
-    t('Overview map state'),
-    $defaults['overview_opened'],
-    t('Show overview map as open by default.')
-  );
-  $form['overview_opened']['#suffix'] = '</div>';
 
   $form['scrollwheel'] = getlocations_element_map_checkbox(
     t('Scrollwheel'),

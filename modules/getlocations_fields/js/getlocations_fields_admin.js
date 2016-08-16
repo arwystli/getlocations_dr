@@ -46,32 +46,15 @@
         });
       }
 
-      if ($("#edit-getlocations-fields-defaults-pancontrol,#edit-field-settings-pancontrol").is('input')) {
-        if ($("#edit-getlocations-fields-defaults-pancontrol,#edit-field-settings-pancontrol").attr('checked')) {
-          $("#wrap-getlocations-pancontrol").show();
-        }
-        else {
-          $("#wrap-getlocations-pancontrol").hide();
-        }
-        $("#edit-getlocations-fields-defaults-pancontrol,#edit-field-settings-pancontrol").change(function() {
-          if ($(this).attr('checked')) {
-            $("#wrap-getlocations-pancontrol").show();
-          }
-          else {
-            $("#wrap-getlocations-pancontrol").hide();
-          }
-        });
-      }
-
-      if ($("#edit-getlocations-fields-defaults-controltype,#edit-field-settings-controltype").is('select')) {
-        if ($("#edit-getlocations-fields-defaults-controltype,#edit-field-settings-controltype").val() == 'none') {
-          $("#wrap-getlocations-zoomcontrol").hide();
-        }
-        else {
+      if ($("#edit-getlocations-fields-defaults-controltype,#edit-field-settings-controltype").is('input')) {
+        if ($("#edit-getlocations-fields-defaults-controltype,#edit-field-settings-controltype").attr('checked')) {
           $("#wrap-getlocations-zoomcontrol").show();
         }
+        else {
+          $("#wrap-getlocations-zoomcontrol").hide();
+        }
         $("#edit-getlocations-fields-defaults-controltype,#edit-field-settings-controltype").change(function() {
-          if ($(this).val() == 'none') {
+          if ($(this).attr('checked')) {
             $("#wrap-getlocations-zoomcontrol").hide();
           }
           else {
@@ -110,23 +93,6 @@
           }
           else {
             $("#wrap-getlocations-scale").hide();
-          }
-        });
-      }
-
-      if ($("#edit-getlocations-fields-defaults-overview,#edit-field-settings-overview").is('input')) {
-        if ($("#edit-getlocations-fields-defaults-overview,#edit-field-settings-overview").attr('checked')) {
-          $("#wrap-getlocations-overview").show();
-        }
-        else {
-          $("#wrap-getlocations-overview").hide();
-        }
-        $("#edit-getlocations-fields-defaults-overview,#edit-field-settings-overview").change(function() {
-          if ($(this).attr('checked')) {
-            $("#wrap-getlocations-overview").show();
-          }
-          else {
-            $("#wrap-getlocations-overview").hide();
           }
         });
       }

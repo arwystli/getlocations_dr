@@ -886,10 +886,7 @@ function getlocations_fields_field_formatter_settings_summary($field, $instance,
       $summary[] = t('Show all locations on one map');
     }
     if ($settings['controltype']) {
-      $summary[] = t('Zoom control type: @c', array('@c' => $settings['controltype']));
-    }
-    if ($settings['pancontrol']) {
-      $summary[] = t('Show Pan control: Yes');
+      $summary[] = t('Zoom control: yes');
     }
     if ($settings['mtc']) {
       $summary[] = t('Map control type: @c', array('@c' => $settings['mtc']));
@@ -910,9 +907,6 @@ function getlocations_fields_field_formatter_settings_summary($field, $instance,
 
     if ($settings['scale']) {
       $summary[] = t('Show scale: Yes');
-    }
-    if ($settings['overview']) {
-      $summary[] = t('Show overview map: Yes');
     }
     if ($settings['scrollwheel']) {
       $summary[] = t('Enable scrollwheel zooming: Yes');
@@ -1747,16 +1741,12 @@ function getlocations_fields_getmap($settings, $active) {
   $getlocations_defaults['zoom']                = $settings['zoom'];
   $getlocations_defaults['controltype']         = $settings['controltype'];
   $getlocations_defaults['zoomcontrolposition'] = $settings['zoomcontrolposition'];
-  $getlocations_defaults['pancontrol']          = $settings['pancontrol'];
-  $getlocations_defaults['pancontrolposition']  = $settings['pancontrolposition'];
   $getlocations_defaults['mtc']                 = $settings['mtc'];
   $getlocations_defaults['maptype']             = $settings['maptype'];
   $getlocations_defaults['mapcontrolposition']  = $settings['mapcontrolposition'];
   $getlocations_defaults['baselayers']          = $settings['baselayers'];
   $getlocations_defaults['scale']               = $settings['scale'];
   $getlocations_defaults['scalecontrolposition'] = $settings['scalecontrolposition'];
-  $getlocations_defaults['overview']            = $settings['overview'];
-  $getlocations_defaults['overview_opened']     = $settings['overview_opened'];
   $getlocations_defaults['scrollwheel']         = $settings['scrollwheel'];
   $getlocations_defaults['draggable']           = $settings['draggable'];
   $getlocations_defaults['input_map_marker']    = $settings['input_map_marker'];
@@ -1804,13 +1794,10 @@ function getlocations_fields_getmap_show($settings, $lls = '', $minmaxes = '') {
 
   $getlocations_defaults = getlocations_defaults();
   $getlocations_defaults['controltype']               = $settings['controltype'];
-  $getlocations_defaults['pancontrol']                = $settings['pancontrol'];
   $getlocations_defaults['mtc']                       = $settings['mtc'];
   $getlocations_defaults['maptype']                   = $settings['maptype'];
   $getlocations_defaults['baselayers']                = $settings['baselayers'];
   $getlocations_defaults['scale']                     = $settings['scale'];
-  $getlocations_defaults['overview']                  = $settings['overview'];
-  $getlocations_defaults['overview_opened']           = $settings['overview_opened'];
   $getlocations_defaults['scrollwheel']               = $settings['scrollwheel'];
   $getlocations_defaults['draggable']                 = $settings['draggable'];
   $getlocations_defaults['sv_show']                   = $settings['sv_show'];
@@ -1895,7 +1882,6 @@ function getlocations_fields_getmap_show($settings, $lls = '', $minmaxes = '') {
   $getlocations_defaults['nodoubleclickzoom']         = $settings['nodoubleclickzoom'];
   $getlocations_defaults['zoomcontrolposition']       = $settings['zoomcontrolposition'];
   $getlocations_defaults['mapcontrolposition']        = $settings['mapcontrolposition'];
-  $getlocations_defaults['pancontrolposition']        = $settings['pancontrolposition'];
   $getlocations_defaults['scalecontrolposition']      = $settings['scalecontrolposition'];
   $getlocations_defaults['svcontrolposition']         = $settings['svcontrolposition'];
   $getlocations_defaults['sv_addresscontrol']         = $settings['sv_addresscontrol']; // sv overlay controls
@@ -2822,7 +2808,6 @@ function getlocations_fields_defaults() {
     'nodoubleclickzoom'         => $getlocations_defaults['nodoubleclickzoom'],
     'zoomcontrolposition'       => $getlocations_defaults['zoomcontrolposition'],
     'mapcontrolposition'        => $getlocations_defaults['mapcontrolposition'],
-    'pancontrolposition'        => $getlocations_defaults['pancontrolposition'],
     'scalecontrolposition'      => $getlocations_defaults['scalecontrolposition'],
     'svcontrolposition'         => $getlocations_defaults['svcontrolposition'],
     'sv_addresscontrol'         => $getlocations_defaults['sv_addresscontrol'], // sv overlay controls
@@ -2906,12 +2891,9 @@ function getlocations_fields_field_info_defaults() {
         'minzoom_map'                     => $getlocations_defaults['minzoom_map'],
         'maxzoom_map'                     => $getlocations_defaults['maxzoom_map'],
         'controltype'                     => $getlocations_defaults['controltype'],
-        'pancontrol'                      => $getlocations_defaults['pancontrol'],
         'mtc'                             => $getlocations_defaults['mtc'],
         'maptype'                         => $getlocations_defaults['maptype'],
         'scale'                           => $getlocations_defaults['scale'],
-        'overview'                        => $getlocations_defaults['overview'],
-        'overview_opened'                 => $getlocations_defaults['overview_opened'],
         'scrollwheel'                     => $getlocations_defaults['scrollwheel'],
         'draggable'                       => $getlocations_defaults['draggable'],
         'map_marker'                      => $getlocations_defaults['node_map_marker'],
@@ -3044,7 +3026,6 @@ function getlocations_fields_field_info_defaults() {
         'nodoubleclickzoom'               => $getlocations_fields_defaults['nodoubleclickzoom'],
         'zoomcontrolposition'             => $getlocations_fields_defaults['zoomcontrolposition'],
         'mapcontrolposition'              => $getlocations_fields_defaults['mapcontrolposition'],
-        'pancontrolposition'              => $getlocations_fields_defaults['pancontrolposition'],
         'scalecontrolposition'            => $getlocations_fields_defaults['scalecontrolposition'],
         'svcontrolposition'               => $getlocations_fields_defaults['svcontrolposition'],
         'sv_addresscontrol'               => $getlocations_fields_defaults['sv_addresscontrol'], // sv overlay controls
@@ -3120,12 +3101,9 @@ function getlocations_fields_field_formatter_info_defaults() {
     'display_onemap'            => $getlocations_fields_defaults['display_onemap'],
     'what3words_display'        => $getlocations_fields_defaults['what3words_display'],
     'controltype'               => $getlocations_defaults['controltype'],
-    'pancontrol'                => $getlocations_defaults['pancontrol'],
     'mtc'                       => $getlocations_defaults['mtc'],
     'maptype'                   => $getlocations_defaults['maptype'],
     'scale'                     => $getlocations_defaults['scale'],
-    'overview'                  => $getlocations_defaults['overview'],
-    'overview_opened'           => $getlocations_defaults['overview_opened'],
     'scrollwheel'               => $getlocations_defaults['scrollwheel'],
     'draggable'                 => $getlocations_defaults['draggable'],
     'sv_show'                   => $getlocations_defaults['sv_show'],
@@ -3224,7 +3202,6 @@ function getlocations_fields_field_formatter_info_defaults() {
     'nodoubleclickzoom'         => $getlocations_defaults['nodoubleclickzoom'],
     'zoomcontrolposition'       => $getlocations_defaults['zoomcontrolposition'],
     'mapcontrolposition'        => $getlocations_defaults['mapcontrolposition'],
-    'pancontrolposition'        => $getlocations_defaults['pancontrolposition'],
     'scalecontrolposition'      => $getlocations_defaults['scalecontrolposition'],
     'svcontrolposition'         => $getlocations_defaults['svcontrolposition'],
     'sv_addresscontrol'         => $getlocations_fields_defaults['sv_addresscontrol'], // sv overlay controls
