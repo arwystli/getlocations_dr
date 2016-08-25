@@ -1,9 +1,63 @@
-commit 8064730
+commit 28aa2b9
+Author: hutch <hutch@arwystli.net>
+Date:   Thu Aug 25 21:16:54 2016 +0100
+
+    fixed markers handling
+
+modules/getlocations_leaflet/getlocations_leaflet.module
+
+commit 584f0c9
+Author: hutch <hutch@arwystli.net>
+Date:   Thu Aug 25 21:16:08 2016 +0100
+
+    updated geocoder
+
+modules/getlocations_leaflet/plugins/geocoder/Control.Geocoder.js
+modules/getlocations_leaflet/plugins/geocoder/Control.Geocoder.min.js
+
+commit 6a2ca99
+Author: hutch <hutch@arwystli.net>
+Date:   Mon Aug 22 18:26:30 2016 +0100
+
+    updated map providers list
+
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/js/getlocations_leaflet_providers.js
+modules/getlocations_leaflet/js/getlocations_leaflet_providers.min.js
+
+commit 4f4d97b
+Author: hutch <hutch@arwystli.net>
+Date:   Tue Aug 16 13:14:16 2016 +0100
+
+    removed pancontrol, overview, modified controltype
+
+getlocations.admin.inc
+getlocations.module
+js/getlocations_admin.js
+js/getlocations_admin.min.js
+js/getlocations_admin_1.js
+js/getlocations_admin_1.min.js
+js/getlocations_views.js
+js/getlocations_views.min.js
+js/getlocations_views_1.js
+js/getlocations_views_1.min.js
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_fields/js/getlocations_fields_admin.js
+modules/getlocations_fields/js/getlocations_fields_admin.min.js
+modules/getlocations_fields/js/getlocations_fields_admin_1.js
+modules/getlocations_fields/js/getlocations_fields_admin_1.min.js
+modules/getlocations_fields/js/getlocations_fields_formatter.js
+modules/getlocations_fields/js/getlocations_fields_formatter.min.js
+modules/getlocations_fields/js/getlocations_fields_formatter_1.js
+modules/getlocations_fields/js/getlocations_fields_formatter_1.min.js
+
+commit 70d425d
 Author: hutch <hutch@arwystli.net>
 Date:   Thu Jul 21 08:27:02 2016 +0100
 
     removed google_old_controlstyle
 
+CHANGELOG.txt
 getlocations.admin.inc
 getlocations.module
 js/getlocations.js

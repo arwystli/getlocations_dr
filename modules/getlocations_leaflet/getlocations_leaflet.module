@@ -1023,6 +1023,184 @@ function getlocations_leaflet_field_formatter_settings_form($field, $instance, $
       unset($element['nodezoom']['#options']['19']);
 
       // awesome?
+      if ($settings['awesome'] && $settings['marker_type'] == 'fa') {
+        // default
+        $element += getlocations_leaflet_awesome_markers_elements_get($settings);
+
+        // nodes
+        $labels = array(
+          'awesome_icon' => t('Node Awesome icon'),
+          'awesome_icon_color' => t('Node Awesome icon color'),
+          'awesome_marker_color' => t('Node Awesome marker color'),
+          'awesome_title' => t('Node Awesome Fonts icon settings'),
+          'awesome_icon_spin' => t('Node Awesome icon spin'),
+          'awesome_icon_size' => t('Node Awesome icon size'),
+          'awesome_icon_type' => t('Node Awesome icon type'),
+          'awesome_icon_flip' => t('Node Awesome icon flip and rotate'),
+          'awesome_icon_html' => t('Node Awesome icon HTML'),
+          'awesome_icon_class' => t('Node Awesome icon class'),
+        );
+        $element += getlocations_leaflet_awesome_markers_elements_get($settings, $labels, "node");
+
+        // node type markers
+        if ($types = getlocations_get_types()) {
+
+          #$getlocations_node_marker = $getlocations_leaflet_defaults['node_map_marker'];
+          #if ($getlocations_node_marker['enable']) {
+          #  $typect = 0;
+          #  foreach ($types AS $type => $name) {
+          #    $field_names = getlocations_get_fieldname2($type, 'node');
+          #    foreach ($field_names AS $field_name) {
+          #      $label = t('%name Map marker, field %field' , array('%name' => $name, '%field' => $field_name));
+          #      $mkey = 'node_marker__' . backdrop_strtolower($type) . '__' . $field_name;
+          #      $labels = array(
+          #        'awesome_icon'         => t($label . ' Awesome icon'),
+          #        'awesome_icon_color'   => t($label . ' Awesome icon color'),
+          #        'awesome_marker_color' => t($label . ' Awesome marker color'),
+          #        'awesome_title'        => t($label . ' Awesome Fonts icon settings'),
+          #        'awesome_icon_spin'    => t($label . ' Awesome icon spin'),
+          #        'awesome_icon_size'    => t($label . ' Awesome icon size'),
+          #        'awesome_icon_type'    => t($label . ' Awesome icon type'),
+          #        'awesome_icon_flip'    => t($label . ' Awesome icon flip and rotate'),
+          #        'awesome_icon_html'    => t($label . ' Awesome icon HTML'),
+          #        'awesome_icon_class'   => t($label . ' Awesome icon class'),
+          #      );
+          #      $form['getlocations_leaflet_defaults'] += getlocations_leaflet_awesome_markers_elements_get($settings, $labels, $mkey);
+          #    }
+          #  }
+          #}
+        }
+
+        // users
+        if (getlocations_check_entity_type('user')) {
+          $labels = array(
+            'awesome_icon' => t('User Awesome icon'),
+            'awesome_icon_color' => t('User Awesome icon color'),
+            'awesome_marker_color' => t('User Awesome marker color'),
+            'awesome_title' => t('User Awesome Fonts icon settings'),
+            'awesome_icon_spin' => t('User Awesome icon spin'),
+            'awesome_icon_size' => t('User Awesome icon size'),
+            'awesome_icon_type' => t('User Awesome icon type'),
+            'awesome_icon_flip' => t('User Awesome icon flip and rotate'),
+            'awesome_icon_html' => t('User Awesome icon HTML'),
+            'awesome_icon_class' => t('User Awesome icon class'),
+          );
+          $element += getlocations_leaflet_awesome_markers_elements_get($settings, $labels, 'user');
+        }
+
+        if (module_exists('taxonomy')) {
+          if ($types = getlocations_get_machine_vocabularies()) {
+            // vocabulary
+            // TODO per vocab
+            $labels = array(
+              'awesome_icon' => t('Vocabulary Awesome icon'),
+              'awesome_icon_color' => t('Vocabulary Awesome icon color'),
+              'awesome_marker_color' => t('Vocabulary Awesome marker color'),
+              'awesome_title' => t('Vocabulary Awesome Fonts icon settings'),
+              'awesome_icon_spin' => t('Vocabulary Awesome icon spin'),
+              'awesome_icon_size' => t('Vocabulary Awesome icon size'),
+              'awesome_icon_type' => t('Vocabulary Awesome icon type'),
+              'awesome_icon_flip' => t('Vocabulary Awesome icon flip and rotate'),
+              'awesome_icon_html' => t('Vocabulary Awesome icon HTML'),
+              'awesome_icon_class' => t('Vocabulary Awesome icon class'),
+            );
+            $element += getlocations_leaflet_awesome_markers_elements_get($settings, $labels, 'vocabulary');
+
+          }
+          // terms
+          // TODO per term
+          $labels = array(
+            'awesome_icon' => t('Term Awesome icon'),
+            'awesome_icon_color' => t('Term Awesome icon color'),
+            'awesome_marker_color' => t('Term Awesome marker color'),
+            'awesome_title' => t('Term Awesome Fonts icon settings'),
+            'awesome_icon_spin' => t('Term Awesome icon spin'),
+            'awesome_icon_size' => t('Term Awesome icon size'),
+            'awesome_icon_type' => t('Term Awesome icon type'),
+            'awesome_icon_flip' => t('Term Awesome icon flip and rotate'),
+            'awesome_icon_html' => t('Term Awesome icon HTML'),
+            'awesome_icon_class' => t('Term Awesome icon class'),
+          );
+          $element += getlocations_leaflet_awesome_markers_elements_get($settings, $labels, 'term');
+        }
+        if (getlocations_check_entity_type('comment')) {
+          // comment
+          $labels = array(
+            'awesome_icon' => t('Comment Awesome icon'),
+            'awesome_icon_color' => t('Comment Awesome icon color'),
+            'awesome_marker_color' => t('Comment Awesome marker color'),
+            'awesome_title' => t('Comment Awesome Fonts icon settings'),
+            'awesome_icon_spin' => t('Comment Awesome icon spin'),
+            'awesome_icon_size' => t('Comment Awesome icon size'),
+            'awesome_icon_type' => t('Comment Awesome icon type'),
+            'awesome_icon_flip' => t('Comment Awesome icon flip and rotate'),
+            'awesome_icon_html' => t('Comment Awesome icon HTML'),
+            'awesome_icon_class' => t('Comment Awesome icon class'),
+          );
+          $element += getlocations_leaflet_awesome_markers_elements_get($settings, $labels, 'comment');
+
+        }
+
+      }
+      elseif ($settings['marker_type'] == 'gg') {
+        // getlocations markers
+        // default node marker
+        $markers = getlocations_get_marker_titles();
+        $desc = '';
+        if (getlocations_check_entity_type('node')) {
+          $desc = t('In use');
+        }
+        $element['node_map_marker'] = getlocations_element_map_marker(
+          t('Default Content Map marker'),
+          $markers,
+          $settings['node_map_marker'],
+          $desc
+        );
+
+        // default user marker
+        $desc = '';
+        if (getlocations_check_entity_type('user')) {
+          $desc = t('In use');
+        }
+        $element['user_map_marker'] = getlocations_element_map_marker(
+          t('Default User Map marker'),
+          $markers,
+          $settings['user_map_marker'],
+          $desc
+        );
+        if (module_exists('taxonomy')) {
+          // default vocabulary marker
+          $desc = '';
+          if (getlocations_get_vocabularies()) {
+            $desc = t('In use');
+          }
+          $element['vocabulary_map_marker'] = getlocations_element_map_marker(
+            t('Default Vocabulary Map marker'),
+            $markers,
+            $settings['vocabulary_map_marker'],
+            $desc
+          );
+          $element['term_map_marker'] = getlocations_element_map_marker(
+            t('Default Term Map marker'),
+            $markers,
+            $settings['term_map_marker'],
+            ''
+          );
+        }
+        if (module_exists('comment')) {
+          // default comment marker
+          $desc = '';
+          if (getlocations_check_entity_type('comment')) {
+            $desc = t('In use');
+          }
+          $element['comment_map_marker'] = getlocations_element_map_marker(
+            t('Default Comment Map marker'),
+            $markers,
+            $settings['comment_map_marker'],
+            $desc
+          );
+        }
+      }
 
     break;
     case 'getlocations_leaflet_link':
@@ -3990,6 +4168,66 @@ function getlocations_leaflet_settings_form() {
 
     }
 
+  }
+  elseif ($settings['marker_type'] == 'gg') {
+    // getlocations markers
+
+    // default node marker
+    $markers = getlocations_get_marker_titles();
+    $desc = '';
+    if (getlocations_check_entity_type('node')) {
+      $desc = t('In use');
+    }
+    $form['getlocations_leaflet_defaults']['node_map_marker'] = getlocations_element_map_marker(
+      t('Default Content Map marker'),
+      $markers,
+      $getlocations_leaflet_defaults['node_map_marker'],
+      $desc
+    );
+
+    // default user marker
+    $desc = '';
+    if (getlocations_check_entity_type('user')) {
+      $desc = t('In use');
+    }
+    $form['getlocations_leaflet_defaults']['user_map_marker'] = getlocations_element_map_marker(
+      t('Default User Map marker'),
+      $markers,
+      $getlocations_leaflet_defaults['user_map_marker'],
+      $desc
+    );
+    if (module_exists('taxonomy')) {
+      // default vocabulary marker
+      $desc = '';
+      if (getlocations_get_vocabularies()) {
+        $desc = t('In use');
+      }
+      $form['getlocations_leaflet_defaults']['vocabulary_map_marker'] = getlocations_element_map_marker(
+        t('Default Vocabulary Map marker'),
+        $markers,
+        $getlocations_leaflet_defaults['vocabulary_map_marker'],
+        $desc
+      );
+      $form['getlocations_leaflet_default']['term_map_marker'] = getlocations_element_map_marker(
+        t('Default Term Map marker'),
+        $markers,
+        $getlocations_leaflet_defaults['term_map_marker'],
+        ''
+      );
+    }
+    if (module_exists('comment')) {
+      // default comment marker
+      $desc = '';
+      if (getlocations_check_entity_type('comment')) {
+        $desc = t('In use');
+      }
+      $form['getlocations_leaflet_defaults']['comment_map_marker'] = getlocations_element_map_marker(
+        t('Default Comment Map marker'),
+        $markers,
+        $getlocations_leaflet_defaults['comment_map_marker'],
+        $desc
+      );
+    }
   }
 
   $form['getlocations_leaflet_defaults']['returnlink_page_enable'] = getlocations_element_map_checkbox(
