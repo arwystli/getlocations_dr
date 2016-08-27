@@ -57,13 +57,10 @@ class getlocations_plugin_style_map extends views_plugin_style {
     $options['minzoom_map']           = array('default' => $getlocations_defaults['minzoom_map']);
     $options['maxzoom_map']           = array('default' => $getlocations_defaults['maxzoom_map']);
     $options['controltype']           = array('default' => $getlocations_defaults['controltype']);
-    $options['pancontrol']            = array('default' => $getlocations_defaults['pancontrol']);
     $options['mtc']                   = array('default' => $getlocations_defaults['mtc']);
     $options['maptype']               = array('default' => $getlocations_defaults['maptype']);
     $options['baselayers']            = array('default' => $getlocations_defaults['baselayers']);
     $options['scale']                 = array('default' => $getlocations_defaults['scale']) ;
-    $options['overview']              = array('default' => $getlocations_defaults['overview']);
-    $options['overview_opened']       = array('default' => $getlocations_defaults['overview_opened']);
     $options['scrollwheel']           = array('default' => $getlocations_defaults['scrollwheel']);
     $options['show_maplinks']         = array('default' => $getlocations_defaults['show_maplinks']);
     $options['show_maplinks_viewport'] = array('default' => $getlocations_defaults['show_maplinks_viewport']);
@@ -178,7 +175,6 @@ class getlocations_plugin_style_map extends views_plugin_style {
     $options['geojson_data']    = array('default' => $getlocations_defaults['geojson_data']);
 
     $options['zoomcontrolposition']  = array('default' => $getlocations_defaults['zoomcontrolposition']);
-    $options['pancontrolposition']   = array('default' => $getlocations_defaults['pancontrolposition']);
     $options['mapcontrolposition']   = array('default' => $getlocations_defaults['mapcontrolposition']);
     $options['scalecontrolposition'] = array('default' => $getlocations_defaults['scalecontrolposition']);
     $options['svcontrolposition']    = array('default' => $getlocations_defaults['svcontrolposition']);
