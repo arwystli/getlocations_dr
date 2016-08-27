@@ -605,7 +605,7 @@ function getlocations_fields_views_proximity_get_reference_location($view, $opti
     case 'distance_arg':
       $coordinates = array();
       foreach ($view->argument as $argument) {
-        if (isset($argument->field) && $argument->field == 'distance') {
+        if (isset($argument->field) && $argument->field == 'distance' && $argument->position ) {
           $a = explode('_', $view->args[$argument->position]);
           if (count($a) == 2) {
             $aa = explode(',', $a[0]);
