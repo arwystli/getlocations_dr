@@ -1882,6 +1882,9 @@ function getlocations_search_info_sql($lat, $lon, $distance, $units, $type, $dos
       }
       $result = db_query($sql, $sqlarr);
       foreach ($result AS $row) {
+        if (!isset($locations[$location_ct])) {
+          $locations[$location_ct] = new stdClass();
+        }
         $locations[$location_ct]->latitude = $row->latitude;
         $locations[$location_ct]->longitude = $row->longitude;
         if (isset($row->title)) {

@@ -22,7 +22,7 @@ function getlocations_mapbox_get_map_layers() {
           'type' => (isset($info['type']) ? $info['type'] : 'base'),
           'options' => array(
             'id' => $info['key'],
-            'accessToken' => $info['token']
+            'accessToken' => (isset($info['token']) ? $info['token'] : ''),
           ),
         );
       }
