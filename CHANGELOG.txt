@@ -1,9 +1,26 @@
-commit 5f2e0ce
+commit 273a69e
+Author: hutch <hutch@arwystli.net>
+Date:   Wed Oct 5 17:36:06 2016 +0100
+
+    added notice avoidance
+
+modules/getlocations_fields/getlocations_fields.module
+
+commit 972b546
+Author: hutch <hutch@arwystli.net>
+Date:   Wed Oct 5 17:35:39 2016 +0100
+
+    updated message
+
+getlocations.admin.inc
+
+commit 66a75a4
 Author: hutch <hutch@arwystli.net>
 Date:   Thu Jul 21 08:30:10 2016 +0100
 
     removed google_old_controlstyle
 
+CHANGELOG.txt
 getlocations.admin.inc
 getlocations.module
 js/getlocations.js

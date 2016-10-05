@@ -155,7 +155,7 @@ function getlocations_fields_field_validate($entity_type, $entity, $field, $inst
     );
     $item_count = 0;
     foreach ($items AS $delta => $item) {
-      if ($item['active']) {
+      if (isset($item['active']) && $item['active']) {
         if (isset($item['delete_location']) && $item['delete_location']) {
           return;
         }
