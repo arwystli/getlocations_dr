@@ -1,9 +1,52 @@
-commit 28aa2b9
+commit ab520c1
+Author: bobhutch <arwystli@gmail.com>
+Date:   Wed Oct 5 17:30:20 2016 +0100
+
+    added notice avoidance
+
+modules/getlocations_fields/getlocations_fields.module
+
+commit 991dedc
+Author: bobhutch <arwystli@gmail.com>
+Date:   Wed Oct 5 17:29:54 2016 +0100
+
+    fixed variable naming bug
+
+modules/getlocations_leaflet/getlocations_leaflet.module
+
+commit 2764c7a
+Author: bobhutch <arwystli@gmail.com>
+Date:   Tue Sep 20 18:15:53 2016 +0100
+
+    more notice avoidance
+
+modules/getlocations_mapbox/getlocations_mapbox.module
+modules/getlocations_search/getlocations_search.module
+
+commit 8c25728
+Author: bobhutch <arwystli@gmail.com>
+Date:   Sat Aug 27 10:38:12 2016 +0100
+
+    notice avoidance
+
+modules/getlocations_fields/views/getlocations_fields.views.inc
+
+commit fb91868
+Author: bobhutch <arwystli@gmail.com>
+Date:   Sat Aug 27 10:37:46 2016 +0100
+
+    removed obsolete code
+
+modules/getlocations_search/getlocations_search.module
+views/getlocations_plugin_style_map.inc
+
+commit 31b5dcb
 Author: hutch <hutch@arwystli.net>
 Date:   Thu Aug 25 21:16:54 2016 +0100
 
     fixed markers handling
 
+CHANGELOG.txt
 modules/getlocations_leaflet/getlocations_leaflet.module
 
 commit 584f0c9
