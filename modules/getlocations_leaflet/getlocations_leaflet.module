@@ -4181,7 +4181,7 @@ function getlocations_leaflet_settings_form() {
     $form['getlocations_leaflet_defaults']['node_map_marker'] = getlocations_element_map_marker(
       t('Default Content Map marker'),
       $markers,
-      $getlocations_leaflet_defaults['node_map_marker'],
+      $settings['node_map_marker'],
       $desc
     );
 
@@ -4193,7 +4193,7 @@ function getlocations_leaflet_settings_form() {
     $form['getlocations_leaflet_defaults']['user_map_marker'] = getlocations_element_map_marker(
       t('Default User Map marker'),
       $markers,
-      $getlocations_leaflet_defaults['user_map_marker'],
+      $settings['user_map_marker'],
       $desc
     );
     if (module_exists('taxonomy')) {
@@ -4205,13 +4205,13 @@ function getlocations_leaflet_settings_form() {
       $form['getlocations_leaflet_defaults']['vocabulary_map_marker'] = getlocations_element_map_marker(
         t('Default Vocabulary Map marker'),
         $markers,
-        $getlocations_leaflet_defaults['vocabulary_map_marker'],
+        $settings['vocabulary_map_marker'],
         $desc
       );
       $form['getlocations_leaflet_default']['term_map_marker'] = getlocations_element_map_marker(
         t('Default Term Map marker'),
         $markers,
-        $getlocations_leaflet_defaults['term_map_marker'],
+        $settings['term_map_marker'],
         ''
       );
     }
@@ -4224,7 +4224,7 @@ function getlocations_leaflet_settings_form() {
       $form['getlocations_leaflet_defaults']['comment_map_marker'] = getlocations_element_map_marker(
         t('Default Comment Map marker'),
         $markers,
-        $getlocations_leaflet_defaults['comment_map_marker'],
+        $settings['comment_map_marker'],
         $desc
       );
     }
