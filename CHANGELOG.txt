@@ -1,9 +1,23 @@
-commit ab520c1
+commit bcb237c
+Author: bobhutch <arwystli@gmail.com>
+Date:   Tue Jan 3 12:44:57 2017 +0000
+
+    fixed what3words and mapquest
+
+getlocations.module
+js/getlocations_what3words.js
+js/getlocations_what3words.min.js
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/js/getlocations_leaflet.js
+modules/getlocations_leaflet/js/getlocations_leaflet.min.js
+
+commit 393fd4e
 Author: bobhutch <arwystli@gmail.com>
 Date:   Wed Oct 5 17:30:20 2016 +0100
 
     added notice avoidance
 
+CHANGELOG.txt
 modules/getlocations_fields/getlocations_fields.module
 
 commit 991dedc

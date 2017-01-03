@@ -5194,11 +5194,7 @@ function getlocations_what3words_form($defaults) {
       t('Center the map on Search success')
     );
     // what3words_zoom
-    #$form['what3words_zoom'] = getlocations_element_map_zoom_map(
-    #  t('Zoom for what3words location'),
-    #  $defaults['what3words_zoom']
-    #);
-    $opts = array('-2' => t('Keep current zoom'), '-1' => t('Use map type settings')) + drupal_map_assoc(range(0, 21));
+    $opts = array('-3' => t('Use what3words Bounds'), '-2' => t('Keep current zoom'), '-1' => t('Use map type settings')) + drupal_map_assoc(range(0, 21));
     $form['what3words_zoom'] = array(
       '#type' => 'select',
       '#title' => t('Zoom for what3words location'),

@@ -378,21 +378,42 @@ function getlocations_leaflet_library() {
   }
 
   // mapquest
+/*
+// map plugin
+// https://developer.mapquest.com/documentation/leaflet-plugins/maps/
+<script src="https://www.mapquestapi.com/sdk/leaflet/v2.2/mq-map.js?key=KEY"></script>
+
+// geocoding plugin
+// https://developer.mapquest.com/documentation/leaflet-plugins/geocoding/
+<script src="https://www.mapquestapi.com/sdk/leaflet/v2.2/mq-map.js?key=KEY"></script>
+<script src="https://www.mapquestapi.com/sdk/leaflet/v2.2/mq-geocoding.js?key=KEY"></script>
+
+// Routing Plugin for Leaflet
+// https://developer.mapquest.com/documentation/leaflet-plugins/routing/
+<script src="https://www.mapquestapi.com/sdk/leaflet/v2.2/mq-map.js?key=KEY"></script>
+<script src="https://www.mapquestapi.com/sdk/leaflet/v2.2/mq-routing.js?key=KEY"></script>
+
+// Traffic Plugin for Leaflet
+// https://developer.mapquest.com/documentation/leaflet-plugins/traffic/
+<script src="https://www.mapquestapi.com/sdk/leaflet/v2.2/mq-map.js?key=KEY"></script>
+<script src="https://www.mapquestapi.com/sdk/leaflet/v2.2/mq-traffic.js?key=KEY"></script>
+
+// Open Plugins for Leaflet
+// https://developer.mapquest.com/documentation/leaflet-plugins/open/
+<script src="https://open.mapquestapi.com/sdk/leaflet/v2.2/mq-map.js?key=KEY"></script>
+
+*/
   $mapquest_lic =  variable_get('getlocations_mapquest_lic', array('key' => '', 'type' => 'l'));
   if ($mapquest_lic['key']) {
     $defaults = getlocations_defaults();
-    if (! isset($defaults['is_https']) || ! $defaults['is_https']) {
-      global $is_https;
-    }
-    else {
-      $is_https = $defaults['is_https'];
-    }
-    $scheme = ($is_https ? 'https' : 'http');
+    $api_version = 'v2.2';
+    // always use https
+    $scheme = 'https';
     if ($mapquest_lic['type'] == 'o') {
-      $dom = 'open.mapquestapi.com/sdk/leaflet/v1.s';
+      $dom = 'open.mapquestapi.com/sdk/leaflet/' . $api_version;
     }
     else {
-      $dom = 'www.mapquestapi.com/sdk/leaflet/v1.s';
+      $dom = 'www.mapquestapi.com/sdk/leaflet/' . $api_version;
     }
 
     $url1 = $scheme . '://' . $dom . '/' . 'mq-map.js' . '?key=' . $mapquest_lic['key'];
@@ -1563,22 +1584,22 @@ function getlocations_leaflet_map_settings_do($map_settings, $defaults, $latlons
   }
 
   // mapquest
-  $map_settings['map_settings']['mapquest_traffic_enable'] = ($getlocations_leaflet_plugins['mapquest_traffic_enable'] ? 1 : 0);
-  $map_settings['map_settings']['mapquest_traffic_flow'] = ($defaults['mapquest_traffic_flow'] ? 1 : 0);
-  $map_settings['map_settings']['mapquest_traffic_flow_on'] = ($defaults['mapquest_traffic_flow_on'] ? 1 : 0);
-  $map_settings['map_settings']['mapquest_traffic_incident'] = ($defaults['mapquest_traffic_incident'] ? 1 : 0);
+  $map_settings['map_settings']['mapquest_traffic_enable']      = ($getlocations_leaflet_plugins['mapquest_traffic_enable'] ? 1 : 0);
+  $map_settings['map_settings']['mapquest_traffic_flow']        = ($defaults['mapquest_traffic_flow'] ? 1 : 0);
+  $map_settings['map_settings']['mapquest_traffic_flow_on']     = ($defaults['mapquest_traffic_flow_on'] ? 1 : 0);
+  $map_settings['map_settings']['mapquest_traffic_incident']    = ($defaults['mapquest_traffic_incident'] ? 1 : 0);
   $map_settings['map_settings']['mapquest_traffic_incident_on'] = ($defaults['mapquest_traffic_incident_on'] ? 1 : 0);
 
-  $map_settings['map_settings']['mapquest_routing_enable'] = ($getlocations_leaflet_plugins['mapquest_routing_enable'] ? 1 : 0);
+  $map_settings['map_settings']['mapquest_routing_enable']      = ($getlocations_leaflet_plugins['mapquest_routing_enable'] ? 1 : 0);
 
-  $map_settings['map_settings']['mapquest_geocoder_enable'] = ($getlocations_leaflet_plugins['mapquest_geocoder_enable'] ? 1 : 0);
+  $map_settings['map_settings']['mapquest_geocoder_enable']     = ($getlocations_leaflet_plugins['mapquest_geocoder_enable'] ? 1 : 0);
 
-  $map_settings['map_settings']['mapquest_maps_enable'] = ($getlocations_leaflet_plugins['mapquest_maps_enable'] ? 1 : 0);
-  $map_settings['map_settings']['mapquest_maps_default'] = $defaults['mapquest_maps_default'];
-  $map_settings['map_settings']['mapquest_maps_maplayer'] = $defaults['mapquest_maps_maplayer'];
+  $map_settings['map_settings']['mapquest_maps_enable']         = ($getlocations_leaflet_plugins['mapquest_maps_enable'] ? 1 : 0);
+  $map_settings['map_settings']['mapquest_maps_default']        = $defaults['mapquest_maps_default'];
+  $map_settings['map_settings']['mapquest_maps_maplayer']       = $defaults['mapquest_maps_maplayer'];
   $map_settings['map_settings']['mapquest_maps_satellitelayer'] = $defaults['mapquest_maps_satellitelayer'];
-  $map_settings['map_settings']['mapquest_maps_hybridlayer'] = $defaults['mapquest_maps_hybridlayer'];
-  $map_settings['map_settings']['mapquest_maps_use'] = $defaults['mapquest_maps_use'];
+  $map_settings['map_settings']['mapquest_maps_hybridlayer']    = $defaults['mapquest_maps_hybridlayer'];
+  $map_settings['map_settings']['mapquest_maps_use']            = $defaults['mapquest_maps_use'];
 
   if ($getlocations_leaflet_plugins['pancontrol_enable']) {
     $map_settings['map_settings']['leaflet_pancontrol'] = ($defaults['pancontrol'] ? TRUE : FALSE);
@@ -2756,10 +2777,10 @@ function getlocations_leaflet_plugins() {
     'bouncemarker_enable'  => 0,
     'magnifyingglass_enable' => 0,
     'terminator_enable'    => 0,
-    'mapquest_traffic_enable' => 0,
-    'mapquest_routing_enable' => 0,
+    'mapquest_traffic_enable'  => 0,
+    'mapquest_routing_enable'  => 0,
     'mapquest_geocoder_enable' => 0,
-    'mapquest_maps_enable' => 0,
+    'mapquest_maps_enable'     => 0,
     'hash_enable'          => 0,
   );
   $settings = variable_get('getlocations_leaflet_plugins', $defaults);
@@ -2916,10 +2937,10 @@ function getlocations_leaflet_display_options_form($defaults, $admin = FALSE) {
     $form['mapquest_maps_hybridlayer']['#suffix'] = '</div>';
   }
   else {
-    $form['mapquest_maps_default'] = array('#type' => 'value', '#value' => 'm');
-    $form['mapquest_maps_maplayer'] = array('#type' => 'value', '#value' => 1);
+    $form['mapquest_maps_default']        = array('#type' => 'value', '#value' => 'm');
+    $form['mapquest_maps_maplayer']       = array('#type' => 'value', '#value' => 1);
     $form['mapquest_maps_satellitelayer'] = array('#type' => 'value', '#value' => 1);
-    $form['mapquest_maps_hybridlayer'] = array('#type' => 'value', '#value' => 1);
+    $form['mapquest_maps_hybridlayer']    = array('#type' => 'value', '#value' => 1);
   }
 
   if ($getlocations_leaflet_plugins['mapquest_traffic_enable'] && $mapquest_lic['type'] == 'l') {
@@ -2946,9 +2967,9 @@ function getlocations_leaflet_display_options_form($defaults, $admin = FALSE) {
     $form['mapquest_traffic_incident_on']['#suffix'] = '';
   }
   else {
-    $form['mapquest_traffic_flow'] = array('#type' => 'value', '#value' => 0);
-    $form['mapquest_traffic_flow_on'] = array('#type' => 'value', '#value' => 0);
-    $form['mapquest_traffic_incident'] = array('#type' => 'value', '#value' => 0);
+    $form['mapquest_traffic_flow']        = array('#type' => 'value', '#value' => 0);
+    $form['mapquest_traffic_flow_on']     = array('#type' => 'value', '#value' => 0);
+    $form['mapquest_traffic_incident']    = array('#type' => 'value', '#value' => 0);
     $form['mapquest_traffic_incident_on'] = array('#type' => 'value', '#value' => 0);
     $form['mapquest_traffic_incident_on']['#suffix'] = '';
   }
@@ -3964,6 +3985,7 @@ function getlocations_leaflet_settings_form() {
   }
 
   // mapquest
+  // TODO
   $mapquest_lic =  variable_get('getlocations_mapquest_lic', array('key' => '', 'type' => 'l'));
   if ($mapquest_lic['key']) {
 
@@ -3997,10 +4019,10 @@ function getlocations_leaflet_settings_form() {
 
   }
   else {
-    $form['getlocations_leaflet_plugins']['mapquest_traffic_enable'] = array('#type' => 'value', '#value' => 0);
-    $form['getlocations_leaflet_plugins']['mapquest_routing_enable'] = array('#type' => 'value', '#value' => 0);
+    $form['getlocations_leaflet_plugins']['mapquest_traffic_enable']  = array('#type' => 'value', '#value' => 0);
+    $form['getlocations_leaflet_plugins']['mapquest_routing_enable']  = array('#type' => 'value', '#value' => 0);
     $form['getlocations_leaflet_plugins']['mapquest_geocoder_enable'] = array('#type' => 'value', '#value' => 0);
-    $form['getlocations_leaflet_plugins']['mapquest_maps_enable'] = array('#type' => 'value', '#value' => 0);
+    $form['getlocations_leaflet_plugins']['mapquest_maps_enable']     = array('#type' => 'value', '#value' => 0);
   }
 
   // mapbox

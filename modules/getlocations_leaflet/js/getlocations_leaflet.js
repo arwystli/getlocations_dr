@@ -84,9 +84,10 @@
           var gotmap = false;
 
           // mapquest
-          if (map_settings.mapquest_key && typeof(MQ) !== 'undefined') {
-
+          if (map_settings.mapquest_key && typeof MQ !== 'undefined') {
             if (map_settings.mapquest_traffic_enable) {
+              //MQ.trafficLayer().addTo(Drupal.getlocations_leaflet_map[key]);
+
               if (map_settings.mapquest_traffic_flow) {
                 var label_flow = Drupal.t('Traffic Flow');
                 Drupal.getlocations_leaflet_overlays[key][label_flow] = MQ.trafficLayer({layers: ['flow']});
@@ -101,6 +102,7 @@
                   Drupal.getlocations_leaflet_overlays[key][label_incident].addTo(Drupal.getlocations_leaflet_map[key]);
                 }
               }
+
             }
 
             if (map_settings.mapquest_routing_enable) {
