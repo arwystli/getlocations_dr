@@ -132,6 +132,14 @@
               if (map_settings.mapquest_maps_default != 'h' && map_settings.mapquest_maps_hybridlayer) {
                 layers[Drupal.t('Hybrid layer')] = MQ.hybridLayer();
               }
+
+              if (map_settings.mapquest_maps_default != 'l' && map_settings.mapquest_maps_lightlayer) {
+                layers[Drupal.t('Light layer')] = MQ.lightLayer();
+              }
+              if (map_settings.mapquest_maps_default != 'd' && map_settings.mapquest_maps_darklayer) {
+                layers[Drupal.t('Dark layer')] = MQ.darkLayer();
+              }
+
               gotmap = true;
             }
 

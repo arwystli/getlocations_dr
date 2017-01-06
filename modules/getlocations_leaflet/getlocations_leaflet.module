@@ -1599,6 +1599,10 @@ function getlocations_leaflet_map_settings_do($map_settings, $defaults, $latlons
   $map_settings['map_settings']['mapquest_maps_maplayer']       = $defaults['mapquest_maps_maplayer'];
   $map_settings['map_settings']['mapquest_maps_satellitelayer'] = $defaults['mapquest_maps_satellitelayer'];
   $map_settings['map_settings']['mapquest_maps_hybridlayer']    = $defaults['mapquest_maps_hybridlayer'];
+
+  $map_settings['map_settings']['mapquest_maps_lightlayer']    = $defaults['mapquest_maps_lightlayer'];
+  $map_settings['map_settings']['mapquest_maps_darklayer']    = $defaults['mapquest_maps_darklayer'];
+
   $map_settings['map_settings']['mapquest_maps_use']            = $defaults['mapquest_maps_use'];
 
   if ($getlocations_leaflet_plugins['pancontrol_enable']) {
@@ -2727,6 +2731,8 @@ function getlocations_leaflet_defaults() {
   $newdefaults['mapquest_maps_maplayer']       = 1;
   $newdefaults['mapquest_maps_satellitelayer'] = 1;
   $newdefaults['mapquest_maps_hybridlayer']    = 1;
+  $newdefaults['mapquest_maps_lightlayer']     = 1;
+  $newdefaults['mapquest_maps_darklayer']      = 1;
   $newdefaults['mapquest_maps_use']            = 1;
 
   // leaflet hash
@@ -2912,6 +2918,15 @@ function getlocations_leaflet_display_options_form($defaults, $admin = FALSE) {
     if ($defaults['mapquest_maps_hybridlayer']) {
       $mapopts['h'] = t('Hybrid layer');
     }
+
+    if ($defaults['mapquest_maps_lightlayer']) {
+      $mapopts['l'] = t('Light layer');
+    }
+    if ($defaults['mapquest_maps_darklayer']) {
+      $mapopts['d'] = t('Dark layer');
+    }
+
+
     if (count($mapopts) < 1) {
       $mapopts['m'] = t('Map layer');
       $defaults['mapquest_maps_maplayer'] = 1;
@@ -2934,13 +2949,24 @@ function getlocations_leaflet_display_options_form($defaults, $admin = FALSE) {
       t('Hybrid layer'),
       $defaults['mapquest_maps_hybridlayer']
     );
-    $form['mapquest_maps_hybridlayer']['#suffix'] = '</div>';
+
+    $form['mapquest_maps_lightlayer'] = getlocations_element_map_checkbox(
+      t('Light layer'),
+      $defaults['mapquest_maps_lightlayer']
+    );
+    $form['mapquest_maps_darklayer'] = getlocations_element_map_checkbox(
+      t('Dark layer'),
+      $defaults['mapquest_maps_darklayer']
+    );
+
   }
   else {
     $form['mapquest_maps_default']        = array('#type' => 'value', '#value' => 'm');
     $form['mapquest_maps_maplayer']       = array('#type' => 'value', '#value' => 1);
     $form['mapquest_maps_satellitelayer'] = array('#type' => 'value', '#value' => 1);
     $form['mapquest_maps_hybridlayer']    = array('#type' => 'value', '#value' => 1);
+    $form['mapquest_maps_lightlayer']     = array('#type' => 'value', '#value' => 1);
+    $form['mapquest_maps_darklayer']      = array('#type' => 'value', '#value' => 1);
   }
 
   if ($getlocations_leaflet_plugins['mapquest_traffic_enable'] && $mapquest_lic['type'] == 'l') {
@@ -2964,9 +2990,10 @@ function getlocations_leaflet_display_options_form($defaults, $admin = FALSE) {
       $defaults['mapquest_traffic_incident_on'],
       t('Show Traffic Incident on the map on startup.')
     );
-    $form['mapquest_traffic_incident_on']['#suffix'] = '';
+    $form['mapquest_traffic_incident_on']['#suffix'] = '</div>';
   }
   else {
+    $form['mapquest_maps_hybridlayer']['#suffix'] = '</div>';
     $form['mapquest_traffic_flow']        = array('#type' => 'value', '#value' => 0);
     $form['mapquest_traffic_flow_on']     = array('#type' => 'value', '#value' => 0);
     $form['mapquest_traffic_incident']    = array('#type' => 'value', '#value' => 0);
