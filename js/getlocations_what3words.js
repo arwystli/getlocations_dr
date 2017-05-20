@@ -42,28 +42,42 @@
                     if (response) {
                       var lat = response.geometry.lat;
                       var lon = response.geometry.lng;
-                      if (settings.what3words_marker_show && lat && lon ) {
-                        if (marker) {
-                          marker.setMap();
-                        }
-                        settings.markdone = Drupal.getlocations.getIcon(settings.what3words_map_marker);
-                        marker = Drupal.getlocations.makeMarker(Drupal.getlocations_map[key], settings, lat, lon, 0, w3w, '', '', '', key);
-                      }
-                      if (settings.what3words_zoom == -1) {
-                        Drupal.getlocations_map[key].setZoom(parseInt(settings.nodezoom));
-                      }
-                      else if (settings.what3words_zoom > -1) {
-                        Drupal.getlocations_map[key].setZoom(parseInt(settings.what3words_zoom));
-                      }
-                      //edit-getlocations-what3words-show
-                      if (settings.what3words_show && $("#edit-getlocations-what3words-show").is('div') && w3w) {
-                        $("#edit-getlocations-what3words-show").html(w3w);
-                      }
-                      if (settings.what3words_center) {
-                        var c = new google.maps.LatLng(parseFloat(lat), parseFloat(lon));
-                        Drupal.getlocations_map[key].setCenter(c);
-                      }
+                      if (lat && lon) {
 
+                        if (settings.what3words_marker_show) {
+                          if (marker) {
+                            marker.setMap();
+                          }
+                          settings.markdone = Drupal.getlocations.getIcon(settings.what3words_map_marker);
+                          marker = Drupal.getlocations.makeMarker(Drupal.getlocations_map[key], settings, lat, lon, 0, w3w, '', '', '', key);
+                        }
+                        // bounds
+                        if (settings.what3words_zoom == -3) {
+                          var sw_lng = response.bounds.southwest.lng;
+                          var sw_lat = response.bounds.southwest.lat;
+                          var ne_lng = response.bounds.northeast.lng;
+                          var ne_lat = response.bounds.northeast.lat;
+                          var sw_ll = new google.maps.LatLng(parseFloat(sw_lat), parseFloat(sw_lng));
+                          var ne_ll = new google.maps.LatLng(parseFloat(ne_lat), parseFloat(ne_lng));
+                          var llb = new google.maps.LatLngBounds(sw_ll, ne_ll);
+                          Drupal.getlocations_map[key].fitBounds(llb);
+                        }
+                        // map settings
+                        else if (settings.what3words_zoom == -1) {
+                          Drupal.getlocations_map[key].setZoom(parseInt(settings.nodezoom));
+                        }
+                        else if (settings.what3words_zoom > -1) {
+                          Drupal.getlocations_map[key].setZoom(parseInt(settings.what3words_zoom));
+                        }
+                        //edit-getlocations-what3words-show
+                        if (settings.what3words_show && $("#edit-getlocations-what3words-show").is('div') && w3w) {
+                          $("#edit-getlocations-what3words-show").html(w3w);
+                        }
+                        if (settings.what3words_center) {
+                          var c = new google.maps.LatLng(parseFloat(lat), parseFloat(lon));
+                          Drupal.getlocations_map[key].setCenter(c);
+                        }
+                      }
                     }
                     $("#getlocations_w3w_throbber_" + key).removeClass('getlocations_w3w_throbber_active').addClass('getlocations_w3w_throbber_inactive');
                   });
@@ -95,7 +109,17 @@
                       settings.markdone = Drupal.getlocations.getIcon(settings.what3words_map_marker);
                       marker = Drupal.getlocations.makeMarker(Drupal.getlocations_map[key], settings, wlat, wlon, 0, w3w, '', '', '', key);
                     }
-                    if (settings.what3words_zoom == -1) {
+                    if (settings.what3words_zoom == -3) {
+                      var sw_lng = response.bounds.southwest.lng;
+                      var sw_lat = response.bounds.southwest.lat;
+                      var ne_lng = response.bounds.northeast.lng;
+                      var ne_lat = response.bounds.northeast.lat;
+                      var sw_ll = new google.maps.LatLng(parseFloat(sw_lat), parseFloat(sw_lng));
+                      var ne_ll = new google.maps.LatLng(parseFloat(ne_lat), parseFloat(ne_lng));
+                      var llb = new google.maps.LatLngBounds(sw_ll, ne_ll);
+                      Drupal.getlocations_map[key].fitBounds(llb);
+                    }
+                    else if (settings.what3words_zoom == -1) {
                       Drupal.getlocations_map[key].setZoom(parseInt(settings.nodezoom));
                     }
                     else if (settings.what3words_zoom > -1) {
