@@ -2106,7 +2106,8 @@ function getlocations_fields_save_locations($locations, $criteria, $settings, $m
         $ll = getlocations_latlon_check($ll);
         if ($ll) {
           $jd = json_decode(getlocations_cb_w3w_get($ll, 'reverse'));
-          $locations[$key]['what3words'] = implode('.', $jd->words);
+          #$locations[$key]['what3words'] = implode('.', $jd->words);
+          $locations[$key]['what3words'] = $jd->words;
           $data['data']['what3words'] = $locations[$key]['what3words'];
         }
       }

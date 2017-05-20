@@ -1,9 +1,18 @@
-commit 0fb3da0
+commit 4d4c3f9
+Author: bobhutch <arwystli@gmail.com>
+Date:   Sat May 20 18:35:54 2017 +0100
+
+    fixed minor bug in what3words
+
+modules/getlocations_fields/getlocations_fields.module
+
+commit 8056cba
 Author: bobhutch <arwystli@gmail.com>
 Date:   Fri Jan 6 14:34:36 2017 +0000
 
     added light and dark layers to mapquest
 
+CHANGELOG.txt
 modules/getlocations_leaflet/getlocations_leaflet.module
 modules/getlocations_leaflet/js/getlocations_leaflet.js
 modules/getlocations_leaflet/js/getlocations_leaflet.min.js
