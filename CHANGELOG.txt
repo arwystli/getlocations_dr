@@ -1,9 +1,37 @@
-commit 4d4c3f9
+commit eee360f
+Author: bobhutch <arwystli@gmail.com>
+Date:   Wed Aug 9 10:20:49 2017 +0100
+
+    linted js
+
+js/getlocations.js
+js/getlocations.min.js
+
+commit ac64a22
+Author: bobhutch <arwystli@gmail.com>
+Date:   Wed Aug 9 10:20:08 2017 +0100
+
+    fixed w3w form
+
+getlocations.module
+
+commit c35baca
+Author: bobhutch <arwystli@gmail.com>
+Date:   Sat Jul 1 14:09:25 2017 +0100
+
+    fixed w3w images
+
+getlocations.css
+getlocations.module
+images/w3w_bw22.png
+
+commit 2da941f
 Author: bobhutch <arwystli@gmail.com>
 Date:   Sat May 20 18:35:54 2017 +0100
 
     fixed minor bug in what3words
 
+CHANGELOG.txt
 modules/getlocations_fields/getlocations_fields.module
 
 commit 8056cba
