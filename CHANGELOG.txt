@@ -1,9 +1,18 @@
-commit eee360f
+commit 154cb0a
+Author: bobhutch <arwystli@gmail.com>
+Date:   Wed Aug 16 21:25:31 2017 +0100
+
+    added https warning
+
+modules/getlocations_gps/getlocations_gps.module
+
+commit 54538f4
 Author: bobhutch <arwystli@gmail.com>
 Date:   Wed Aug 9 10:20:49 2017 +0100
 
     linted js
 
+CHANGELOG.txt
 js/getlocations.js
 js/getlocations.min.js
 

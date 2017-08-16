@@ -103,11 +103,15 @@ function getlocations_gps_settings_form() {
   $getlocations_gps_paths = getlocations_gps_paths_get();
 
   $form = array();
-
+  $desc = t('The settings here will provide the defaults for Getlocations GPS.');
+  global $is_https;
+  if (! $is_https) {
+    $desc .= '</br>' . t('Modern browsers may refuse to geolocate unless the site is running under https.');
+  }
   $form['getlocations_gps_defaults'] = array(
     '#type' => 'fieldset',
     '#title' => t('Getlocations GPS Default settings'),
-    '#description' => t('The settings here will provide the defaults for Getlocations GPS.'),
+    '#description' => $desc,
     '#collapsible' => TRUE,
     '#collapsed' => FALSE,
     // This will store all the defaults in one variable.
