@@ -3718,6 +3718,7 @@ function getlocations_getlocations_map_providers() {
   $osm_attrib = '&copy; <a target="_blank" href="http://www.openstreetmap.org">OpenStreetMap</a> contributors, <a target="_blank" href="http://www.openstreetmap.org/copyright">ODBL</a>';
   $stamen_attrib = 'Tiles &copy; <a target="_blank" href="http://stamen.com">Stamen Design</a>, <a target="_blank" href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; ' . $osm_attrib;
   $esri_attrib = 'Tiles &copy; <a target="_blank" href="http://www.esri.com/">Esri</a>';
+
   $providers = array(
     'Map' => array(
       'title' => t('Standard street map'),
@@ -3794,50 +3795,6 @@ function getlocations_getlocations_map_providers() {
       'maxzoom' => 18,
       'url' => "http://tile.openstreetmap.de/tiles/osmde/__Z__/__X__/__Y__.png",
       'attribution' => $osm_attrib,
-      'tilesize' => 256,
-    ),
-    'OCM' => array(
-      'title' => t('OpenCycleMap'),
-      'short_title' => t('OCM'),
-      'description' => '',
-      'default' => 0,
-      'minzoom' => 1,
-      'maxzoom' => 18,
-      'url' => "http://tile.opencyclemap.org/cycle/__Z__/__X__/__Y__.png",
-      'attribution' => '&copy; <a target="_blank" href="http://www.opencyclemap.org" >OpenCycleMap</a>, ' . $osm_attrib,
-      'tilesize' => 256,
-    ),
-    'OCMT' => array(
-      'title' => t('OpenCycleMap Transport'),
-      'short_title' => t('OCM Transport'),
-      'description' => '',
-      'default' => 0,
-      'minzoom' => 1,
-      'maxzoom' => 18,
-      'url' => "http://tile.opencyclemap.org/transport/__Z__/__X__/__Y__.png",
-      'attribution' => '&copy; <a target="_blank" href="http://www.opencyclemap.org" >OpenCycleMap</a>, ' . $osm_attrib,
-      'tilesize' => 256,
-    ),
-    'OCML' => array(
-      'title' => t('OpenCycleMap Landscape'),
-      'short_title' => t('OCM Landscape'),
-      'description' => '',
-      'default' => 0,
-      'minzoom' => 1,
-      'maxzoom' => 18,
-      'url' => "http://tile.opencyclemap.org/landscape/__Z__/__X__/__Y__.png",
-      'attribution' => '&copy; <a target="_blank" href="http://www.opencyclemap.org" >OpenCycleMap</a>, ' . $osm_attrib,
-      'tilesize' => 256,
-    ),
-    'OCMO' => array(
-      'title' => t('OpenCycleMap Outdoors'),
-      'short_title' => t('OCM Outdoors'),
-      'description' => '',
-      'default' => 0,
-      'minzoom' => 1,
-      'maxzoom' => 18,
-      'url' => "http://tile.thunderforest.com/outdoors/__Z__/__X__/__Y__.png",
-      'attribution' => '&copy; <a target="_blank" href="http://www.opencyclemap.org" >OpenCycleMap</a>, ' . $osm_attrib,
       'tilesize' => 256,
     ),
     'Stamen' => array(
@@ -4028,6 +3985,59 @@ function getlocations_getlocations_map_providers() {
       'tilesize' => 256,
     ),
   );
+
+  // opencyclemaps and thunderforest now require a key which is free for limited use
+  $thunderforest_lic = variable_get('getlocations_thunderforest_lic', array('key' => ''));
+    if (! empty($thunderforest_lic['key'])) {
+    $providers = array_merge($providers, array(
+    'OCM' => array(
+      'title' => t('OpenCycleMap'),
+      'short_title' => t('OCM Cycle'),
+      'description' => '',
+      'default' => 0,
+      'minzoom' => 1,
+      'maxzoom' => 18,
+      'url' => "http://tile.thunderforest.com/cycle/__Z__/__X__/__Y__.png?apikey=" . $thunderforest_lic['key'],
+      'attribution' => '&copy; <a target="_blank" href="http://www.opencyclemap.org" >OpenCycleMap</a>, ' . $osm_attrib,
+      'tilesize' => 256,
+    ),
+    'OCMT' => array(
+      'title' => t('OpenCycleMap Transport'),
+      'short_title' => t('OCM Transport'),
+      'description' => '',
+      'default' => 0,
+      'minzoom' => 1,
+      'maxzoom' => 18,
+      'url' => "http://tile.thunderforest.com/transport/__Z__/__X__/__Y__.png?apikey=" . $thunderforest_lic['key'],
+      'attribution' => '&copy; <a target="_blank" href="http://www.opencyclemap.org" >OpenCycleMap</a>, ' . $osm_attrib,
+      'tilesize' => 256,
+    ),
+    'OCML' => array(
+      'title' => t('OpenCycleMap Landscape'),
+      'short_title' => t('OCM Landscape'),
+      'description' => '',
+      'default' => 0,
+      'minzoom' => 1,
+      'maxzoom' => 18,
+      'url' => "http://tile.thunderforest.com/landscape/__Z__/__X__/__Y__.png?apikey=" . $thunderforest_lic['key'],
+      'attribution' => '&copy; <a target="_blank" href="http://www.opencyclemap.org" >OpenCycleMap</a>, ' . $osm_attrib,
+      'tilesize' => 256,
+    ),
+    'OCMO' => array(
+      'title' => t('OpenCycleMap Outdoors'),
+      'short_title' => t('OCM Outdoors'),
+      'description' => '',
+      'default' => 0,
+      'minzoom' => 1,
+      'maxzoom' => 18,
+      'url' => "http://tile.thunderforest.com/outdoors/__Z__/__X__/__Y__.png?apikey=" . $thunderforest_lic['key'],
+      'attribution' => '&copy; <a target="_blank" href="http://www.opencyclemap.org" >OpenCycleMap</a>, ' . $osm_attrib,
+      'tilesize' => 256,
+    )
+  ));
+
+  }
+
   return $providers;
 }
 
