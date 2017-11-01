@@ -1,9 +1,38 @@
-commit 154cb0a
+commit c7885fa
+Author: bobhutch <arwystli@gmail.com>
+Date:   Wed Nov 1 12:22:22 2017 +0000
+
+    updated providers list in leaflet
+
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/js/getlocations_leaflet_providers.js
+modules/getlocations_leaflet/js/getlocations_leaflet_providers.min.js
+
+commit 8cfa730
+Author: bobhutch <arwystli@gmail.com>
+Date:   Wed Nov 1 12:20:32 2017 +0000
+
+    added weathermap key, updated map urls
+
+getlocations.admin.inc
+getlocations.module
+
+commit 9752458
+Author: bobhutch <arwystli@gmail.com>
+Date:   Mon Oct 30 22:10:47 2017 +0000
+
+    added thunderforest api key
+
+getlocations.admin.inc
+getlocations.module
+
+commit d62fac4
 Author: bobhutch <arwystli@gmail.com>
 Date:   Wed Aug 16 21:25:31 2017 +0100
 
     added https warning
 
+CHANGELOG.txt
 modules/getlocations_gps/getlocations_gps.module
 
 commit 54538f4

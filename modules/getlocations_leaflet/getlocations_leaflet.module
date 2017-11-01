@@ -2030,6 +2030,11 @@ function getlocations_leaflet_map_get_info($map = NULL) {
  *
  */
 function getlocations_leaflet_getlocations_leaflet_map_info() {
+  // Thunderforest
+  $thunderforest_lic = variable_get('getlocations_thunderforest_lic', array('key' => ''));
+
+  // openweathermap
+  $openweathermap_lic = variable_get('getlocations_openweathermap_lic', array('key' => ''));
 
   $map_info = array(
     'Getlocations OSM' => array(
@@ -2084,33 +2089,44 @@ function getlocations_leaflet_getlocations_leaflet_map_info() {
           'label' => t('OpenStreetMap H.O.T'),
           'type' => 'base',
         ),
+        'OpenStreetMap.BZH' => array(
+          'label' => t('OpenStreetMap B.Z.H'),
+          'type' => 'base',
+        ),
         'Thunderforest.OpenCycleMap' => array(
           'label' => t('Thunderforest OpenCycleMap'),
           'type' => 'base',
+          'options' => array('apikey' => $thunderforest_lic['key'])
         ),
         'Thunderforest.Transport' => array(
           'label' => t('Thunderforest Transport'),
           'type' => 'base',
+          'options' => array('apikey' => $thunderforest_lic['key'])
         ),
         'Thunderforest.TransportDark' => array(
           'label' => t('Thunderforest TransportDark'),
           'type' => 'base',
+          'options' => array('apikey' => $thunderforest_lic['key'])
         ),
         'Thunderforest.SpinalMap' => array(
           'label' => t('Thunderforest SpinalMap'),
           'type' => 'base',
+          'options' => array('apikey' => $thunderforest_lic['key'])
         ),
         'Thunderforest.Landscape' => array(
           'label' => t('Thunderforest Landscape'),
           'type' => 'base',
+          'options' => array('apikey' => $thunderforest_lic['key'])
         ),
         'Thunderforest.Outdoors' => array(
           'label' => t('Thunderforest Outdoors'),
           'type' => 'base',
+          'options' => array('apikey' => $thunderforest_lic['key'])
         ),
         'Thunderforest.Pioneer' => array(
           'label' => t('Thunderforest Pioneer'),
           'type' => 'base',
+          'options' => array('apikey' => $thunderforest_lic['key'])
         ),
         #'OpenMapSurfer.Roads' => array(
         #  'label' => t('OpenMapSurfer Roads'),
@@ -2124,18 +2140,18 @@ function getlocations_leaflet_getlocations_leaflet_map_info() {
         #  'label' => t('OpenMapSurfer Grayscale'),
         #  'type' => 'base',
         #),
-        'Hydda.Full' => array(
-          'label' => t('Hydda Full'),
-          'type' => 'base',
-        ),
-        'Hydda.Base' => array(
-          'label' => t('Hydda Base'),
-          'type' => 'base',
-        ),
-        'Hydda.RoadsAndLabels' => array(
-          'label' => t('Hydda RoadsAndLabels'),
-          'type' => 'base',
-        ),
+        #'Hydda.Full' => array(
+        #  'label' => t('Hydda Full'),
+        #  'type' => 'base',
+        #),
+        #'Hydda.Base' => array(
+        #  'label' => t('Hydda Base'),
+        #  'type' => 'base',
+        #),
+        #'Hydda.RoadsAndLabels' => array(
+        #  'label' => t('Hydda RoadsAndLabels'),
+        #  'type' => 'base',
+        #),
         #'MapBox' => array(
         #  'label' => t('Mapbox'),
         #  'type' => 'base',
@@ -2319,54 +2335,66 @@ function getlocations_leaflet_getlocations_leaflet_map_info() {
           'label' => t('NASAGIBS Chlorophyll Overlay'),
           'type' => 'overlay',
         ),
-
+/*
         'OpenSeaMap' => array(
           'label' => t('OpenSeaMap Overlay'),
           'type' => 'overlay',
         ),
+*/
         'OpenWeatherMap.Clouds' => array(
           'label' => t('OpenWeatherMap Clouds Overlay'),
           'type' => 'overlay',
+          'options' => array('apiKey' => $openweathermap_lic['key'])
         ),
         'OpenWeatherMap.CloudsClassic' => array(
           'label' => t('OpenWeatherMap Clouds Classic Overlay'),
           'type' => 'overlay',
+          'options' => array('apiKey' => $openweathermap_lic['key'])
         ),
         'OpenWeatherMap.Precipitation' => array(
           'label' => t('OpenWeatherMap Precipitation Overlay'),
           'type' => 'overlay',
+          'options' => array('apiKey' => $openweathermap_lic['key'])
         ),
         'OpenWeatherMap.PrecipitationClassic' => array(
           'label' => t('OpenWeatherMap Precipitation Classic Overlay'),
           'type' => 'overlay',
+          'options' => array('apiKey' => $openweathermap_lic['key'])
         ),
         'OpenWeatherMap.Rain' => array(
           'label' => t('OpenWeatherMap Rain Overlay'),
           'type' => 'overlay',
+          'options' => array('apiKey' => $openweathermap_lic['key'])
         ),
         'OpenWeatherMap.RainClassic' => array(
           'label' => t('OpenWeatherMap Rain Classic Overlay'),
           'type' => 'overlay',
+          'options' => array('apiKey' => $openweathermap_lic['key'])
         ),
         'OpenWeatherMap.Pressure' => array(
           'label' => t('OpenWeatherMap Pressure Overlay'),
           'type' => 'overlay',
+          'options' => array('apiKey' => $openweathermap_lic['key'])
         ),
         'OpenWeatherMap.PressureContour' => array(
           'label' => t('OpenWeatherMap PressureContour Overlay'),
           'type' => 'overlay',
+          'options' => array('apiKey' => $openweathermap_lic['key'])
         ),
         'OpenWeatherMap.Wind' => array(
           'label' => t('OpenWeatherMap Wind Overlay'),
           'type' => 'overlay',
+          'options' => array('apiKey' => $openweathermap_lic['key'])
         ),
         'OpenWeatherMap.Temperature' => array(
           'label' => t('OpenWeatherMap Temperature Overlay'),
           'type' => 'overlay',
+          'options' => array('apiKey' => $openweathermap_lic['key'])
         ),
         'OpenWeatherMap.Snow' => array(
           'label' => t('OpenWeatherMap Snow Overlay'),
           'type' => 'overlay',
+          'options' => array('apiKey' => $openweathermap_lic['key'])
         ),
       ),
     ),
