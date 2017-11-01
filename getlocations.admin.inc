@@ -160,6 +160,23 @@ function getlocations_settings_form() {
     40
   );
 
+  // openweathermap
+  $openweathermap_lic = variable_get('getlocations_openweathermap_lic', array('key' => ''));
+  $form['getlocations_openweathermap_lic'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Openweathermap API key'),
+    '#description' => t('This key is required if you want to use !u maps.', array('!u' => l(t('openweathermaps'), 'http://openweathermap.org/', array('attributes' => array('target' => '_blank'))))),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#tree' => TRUE,
+  );
+  $form['getlocations_openweathermap_lic']['key'] = getlocations_element_map_tf(
+    t('Openweathermap key'),
+    $openweathermap_lic['key'],
+    t('After entering the key you should save the form, this will present further settings.'),
+    40
+  );
+
   // $what3words
   $what3words_lic = variable_get('getlocations_what3words_lic', array('key' => '', 'url' => GETLOCATIONS_W3W_URL));
   $form['getlocations_what3words_lic'] = array(
