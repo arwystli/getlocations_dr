@@ -376,6 +376,18 @@
             mapOpts.streetViewControl = false;
           }
 
+          // fullscreen as provided by google
+          if (fullscreen) {
+            mapOpts.fullscreenControl = true;
+            // positioning does not work :-(
+            if (fullscreen_controlposition) {
+              mapOpts.FullscreenControlOptions = {position: controlpositions[fullscreen_controlposition]};
+            }
+          }
+          else {
+            mapOpts.fullscreenControl = false;
+          }
+
           // make the map
           Drupal.getlocations_map[key] = new google.maps.Map(document.getElementById("getlocations_map_canvas_" + key), mapOpts);
           // another way
@@ -583,27 +595,6 @@
 
           }
 
-          // fullscreen
-          if (fullscreen) {
-            var fsdiv = '';
-            $(document).keydown( function(kc) {
-              var cd = (kc.keyCode ? kc.keyCode : kc.which);
-              if(cd == 27){
-                if($("body").hasClass("fullscreen-body-" + key)){
-                  toggleFullScreen();
-                }
-              }
-            });
-            var fsdoc = document.createElement("DIV");
-            var fs = new FullScreenControl(fsdoc);
-            fsdoc.index = 0;
-            var fs_p = controlpositions['tr'];
-            if (fullscreen_controlposition) {
-              fs_p = controlpositions[fullscreen_controlposition];
-            }
-            Drupal.getlocations_map[key].controls[fs_p].setAt(0, fsdoc);
-          }
-
           // search_places in getlocations_search_places.js
           if (setting.search_places && $.isFunction(Drupal.getlocations_search_places)) {
             Drupal.getlocations_search_places(key);
@@ -617,44 +608,6 @@
         } // end is there really a map?
 
         // functions
-        function FullScreenControl(fsd) {
-          fsd.style.margin = "5px";
-          fsd.style.boxShadow = "0 2px 4px rgba(0, 0, 0, 0.4)";
-          fsdiv = document.createElement("DIV");
-          fsdiv.style.height = "22px";
-          fsdiv.style.backgroundColor = "white";
-          fsdiv.style.borderColor = "#717B87";
-          fsdiv.style.borderStyle = "solid";
-          fsdiv.style.borderWidth = "1px";
-          fsdiv.style.cursor = "pointer";
-          fsdiv.style.textAlign = "center";
-          fsdiv.title = Drupal.t('Full screen');
-          fsdiv.innerHTML = '<img id="btnFullScreen" src="' + js_path + 'images/fs-map-full.png"/>';
-          fsd.appendChild(fsdiv);
-          google.maps.event.addDomListener(fsdiv, "click", function() {
-            toggleFullScreen();
-          });
-        }
-
-        function toggleFullScreen() {
-          var cnt = Drupal.getlocations_map[key].getCenter();
-          $("#getlocations_map_wrapper_" + key).toggleClass("fullscreen");
-          $("html,body").toggleClass("fullscreen-body-" + key);
-          $(document).scrollTop(0);
-          google.maps.event.trigger(Drupal.getlocations_map[key], "resize");
-          Drupal.getlocations_map[key].setCenter(cnt);
-          setTimeout( function() {
-            if($("#getlocations_map_wrapper_" + key).hasClass("fullscreen")) {
-              $("#btnFullScreen").attr("src", js_path + 'images/fs-map-normal.png');
-              fsdiv.title = Drupal.t('Normal screen');
-            }
-            else {
-              $("#btnFullScreen").attr("src", js_path + 'images/fs-map-full.png');
-              fsdiv.title = Drupal.t('Full screen');
-            }
-          },200);
-        }
-
         function doAllMarkers(map, gs, mkey) {
 
           var arr = gs.latlons;
@@ -1221,5 +1174,41 @@
     }
     return ret;
   };
+//////////////////////////////////
+  /**
+ * Function : dump()
+ * Arguments: The data - array,hash(associative array),object
+ *    The level - OPTIONAL
+ * Returns  : The textual representation of the array.
+ * This function was inspired by the print_r function of PHP.
+ * This will accept some data as the argument and return a
+ * text that will be a more readable version of the
+ * array/hash/object that is given.
+ * Docs: http://www.openjs.com/scripts/others/dump_function_php_print_r.php
+ */
+function dump(arr,level) {
+	var dumped_text = "";
+	if(!level) level = 0;
 
+	//The padding given at the beginning of the line.
+	var level_padding = "";
+	for(var j=0;j<level+1;j++) level_padding += "    ";
+
+	if(typeof(arr) == 'object') { //Array/Hashes/Objects
+		for(var item in arr) {
+			var value = arr[item];
+
+			if(typeof(value) == 'object') { //If it is an array,
+				dumped_text += level_padding + "'" + item + "' ...\n";
+				dumped_text += dump(value,level+1);
+			} else {
+				dumped_text += level_padding + "'" + item + "' => \"" + value + "\"\n";
+			}
+		}
+	} else { //Stings/Chars/Numbers etc.
+		dumped_text = "===>"+arr+"<===("+typeof(arr)+")";
+	}
+	return dumped_text;
+}
+//////////////////////////////////
 })(jQuery);
