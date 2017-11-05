@@ -1,3 +1,4 @@
+This is Control.Geocoder version 1.5.6
 Extending the geocoder functionality.
 The geocoder for each map can be accessed in the javascript global variable
 getlocations_leaflet_geocoder[key]

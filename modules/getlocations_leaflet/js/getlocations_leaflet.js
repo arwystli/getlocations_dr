@@ -202,7 +202,11 @@
               title: Drupal.t('Magnifying Glass'),
               position: (map_settings.magnifyingglasscontrolposition ? map_settings.magnifyingglasscontrolposition : 'topleft')
             };
-            Drupal.getlocations_leaflet_map[key].addControl(L.control.magnifyingglass(magnifyingGlass, magControlOpts));
+            //Drupal.getlocations_leaflet_map[key].addControl(L.control.magnifyingglass(magnifyingGlass, magControlOpts));
+            //magnifyingGlass.addTo(Drupal.getlocations_leaflet_map[key]);
+            //magnifyingGlass(magnifyingGlass, magControlOpts).addTo(Drupal.getlocations_leaflet_map[key]);
+            L.control.magnifyingglass(magnifyingGlass, magControlOpts).addTo(Drupal.getlocations_leaflet_map[key]);
+
           }
 
           // pancontrol
@@ -270,6 +274,7 @@
               fillOpacity: map_settings.terminator_fillopacity,
               resolution: 2
             };
+
             var terminator = L.terminator(terminatorOpts);
             if (map_settings.terminator_show == 2) {
               var termctlOpts = {
@@ -287,18 +292,26 @@
           // Zoom control
           if (map_settings.zoomControl) {
             var zoomopts = {};
-            if (map_settings.zoomcontrolposition) {
-              zoomopts.position = map_settings.zoomcontrolposition;
-            }
+            //if (map_settings.zoomcontrolposition) {
+            //  zoomopts.position = map_settings.zoomcontrolposition;
+            //}
             Drupal.getlocations_leaflet_map[key].addControl(L.control.zoom(zoomopts));
           }
 
-          // Attribution control
-          if (map_settings.attributionControl && map_settings.attributioncontrolposition) {
-            var attributionopts = {position: map_settings.attributioncontrolposition};
-            var attribcontrol = L.control.attribution(attributionopts);
-            Drupal.getlocations_leaflet_map[key].addControl(attribcontrol);
-            //attribcontrol.addAttribution(map_layers.earth.options.attribution);
+//          // Attribution control
+//          if (map_settings.attributionControl && map_settings.attributioncontrolposition) {
+//            var attributionopts = {position: map_settings.attributioncontrolposition};
+//            var attribcontrol = L.control.attribution(attributionopts);
+//            Drupal.getlocations_leaflet_map[key].addControl(attribcontrol);
+//            //attribcontrol.addAttribution(map_layers.earth.options.attribution);
+//          }
+
+          // Attribution control, automatic unless disabled
+          if (map_settings.attributionControl) {
+            L.control.attribution('Leaflet');
+          }
+          else {
+            L.control.attribution(false);
           }
 
           // Mouseposition
@@ -322,9 +335,6 @@
           // Scale control
           if (map_settings.scaleControl) {
             var scaleopts = {};
-            if (map_settings.scalecontrolposition) {
-              scaleopts.position = map_settings.scalecontrolposition;
-            }
             if (map_settings.scalecontrolunits) {
               if (map_settings.scalecontrolunits == 'metric') {
                 scaleopts.metric = true;
@@ -335,7 +345,10 @@
                 scaleopts.imperial = true;
               }
             }
-            Drupal.getlocations_leaflet_map[key].addControl(L.control.scale(scaleopts));
+            else {
+              scaleopts = '';
+            }
+            L.control.scale(scaleopts).addTo(Drupal.getlocations_leaflet_map[key]);
           }
 
           // Geocoder control
@@ -344,6 +357,7 @@
             geo_opts.placeholder = map_settings.geocoder_placeholder;
             geo_opts.errorMessage = map_settings.geocoder_errormessage;
             geo_opts.collapsed = (map_settings.geocodercollapsed ? true : false);
+            geo_opts.expand = ( map_settings.geolocation_mobile_check ? 'touch' : 'click' );
             if (map_settings.geocoderposition) {
               geo_opts.position = map_settings.geocoderposition;
             }
@@ -489,6 +503,8 @@
               layeropts.position = map_settings.layercontrolposition;
             }
             if (map_settings.minimap) {
+              // kill it off for now
+              layeropts.overlayBackgroundLayer = false;
               Drupal.getlocations_leaflet_layerscontrol[key] = L.control.layers.minimap(layers, Drupal.getlocations_leaflet_overlays[key], layeropts).addTo(Drupal.getlocations_leaflet_map[key]);
             }
             else {

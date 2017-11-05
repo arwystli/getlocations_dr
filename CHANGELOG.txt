@@ -1,9 +1,89 @@
-commit c7885fa
+commit d718259
+Author: bobhutch <arwystli@gmail.com>
+Date:   Sun Nov 5 14:35:44 2017 +0000
+
+    leaflet updated to v1.0.3, font-awesome updated to v4.7.0
+
+drush/getlocations.drush.inc
+modules/getlocations_leaflet/js/getlocations_leaflet.js
+modules/getlocations_leaflet/js/getlocations_leaflet.min.js
+modules/getlocations_leaflet/plugins/awesome-markers/LICENSE
+modules/getlocations_leaflet/plugins/awesome-markers/README.md
+modules/getlocations_leaflet/plugins/bouncemarker/LICENSE.txt
+modules/getlocations_leaflet/plugins/bouncemarker/README.md
+modules/getlocations_leaflet/plugins/bouncemarker/bouncemarker.js
+modules/getlocations_leaflet/plugins/bouncemarker/bouncemarker.min.js
+modules/getlocations_leaflet/plugins/font-awesome/css/font-awesome.css
+modules/getlocations_leaflet/plugins/font-awesome/css/font-awesome.min.css
+modules/getlocations_leaflet/plugins/font-awesome/fonts/FontAwesome.otf
+modules/getlocations_leaflet/plugins/font-awesome/fonts/fontawesome-webfont.eot
+modules/getlocations_leaflet/plugins/font-awesome/fonts/fontawesome-webfont.svg
+modules/getlocations_leaflet/plugins/font-awesome/fonts/fontawesome-webfont.ttf
+modules/getlocations_leaflet/plugins/font-awesome/fonts/fontawesome-webfont.woff
+modules/getlocations_leaflet/plugins/font-awesome/fonts/fontawesome-webfont.woff2
+modules/getlocations_leaflet/plugins/font-awesome/less/font-awesome.less
+modules/getlocations_leaflet/plugins/font-awesome/less/icons.less
+modules/getlocations_leaflet/plugins/font-awesome/less/variables.less
+modules/getlocations_leaflet/plugins/font-awesome/scss/_icons.scss
+modules/getlocations_leaflet/plugins/font-awesome/scss/_variables.scss
+modules/getlocations_leaflet/plugins/font-awesome/scss/font-awesome.scss
+modules/getlocations_leaflet/plugins/fullscreen/Control.FullScreen.css
+modules/getlocations_leaflet/plugins/fullscreen/Control.FullScreen.js
+modules/getlocations_leaflet/plugins/fullscreen/Control.FullScreen.min.css
+modules/getlocations_leaflet/plugins/fullscreen/Control.FullScreen.min.js
+modules/getlocations_leaflet/plugins/fullscreen/LICENSE
+modules/getlocations_leaflet/plugins/fullscreen/README.md
+modules/getlocations_leaflet/plugins/fullscreen/icon-fullscreen-2x.png
+modules/getlocations_leaflet/plugins/fullscreen/icon-fullscreen.png
+modules/getlocations_leaflet/plugins/geocoder/Control.Geocoder.css
+modules/getlocations_leaflet/plugins/geocoder/Control.Geocoder.js
+modules/getlocations_leaflet/plugins/geocoder/Control.Geocoder.min.css
+modules/getlocations_leaflet/plugins/geocoder/Control.Geocoder.min.js
+modules/getlocations_leaflet/plugins/geocoder/README.md
+modules/getlocations_leaflet/plugins/geocoder/README.txt
+modules/getlocations_leaflet/plugins/magnifyingglass/leaflet.magnifyingglass.js
+modules/getlocations_leaflet/plugins/magnifyingglass/leaflet.magnifyingglass.min.js
+modules/getlocations_leaflet/plugins/markercluster/MarkerCluster.css
+modules/getlocations_leaflet/plugins/markercluster/MarkerCluster.min.css
+modules/getlocations_leaflet/plugins/markercluster/leaflet.markercluster-src.js
+modules/getlocations_leaflet/plugins/markercluster/leaflet.markercluster.js
+modules/getlocations_leaflet/plugins/minimap/DOES_NOT_WORK_IN_1.2.0
+modules/getlocations_leaflet/plugins/minimap/L.Control.Layers.Minimap.js
+modules/getlocations_leaflet/plugins/minimap/L.Control.Layers.Minimap.min.js
+modules/getlocations_leaflet/plugins/minimap/LICENSE
+modules/getlocations_leaflet/plugins/minimap/README.md
+modules/getlocations_leaflet/plugins/minimap/control.layers.minimap.css
+modules/getlocations_leaflet/plugins/mouseposition/README.md
+modules/getlocations_leaflet/plugins/pancontrol/L.Control.Pan.css
+modules/getlocations_leaflet/plugins/pancontrol/L.Control.Pan.js
+modules/getlocations_leaflet/plugins/pancontrol/L.Control.Pan.min.css
+modules/getlocations_leaflet/plugins/pancontrol/L.Control.Pan.min.js
+modules/getlocations_leaflet/plugins/sync/L.Map.Sync.js
+modules/getlocations_leaflet/plugins/sync/L.Map.Sync.min.js
+modules/getlocations_leaflet/plugins/sync/README.md
+modules/getlocations_leaflet/plugins/terminator/L.Terminator.js
+modules/getlocations_leaflet/plugins/terminator/L.Terminator.min.js
+modules/getlocations_leaflet/plugins/usermarker/LICENSE
+modules/getlocations_leaflet/plugins/usermarker/README.rst
+modules/getlocations_leaflet/plugins/zoomslider/LICENSE
+modules/getlocations_leaflet/plugins/zoomslider/README.md
+
+commit dd00330
+Author: bobhutch <arwystli@gmail.com>
+Date:   Thu Nov 2 14:51:42 2017 +0000
+
+    replaced fullscreen with the builtin version
+
+js/getlocations.js
+js/getlocations.min.js
+
+commit 8f9a767
 Author: bobhutch <arwystli@gmail.com>
 Date:   Wed Nov 1 12:22:22 2017 +0000
 
     updated providers list in leaflet
 
+CHANGELOG.txt
 modules/getlocations_leaflet/getlocations_leaflet.module
 modules/getlocations_leaflet/js/getlocations_leaflet_providers.js
 modules/getlocations_leaflet/js/getlocations_leaflet_providers.min.js

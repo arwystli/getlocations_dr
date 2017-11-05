@@ -17,7 +17,8 @@
 define('GETLOCATIONS_MARKERS_DOWNLOAD_URI', 'http://dl.dropboxusercontent.com/u/41489105/Drupal/getlocations/getlocations-markers.zip');
 define('GETLOCATIONS_GEOJSON_DOWNLOAD_URI', 'https://github.com/JasonSanford/GeoJSON-to-Google-Maps/archive/master.zip');
 define('GETLOCATIONS_GEOCODER_DOWNLOAD_URI', 'https://github.com/geocoder-php/geocoder-js/archive/master.zip');
-define('GETLOCATIONS_LEAFLET_DOWNLOAD_URI', 'http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.zip');
+#define('GETLOCATIONS_LEAFLET_DOWNLOAD_URI', 'http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.zip');
+define('GETLOCATIONS_LEAFLET_DOWNLOAD_URI', 'http://cdn.leafletjs.com/leaflet/v1.0.3/leaflet.zip');
 define('GETLOCATIONS_LEAFLET_HASH_DOWNLOAD_URI', 'https://github.com/mlevans/leaflet-hash/archive/master.zip');
 define('GETLOCATIONS_LIBRARY_PATH', 'sites/all/libraries');
 

@@ -1,7 +1,5 @@
 ﻿
-L.MagnifyingGlass = L.Class.extend({
-  includes: L.Mixin.Events,
-
+L.MagnifyingGlass = L.Layer.extend({
   options: {
     radius: 100,
     zoomOffset: 3,
@@ -76,7 +74,7 @@ L.MagnifyingGlass = L.Class.extend({
   _update: function(latLng, layerPoint) {
     // update mini map view, forcing no animation
     this._glassMap.setView(latLng, this._getZoom(), {
-      pan : { animate: false } 
+      pan : { animate: false }
     });
 
     // update the layer element position on the main map,
@@ -110,7 +108,7 @@ L.MagnifyingGlass = L.Class.extend({
 
     this._glassMap.whenReady(function() {
       if(opts.fixedPosition) {
-        this._mainMap.on('viewreset', this._updateFixed, this);
+        this._mainMap.on('zoomend', this._updateFixed, this);
         // for now, hide the elements during zoom transitions
         L.DomUtil.addClass(this._wrapperElt, ('leaflet-zoom-hide'));
       } else {
@@ -126,6 +124,8 @@ L.MagnifyingGlass = L.Class.extend({
 
     // needed after the element has been added, otherwise tile loading is messy
     this._glassMap.invalidateSize();
+
+    return this;
   },
 
   _fireClick: function(domMouseEvt) {
@@ -149,13 +149,8 @@ L.MagnifyingGlass = L.Class.extend({
     L.DomEvent.removeListener(this._wrapperElt, 'click', this._fireClick);
     map.getPanes().popupPane.removeChild(this._wrapperElt);
     this._mainMap = null;
-  },
 
-  /**
-  Shortcut to mimic common layer types' way of adding to the map
-  */
-  addTo: function(map) {
-    map.addLayer(this);
+    return this;
   }
 });
 
