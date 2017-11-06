@@ -1,9 +1,20 @@
-commit d718259
+commit 3f2003a
+Author: bobhutch <arwystli@gmail.com>
+Date:   Mon Nov 6 08:39:38 2017 +0000
+
+    fixed geocoder mobile detect
+
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/js/getlocations_leaflet.js
+modules/getlocations_leaflet/js/getlocations_leaflet.min.js
+
+commit 4faf79d
 Author: bobhutch <arwystli@gmail.com>
 Date:   Sun Nov 5 14:35:44 2017 +0000
 
     leaflet updated to v1.0.3, font-awesome updated to v4.7.0
 
+CHANGELOG.txt
 drush/getlocations.drush.inc
 modules/getlocations_leaflet/js/getlocations_leaflet.js
 modules/getlocations_leaflet/js/getlocations_leaflet.min.js

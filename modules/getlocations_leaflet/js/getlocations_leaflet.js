@@ -357,7 +357,7 @@
             geo_opts.placeholder = map_settings.geocoder_placeholder;
             geo_opts.errorMessage = map_settings.geocoder_errormessage;
             geo_opts.collapsed = (map_settings.geocodercollapsed ? true : false);
-            geo_opts.expand = ( map_settings.geolocation_mobile_check ? 'touch' : 'click' );
+            geo_opts.expand = ( map_settings.geocoder_is_mobile ? 'touch' : 'click' );
             if (map_settings.geocoderposition) {
               geo_opts.position = map_settings.geocoderposition;
             }
