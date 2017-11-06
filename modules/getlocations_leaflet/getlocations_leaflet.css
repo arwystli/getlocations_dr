@@ -7,9 +7,12 @@
  * getlocations_leaflet css.
  *
  */
-.leaflet-top,
-.leaflet-bottom {
-  z-index: 100;
+
+/* leaflet overrides */
+
+/* prevent controls from showing through on Seven overlays */
+.leaflet-control-container .leaflet-left, .leaflet-control-container .leaflet-right {
+  z-index: 500;
 }
 
 .leaflet-control-attribution {
