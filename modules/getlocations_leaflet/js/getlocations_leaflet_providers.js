@@ -186,7 +186,9 @@
         },
         Landscape: 'landscape',
         Outdoors: 'outdoors',
-        Pioneer: 'pioneer'
+        Pioneer: 'pioneer',
+        Mobileatlas: 'mobile-atlas',
+        Neighbourhood: 'neighbourhood'
       }
     },
     OpenMapSurfer: {

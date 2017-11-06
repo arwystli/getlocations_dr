@@ -1,9 +1,29 @@
-commit 3f2003a
+commit 4da5e2a
+Author: bobhutch <arwystli@gmail.com>
+Date:   Mon Nov 6 16:59:31 2017 +0000
+
+    more thunderforest maps
+
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/js/getlocations_leaflet_providers.js
+modules/getlocations_leaflet/js/getlocations_leaflet_providers.min.js
+modules/getlocations_leaflet/plugins/minimap/L.Control.Layers.Minimap.js
+
+commit de729bc
+Author: bobhutch <arwystli@gmail.com>
+Date:   Mon Nov 6 16:58:47 2017 +0000
+
+    fixed x-index bug
+
+modules/getlocations_leaflet/getlocations_leaflet.css
+
+commit 53f3a50
 Author: bobhutch <arwystli@gmail.com>
 Date:   Mon Nov 6 08:39:38 2017 +0000
 
     fixed geocoder mobile detect
 
+CHANGELOG.txt
 modules/getlocations_leaflet/getlocations_leaflet.module
 modules/getlocations_leaflet/js/getlocations_leaflet.js
 modules/getlocations_leaflet/js/getlocations_leaflet.min.js

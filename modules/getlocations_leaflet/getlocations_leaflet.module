@@ -270,21 +270,22 @@ function getlocations_leaflet_library() {
   # not working in leaflet v 1.2.0
   if ($getlocations_leaflet_plugins['minimap_enable']) {
     $jsarr += array(
-      #GETLOCATIONS_LEAFLET_PATH . '/plugins/minimap/L.Control.Layers.Minimap.min.js' => array(
-      GETLOCATIONS_LEAFLET_PATH . '/plugins/minimap/L.Control.Layers.Minimap.js' => array(
+      GETLOCATIONS_LEAFLET_PATH . '/plugins/minimap/L.Control.Layers.Minimap.min.js' => array(
+      #GETLOCATIONS_LEAFLET_PATH . '/plugins/minimap/L.Control.Layers.Minimap.js' => array(
         'type' => 'file',
         'preprocess' => $aggr
       ),
     );
     $cssarr += array(
       GETLOCATIONS_LEAFLET_PATH . '/plugins/minimap/control.layers.minimap.min.css' => array(
+      #GETLOCATIONS_LEAFLET_PATH . '/plugins/minimap/control.layers.minimap.css' => array(
         'type' => 'file',
         'media' => 'all',
       ),
     );
   }
 
-  # very flaky
+  # fixed
   if ($getlocations_leaflet_plugins['geocoder_enable']) {
     $jsarr += array(
       GETLOCATIONS_LEAFLET_PATH . '/plugins/geocoder/Control.Geocoder.min.js' => array(
@@ -2132,6 +2133,18 @@ function getlocations_leaflet_getlocations_leaflet_map_info() {
           'type' => 'base',
           'options' => array('apikey' => $thunderforest_lic['key'])
         ),
+        'Thunderforest.Mobileatlas' => array(
+          'label' => t('Thunderforest Mobile atlas'),
+          'type' => 'base',
+          'options' => array('apikey' => $thunderforest_lic['key'])
+        ),
+        'Thunderforest.Neighbourhood' => array(
+          'label' => t('Thunderforest Neighbourhood'),
+          'type' => 'base',
+          'options' => array('apikey' => $thunderforest_lic['key'])
+        ),
+
+
         #'OpenMapSurfer.Roads' => array(
         #  'label' => t('OpenMapSurfer Roads'),
         #  'type' => 'base',
