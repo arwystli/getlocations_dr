@@ -1,9 +1,18 @@
-commit 4da5e2a
+commit 7ec4e2b
+Author: bobhutch <arwystli@gmail.com>
+Date:   Wed Nov 8 13:27:44 2017 +0000
+
+    added reset maps to leaflet
+
+modules/getlocations_leaflet/getlocations_leaflet.module
+
+commit cb2ed58
 Author: bobhutch <arwystli@gmail.com>
 Date:   Mon Nov 6 16:59:31 2017 +0000
 
     more thunderforest maps
 
+CHANGELOG.txt
 modules/getlocations_leaflet/getlocations_leaflet.module
 modules/getlocations_leaflet/js/getlocations_leaflet_providers.js
 modules/getlocations_leaflet/js/getlocations_leaflet_providers.min.js
