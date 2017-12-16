@@ -2333,16 +2333,16 @@ function getlocations_leaflet_getlocations_leaflet_map_info() {
         'type' => 'base',
         'options' => array('apikey' => $thunderforest_lic['key'])
       ),
-      'Thunderforest.Mobileatlas' => array(
-        'label' => t('Thunderforest Mobile atlas'),
-        'type' => 'base',
-        'options' => array('apikey' => $thunderforest_lic['key'])
-      ),
-      'Thunderforest.Neighbourhood' => array(
-        'label' => t('Thunderforest Neighbourhood'),
-        'type' => 'base',
-        'options' => array('apikey' => $thunderforest_lic['key'])
-      ),
+#      'Thunderforest.Mobile-atlas' => array(
+#        'label' => t('Thunderforest Mobile atlas'),
+#        'type' => 'base',
+#        'options' => array('apikey' => $thunderforest_lic['key'])
+#      ),
+#      'Thunderforest.Neighbourhood' => array(
+#        'label' => t('Thunderforest Neighbourhood'),
+#        'type' => 'base',
+#        'options' => array('apikey' => $thunderforest_lic['key'])
+#      ),
     );
     $map_info['Getlocations OSM']['map_layers'] += $tfarray;
   }
@@ -6174,6 +6174,11 @@ function getlocations_leaflet_display_options_fieldsets($form) {
     $form['mapquest_traffic_incident_on']['#suffix'] = $tsuf . '</div></fieldset>';
   }
 
+  if (isset($form['what3words_enable']) && $form['what3words_enable']['#type'] !== 'value' ) {
+    $form['what3words_enable']['#prefix'] = '<fieldset class="collapsible getlocations_fieldset form-wrapper"><legend><span class="fieldset-legend">' . t('What3words') . '</span></legend><div class="fieldset-wrapper">';
+    $tsuf = $form['what3words_show']['#suffix'];
+    $form['what3words_show']['#suffix'] = $tsuf . '</div></fieldset>';
+  }
 
   return $form;
 }

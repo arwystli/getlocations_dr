@@ -187,8 +187,15 @@
         Landscape: 'landscape',
         Outdoors: 'outdoors',
         Pioneer: 'pioneer',
-        Mobileatlas: 'mobile-atlas',
-        Neighbourhood: 'neighbourhood'
+//        'Mobile-atlas': {
+//          options: {
+//            variant: 'mobile-atlas',
+//             maxZoom: 19
+//          }
+//        }
+// https://{s}.tile.thunderforest.com/mobile-atlas/{z}/{x}/{y}.png?apikey=<insert-your-apikey-here>
+//        Mobileatlas: 'mobile-atlas',
+//        Neighbourhood: 'neighbourhood'
       }
     },
     OpenMapSurfer: {

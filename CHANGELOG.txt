@@ -1,9 +1,44 @@
-commit 7ec4e2b
+commit e1906ea
+Author: bobhutch <arwystli@gmail.com>
+Date:   Sat Dec 16 18:08:09 2017 +0000
+
+    added graticule for google maps
+
+getlocations.admin.inc
+getlocations.module
+js/getlocations.js
+js/getlocations.min.js
+js/getlocations_admin.js
+js/getlocations_admin.min.js
+js/getlocations_admin_1.js
+js/getlocations_admin_1.min.js
+js/getlocations_graticule.js
+js/getlocations_graticule.min.js
+js/getlocations_views.js
+js/getlocations_views.min.js
+js/getlocations_views_1.js
+js/getlocations_views_1.min.js
+modules/getlocations_leaflet/getlocations_leaflet.module
+modules/getlocations_leaflet/js/getlocations_leaflet_providers.js
+modules/getlocations_leaflet/js/getlocations_leaflet_providers.min.js
+views/getlocations_plugin_style_map.inc
+
+commit 4cc851b
+Author: bobhutch <arwystli@gmail.com>
+Date:   Sat Dec 16 18:07:32 2017 +0000
+
+    edited css
+
+modules/getlocations_leaflet/plugins/pancontrol/L.Control.Pan.css
+modules/getlocations_leaflet/plugins/pancontrol/L.Control.Pan.min.css
+
+commit 218396b
 Author: bobhutch <arwystli@gmail.com>
 Date:   Wed Nov 8 13:27:44 2017 +0000
 
     added reset maps to leaflet
 
+CHANGELOG.txt
 modules/getlocations_leaflet/getlocations_leaflet.module
 
 commit cb2ed58

@@ -17,6 +17,11 @@
   Drupal.getlocations_markers = [];
   Drupal.getlocations_settings = [];
   Drupal.getlocations_map = [];
+  Drupal.getlocations_grat = [];
+  //Drupal.getlocations_grat.map = [];
+  Drupal.getlocations_grat.grid = [];
+  Drupal.getlocations_grat.key = '';
+  //Drupal.getlocations_grat.label = false;
 
   // in icons.js
   Drupal.getlocations.iconSetup();
@@ -561,6 +566,40 @@
             });
           }
 
+          // graticule
+          if(setting.graticule_enable) {
+            Drupal.getlocations_grat.key = key;
+            Drupal.getlocations_grat.grid[key] = new Drupal.getlocations.Graticule(Drupal.getlocations_map[key], setting.graticule_label);
+            if (setting.graticule_toggle) {
+              var graticuletoggleState = [];
+              if (setting.graticule_toggle_active) {
+                Drupal.getlocations_grat.grid[key].show();
+                graticuletoggleState[key] = true;
+              }
+              else {
+                Drupal.getlocations_grat.grid[key].hide();
+                graticuletoggleState[key] = false;
+              }
+              $("#getlocations_graticule_toggle_" + key).click( function() {
+                var label = '';
+                if (graticuletoggleState[key]) {
+                Drupal.getlocations_grat.grid[key].hide();
+                  graticuletoggleState[key] = false;
+                  label = Drupal.t('Graticule On');
+                }
+                else {
+                  Drupal.getlocations_grat.grid[key].show();
+                  graticuletoggleState[key] = true;
+                  label = Drupal.t('Graticule Off');
+                }
+                $(this).val(label);
+              });
+            }
+            global_settings.graticule_lightcolor = setting.graticule_lightcolor;
+            global_settings.graticule_darkcolor = setting.graticule_darkcolor;
+            global_settings.graticule_label = setting.graticule_label;
+          }
+
           // exporting global_settings to Drupal.getlocations_settings
           Drupal.getlocations_settings[key] = global_settings;
 
@@ -604,7 +643,6 @@
           if (setting.geojson_enable && setting.geojson_data && $.isFunction(Drupal.getlocations_geojson)) {
             Drupal.getlocations_geojson(key);
           }
-
         } // end is there really a map?
 
         // functions

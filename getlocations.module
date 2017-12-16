@@ -1250,6 +1250,22 @@ function getlocations_setup_js($defaults, $googleonly = FALSE, $sv = FALSE) {
     $getlocations_js_weight++;
   }
 
+  if ( $defaults['graticule_enable']) {
+    if (!stristr($current_js, $getlocations_paths['getlocations_graticule_path'])) {
+      $js_opts = array();
+      $js_opts['weight'] = $getlocations_js_weight;
+      $js_opts['type'] = 'file';
+      $js_opts['preprocess'] = $aggr;
+      drupal_add_js($getlocations_paths['getlocations_graticule_path'], $js_opts);
+      $getlocations_js_weight++;
+    }
+    // we want geo.js to make fancy labels
+    if ($defaults['graticule_label'] > 0) {
+      $defaults['geo_enable'] = TRUE;
+    }
+    $defaults['geo_enable'] = TRUE;
+  }
+
   // load main getlocations.js
   if (!stristr($current_js, $getlocations_paths['getlocations_path'])) {
     $js_opts = array();
@@ -1615,6 +1631,12 @@ function getlocations_defaults($reset = FALSE) {
     'what3words_show'        => 1,
     'what3words_click'       => 1,
     'what3words_path'        => 'getlocations/cb_w3w',
+    'graticule_enable'        => 0,
+    'graticule_toggle'        => 0,
+    'graticule_toggle_active' => 0,
+    'graticule_lightcolor'    => '#FFFFFF',
+    'graticule_darkcolor'     => '#808080',
+    'graticule_label'         => 1,
   );
 
   $providers = getlocations_get_map_providers();
@@ -2853,6 +2875,12 @@ function getlocations_js_settings_do($defaults, $latlons, $minmaxes, $mapid, $in
       'sv_scrollwheel'            => $defaults['sv_scrollwheel'],
       'sv_clicktogo'              => $defaults['sv_clicktogo'],
       'input_map_show'            => $defaults['input_map_show'],
+      'graticule_enable'          => $defaults['graticule_enable'],
+      'graticule_toggle'          => $defaults['graticule_toggle'],
+      'graticule_toggle_active'   => $defaults['graticule_toggle_active'],
+      'graticule_lightcolor'      => $defaults['graticule_lightcolor'],
+      'graticule_darkcolor'       => $defaults['graticule_darkcolor'],
+      'graticule_label'           => $defaults['graticule_label'],
      ),
   );
   // only set these if wanted
@@ -4412,6 +4440,71 @@ function getlocations_map_display_options_form($defaults, $config = TRUE, $extra
       $defaults['transit_show'],
       t('Show Google transit points icons.')
     );
+    // graticule
+    $form['graticule_enable'] = getlocations_element_map_checkbox(
+      t('Enable Graticule'),
+      $defaults['graticule_enable'],
+      t('Lat/Long grid on the map.')
+    );
+    $form['graticule']['#suffix'] = '<div id="wrap-getlocations-graticule">';
+    $form['graticule_toggle'] = getlocations_element_map_checkbox(
+      t('Show toggle button'),
+      $defaults['graticule_toggle'],
+      t('Provide a button to switch the grid on and off')
+    );
+
+    // jquery_colorpicker
+    if (module_exists('jquery_colorpicker') && $defaults['jquery_colorpicker_enabled']) {
+      $form['graticule_lightcolor'] = array(
+        '#type' => 'jquery_colorpicker',
+        '#title' => t('Graticule light line color'),
+        '#default_value' => preg_replace("/^#/", '', $defaults['graticule_lightcolor']),
+        '#description' => t('Click on the Colorpicker icon to select a color'),
+      );
+    }
+    else {
+      $form['graticule_lightcolor'] = getlocations_element_map_tf(
+        t('Graticule light line color'),
+        $defaults['graticule_lightcolor'],
+        t('HTML hex, eg #FFFFFF.'),
+        10,
+        10,
+        TRUE
+      );
+    }
+
+    // jquery_colorpicker
+    if (module_exists('jquery_colorpicker') && $defaults['jquery_colorpicker_enabled']) {
+      $form['graticule_darkcolor'] = array(
+        '#type' => 'jquery_colorpicker',
+        '#title' => t('Graticule dark line color'),
+        '#default_value' => preg_replace("/^#/", '', $defaults['graticule_darkcolor']),
+        '#description' => t('Click on the Colorpicker icon to select a color'),
+      );
+    }
+    else {
+      $form['graticule_darkcolor'] = getlocations_element_map_tf(
+        t('Graticule dark line color'),
+        $defaults['graticule_darkcolor'],
+        t('HTML hex, eg #000000.'),
+        10,
+        10,
+        TRUE
+      );
+    }
+
+    $form['graticule_label'] = getlocations_element_dd(
+      t('Display Graticule labels'),
+      $defaults['graticule_label'],
+      array(0 => t('None'), 1 => t('Decimal'), 2 => t('Degrees, Minutes, Seconds'), 3 => t('Sexagesimal'))
+    );
+
+    $form['graticule_toggle_active'] = getlocations_element_map_checkbox(
+      t('Activate Graticule'),
+      $defaults['graticule_toggle_active'],
+      t('Activate Graticule when map is first displayed.')
+    );
+    $form['graticule_toggle_active']['#suffix'] = '</div>';
 
     $form += getlocations_shapes_form($defaults, $source);
 
@@ -5266,6 +5359,7 @@ function getlocations_paths_get($reset = FALSE, $min = FALSE) {
       'getlocations_icons_path'         => GETLOCATIONS_PATH . '/js/icons.min.js',
       'getlocations_field_group_path'   => GETLOCATIONS_PATH . '/js/getlocations_field_group.min.js',
       'getlocations_what3words_path'    => GETLOCATIONS_PATH . '/js/getlocations_what3words.min.js',
+      'getlocations_graticule_path'     => GETLOCATIONS_PATH . '/js/getlocations_graticule.min.js',
     );
   }
   else {
@@ -5296,6 +5390,7 @@ function getlocations_paths_get($reset = FALSE, $min = FALSE) {
       'getlocations_icons_path'         => GETLOCATIONS_PATH . '/js/icons.js',
       'getlocations_field_group_path'   => GETLOCATIONS_PATH . '/js/getlocations_field_group.js',
       'getlocations_what3words_path'    => GETLOCATIONS_PATH . '/js/getlocations_what3words.js',
+      'getlocations_graticule_path'     => GETLOCATIONS_PATH . '/js/getlocations_graticule.js',
     );
 
   }
@@ -7141,6 +7236,11 @@ function theme_getlocations_show($variables) {
   // getlocations_smartip
   if (module_exists('getlocations_smartip')) {
     $buttons[] = theme('getlocations_smartip_button', array('defaults' => $defaults, 'mapid' => $mapid));
+  }
+
+  // graticule
+  if ($defaults['graticule_enable'] && $defaults['graticule_toggle']) {
+    $buttons[] = '<input type="button" value="' . t('Graticule !t', array('!t' => ($defaults['graticule_toggle_active'] ? t('Off') : t('On')))) . '" id="getlocations_graticule_toggle_' . $mapid . '" class="form-submit" />';
   }
 
   if (count($buttons)) {

@@ -236,6 +236,13 @@ class getlocations_plugin_style_map extends views_plugin_style {
       $options['what3words_click']       = array('default' =>  $getlocations_defaults['what3words_click']);
       $options['what3words_size']        = array('default' =>  $getlocations_defaults['what3words_size']);
     }
+    // graticule
+    $options['graticule_enable']        = array('default' =>  $getlocations_defaults['graticule_enable']);
+    $options['graticule_toggle']        = array('default' =>  $getlocations_defaults['graticule_toggle']);
+    $options['graticule_toggle_active'] = array('default' =>  $getlocations_defaults['graticule_toggle_active']);
+    $options['graticule_lightcolor']    = array('default' =>  $getlocations_defaults['graticule_lightcolor']);
+    $options['graticule_darkcolor']     = array('default' =>  $getlocations_defaults['graticule_darkcolor']);
+    $options['graticule_label']         = array('default' =>  $getlocations_defaults['graticule_label']);
 
     // node markers
     $getlocations_node_marker = variable_get('getlocations_node_marker', array('enable' => 0));
@@ -559,7 +566,6 @@ class getlocations_plugin_style_map extends views_plugin_style {
         form_set_error('style_options][latlong', t('Map coordinates must be expressed as a decimal latitude and longitude, separated by a comma.'));
       }
     }
-
   }
 
   function even_empty() {
