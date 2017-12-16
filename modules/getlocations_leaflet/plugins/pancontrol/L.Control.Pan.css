@@ -7,7 +7,7 @@
 */
 .leaflet-left.has-leaflet-pan-control .leaflet-control-zoom {
 	position: relative;
-	left: 24px;
+	left: 28px;
 }
 .leaflet-right.has-leaflet-pan-control .leaflet-control-zoom {
 	position: relative;
@@ -113,7 +113,7 @@
 .leaflet-touch .leaflet-control-pan {
   width: 89px;
   height: 119px;
-  margin-left: 8px;
+  margin-left: 12px;
 }
 
 .leaflet-touch .leaflet-right .leaflet-control-pan {
