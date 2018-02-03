@@ -1,9 +1,20 @@
-commit e1906ea
+commit 5193792
+Author: bobhutch <arwystli@gmail.com>
+Date:   Sat Feb 3 13:47:18 2018 +0000
+
+    w3w in leaflet fixed
+
+getlocations.module
+modules/getlocations_leaflet/getlocations_leaflet.css
+modules/getlocations_leaflet/getlocations_leaflet.module
+
+commit dc09ac1
 Author: bobhutch <arwystli@gmail.com>
 Date:   Sat Dec 16 18:08:09 2017 +0000
 
     added graticule for google maps
 
+CHANGELOG.txt
 getlocations.admin.inc
 getlocations.module
 js/getlocations.js
