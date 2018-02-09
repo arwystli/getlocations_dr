@@ -279,6 +279,8 @@ function getlocations_search_getmap($which = 'page') {
     'getdirections_link', 'gps_button', 'gps_button_label', 'gps_marker', 'gps_marker_title', 'gps_bubble', 'gps_geocode', 'gps_center', 'gps_type', 'gps_zoom',
     'smartip_button', 'smartip_button_label', 'smartip_marker', 'smartip_marker_title', 'smartip_bubble', 'smartip_center', 'smartip_zoom', 'smartip_callback',
     'geolocation_mobile_check', 'geocoder_enable',
+    'what3words_enable', 'what3words_search', 'what3words_size', 'what3words_map_marker', 'what3words_marker_show', 'what3words_center', 'what3words_zoom', 'what3words_show', 'what3words_click', 'what3words_path',
+    'graticule_enable', 'graticule_toggle', 'graticule_toggle_active', 'graticule_lightcolor', 'graticule_darkcolor', 'graticule_label',
   );
 
   foreach ($keys AS $key) {
@@ -1242,6 +1244,12 @@ function getlocations_search_defaults() {
     'what3words_show'               => $getlocations_defaults['what3words_show'],
     'what3words_click'              => $getlocations_defaults['what3words_click'],
     'what3words_path'               => $getlocations_defaults['what3words_path'],
+    'graticule_enable'              => $getlocations_defaults['graticule_enable'],
+    'graticule_toggle'              => $getlocations_defaults['graticule_toggle'],
+    'graticule_toggle_active'       => $getlocations_defaults['graticule_toggle_active'],
+    'graticule_lightcolor'          => $getlocations_defaults['graticule_lightcolor'],
+    'graticule_darkcolor'           => $getlocations_defaults['graticule_darkcolor'],
+    'graticule_label'               => $getlocations_defaults['graticule_label'],
   );
 
   $settings = variable_get('getlocations_search_defaults', $defaults);
