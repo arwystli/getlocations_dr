@@ -1,9 +1,27 @@
-commit 095e923
+commit 774744a
+Author: bobhutch <arwystli@gmail.com>
+Date:   Fri Feb 9 21:58:14 2018 +0000
+
+    added maxzoom to mbtmap
+
+modules/getlocations_leaflet/js/getlocations_leaflet_providers.js
+modules/getlocations_leaflet/js/getlocations_leaflet_providers.min.js
+
+commit abc8001
+Author: bobhutch <arwystli@gmail.com>
+Date:   Fri Feb 9 21:40:50 2018 +0000
+
+    fixed graticule
+
+modules/getlocations_search/getlocations_search.module
+
+commit 1867235
 Author: bobhutch <arwystli@gmail.com>
 Date:   Fri Feb 9 15:02:02 2018 +0000
 
     fixed w3w bug in search module admin
 
+CHANGELOG.txt
 modules/getlocations_search/getlocations_search.module
 modules/getlocations_search/js/getlocations_search_admin_1.js
 modules/getlocations_search/js/getlocations_search_admin_1.min.js

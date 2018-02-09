@@ -517,6 +517,7 @@
     MtbMap: {
       url: 'http://tile.mtbmap.cz/mtbmap_tiles/{z}/{x}/{y}.png',
       options: {
+        maxZoom: 19,
         attribution:
           '{attribution.OpenStreetMap} &amp; USGS'
       }
