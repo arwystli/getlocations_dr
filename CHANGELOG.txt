@@ -1,9 +1,20 @@
-commit 5193792
+commit 095e923
+Author: bobhutch <arwystli@gmail.com>
+Date:   Fri Feb 9 15:02:02 2018 +0000
+
+    fixed w3w bug in search module admin
+
+modules/getlocations_search/getlocations_search.module
+modules/getlocations_search/js/getlocations_search_admin_1.js
+modules/getlocations_search/js/getlocations_search_admin_1.min.js
+
+commit 70b475b
 Author: bobhutch <arwystli@gmail.com>
 Date:   Sat Feb 3 13:47:18 2018 +0000
 
     w3w in leaflet fixed
 
+CHANGELOG.txt
 getlocations.module
 modules/getlocations_leaflet/getlocations_leaflet.css
 modules/getlocations_leaflet/getlocations_leaflet.module

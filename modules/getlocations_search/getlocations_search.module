@@ -922,7 +922,7 @@ function theme_getlocations_search_settings_form($variables) {
   if (isset($form[$varname]['what3words_enable']) && $form[$varname]['what3words_enable']['#type'] !== 'value' ) {
     $form[$varname]['what3words_enable']['#prefix'] = '<fieldset class="collapsible getlocations_fieldset form-wrapper"><legend><span class="fieldset-legend">' . t('What3words') . '</span></legend><div class="fieldset-wrapper">';
     $tsuf = $form[$varname]['what3words_show']['#suffix'];
-    $form['getlocations_default']['what3words_show']['#suffix'] = $tsuf . '</div></fieldset>';
+    $form[$varname]['what3words_show']['#suffix'] = $tsuf . '</div></fieldset>';
   }
 
   $output .= drupal_render_children($form);
