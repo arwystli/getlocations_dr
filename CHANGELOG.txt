@@ -1,9 +1,21 @@
-commit 774744a
+commit b1ef88f
+Author: bobhutch <arwystli@gmail.com>
+Date:   Sun Feb 11 14:52:31 2018 +0000
+
+    added js for graticule to search module
+
+modules/getlocations_search/js/getlocations_search_admin.js
+modules/getlocations_search/js/getlocations_search_admin.min.js
+modules/getlocations_search/js/getlocations_search_admin_1.js
+modules/getlocations_search/js/getlocations_search_admin_1.min.js
+
+commit ab1300f
 Author: bobhutch <arwystli@gmail.com>
 Date:   Fri Feb 9 21:58:14 2018 +0000
 
     added maxzoom to mbtmap
 
+CHANGELOG.txt
 modules/getlocations_leaflet/js/getlocations_leaflet_providers.js
 modules/getlocations_leaflet/js/getlocations_leaflet_providers.min.js
 

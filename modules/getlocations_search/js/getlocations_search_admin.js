@@ -452,6 +452,23 @@
         });
       }
 
+      // #edit-getlocations-search-default-graticule-enable
+      if ($("#edit-getlocations-search-defaults-graticule-enable").is('input')) {
+        if ($("#edit-getlocations-search-defaults-graticule-enable").attr('checked')) {
+          $("#wrap-getlocations-graticule").show();
+        }
+        else {
+          $("#wrap-getlocations-graticule").hide();
+        }
+        $("#edit-getlocations-search-defaults-graticule-enable").change(function() {
+          if ($(this).attr('checked')) {
+            $("#wrap-getlocations-graticule").show();
+          }
+          else {
+            $("#wrap-getlocations-graticule").hide();
+          }
+        });
+      }
 
     }
   };
