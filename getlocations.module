@@ -6821,7 +6821,7 @@ function getlocations_check_jquery_version($admin=TRUE) {
   if (module_exists('jquery_update')) {
     if ($admin) {
       $version = variable_get('jquery_update_jquery_admin_version', FALSE);
-      if ($version == 0) {
+      if ($version == 0 || $version == 'default') {
         $version = variable_get('jquery_update_jquery_version', FALSE);
       }
     }
@@ -6829,6 +6829,10 @@ function getlocations_check_jquery_version($admin=TRUE) {
       $version = variable_get('jquery_update_jquery_version', FALSE);
     }
   }
+  if ($version == 'default') {
+    $version = '1.4.4';
+  }
+
   if ($version) {
     $a = explode(".", $version);
     if ($a[0] > 1) {
