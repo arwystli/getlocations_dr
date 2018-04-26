@@ -1,9 +1,27 @@
-commit b1ef88f
+commit bd68fed
+Author: bobhutch <arwystli@gmail.com>
+Date:   Thu Apr 26 16:23:53 2018 +0100
+
+    updated map providers list
+
+modules/getlocations_leaflet/js/getlocations_leaflet_providers.js
+modules/getlocations_leaflet/js/getlocations_leaflet_providers.min.js
+
+commit 98d1c0a
+Author: bobhutch <arwystli@gmail.com>
+Date:   Thu Apr 26 16:23:06 2018 +0100
+
+    fixed jquery version detection
+
+getlocations.module
+
+commit 0eca158
 Author: bobhutch <arwystli@gmail.com>
 Date:   Sun Feb 11 14:52:31 2018 +0000
 
     added js for graticule to search module
 
+CHANGELOG.txt
 modules/getlocations_search/js/getlocations_search_admin.js
 modules/getlocations_search/js/getlocations_search_admin.min.js
 modules/getlocations_search/js/getlocations_search_admin_1.js

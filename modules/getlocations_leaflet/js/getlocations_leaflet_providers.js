@@ -344,7 +344,7 @@
         WorldTerrain: {
           options: {
             variant: 'World_Terrain_Base',
-            maxZoom: 13,
+            maxZoom: 9,
             attribution:
               '{attribution.Esri} &mdash; ' +
               'Source: USGS, Esri, TANA, DeLorme, and NPS'
@@ -374,7 +374,7 @@
         NatGeoWorldMap: {
           options: {
             variant: 'NatGeo_World_Map',
-            maxZoom: 16,
+            maxZoom: 12,
             attribution: '{attribution.Esri} &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC'
           }
         },
