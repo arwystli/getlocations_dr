@@ -2139,7 +2139,9 @@ function getlocations_fields_save_locations($locations, $criteria, $settings, $m
           if ( ! isset($locations[$key]['glid']) || ! is_numeric($locations[$key]['glid'])) {
             // eek
             $loc = getlocations_fields_load_locations($criteria['nid'], 'nid');
-            $locations[$key]['glid'] = $loc[$key]['glid'];
+            if (isset($loc[$key]['glid']) && $loc[$key]['glid']) {
+              $locations[$key]['glid'] = $loc[$key]['glid'];
+            }
           }
 
           $result = getlocations_fields_update_record($locations[$key], $criteria);
@@ -4624,6 +4626,9 @@ function theme_getlocations_fields_field_formatter_settings_form($variables) {
 
   $form['sv_addresscontrol']['#prefix'] = '<fieldset class="getlocations_fieldset collapsible ' . (getlocations_fields_streetview_settings_allow() ? '' : 'collapsed') . ' form-wrapper"><legend><span class="fieldset-legend">' . t('Streetview overlay settings') . '</span></legend><div class="fieldset-wrapper">';
   $form['sv_clicktogo']['#suffix'] = '</div></fieldset>';
+
+  $fieldsets = getlocations_settings_fieldsets($form);
+  $form = array_merge($form, $fieldsets );
 
   $output .= drupal_render_children($form);
   return $output;

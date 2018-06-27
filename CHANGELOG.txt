@@ -1,9 +1,27 @@
-commit bd68fed
+commit aae88cc
+Author: bobhutch <arwystli@gmail.com>
+Date:   Wed Jun 27 11:53:08 2018 +0100
+
+    got rid of Notice
+
+modules/getlocations_fields/getlocations_fields.module
+
+commit 4099795
+Author: bobhutch <arwystli@gmail.com>
+Date:   Wed Jun 27 11:52:15 2018 +0100
+
+    added fieldsets function
+
+getlocations.module
+modules/getlocations_search/getlocations_search.module
+
+commit 1e6b134
 Author: bobhutch <arwystli@gmail.com>
 Date:   Thu Apr 26 16:23:53 2018 +0100
 
     updated map providers list
 
+CHANGELOG.txt
 modules/getlocations_leaflet/js/getlocations_leaflet_providers.js
 modules/getlocations_leaflet/js/getlocations_leaflet_providers.min.js
 
