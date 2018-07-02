@@ -1,9 +1,18 @@
-commit aae88cc
+commit 153aa60
+Author: bobhutch <arwystli@gmail.com>
+Date:   Mon Jul 2 19:42:08 2018 +0100
+
+    updated marker urls
+
+README.txt
+
+commit 9d41e77
 Author: bobhutch <arwystli@gmail.com>
 Date:   Wed Jun 27 11:53:08 2018 +0100
 
     got rid of Notice
 
+CHANGELOG.txt
 modules/getlocations_fields/getlocations_fields.module
 
 commit 4099795

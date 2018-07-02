@@ -8,28 +8,48 @@ display markers of locations found in location-enabled content-types.
 INSTALL
 Before installing getlocations please ensure that you have the libraries module installed
 
-You can fetch markers from dropbox:
+You can fetch markers from here:
 As tarballs:
-https://dl.dropboxusercontent.com/u/41489105/Drupal/getlocations/getlocations-markers.tar.gz (required)
-https://dl.dropboxusercontent.com/u/41489105/Drupal/getlocations/getlocations-markers-extra.tar.gz
-https://dl.dropboxusercontent.com/u/41489105/Drupal/getlocations/getlocations-markers-various.tar.gz
-https://dl.dropboxusercontent.com/u/41489105/Drupal/getlocations/getlocations-markers-various-small.tar.gz
-https://dl.dropboxusercontent.com/u/41489105/Drupal/getlocations/getlocations-markers-restaurants-bars.tar.gz
-https://dl.dropboxusercontent.com/u/41489105/Drupal/getlocations/getlocations-markers-hairlines.tar.gz
-https://dl.dropboxusercontent.com/u/41489105/Drupal/getlocations/getlocations-markers-circular.tar.gz
-https://dl.dropboxusercontent.com/u/41489105/Drupal/getlocations/getlocations-markers-micons.tar.gz
-https://dl.dropboxusercontent.com/u/41489105/Drupal/getlocations/getlocations-markers-paddle.tar.gz
+https://test.arwystli.net/markers/getlocations-markers.tar.gz
+https://test.arwystli.net/markers/getlocations-markers-extra.tar.gz
+https://test.arwystli.net/markers/getlocations-markers-various.tar.gz
+https://test.arwystli.net/markers/getlocations-markers-various-small.tar.gz
+https://test.arwystli.net/markers/getlocations-markers-restaurants-bars.tar.gz
+https://test.arwystli.net/markers/getlocations-markers-hairlines.tar.gz
+https://test.arwystli.net/markers/getlocations-markers-circular.tar.gz
+https://test.arwystli.net/markers/getlocations-markers-micons.tar.gz
+https://test.arwystli.net/markers/getlocations-markers-paddle.tar.gz
+https://test.arwystli.net/markers/getlocations-markers-colors-with-shadows.tar.gz
+https://test.arwystli.net/markers/getlocations-markers-small-with-shadows.tar.gz
+https://test.arwystli.net/markers/getlocations-markers-webiconset-pins-24.tar.gz
+https://test.arwystli.net/markers/getlocations-markers-webiconset-pins-32.tar.gz
+https://test.arwystli.net/markers/getlocations-markers-webiconset-pins-48.tar.gz
+https://test.arwystli.net/markers/getlocations-markers-webiconset-pins-64.tar.gz
+https://test.arwystli.net/markers/getlocations-markers-webiconset-symbols-24.tar.gz
+https://test.arwystli.net/markers/getlocations-markers-webiconset-symbols-48.tar.gz
+https://test.arwystli.net/markers/getlocations-markers-webiconset-symbols-72.tar.gz
+https://test.arwystli.net/markers/getlocations-markers-maki.tar.gz
 
 As zipfiles:
-https://dl.dropboxusercontent.com/u/41489105/Drupal/getlocations/getlocations-markers.zip (required)
-https://dl.dropboxusercontent.com/u/41489105/Drupal/getlocations/getlocations-markers-extra.zip
-https://dl.dropboxusercontent.com/u/41489105/Drupal/getlocations/getlocations-markers-various.zip
-https://dl.dropboxusercontent.com/u/41489105/Drupal/getlocations/getlocations-markers-various-small.zip
-https://dl.dropboxusercontent.com/u/41489105/Drupal/getlocations/getlocations-markers-restaurants-bars.zip
-https://dl.dropboxusercontent.com/u/41489105/Drupal/getlocations/getlocations-markers-hairlines.zip
-https://dl.dropboxusercontent.com/u/41489105/Drupal/getlocations/getlocations-markers-circular.zip
-https://dl.dropboxusercontent.com/u/41489105/Drupal/getlocations/getlocations-markers-micons.zip
-https://dl.dropboxusercontent.com/u/41489105/Drupal/getlocations/getlocations-markers-paddle.zip
+https://test.arwystli.net/markers/getlocations-markers.zip
+https://test.arwystli.net/markers/getlocations-markers-extra.zip
+https://test.arwystli.net/markers/getlocations-markers-various.zip
+https://test.arwystli.net/markers/getlocations-markers-various-small.zip
+https://test.arwystli.net/markers/getlocations-markers-restaurants-bars.zip
+https://test.arwystli.net/markers/getlocations-markers-hairlines.zip
+https://test.arwystli.net/markers/getlocations-markers-circular.zip
+https://test.arwystli.net/markers/getlocations-markers-micons.zip
+https://test.arwystli.net/markers/getlocations-markers-paddle.zip
+https://test.arwystli.net/markers/getlocations-markers-colors-with-shadows.zip
+https://test.arwystli.net/markers/getlocations-markers-small-with-shadows.zip
+https://test.arwystli.net/markers/getlocations-markers-webiconset-pins-24.zip
+https://test.arwystli.net/markers/getlocations-markers-webiconset-pins-32.zip
+https://test.arwystli.net/markers/getlocations-markers-webiconset-pins-48.zip
+https://test.arwystli.net/markers/getlocations-markers-webiconset-pins-64.zip
+https://test.arwystli.net/markers/getlocations-markers-webiconset-symbols-24.zip
+https://test.arwystli.net/markers/getlocations-markers-webiconset-symbols-48.zip
+https://test.arwystli.net/markers/getlocations-markers-webiconset-symbols-72.zip
+https://test.arwystli.net/markers/getlocations-markers-maki.zip
 
 Download the file(s) and place them into your libraries folder so you have
 a path something like this:
