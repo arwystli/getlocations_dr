@@ -1,9 +1,18 @@
-commit 153aa60
+commit 6261e7a
+Author: bobhutch <arwystli@gmail.com>
+Date:   Mon Jul 2 19:54:04 2018 +0100
+
+    updated getlocations.drush.inc
+
+drush/getlocations.drush.inc
+
+commit bb321cc
 Author: bobhutch <arwystli@gmail.com>
 Date:   Mon Jul 2 19:42:08 2018 +0100
 
     updated marker urls
 
+CHANGELOG.txt
 README.txt
 
 commit 9d41e77
