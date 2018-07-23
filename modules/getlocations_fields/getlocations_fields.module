@@ -1761,8 +1761,15 @@ function getlocations_fields_getmap($settings, $active) {
   drupal_add_css(GETLOCATIONS_FIELDS_PATH . '/getlocations_fields.css');
 
   $aggr = (getlocations_aggr_get() ? TRUE : FALSE);
-
   $getlocations_fields_paths = getlocations_fields_paths_get();
+
+  // latlonfield
+  $js_opts = array();
+  $js_opts['weight'] = $getlocations_defaults['getlocations_js_weight'];
+  $js_opts['type'] = 'file';
+  $js_opts['preprocess'] = $aggr;
+  drupal_add_js($getlocations_fields_paths['getlocations_fields_latlonfield_path'], $js_opts);
+
   $js_opts = array();
   $js_opts['weight'] = $getlocations_defaults['getlocations_js_weight'] + 30;
   $js_opts['type'] = 'file';
@@ -3913,6 +3920,8 @@ function getlocations_fields_paths_get($reset = FALSE, $min = FALSE) {
       'getlocations_fields_formatter_path'  => GETLOCATIONS_FIELDS_PATH . ($jq_upd ? '/js/getlocations_fields_formatter_1.min.js' : '/js/getlocations_fields_formatter.min.js'),
       'getlocations_fields_views_path'      => GETLOCATIONS_FIELDS_PATH . ($jq_upd ? '/js/getlocations_fields_views_1.min.js' : '/js/getlocations_fields_views.min.js'),
       'getlocations_fields_search_views_path' => GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields_search_views.min.js',
+      'getlocations_fields_latlonfield_path' => GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields_latlonfield.min.js',
+
     );
   }
   else {
@@ -3924,6 +3933,7 @@ function getlocations_fields_paths_get($reset = FALSE, $min = FALSE) {
       'getlocations_fields_formatter_path'  => GETLOCATIONS_FIELDS_PATH . ($jq_upd ? '/js/getlocations_fields_formatter_1.js' : '/js/getlocations_fields_formatter.js'),
       'getlocations_fields_views_path'      => GETLOCATIONS_FIELDS_PATH . ($jq_upd ? '/js/getlocations_fields_views_1.js' : '/js/getlocations_fields_views.js'),
       'getlocations_fields_search_views_path' => GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields_search_views.js',
+      'getlocations_fields_latlonfield_path' => GETLOCATIONS_FIELDS_PATH . '/js/getlocations_fields_latlonfield.js',
     );
   }
 

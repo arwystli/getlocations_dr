@@ -1,9 +1,22 @@
-commit 6261e7a
+commit 498347e
+Author: bobhutch <arwystli@gmail.com>
+Date:   Mon Jul 23 17:16:44 2018 +0100
+
+    added latlonfield js
+
+modules/getlocations_fields/getlocations_fields.module
+modules/getlocations_fields/js/getlocations_fields.js
+modules/getlocations_fields/js/getlocations_fields.min.js
+modules/getlocations_fields/js/getlocations_fields_latlonfield.js
+modules/getlocations_fields/js/getlocations_fields_latlonfield.min.js
+
+commit c2017ac
 Author: bobhutch <arwystli@gmail.com>
 Date:   Mon Jul 2 19:54:04 2018 +0100
 
     updated getlocations.drush.inc
 
+CHANGELOG.txt
 drush/getlocations.drush.inc
 
 commit bb321cc
@@ -1609,7 +1622,6 @@ modules/getlocations_leaflet/plugins/font-awesome/less/font-awesome.less
 modules/getlocations_leaflet/plugins/font-awesome/less/icons.less
 modules/getlocations_leaflet/plugins/font-awesome/less/mixins.less
 modules/getlocations_leaflet/plugins/font-awesome/less/path.less
-modules/getlocations_leaflet/plugins/font-awesome/less/spinning.less
 modules/getlocations_leaflet/plugins/font-awesome/less/variables.less
 modules/getlocations_leaflet/plugins/font-awesome/scss/_animated.scss
 modules/getlocations_leaflet/plugins/font-awesome/scss/_core.scss
@@ -1617,7 +1629,6 @@ modules/getlocations_leaflet/plugins/font-awesome/scss/_extras.scss
 modules/getlocations_leaflet/plugins/font-awesome/scss/_icons.scss
 modules/getlocations_leaflet/plugins/font-awesome/scss/_mixins.scss
 modules/getlocations_leaflet/plugins/font-awesome/scss/_path.scss
-modules/getlocations_leaflet/plugins/font-awesome/scss/_spinning.scss
 modules/getlocations_leaflet/plugins/font-awesome/scss/_variables.scss
 modules/getlocations_leaflet/plugins/font-awesome/scss/font-awesome.scss
 
@@ -4090,12 +4101,6 @@ modules/getlocations_leaflet/getlocations_leaflet.module
 modules/getlocations_leaflet/js/getlocations_leaflet.js
 modules/getlocations_leaflet/js/getlocations_leaflet_formatter.js
 modules/getlocations_leaflet/js/getlocations_leaflet_providers.js
-modules/getlocations_leaflet/markercluster/MarkerCluster.Default.css
-modules/getlocations_leaflet/markercluster/MarkerCluster.Default.ie.css
-modules/getlocations_leaflet/markercluster/MarkerCluster.css
-modules/getlocations_leaflet/markercluster/leaflet.markercluster-src.js
-modules/getlocations_leaflet/markercluster/leaflet.markercluster.js
-modules/getlocations_leaflet/markercluster/markerclusteroptions.inc.txt
 modules/getlocations_leaflet/plugins/fullscreen/Leaflet.fullscreen.js
 modules/getlocations_leaflet/plugins/fullscreen/Leaflet.fullscreen.min.js
 modules/getlocations_leaflet/plugins/fullscreen/fullscreen.png
@@ -4472,7 +4477,6 @@ Date:   Fri Oct 4 13:23:33 2013 +0100
 getlocations.admin.inc
 getlocations.info
 getlocations.module
-js/getlocations_streetview.js
 js/getlocations_views.js
 modules/getlocations_fields/getlocations_fields.admin.inc
 modules/getlocations_fields/getlocations_fields.info
@@ -4482,9 +4486,7 @@ modules/getlocations_fields/js/getlocations_fields_views.js
 modules/getlocations_fields/views/getlocations-fields-view-streetview.tpl.php
 modules/getlocations_fields/views/getlocations_fields.views.inc
 modules/getlocations_fields/views/getlocations_fields_plugin_style_streetview.inc
-views/getlocations-view-streetview.tpl.php
 views/getlocations.views.inc
-views/getlocations_plugin_style_streetview.inc
 
 commit a5e5e02
 Author: hutch <hutch@midwales.net>
@@ -6753,7 +6755,7 @@ Date:   Sat Sep 15 21:52:46 2012 +0100
     Merge remote-tracking branch 'origin/7.x-1.x' into 7.x-1.x
     
     Conflicts:
-    	CHANGELOG.txt
+            CHANGELOG.txt
 
 commit e94159b
 Author: hutch <hutch@midwales.net>
@@ -8408,7 +8410,6 @@ Date:   Sun Feb 26 15:58:41 2012 +0000
     changed name of file from getlocation_views.js to getlocations_views.js
 
 CHANGELOG.txt
-js/getlocation_views.js
 js/getlocations_views.js
 
 commit 06fca09
@@ -8980,10 +8981,6 @@ modules/getlocations_fields/handlers/getlocations_fields_handler_field_latitude.
 modules/getlocations_fields/handlers/getlocations_fields_handler_field_longitude.inc
 modules/getlocations_fields/handlers/getlocations_fields_handler_filter_country.inc
 modules/getlocations_fields/handlers/getlocations_fields_handler_filter_distance.inc
-modules/getlocations_fields/handlers/getlocations_fields_views_handler_field_coordinates.inc
-modules/getlocations_fields/handlers/getlocations_fields_views_handler_field_latitude.inc
-modules/getlocations_fields/handlers/getlocations_fields_views_handler_field_longitude.inc
-modules/getlocations_fields/handlers/getlocations_fields_views_handler_filter_distance.inc
 modules/getlocations_fields/views/getlocations_fields.views.inc
 
 commit f490a54
@@ -9278,10 +9275,6 @@ Date:   Fri Nov 18 12:01:05 2011 +0000
     moved views to its own folder, improved default views
 
 CHANGELOG.txt
-getlocations-view-map.tpl.php
-getlocations.views.inc
-getlocations.views_default.inc
-getlocations_plugin_style_map.inc
 views/getlocations-view-map.tpl.php
 views/getlocations.views.inc
 views/getlocations.views_default.inc

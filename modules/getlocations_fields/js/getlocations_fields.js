@@ -71,6 +71,13 @@
           }
           streetview_setup_buttondone[key] = false;
 
+          // latlonfield
+          $("." + latfield + key).latlonField();
+          $("." + lonfield + key).latlonField();
+
+          //$("input." + latfield + key).latlonField();
+          //$("input." + lonfield + key).latlonField();
+
           // we need to see if this is an update
           lat = $("." + latfield + key).val();
           lng = $("." + lonfield + key).val();
